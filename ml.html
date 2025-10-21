@@ -19,9 +19,16 @@
 <body class="bg-gray-50 text-gray-800">
 
     <div class="container mx-auto px-4 py-8">
+
+        
+
         <header class="text-center mb-8">
             <h1 class="text-4xl font-bold text-gray-900">Machine Learning Midterm Cheat Sheet</h1>
-            <p class="text-lg text-gray-600 mt-2">Key Concepts & Code Examples</p>
+            <p class="mt-1 text-sm">Google Docs link: 
+                <a href="https://docs.google.com/document/d/1qYk89sVQCBJf4ukxQdZT8Vq16acSqz7wXtYvmhe7HbE/edit?usp=sharing" target="_blank" class="font-medium text-yellow-700 underline hover:text-yellow-900">
+                    Link
+                </a>
+            </p>
         </header>
 
         <!-- Tab Navigation -->
@@ -189,7 +196,7 @@ print("Ridge R²:", r2_score(y_test, est_ridge.predict(X_test)))</code></pre>
                 <!-- Section 1: Load Data & Preprocessing -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                     <h2 class="text-2xl font-semibold mb-3">📦 1. Data Preparation for KNN Classification</h2>
-                    <p class="text-gray-600 mb-4">Example loading California Housing data and converting the continuous price target (`y`) into a binary classification problem (Above/Below Median Price).</p>
+                    <p class="text-gray-600 mb-4">Example loading California Housing data and converting the continuous target variable into a binary classification problem (Above/Below Median Price).</p>
                     <div class="bg-gray-900 rounded-md">
                         <div class="flex justify-between items-center px-4 py-2 border-b border-gray-700">
                             <span class="text-gray-400 text-sm">Python</span>
@@ -231,7 +238,7 @@ print("Accuracy (Unscaled):", accuracy_score(y_test, pred))</code></pre>
                 <!-- Section 3: KNN With Scaling -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                     <h2 class="text-2xl font-semibold mb-3">📏 3. KNN with Feature Scaling (MinMaxScaler)</h2>
-                    <p class="text-gray-600 mb-4">Using `MinMaxScaler` (or `StandardScaler`) ensures all features contribute equally to the distance calculation, improving KNN performance significantly.</p>
+                    <p class="text-gray-600 mb-4">Scaling is crucial for distance-based algorithms. Fit the scaler on training data ONLY, then transform both train and test sets.</p>
                     <div class="bg-gray-900 rounded-md">
                         <div class="flex justify-between items-center px-4 py-2 border-b border-gray-700">
                             <span class="text-gray-400 text-sm">Python</span>
@@ -239,7 +246,7 @@ print("Accuracy (Unscaled):", accuracy_score(y_test, pred))</code></pre>
                         </div>
                         <pre class="p-4 text-white text-sm overflow-x-auto"><code class="language-python">from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
-# Initialize and fit on training data only
+# Choose a scaler (MinMax or Standard)
 scaler = MinMaxScaler() 
 scaler.fit(X_train)
 
@@ -259,7 +266,7 @@ print("Accuracy (Scaled):", accuracy_score(y_test, pred_scaled))</code></pre>
                 <!-- Section 4: Visualizing KNN Errors -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                     <h2 class="text-2xl font-semibold mb-3">🎨 4. Visualizing Misclassified Points</h2>
-                    <p class="text-gray-600 mb-4">Example plotting two features to see true classes (`c=y_test`) and highlight errors (`edgecolors='r'`).</p>
+                    <p class="text-gray-600 mb-4">Plotting two features to show true classes (`c=y_test`) and highlighting errors (`edgecolors='r'`).</p>
                     <div class="bg-gray-900 rounded-md">
                         <div class="flex justify-between items-center px-4 py-2 border-b border-gray-700">
                             <span class="text-gray-400 text-sm">Python</span>
@@ -268,10 +275,12 @@ print("Accuracy (Scaled):", accuracy_score(y_test, pred_scaled))</code></pre>
                         <pre class="p-4 text-white text-sm overflow-x-auto"><code class="language-python">import matplotlib.pyplot as plt
 
 # Using unscaled test data for plotting for clarity
+pred_unscaled = KNeighborsClassifier().fit(X_train, y_train).predict(X_test)
+
 plt.figure(figsize=(8, 6))
 plt.scatter(X_test[:, 0], X_test[:, 1], 
             c=y_test, 
-            linewidths = (y_test != pred) * 1.5, # linewidth > 0 if misclassified
+            linewidths = (y_test != pred_unscaled) * 1.5, 
             edgecolors='r')
 plt.xlabel(data.feature_names[0])
 plt.ylabel(data.feature_names[1])
@@ -334,7 +343,7 @@ print("Intercept:", est.intercept_)</code></pre>
                 <!-- Section 3: Visualize Decision Boundary -->
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                     <h2 class="text-2xl font-semibold mb-3">📈 3. Visualize the Decision Boundary</h2>
-                    <p class="text-gray-600 mb-4">The decision boundary is the line where the model predicts the probability of class 1 is 0.5 (i.e., $W^T X + b = 0$).</p>
+                    <p class="text-gray-600 mb-4">The decision boundary is the line where the model predicts the probability of class 1 is 0.5.</p>
                     <div class="bg-gray-900 rounded-md">
                         <div class="flex justify-between items-center px-4 py-2 border-b border-gray-700">
                             <span class="text-gray-400 text-sm">Python</span>
@@ -343,7 +352,7 @@ print("Intercept:", est.intercept_)</code></pre>
                         <pre class="p-4 text-white text-sm overflow-x-auto"><code class="language-python">def dividingLine(x):
     b = est.intercept_[0]
     w1, w2 = est.coef_.T
-    # Derivation: w1*x1 + w2*x2 + b = 0 -> x2 = (-w1/w2) * x1 - (b/w2)
+    # Equation derived from w1*x1 + w2*x2 + b = 0
     c = -b / w2
     m = -w1 / w2
     return m * x + c
@@ -411,7 +420,6 @@ plt.show()</code></pre>
 X_demo = np.arange(20).reshape(-1,1)
 # Use KFold for fixed splits
 cv = KFold(n_splits=4, shuffle=True, random_state=42)
-# Alternatively: cv = ShuffleSplit(n_splits=4, test_size=0.3)
 
 print("K-Fold Splits (n_splits=4):")
 for i, (train_index, test_index) in enumerate(cv.split(X_demo)):
