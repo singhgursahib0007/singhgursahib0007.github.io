@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Learning Midterm Cheat Sheet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-900">Machine Learning Midterm Cheat Sheet</h1>
+            <p class="text-lg text-gray-600 mt-2">Regression & Data Analysis</p>
+        </header>
+
+        <main class="space-y-8">
+            <!-- Section 1: Importing Libraries -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h2 class="text-2xl font-semibold mb-3">📦 1. Importing Libraries</h2>
+                <p class="text-gray-600 mb-4">Import all essential libraries for data analysis, visualization, and ML models.</p>
+                <div class="bg-gray-900 rounded-md">
+                    <div class="flex justify-between items-center px-4 py-2 border-b border-gray-700">
+                        <span class="text-gray-400 text-sm">Python</span>
+                        <button onclick="copyCode(this)" class="bg-gray-700 text-gray-300 hover:bg-gray-600 text-xs font-medium py-1 px-3 rounded">Copy</button>
+                    </div>
+                    <pre class="p-4 text-white text-sm overflow-x-auto"><code class="language-python">import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sb
+
+# sklearn modules for dataset loading, splitting, and modeling
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression, Lasso, Ridge
+from sklearn.metrics import r2_score</code></pre>
+                </div>
+            </div>
+
+            <!-- Section 2: Load and Inspect Dataset -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h2 class="text-2xl font-semibold mb-3">📊 2. Load and Inspect Dataset</h2>
+                <p class="text-gray-600 mb-4">Load dataset and inspect basic structure and stats. Replace with your own dataset.</p>
+                <div class="bg-gray-900 rounded-md">
+                    <div class="flex justify-between items-center px-4 py-2 border-b border-gray-700">
+                        <span class="text-gray-400 text-sm">Python</span>
+                        <button onclick="copyCode(this)" class="bg-gray-700 text-gray-300 hover:bg-gray-600 text-xs font-medium py-1 px-3 rounded">Copy</button>
+                    </div>
+                    <pre class="p-4 text-white text-sm overflow-x-auto"><code class="language-python"># Example: load your own CSV file
+data = pd.read_csv("your_dataset.csv")
+
+# View first few rows
+print(data.head())
+
+# View column names and types
+print(data.info())
+
+# Get summary statistics for numeric columns
+print(data.describe())</code></pre>
+                </div>
+            </div>
+
+            <!-- Section 3: Select Features and Target -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h2 class="text-2xl font-semibold mb-3">🔍 3. Select Features and Target</h2>
+                <p class="text-gray-600 mb-4">Define the input features (X) and target variable (y).</p>
+                <div class="bg-gray-900 rounded-md">
+                    <div class="flex justify-between items-center px-4 py-2 border-b border-gray-700">
+                        <span class="text-gray-400 text-sm">Python</span>
+                        <button onclick="copyCode(this)" class="bg-gray-700 text-gray-300 hover:bg-gray-600 text-xs font-medium py-1 px-3 rounded">Copy</button>
+                    </div>
+                    <pre class="p-4 text-white text-sm overflow-x-auto"><code class="language-python"># Example: assume 'target' column is what we want to predict
+X = data.drop(columns=['target'])
+y = data['target']
+
+print("Shape of X:", X.shape)
+print("Shape of y:", y.shape)</code></pre>
+                </div>
+            </div>
+
+            <!-- Section 4: Visualizing Data -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h2 class="text-2xl font-semibold mb-3">📈 4. Visualizing Data</h2>
+                <p class="text-gray-600 mb-4">Use Seaborn and Matplotlib to explore variable relationships.</p>
+                <div class="bg-gray-900 rounded-md">
+                    <div class="flex justify-between items-center px-4 py-2 border-b border-gray-700">
+                        <span class="text-gray-400 text-sm">Python</span>
+                        <button onclick="copyCode(this)" class="bg-gray-700 text-gray-300 hover:bg-gray-600 text-xs font-medium py-1 px-3 rounded">Copy</button>
+                    </div>
+                    <pre class="p-4 text-white text-sm overflow-x-auto"><code class="language-python"># Scatter plot between one feature and target
+feature = 'your_feature_name'  # replace with actual column name
+plt.figure(figsize=(8, 6))
+plt.scatter(X[feature], y)
+plt.xlabel(feature)
+plt.ylabel("Target Value")
+plt.title(f"{feature} vs Target")
+plt.show()
+
+# Pairplot for multiple features (use with caution for large datasets)
+sb.pairplot(data)
+plt.show()
+
+# Correlation heatmap
+plt.figure(figsize=(8, 6))
+sb.heatmap(data.corr(), annot=True, cmap="coolwarm", fmt=".2f")
+plt.title("Feature Correlation Heatmap")
+plt.show()</code></pre>
+                </div>
+            </div>
+
+            <!-- Section 5: Train-Test Split -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h2 class="text-2xl font-semibold mb-3">🤖 5. Train-Test Split</h2>
+                <p class="text-gray-600 mb-4">Split dataset into training and test sets.</p>
+                <div class="bg-gray-900 rounded-md">
+                    <div class="flex justify-between items-center px-4 py-2 border-b border-gray-700">
+                        <span class="text-gray-400 text-sm">Python</span>
+                        <button onclick="copyCode(this)" class="bg-gray-700 text-gray-300 hover:bg-gray-600 text-xs font-medium py-1 px-3 rounded">Copy</button>
+                    </div>
+                    <pre class="p-4 text-white text-sm overflow-x-auto"><code class="language-python">X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)</code></pre>
+                </div>
+            </div>
+
+            <!-- Section 6: Simple Linear Regression -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h2 class="text-2xl font-semibold mb-3">📉 6. Simple Linear Regression (Single Feature)</h2>
+                <p class="text-gray-600 mb-4">Fit Linear Regression using a single selected feature.</p>
+                <div class="bg-gray-900 rounded-md">
+                    <div class="flex justify-between items-center px-4 py-2 border-b border-gray-700">
+                        <span class="text-gray-400 text-sm">Python</span>
+                        <button onclick="copyCode(this)" class="bg-gray-700 text-gray-300 hover:bg-gray-600 text-xs font-medium py-1 px-3 rounded">Copy</button>
+                    </div>
+                    <pre class="p-4 text-white text-sm overflow-x-auto"><code class="language-python">feature = 'your_feature_name'  # choose one feature
+X_one = X[[feature]]  # double brackets to keep DataFrame format
+
+X_train, X_test, y_train, y_test = train_test_split(X_one, y, test_size=0.2, random_state=42)
+
+est = LinearRegression()
+est.fit(X_train, y_train)
+
+y_pred = est.predict(X_test)
+
+print("Simple Linear Regression")
+print("Feature:", feature)
+print("R² Score:", r2_score(y_test, y_pred))
+print("Weight (Slope):", est.coef_)
+print("Bias (Intercept):", est.intercept_)</code></pre>
+                </div>
+            </div>
+
+            <!-- Section 7: Multiple Linear Regression -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h2 class="text-2xl font-semibold mb-3">🧩 7. Multiple Linear Regression (All Features)</h2>
+                <p class="text-gray-600 mb-4">Fit a Linear Regression model using all available features.</p>
+                <div class="bg-gray-900 rounded-md">
+                    <div class="flex justify-between items-center px-4 py-2 border-b border-gray-700">
+                        <span class="text-gray-400 text-sm">Python</span>
+                        <button onclick="copyCode(this)" class="bg-gray-700 text-gray-300 hover:bg-gray-600 text-xs font-medium py-1 px-3 rounded">Copy</button>
+                    </div>
+                    <pre class="p-4 text-white text-sm overflow-x-auto"><code class="language-python">est = LinearRegression()
+est.fit(X_train, y_train)
+
+y_pred = est.predict(X_test)
+
+print("Multiple Linear Regression")
+print("R² Score:", r2_score(y_test, y_pred))
+print("Weights (Coefficients):", est.coef_)
+print("Bias (Intercept):", est.intercept_)</code></pre>
+                </div>
+            </div>
+
+            <!-- Section 8: Lasso Regression -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h2 class="text-2xl font-semibold mb-3">🧠 8. Lasso Regression (Feature Selection + Regularization)</h2>
+                <p class="text-gray-600 mb-4">Apply Lasso Regression to perform regularization and feature selection. Lasso can shrink some coefficients to zero.</p>
+                <div class="bg-gray-900 rounded-md">
+                    <div class="flex justify-between items-center px-4 py-2 border-b border-gray-700">
+                        <span class="text-gray-400 text-sm">Python</span>
+                        <button onclick="copyCode(this)" class="bg-gray-700 text-gray-300 hover:bg-gray-600 text-xs font-medium py-1 px-3 rounded">Copy</button>
+                    </div>
+                    <pre class="p-4 text-white text-sm overflow-x-auto"><code class="language-python">est = Lasso(alpha=0.1)  # alpha controls regularization strength
+est.fit(X_train, y_train)
+
+y_pred = est.predict(X_test)
+
+print("Lasso Regression")
+print("R² Score:", r2_score(y_test, y_pred))
+print("Weights (Coefficients):", est.coef_)
+print("Bias (Intercept):", est.intercept_)</code></pre>
+                </div>
+            </div>
+
+            <!-- Section 9: Ridge Regression -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h2 class="text-2xl font-semibold mb-3">🏋️ 9. Ridge Regression (Regularization)</h2>
+                <p class="text-gray-600 mb-4">Apply Ridge Regression to reduce overfitting by penalizing large coefficients without eliminating them.</p>
+                <div class="bg-gray-900 rounded-md">
+                    <div class="flex justify-between items-center px-4 py-2 border-b border-gray-700">
+                        <span class="text-gray-400 text-sm">Python</span>
+                        <button onclick="copyCode(this)" class="bg-gray-700 text-gray-300 hover:bg-gray-600 text-xs font-medium py-1 px-3 rounded">Copy</button>
+                    </div>
+                    <pre class="p-4 text-white text-sm overflow-x-auto"><code class="language-python">est = Ridge(alpha=1.0)
+est.fit(X_train, y_train)
+
+y_pred = est.predict(X_test)
+
+print("Ridge Regression")
+print("R² Score:", r2_score(y_test, y_pred))
+print("Weights (Coefficients):", est.coef_)
+print("Bias (Intercept):", est.intercept_)</code></pre>
+                </div>
+            </div>
+            
+            <!-- Section 10: Custom Feature Combination Regression -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h2 class="text-2xl font-semibold mb-3">🎯 10. Custom Feature Combination Regression</h2>
+                <p class="text-gray-600 mb-4">Choose a subset of features based on prior analysis (e.g., from Lasso) and train a linear regression model.</p>
+                <div class="bg-gray-900 rounded-md">
+                    <div class="flex justify-between items-center px-4 py-2 border-b border-gray-700">
+                        <span class="text-gray-400 text-sm">Python</span>
+                        <button onclick="copyCode(this)" class="bg-gray-700 text-gray-300 hover:bg-gray-600 text-xs font-medium py-1 px-3 rounded">Copy</button>
+                    </div>
+                    <pre class="p-4 text-white text-sm overflow-x-auto"><code class="language-python">selected_features = ['feature1', 'feature2', 'feature3']  # replace with your chosen ones
+X_combo = X[selected_features]
+
+X_train, X_test, y_train, y_test = train_test_split(X_combo, y, test_size=0.2, random_state=42)
+
+est = LinearRegression()
+est.fit(X_train, y_train)
+
+y_pred = est.predict(X_test)
+
+print("Multiple Linear Regression (Selected Features)")
+print("Features:", selected_features)
+print("R² Score:", r2_score(y_test, y_pred))
+print("Weights (Coefficients):", est.coef_)
+print("Bias (Intercept):", est.intercept_)</code></pre>
+                </div>
+            </div>
+
+            <!-- Section 11: Model Evaluation Summary -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h2 class="text-2xl font-semibold mb-3">📉 11. Model Evaluation Summary</h2>
+                <p class="text-gray-600 mb-4">Compare model performances side-by-side.</p>
+                <div class="bg-gray-900 rounded-md">
+                    <div class="flex justify-between items-center px-4 py-2 border-b border-gray-700">
+                        <span class="text-gray-400 text-sm">Python</span>
+                        <button onclick="copyCode(this)" class="bg-gray-700 text-gray-300 hover:bg-gray-600 text-xs font-medium py-1 px-3 rounded">Copy</button>
+                    </div>
+                    <pre class="p-4 text-white text-sm overflow-x-auto"><code class="language-python">models = {
+    "Linear": LinearRegression(),
+    "Lasso": Lasso(alpha=0.1),
+    "Ridge": Ridge(alpha=1.0)
+}
+
+for name, model in models.items():
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+    print(f"{name} Regression - R²: {r2_score(y_test, y_pred):.3f}")</code></pre>
+                </div>
+            </div>
+        </main>
+
+        <footer class="text-center mt-12 text-gray-500">
+            <p>Minimalist cheat sheet designed for clarity and quick reference.</p>
+        </footer>
+    </div>
+
+    <script>
+        function copyCode(button) {
+            const code = button.parentElement.nextElementSibling.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                button.innerText = 'Copied!';
+                setTimeout(() => {
+                    button.innerText = 'Copy';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+    </script>
+</body>
+</html>
