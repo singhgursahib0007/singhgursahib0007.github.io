@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRUSU AI Club - Members Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
+    <style>
+        /* Design System - Matches project theme */
+        :root {
+            --background: #0f1419;
+            --foreground: #faf9f7;
+            --card: #191c24;
+            --card-foreground: #faf9f7;
+            --primary: #ad5cff;
+            --primary-foreground: #ffffff;
+            --accent: #ad5cff;
+            --accent-foreground: #ffffff;
+            --secondary: #262a36;
+            --muted: #262a36;
+            --muted-foreground: #99989a;
+            --destructive: #ff4d4d;
+            --border: #333333;
+            --gradient-purple: linear-gradient(135deg, rgba(173, 92, 255, 0.2), rgba(173, 92, 255, 0.05));
+        }
+
+        * {
+            color-scheme: dark;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--foreground);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .card {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card-hover:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(173, 92, 255, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            font-size: 0.875rem;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: var(--accent-foreground);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: var(--foreground);
+            border-color: var(--border);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--muted);
+            border-color: var(--accent);
+        }
+
+        .btn-destructive {
+            background-color: transparent;
+            color: var(--destructive);
+            border-color: var(--destructive);
+        }
+
+        .btn-destructive:hover {
+            background-color: var(--destructive);
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background-color: var(--secondary);
+            border: 1px solid var(--border);
+            color: var(--foreground);
+        }
+
+        .badge-accent {
+            background-color: rgba(173, 92, 255, 0.1);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .text-muted {
+            color: var(--muted-foreground);
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+        }
+
+        .text-xs {
+            font-size: 0.75rem;
+        }
+
+        .gradient-text {
+            background: var(--gradient-purple);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .input, .select {
+            background-color: var(--secondary);
+            border: 1px solid var(--border);
+            color: var(--foreground);
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .input:focus, .select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(173, 92, 255, 0.1);
+        }
+
+        .input::placeholder {
+            color: var(--muted-foreground);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+            width: 90%;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .alert-info {
+            background-color: rgba(173, 92, 255, 0.1);
+            border-color: var(--accent);
+            color: var(--foreground);
+        }
+
+        .alert-error {
+            background-color: rgba(255, 77, 77, 0.1);
+            border-color: var(--destructive);
+            color: var(--foreground);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+
+        .empty-state-icon {
+            width: 3rem;
+            height: 3rem;
+            margin: 0 auto 1rem;
+            opacity: 0.5;
+        }
+
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: transparent;
+            color: var(--muted-foreground);
+            border: none;
+            font-weight: 500;
+        }
+
+        .tab-button.active {
+            background-color: var(--secondary);
+            color: var(--accent);
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 1024px) {
+            .grid-2 {
+                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            }
+        }
+
+        .member-card {
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .member-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-purple);
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .profile-field {
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-field label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--muted-foreground);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .profile-field-value {
+            font-size: 1rem;
+            color: var(--foreground);
+            word-break: break-word;
+        }
+
+        .profile-field-value a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .profile-field-value a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .profile-divider {
+            height: 1px;
+            background-color: var(--border);
+            margin: 1.5rem 0;
+        }
+
+        .fade-out {
+            animation: fadeOut 0.3s ease;
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        .loading-skeleton {
+            background: linear-gradient(90deg, var(--secondary) 0%, var(--border) 50%, var(--secondary) 100%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="border-b border-[var(--border)] sticky top-0 z-50 backdrop-blur-md bg-[rgba(15,20,25,0.7)]">
+            <div class="container">
+                <div class="py-4 flex items-center justify-between">
+                    <div>
+                        <h1 class="text-2xl font-bold">TRUSU AI Club</h1>
+                        <p class="text-sm text-muted mt-1">Members Dashboard</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="text-right">
+                            <p class="text-sm text-muted-foreground">Status</p>
+                            <p id="status" class="text-sm font-semibold text-accent">Connecting...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container">
+            <!-- Alerts -->
+            <div id="alerts-container"></div>
+
+            <!-- Loading State -->
+            <div id="loading" class="py-12 text-center">
+                <div class="inline-block">
+                    <div class="spinner mb-4"></div>
+                    <p class="text-sm text-muted-foreground">Loading members data...</p>
+                </div>
+            </div>
+
+            <!-- Content Area (hidden initially) -->
+            <div id="content" class="hidden">
+                <!-- Filters and Stats -->
+                <div class="bg-gradient-purple rounded-lg p-4 mb-6 border border-[var(--border)]">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div>
+                            <p class="text-sm text-muted-foreground">Total Members</p>
+                            <p class="text-3xl font-bold gradient-text" id="total-members">0</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-muted-foreground">Status</p>
+                            <div class="mt-2 flex gap-2 flex-wrap">
+                                <span class="badge badge-accent">
+                                    <span id="pending-count">0</span> Pending
+                                </span>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-sm text-muted-foreground">Latest Submission</p>
+                            <p class="text-sm font-semibold mt-2" id="latest-submission">-</p>
+                        </div>
+                    </div>
+
+                    <!-- Filter Bar -->
+                    <div class="flex gap-2 flex-wrap items-center">
+                        <label class="text-sm text-muted-foreground">Sort:</label>
+                        <select id="sort-select" class="input">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="name-asc">Name (A-Z)</option>
+                            <option value="name-desc">Name (Z-A)</option>
+                        </select>
+                        <input type="text" id="search-input" class="input flex-1 max-w-xs" placeholder="Search by name or email...">
+                        <button id="export-btn" class="btn btn-secondary">
+                            📥 Export
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tab Navigation -->
+                <div class="flex gap-2 mb-6 border-b border-[var(--border)] pb-4">
+                    <button class="tab-button active" data-view="cards">
+                        📇 Card View
+                    </button>
+                    <button class="tab-button" data-view="table">
+                        📋 Table View
+                    </button>
+                </div>
+
+                <!-- Card View -->
+                <div id="cards-view" class="grid-2">
+                    <!-- Cards will be populated here -->
+                </div>
+
+                <!-- Table View -->
+                <div id="table-view" class="hidden overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-[var(--border)]">
+                                <th class="text-left p-3 text-sm font-semibold text-muted-foreground">Name</th>
+                                <th class="text-left p-3 text-sm font-semibold text-muted-foreground">Email</th>
+                                <th class="text-left p-3 text-sm font-semibold text-muted-foreground">Major</th>
+                                <th class="text-left p-3 text-sm font-semibold text-muted-foreground">Experience</th>
+                                <th class="text-left p-3 text-sm font-semibold text-muted-foreground">Submitted</th>
+                                <th class="text-left p-3 text-sm font-semibold text-muted-foreground">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            <!-- Rows will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty-state" class="hidden empty-state">
+                    <svg class="empty-state-icon mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+                    </svg>
+                    <h3 class="text-lg font-semibold mb-2">No Members Found</h3>
+                    <p class="text-sm text-muted-foreground">Try adjusting your filters or check back later.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profile-modal" class="modal">
+        <div class="modal-content">
+            <!-- Close button -->
+            <div class="sticky top-0 z-10 bg-[var(--card)] border-b border-[var(--border)] flex justify-between items-center p-6">
+                <h2 class="text-xl font-bold" id="modal-title">Member Profile</h2>
+                <button id="close-modal" class="btn btn-secondary" style="padding: 0.5rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Profile Content -->
+            <div id="modal-body" class="p-6">
+                <!-- Content will be populated here -->
+            </div>
+
+            <!-- Modal Actions -->
+            <div class="sticky bottom-0 z-10 bg-[var(--card)] border-t border-[var(--border)] p-6 flex gap-2">
+                <button id="delete-member-btn" class="btn btn-destructive">
+                    🗑️ Delete
+                </button>
+                <button id="close-modal-btn" class="btn btn-secondary ml-auto">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="p-6">
+                <h3 class="text-lg font-bold mb-4">Confirm Deletion</h3>
+                <p class="text-sm text-muted-foreground mb-6">
+                    Are you sure you want to delete <strong id="confirm-name"></strong>'s membership record? This action cannot be undone.
+                </p>
+                <div class="flex gap-3">
+                    <button id="confirm-delete-btn" class="btn btn-destructive flex-1">
+                        Delete
+                    </button>
+                    <button id="cancel-delete-btn" class="btn btn-secondary flex-1">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Firebase Configuration
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCzR9nIBaSZ53M-PhzAINquKQbNZrV5oPU",
+            authDomain: "ai-club-eabe5.firebaseapp.com",
+            projectId: "ai-club-eabe5",
+            storageBucket: "ai-club-eabe5.firebasestorage.app",
+            messagingSenderId: "954133915085",
+            appId: "1:954133915085:web:bd6bc86534b5c1086c1084",
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // State
+        window.allMembers = [];
+        window.filteredMembers = [];
+        window.selectedMember = null;
+        window.currentView = 'cards';
+        
+        // Make state variables accessible
+        let allMembers = [];
+        let filteredMembers = [];
+        let selectedMember = null;
+        let currentView = 'cards';
+
+        // Initialize App
+        async function initApp() {
+            try {
+                updateStatus('Loading members...');
+                await loadMembers();
+                setupEventListeners();
+                render();
+            } catch (error) {
+                showAlert('error', 'Failed to initialize app. Please refresh the page.');
+                console.error('Init error:', error);
+            }
+        }
+
+        // Load Members from Firebase
+        async function loadMembers() {
+            try {
+                const snapshot = await getDocs(collection(db, 'members'));
+                allMembers = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+                window.allMembers = allMembers;
+                
+                // Sort by date (newest first)
+                allMembers.sort((a, b) => {
+                    const dateA = a.submittedAt?.toDate?.() || new Date(a.submittedDate);
+                    const dateB = b.submittedAt?.toDate?.() || new Date(b.submittedDate);
+                    return dateB - dateA;
+                });
+
+                filteredMembers = [...allMembers];
+                window.filteredMembers = filteredMembers;
+                updateStatus(`Connected (${allMembers.length} members)`);
+            } catch (error) {
+                console.error('Error loading members:', error);
+                updateStatus('Connection error');
+                throw error;
+            }
+        }
+
+        // Setup Event Listeners
+        function setupEventListeners() {
+            // Search
+            document.getElementById('search-input').addEventListener('input', handleSearch);
+
+            // Sort
+            document.getElementById('sort-select').addEventListener('change', handleSort);
+
+            // Tab buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const view = btn.getAttribute('data-view');
+                    switchView(view);
+                });
+            });
+
+            // Export
+            document.getElementById('export-btn').addEventListener('click', exportMembers);
+
+            // Modal buttons
+            document.getElementById('close-modal').addEventListener('click', () => closeProfile());
+            document.getElementById('close-modal-btn').addEventListener('click', () => closeProfile());
+            document.getElementById('profile-modal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('profile-modal')) {
+                    closeProfile();
+                }
+            });
+
+            // Delete buttons
+            document.getElementById('delete-member-btn').addEventListener('click', () => window.showDeleteConfirm());
+            document.getElementById('confirm-delete-btn').addEventListener('click', confirmDelete);
+            document.getElementById('cancel-delete-btn').addEventListener('click', closeConfirmModal);
+            document.getElementById('confirm-modal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('confirm-modal')) {
+                    closeConfirmModal();
+                }
+            });
+        }
+
+        // Render Functions
+        function render() {
+            renderCards();
+            renderTable();
+            updateStats();
+            updateEmptyState();
+        }
+
+        function renderCards() {
+            const container = document.getElementById('cards-view');
+            container.innerHTML = '';
+
+            if (filteredMembers.length === 0) {
+                return;
+            }
+
+            filteredMembers.forEach(member => {
+                const card = createMemberCard(member);
+                container.appendChild(card);
+            });
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+
+            if (filteredMembers.length === 0) {
+                return;
+            }
+
+            filteredMembers.forEach(member => {
+                const row = document.createElement('tr');
+                row.className = 'border-b border-[var(--border)] hover:bg-[rgba(173,92,255,0.05)] transition-colors';
+                
+                const date = member.submittedAt?.toDate?.() || new Date(member.submittedDate);
+                const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                
+                row.innerHTML = `
+                    <td class="p-3 text-sm"><strong>${member.firstName} ${member.lastName}</strong></td>
+                    <td class="p-3 text-sm text-muted-foreground">${member.email}</td>
+                    <td class="p-3 text-sm text-muted-foreground">${member.major || '-'}</td>
+                    <td class="p-3 text-sm"><span class="badge">${member.aiExperience || '-'}</span></td>
+                    <td class="p-3 text-sm text-muted-foreground">${formattedDate}</td>
+                    <td class="p-3 text-sm">
+                        <button class="btn btn-secondary" onclick="viewProfile('${member.id}')">
+                            View
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function createMemberCard(member) {
+            const card = document.createElement('div');
+            card.className = 'card card-hover member-card';
+            
+            const date = member.submittedAt?.toDate?.() || new Date(member.submittedDate);
+            const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            
+            const interests = member.interests ? member.interests.slice(0, 3) : [];
+            const interestTags = interests.map(i => `<span class="badge badge-accent text-xs">${i}</span>`).join('');
+            
+            card.innerHTML = `
+                <div class="flex-1">
+                    <div class="mb-3">
+                        <h3 class="text-lg font-bold">${member.firstName} ${member.lastName}</h3>
+                        <p class="text-sm text-muted-foreground">${member.email}</p>
+                    </div>
+                    
+                    <div class="space-y-2 mb-4 text-sm">
+                        <p><strong>Major:</strong> <span class="text-muted-foreground">${member.major || '-'}</span></p>
+                        <p><strong>Year:</strong> <span class="text-muted-foreground text-capitalize">${member.year?.replace(/([A-Z])/g, ' $1').trim() || '-'}</span></p>
+                        <p><strong>AI Experience:</strong> <span class="badge badge-accent">${member.aiExperience || '-'}</span></p>
+                    </div>
+
+                    ${interests.length > 0 ? `
+                        <div class="mb-4">
+                            <p class="text-xs text-muted-foreground mb-2">Interests:</p>
+                            <div class="flex flex-wrap gap-1">
+                                ${interestTags}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <p class="text-xs text-muted-foreground">Joined ${formattedDate}</p>
+                </div>
+
+                <div class="flex gap-2 mt-4 pt-4 border-t border-[var(--border)]">
+                    <button class="btn btn-primary flex-1" onclick="viewProfile('${member.id}')">
+                        View Profile
+                    </button>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function updateStats() {
+            document.getElementById('total-members').textContent = allMembers.length;
+            document.getElementById('pending-count').textContent = allMembers.filter(m => m.status === 'pending').length;
+            
+            if (allMembers.length > 0) {
+                const latest = allMembers[0];
+                const date = latest.submittedAt?.toDate?.() || new Date(latest.submittedDate);
+                const formatted = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                document.getElementById('latest-submission').textContent = formatted;
+            }
+        }
+
+        function updateEmptyState() {
+            const isEmpty = filteredMembers.length === 0;
+            document.getElementById('empty-state').classList.toggle('hidden', !isEmpty);
+            if (currentView === 'cards') {
+                document.getElementById('cards-view').classList.toggle('hidden', isEmpty);
+            } else {
+                document.getElementById('table-view').classList.toggle('hidden', isEmpty);
+            }
+        }
+
+        // View Profile
+        window.viewProfile = function(memberId) {
+            selectedMember = allMembers.find(m => m.id === memberId);
+            if (!selectedMember) return;
+
+            const modal = document.getElementById('profile-modal');
+            const title = document.getElementById('modal-title');
+            const body = document.getElementById('modal-body');
+
+            title.textContent = `${selectedMember.firstName} ${selectedMember.lastName}`;
+
+            const date = selectedMember.submittedAt?.toDate?.() || new Date(selectedMember.submittedDate);
+            const formattedDate = date.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+            });
+
+            let html = `
+                <!-- Personal Info Section -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-4 text-accent">Personal Information</h3>
+                    <div class="profile-field">
+                        <label>Full Name</label>
+                        <div class="profile-field-value">${selectedMember.firstName} ${selectedMember.lastName}</div>
+                    </div>
+                    <div class="profile-field">
+                        <label>Email</label>
+                        <div class="profile-field-value"><a href="mailto:${selectedMember.email}">${selectedMember.email}</a></div>
+                    </div>
+                    <div class="profile-field">
+                        <label>Status</label>
+                        <div class="profile-field-value">
+                            <span class="badge badge-accent">${selectedMember.isTRUStudent || 'Not specified'}</span>
+                        </div>
+                    </div>
+                    ${selectedMember.truId ? `
+                        <div class="profile-field">
+                            <label>TRU ID</label>
+                            <div class="profile-field-value">${selectedMember.truId}</div>
+                        </div>
+                    ` : ''}
+                </div>
+
+                <div class="profile-divider"></div>
+
+                <!-- Academic Info Section -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-4 text-accent">Academic Background</h3>
+                    <div class="profile-field">
+                        <label>Year</label>
+                        <div class="profile-field-value text-capitalize">${selectedMember.year?.replace(/([A-Z])/g, ' $1').trim() || '-'}</div>
+                    </div>
+                    <div class="profile-field">
+                        <label>Major/Program</label>
+                        <div class="profile-field-value">${selectedMember.major || '-'}</div>
+                    </div>
+                </div>
+
+                <div class="profile-divider"></div>
+
+                <!-- AI Interests Section -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-4 text-accent">AI & ML Profile</h3>
+                    <div class="profile-field">
+                        <label>Experience Level</label>
+                        <div class="profile-field-value">
+                            <span class="badge badge-accent text-capitalize">${selectedMember.aiExperience?.replace(/([A-Z])/g, ' $1').trim() || '-'}</span>
+                        </div>
+                    </div>
+                    ${selectedMember.interests && selectedMember.interests.length > 0 ? `
+                        <div class="profile-field">
+                            <label>AI/ML Interests</label>
+                            <div class="profile-field-value flex flex-wrap gap-2">
+                                ${selectedMember.interests.map(i => `<span class="badge">${i}</span>`).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+
+                <div class="profile-divider"></div>
+
+                <!-- Projects & Skills Section -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-4 text-accent">Projects & Skills</h3>
+                    ${selectedMember.aiProjects ? `
+                        <div class="profile-field">
+                            <label>AI/ML Projects</label>
+                            <div class="profile-field-value whitespace-pre-line">${escapeHtml(selectedMember.aiProjects)}</div>
+                        </div>
+                    ` : ''}
+                    ${selectedMember.skills ? `
+                        <div class="profile-field">
+                            <label>Programming Languages & Tools</label>
+                            <div class="profile-field-value whitespace-pre-line">${escapeHtml(selectedMember.skills)}</div>
+                        </div>
+                    ` : ''}
+                    ${selectedMember.contribution ? `
+                        <div class="profile-field">
+                            <label>Contribution to AI Club</label>
+                            <div class="profile-field-value whitespace-pre-line">${escapeHtml(selectedMember.contribution)}</div>
+                        </div>
+                    ` : ''}
+                </div>
+
+                <div class="profile-divider"></div>
+
+                <!-- Social & Connect Section -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-4 text-accent">Connect</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        ${selectedMember.github ? `
+                            <div class="profile-field">
+                                <label>GitHub</label>
+                                <div class="profile-field-value"><a href="https://${selectedMember.github}" target="_blank" rel="noopener noreferrer">${selectedMember.github}</a></div>
+                            </div>
+                        ` : ''}
+                        ${selectedMember.linkedin ? `
+                            <div class="profile-field">
+                                <label>LinkedIn</label>
+                                <div class="profile-field-value"><a href="https://${selectedMember.linkedin}" target="_blank" rel="noopener noreferrer">${selectedMember.linkedin}</a></div>
+                            </div>
+                        ` : ''}
+                        ${selectedMember.twitter ? `
+                            <div class="profile-field">
+                                <label>Twitter/X</label>
+                                <div class="profile-field-value"><a href="https://twitter.com/${selectedMember.twitter}" target="_blank" rel="noopener noreferrer">${selectedMember.twitter}</a></div>
+                            </div>
+                        ` : ''}
+                        ${selectedMember.discord ? `
+                            <div class="profile-field">
+                                <label>Discord</label>
+                                <div class="profile-field-value">${selectedMember.discord}</div>
+                            </div>
+                        ` : ''}
+                        ${selectedMember.instagram ? `
+                            <div class="profile-field">
+                                <label>Instagram</label>
+                                <div class="profile-field-value"><a href="https://instagram.com/${selectedMember.instagram}" target="_blank" rel="noopener noreferrer">@${selectedMember.instagram}</a></div>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+
+                <div class="profile-divider"></div>
+
+                <!-- What Excites Them Section -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-4 text-accent">Motivation & Goals</h3>
+                    ${selectedMember.excitedAbout ? `
+                        <div class="profile-field">
+                            <label>What Excites Them</label>
+                            <div class="profile-field-value whitespace-pre-line">${escapeHtml(selectedMember.excitedAbout)}</div>
+                        </div>
+                    ` : ''}
+                    ${selectedMember.additionalInfo ? `
+                        <div class="profile-field">
+                            <label>Additional Information</label>
+                            <div class="profile-field-value whitespace-pre-line">${escapeHtml(selectedMember.additionalInfo)}</div>
+                        </div>
+                    ` : ''}
+                </div>
+
+                <div class="profile-divider"></div>
+
+                <!-- Submission Info -->
+                <div class="text-xs text-muted-foreground">
+                    <p><strong>Submitted:</strong> ${formattedDate}</p>
+                    <p><strong>Member ID:</strong> ${selectedMember.id}</p>
+                </div>
+            `;
+
+            body.innerHTML = html;
+            modal.classList.add('active');
+        };
+
+        function closeProfile() {
+            document.getElementById('profile-modal').classList.remove('active');
+            selectedMember = null;
+        }
+
+        // Delete Member
+        window.showDeleteConfirm = function() {
+            if (!selectedMember) return;
+            document.getElementById('confirm-name').textContent = selectedMember.firstName + ' ' + selectedMember.lastName;
+            document.getElementById('confirm-modal').classList.add('active');
+        }
+
+        async function confirmDelete() {
+            if (!selectedMember) return;
+
+            const btn = document.getElementById('confirm-delete-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Deleting...';
+
+            try {
+                await deleteDoc(doc(db, 'members', selectedMember.id));
+                allMembers = allMembers.filter(m => m.id !== selectedMember.id);
+                filteredMembers = filteredMembers.filter(m => m.id !== selectedMember.id);
+                window.allMembers = allMembers;
+                window.filteredMembers = filteredMembers;
+                
+                closeConfirmModal();
+                closeProfile();
+                render();
+                showAlert('info', `${selectedMember.firstName} ${selectedMember.lastName}'s record has been deleted.`);
+            } catch (error) {
+                console.error('Error deleting member:', error);
+                showAlert('error', 'Failed to delete member. Please try again.');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '🗑️ Delete';
+            }
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirm-modal').classList.remove('active');
+        }
+
+        // Search and Filter
+        function handleSearch(e) {
+            const query = e.target.value.toLowerCase();
+            filteredMembers = allMembers.filter(member => {
+                const name = `${member.firstName} ${member.lastName}`.toLowerCase();
+                const email = member.email.toLowerCase();
+                return name.includes(query) || email.includes(query);
+            });
+            window.filteredMembers = filteredMembers;
+            render();
+        }
+
+        function handleSort(e) {
+            const sortBy = e.target.value;
+            switch (sortBy) {
+                case 'newest':
+                    filteredMembers.sort((a, b) => {
+                        const dateA = a.submittedAt?.toDate?.() || new Date(a.submittedDate);
+                        const dateB = b.submittedAt?.toDate?.() || new Date(b.submittedDate);
+                        return dateB - dateA;
+                    });
+                    break;
+                case 'oldest':
+                    filteredMembers.sort((a, b) => {
+                        const dateA = a.submittedAt?.toDate?.() || new Date(a.submittedDate);
+                        const dateB = b.submittedAt?.toDate?.() || new Date(b.submittedDate);
+                        return dateA - dateB;
+                    });
+                    break;
+                case 'name-asc':
+                    filteredMembers.sort((a, b) => {
+                        const nameA = `${a.firstName} ${a.lastName}`.toLowerCase();
+                        const nameB = `${b.firstName} ${b.lastName}`.toLowerCase();
+                        return nameA.localeCompare(nameB);
+                    });
+                    break;
+                case 'name-desc':
+                    filteredMembers.sort((a, b) => {
+                        const nameA = `${a.firstName} ${a.lastName}`.toLowerCase();
+                        const nameB = `${b.firstName} ${b.lastName}`.toLowerCase();
+                        return nameB.localeCompare(nameA);
+                    });
+                    break;
+            }
+            window.filteredMembers = filteredMembers;
+            render();
+        }
+
+        function switchView(view) {
+            currentView = view;
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-view="${view}"]`).classList.add('active');
+
+            document.getElementById('cards-view').classList.toggle('hidden', view !== 'cards');
+            document.getElementById('table-view').classList.toggle('hidden', view !== 'table');
+            
+            updateEmptyState();
+        }
+
+        // Export
+        function exportMembers() {
+            const csv = generateCSV(filteredMembers);
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `trusu-ai-members-${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function generateCSV(members) {
+            const headers = [
+                'First Name',
+                'Last Name',
+                'Email',
+                'TRU Student',
+                'TRU ID',
+                'Year',
+                'Major',
+                'AI Experience',
+                'Interests',
+                'AI Projects',
+                'Skills',
+                'Contribution',
+                'GitHub',
+                'LinkedIn',
+                'Twitter',
+                'Discord',
+                'Instagram',
+                'What Excites Them',
+                'Additional Info',
+                'Submitted Date',
+            ];
+
+            const rows = members.map(member => [
+                member.firstName,
+                member.lastName,
+                member.email,
+                member.isTRUStudent,
+                member.truId,
+                member.year,
+                member.major,
+                member.aiExperience,
+                member.interests?.join('; '),
+                member.aiProjects,
+                member.skills,
+                member.contribution,
+                member.github,
+                member.linkedin,
+                member.twitter,
+                member.discord,
+                member.instagram,
+                member.excitedAbout,
+                member.additionalInfo,
+                member.humanReadableDate || (member.submittedAt?.toDate?.() || new Date(member.submittedDate)).toLocaleString(),
+            ]);
+
+            const csvContent = [
+                headers.join(','),
+                ...rows.map(row => row.map(cell => `"${(cell || '').toString().replace(/"/g, '""')}"`).join(',')),
+            ].join('\n');
+
+            return csvContent;
+        }
+
+        // Utilities
+        function updateStatus(text) {
+            document.getElementById('status').textContent = text;
+        }
+
+        function showAlert(type, message) {
+            const container = document.getElementById('alerts-container');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <p>${message}</p>
+                    <button onclick="this.parentElement.parentElement.remove()" class="text-lg font-bold">&times;</button>
+                </div>
+            `;
+            container.appendChild(alert);
+            setTimeout(() => alert.remove(), 5000);
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        // Show content and hide loading
+        function showContent() {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('content').classList.remove('hidden');
+        }
+
+        // Start the app when DOM is ready
+        document.addEventListener('DOMContentLoaded', async () => {
+            await initApp();
+            showContent();
+        });
+    </script></body>
+</html>
