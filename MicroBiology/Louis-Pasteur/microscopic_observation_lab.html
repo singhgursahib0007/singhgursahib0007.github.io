@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Microscopic Observation Lab - Virtual Bacteria Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+
+  <!-- p5.js -->
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.2/lib/p5.min.js"></script>
+
+  <style>
+    :root {
+      --teal-main: #0f766e;
+      --teal-soft: #5eead4;
+      --bg-soft: #f4fbfa;
+      --ink: #0f172a;
+      --muted: #6b7280;
+      --focus: #22c55e;
+      --blur: #9ca3af;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, #e0fbff 0, #f9fafb 60%);
+      color: var(--ink);
+    }
+
+    .glass-card {
+      border-radius: 1.4rem;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow:
+        0 16px 40px rgba(15, 23, 42, 0.12),
+        0 0 0 1px rgba(148, 163, 253, 0.06);
+      backdrop-filter: blur(14px);
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.66rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal-main);
+      background: linear-gradient(
+        to right,
+        rgba(15, 118, 110, 0.08),
+        rgba(56, 189, 248, 0.02)
+      );
+      border: 1px solid rgba(15, 118, 110, 0.18);
+    }
+
+    .chip span.dot {
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 999px;
+      background: var(--teal-soft);
+      box-shadow: 0 0 8px rgba(94, 234, 212, 0.9);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.26rem;
+      padding: 0.18rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.64rem;
+      color: var(--muted);
+      background-color: rgba(15, 118, 110, 0.03);
+    }
+
+    .pill-color {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 999px;
+    }
+
+    #sketch-container {
+      border-radius: 1rem;
+      overflow: hidden;
+      background: radial-gradient(circle at top, #e0f2fe, #ffffff);
+      border: 1px solid rgba(148, 163, 253, 0.16);
+      position: relative;
+    }
+
+    .overlay-label {
+      position: absolute;
+      right: 0.7rem;
+      top: 0.5rem;
+      padding: 0.16rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.6rem;
+      background: rgba(255, 255, 255, 0.96);
+      color: var(--teal-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      box-shadow: 0 4px 10px rgba(148, 163, 253, 0.2);
+    }
+
+    .overlay-label span.swatch {
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 999px;
+      background: var(--teal-main);
+    }
+
+    .slider-label {
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 150px;
+      height: 4px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: var(--teal-main);
+      border: 2px solid #ecfeff;
+      box-shadow: 0 0 8px rgba(15, 118, 110, 0.5);
+      transition: all 0.16s ease-out;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 14px rgba(15, 118, 110, 0.8);
+    }
+
+    .status-label {
+      font-size: 0.66rem;
+      color: var(--muted);
+    }
+
+    .explain-list {
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .explain-list li {
+      margin-bottom: 0.12rem;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex justify-center px-4 py-6">
+  <main class="w-full max-w-6xl space-y-5">
+    <!-- Header -->
+    <section class="glass-card px-6 py-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <div class="space-y-1.5">
+        <div class="chip">
+          <span class="dot"></span>
+          Microscopic Observation Lab
+        </div>
+        <h1 class="text-xl md:text-2xl font-semibold text-slate-900">
+          Explore Bacterial Cells at Different Magnifications
+        </h1>
+        <p class="text-xs md:text-sm text-slate-600 max-w-2xl">
+          Use the magnification and focus controls to move from a vague blur to clear rod and coccus shapes.
+          This virtual viewer helps practice how changing the objective and fine focus alters what you see.
+        </p>
+      </div>
+      <div class="flex flex-col items-end gap-1">
+        <div class="pill">
+          <span class="pill-color" style="background:#0f766e;"></span>
+          Quick, visual microscope practice
+        </div>
+        <div class="status-label text-right">
+          Adjust magnification, then fine focus, and watch the field sharpen.
+        </div>
+      </div>
+    </section>
+
+    <section class="grid gap-4 md:grid-cols-[minmax(0,_1.9fr)_minmax(260px,_1.1fr)] items-stretch">
+      <!-- LEFT: Interactive microscope -->
+      <div class="glass-card p-4 flex flex-col gap-3">
+        <!-- Legend -->
+        <div class="flex flex-wrap gap-2 text-[0.65rem] text-slate-600">
+          <div class="pill">
+            <span class="pill-color" style="background:#22c55e;"></span>
+            Well-focused cells
+          </div>
+          <div class="pill">
+            <span class="pill-color" style="background:#9ca3af;"></span>
+            Out-of-focus blur
+          </div>
+          <div class="pill">
+            <span class="pill-color" style="background:#38bdf8;"></span>
+            Field of view outline
+          </div>
+        </div>
+
+        <!-- Canvas -->
+        <div id="sketch-container" class="mt-1 w-full aspect-[16/9]">
+          <div class="overlay-label">
+            <span class="swatch"></span>
+            Virtual microscope field
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="mt-3 flex flex-wrap items-center gap-4 text-xs">
+          <div class="flex items-center gap-2">
+            <div>
+              <div class="slider-label font-semibold text-[0.65rem] text-[var(--teal-main)] uppercase tracking-wide">
+                Magnification
+              </div>
+              <div class="slider-label">Scan (10x) to oil immersion (100x)</div>
+            </div>
+            <input id="magSlider" type="range" min="10" max="100" step="10" value="40" />
+            <div class="status-label">
+              <span id="magLabel">40x</span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <div>
+              <div class="slider-label font-semibold text-[0.65rem] text-sky-700 uppercase tracking-wide">
+                Focus
+              </div>
+              <div class="slider-label">Turn fine focus knob</div>
+            </div>
+            <input id="focusSlider" type="range" min="0" max="100" step="5" value="40" />
+            <div class="status-label">
+              <span id="focusLabel">40</span>%
+            </div>
+          </div>
+        </div>
+
+        <!-- Summary -->
+        <p id="summaryText" class="mt-1 text-[0.7rem] leading-relaxed text-slate-600">
+          At 40x with focus at 40%, you begin to see tiny shapes but they are still soft.
+          Increase magnification and gently adjust focus until the rods and cocci come into clear view.
+        </p>
+      </div>
+
+      <!-- RIGHT: Short guidance -->
+      <aside class="glass-card p-4 flex flex-col gap-3">
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-[var(--teal-main)] uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-[var(--teal-main)]"></span>
+            How to use
+          </div>
+          <ul class="explain-list list-disc pl-4">
+            <li>Slide the magnification from 10x to 100x.</li>
+            <li>Use the focus slider to move from blurry to sharp.</li>
+            <li>Watch how cells change from fuzzy dots to clear shapes.</li>
+          </ul>
+        </div>
+
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1.5">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-sky-700 uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+            What this teaches
+          </div>
+          <ul class="explain-list list-disc pl-4">
+            <li>Low power: wide view, cells are tiny and blurry.</li>
+            <li>Higher power: cells appear larger but need careful focusing.</li>
+            <li>Right combo: clear rods and cocci, like in real lab observations.</li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    // State for magnification and focus
+    const magSlider = document.getElementById("magSlider");
+    const focusSlider = document.getElementById("focusSlider");
+    const magLabel = document.getElementById("magLabel");
+    const focusLabel = document.getElementById("focusLabel");
+    const summaryText = document.getElementById("summaryText");
+
+    const viewState = {
+      mag: 40,
+      focus: 40
+    };
+
+    magSlider.addEventListener("input", () => {
+      viewState.mag = parseInt(magSlider.value, 10);
+      magLabel.textContent = viewState.mag + "x";
+      updateSummary();
+    });
+
+    focusSlider.addEventListener("input", () => {
+      viewState.focus = parseInt(focusSlider.value, 10);
+      focusLabel.textContent = viewState.focus;
+      updateSummary();
+    });
+
+    function updateSummary() {
+      const m = viewState.mag;
+      const f = viewState.focus;
+
+      let text = `At ${m}x and focus ${f}%, `;
+
+      const focusQuality = Math.abs(f - bestFocusForMag(m));
+
+      if (focusQuality < 8) {
+        text += "the image is well-focused: you can clearly see tiny rods and cocci.";
+      } else if (focusQuality < 20) {
+        text += "the image is almost in focus: shapes are visible but still a bit soft.";
+      } else {
+        text += "the field looks blurry or washed out. Adjust the focus slider closer to the sweet spot.";
+      }
+
+      summaryText.textContent = text;
+    }
+
+    function bestFocusForMag(mag) {
+      // Simple mapping: each mag has a "good" focus band
+      if (mag <= 20) return 30;
+      if (mag <= 40) return 40;
+      if (mag <= 60) return 55;
+      if (mag <= 80) return 65;
+      return 75; // near 100x
+    }
+
+    // p5.js microscope visualization
+    let cells = [];
+
+    function setup() {
+      const container = document.getElementById("sketch-container");
+      const rect = container.getBoundingClientRect();
+      const cnv = createCanvas(rect.width, rect.height);
+      cnv.parent("sketch-container");
+      initCells();
+      updateSummary();
+    }
+
+    function windowResized() {
+      const container = document.getElementById("sketch-container");
+      const rect = container.getBoundingClientRect();
+      resizeCanvas(rect.width, rect.height);
+      initCells();
+    }
+
+    function initCells() {
+      cells = [];
+      const total = 80;
+      for (let i = 0; i < total; i++) {
+        const type = random() < 0.5 ? "coccus" : "rod";
+        cells.push({
+          type,
+          x: random(width * 0.18, width * 0.82),
+          y: random(height * 0.22, height * 0.82),
+          angle: random(TWO_PI),
+          baseSize: type === "coccus" ? random(3, 5) : random(8, 12),
+          dx: random(-0.15, 0.15),
+          dy: random(-0.15, 0.15)
+        });
+      }
+    }
+
+    function drawBackground() {
+      background(246, 248, 252);
+      noStroke();
+      const cx = width / 2;
+      const cy = height / 2 + 4;
+      const r = min(width, height) * 0.78;
+      fill(255, 255, 255, 240);
+      circle(cx, cy, r);
+
+      noFill();
+      stroke(148, 163, 253, 180);
+      strokeWeight(1);
+      circle(cx, cy, r - 6);
+
+      noStroke();
+      fill(148, 163, 253);
+      textAlign(CENTER, TOP);
+      textSize(8);
+      text("Microscope field of view", cx, cy - r / 2 - 10);
+    }
+
+    function drawCells() {
+      const m = viewState.mag;
+      const f = viewState.focus;
+      const best = bestFocusForMag(m);
+      const focusDelta = Math.abs(f - best);
+
+      // Focus factor: 1 = sharp, 0 = very blurry
+      const focusFactor = constrain(1 - focusDelta / 40, 0, 1);
+
+      // Scale based on magnification
+      const magScale = map(m, 10, 100, 0.6, 2.4);
+
+      const cx = width / 2;
+      const cy = height / 2 + 4;
+      const r = min(width, height) * 0.78 / 2;
+
+      for (let cell of cells) {
+        // Gentle drift
+        cell.x += cell.dx * 0.4;
+        cell.y += cell.dy * 0.4;
+
+        // Keep inside circle
+        if (dist(cell.x, cell.y, cx, cy) > r - 6) {
+          cell.dx *= -1;
+          cell.dy *= -1;
+        }
+
+        cell.angle += random(-0.01, 0.01);
+
+        // Visual properties
+        let alpha;
+        let strokeCol;
+        if (focusFactor > 0.75) {
+          alpha = 230;
+          strokeCol = color(34, 197, 94); // focused green
+        } else if (focusFactor > 0.4) {
+          alpha = 150;
+          strokeCol = color(148, 163, 253); // mid
+        } else {
+          alpha = 70;
+          strokeCol = color(156, 163, 175); // gray blur
+        }
+
+        push();
+        translate(cell.x, cell.y);
+        rotate(cell.angle);
+
+        stroke(strokeCol);
+        strokeWeight( (cell.type === "coccus" ? 1.4 : 1.6) * (0.8 + magScale * 0.2) );
+        if (cell.type === "coccus") {
+          const s = cell.baseSize * magScale * (0.6 + focusFactor * 0.6);
+          fill(red(strokeCol), green(strokeCol), blue(strokeCol), alpha);
+          ellipse(0, 0, s, s);
+        } else {
+          const len = cell.baseSize * magScale * (0.8 + focusFactor * 0.6);
+          const thick = 2.2 * (0.7 + focusFactor * 0.6);
+          strokeWeight(thick);
+          stroke(red(strokeCol), green(strokeCol), blue(strokeCol), alpha);
+          line(-len / 2, 0, len / 2, 0);
+        }
+
+        pop();
+      }
+
+      // Add blur overlay if badly out of focus
+      if (focusFactor < 0.25) {
+        noStroke();
+        fill(248, 250, 252, 80);
+        circle(cx, cy, r * 2);
+      }
+    }
+
+    function draw() {
+      drawBackground();
+      drawCells();
+    }
+  </script>
+</body>
+</html>
