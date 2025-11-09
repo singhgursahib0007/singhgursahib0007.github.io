@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fleming's Penicillin Discovery - Mold vs Bacteria on an Agar Plate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+
+  <!-- p5.js -->
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.2/lib/p5.min.js"></script>
+
+  <style>
+    :root {
+      --teal-main: #0f766e;
+      --teal-soft: #5eead4;
+      --bg-soft: #f4fbfa;
+      --ink: #0f172a;
+      --muted: #6b7280;
+      --bacteria: #22c55e;
+      --bacteria-dim: #bbf7d0;
+      --mold: #4f46e5;
+      --mold-core: #312e81;
+      --plate: #e5e7eb;
+      --agar: #fefce8;
+      --zone: rgba(148, 163, 253, 0.24);
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, #e0fbff 0, #f9fafb 60%);
+      color: var(--ink);
+    }
+
+    .glass-card {
+      border-radius: 1.4rem;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow:
+        0 16px 40px rgba(15, 23, 42, 0.12),
+        0 0 0 1px rgba(148, 163, 253, 0.06);
+      backdrop-filter: blur(14px);
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.66rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal-main);
+      background: linear-gradient(
+        to right,
+        rgba(15, 118, 110, 0.08),
+        rgba(56, 189, 248, 0.02)
+      );
+      border: 1px solid rgba(15, 118, 110, 0.18);
+    }
+
+    .chip span.dot {
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 999px;
+      background: var(--teal-soft);
+      box-shadow: 0 0 10px rgba(94, 234, 212, 0.9);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.26rem;
+      padding: 0.18rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.64rem;
+      color: var(--muted);
+      background-color: rgba(15, 118, 110, 0.03);
+    }
+
+    .pill-color {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 999px;
+    }
+
+    #sketch-container {
+      border-radius: 1rem;
+      overflow: hidden;
+      background: radial-gradient(circle at top, #e0f2fe, #ffffff);
+      border: 1px solid rgba(148, 163, 253, 0.16);
+      position: relative;
+    }
+
+    .overlay-label {
+      position: absolute;
+      right: 0.7rem;
+      top: 0.5rem;
+      padding: 0.16rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.6rem;
+      background: rgba(255, 255, 255, 0.96);
+      color: var(--teal-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      box-shadow: 0 4px 10px rgba(148, 163, 253, 0.2);
+    }
+
+    .overlay-label span.swatch {
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 999px;
+      background: var(--teal-main);
+    }
+
+    .btn-step {
+      padding: 0.4rem 0.9rem;
+      font-size: 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 118, 110, 0.18);
+      background-color: rgba(240, 253, 250, 0.98);
+      color: var(--teal-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      cursor: pointer;
+      transition: all 0.18s ease-out;
+      white-space: nowrap;
+    }
+
+    .btn-step:hover {
+      background-color: rgba(209, 250, 229, 0.98);
+      box-shadow: 0 4px 10px rgba(148, 163, 253, 0.16);
+    }
+
+    .btn-step.primary {
+      background-color: var(--teal-main);
+      color: #ffffff;
+      border-color: transparent;
+    }
+
+    .btn-step.primary:hover {
+      background-color: #115e59;
+      box-shadow: 0 5px 14px rgba(15, 23, 42, 0.22);
+    }
+
+    .status-label {
+      font-size: 0.66rem;
+      color: var(--muted);
+    }
+
+    .explain-list {
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .explain-list li {
+      margin-bottom: 0.12rem;
+    }
+
+    .tooltip {
+      border-bottom: 1px dashed rgba(107, 114, 128, 0.9);
+      cursor: help;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex justify-center px-4 py-6">
+  <main class="w-full max-w-6xl space-y-5">
+    <!-- Header -->
+    <section class="glass-card px-6 py-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <div class="space-y-1.5">
+        <div class="chip">
+          <span class="dot"></span>
+          Alexander Fleming • Penicillin Discovery Plate
+        </div>
+        <h1 class="text-xl md:text-2xl font-semibold text-slate-900">
+          How an Accidental Mold Contaminant Revealed Penicillin
+        </h1>
+        <p class="text-xs md:text-sm text-slate-600 max-w-2xl">
+          Watch a lawn of staphylococci meet a stray <span class="tooltip" title="Penicillium notatum (later P. chrysogenum) produced the first clinically useful penicillin.">Penicillium</span> colony.
+          As the mold grows, clear zones of inhibition appear where bacterial growth is suppressed.
+        </p>
+      </div>
+      <div class="flex flex-col items-end gap-1">
+        <div class="pill">
+          <span class="pill-color" style="background:#22c55e;"></span>
+          Bacteria
+        </div>
+        <div class="pill">
+          <span class="pill-color" style="background:#4f46e5;"></span>
+          Penicillium mold
+        </div>
+        <div class="status-label text-right">
+          Follow the steps to see how Fleming recognized an antibacterial substance.
+        </div>
+      </div>
+    </section>
+
+    <section class="grid gap-4 md:grid-cols-[minmax(0,_1.9fr)_minmax(260px,_1.1fr)] items-stretch">
+      <!-- LEFT: Interactive agar plate simulation -->
+      <div class="glass-card p-4 flex flex-col gap-3">
+        <!-- Legend -->
+        <div class="flex flex-wrap gap-2 text-[0.65rem] text-slate-600">
+          <div class="pill">
+            <span class="pill-color" style="background:var(--bacteria);"></span>
+            Dense staphylococcal lawn
+          </div>
+          <div class="pill">
+            <span class="pill-color" style="background:var(--mold);"></span>
+            Penicillium mold colony
+          </div>
+          <div class="pill">
+            <span class="pill-color" style="background:rgba(148,163,253,0.5);"></span>
+            Zone of inhibition (no bacterial growth)
+          </div>
+        </div>
+
+        <!-- Canvas -->
+        <div id="sketch-container" class="mt-1 w-full aspect-[16/9]">
+          <div class="overlay-label">
+            <span class="swatch"></span>
+            Agar plate: mold halo blocking bacteria
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="mt-3 flex flex-wrap items-center gap-2 text-xs">
+          <button id="btnReset" class="btn-step">
+            ⟳ Reset plate
+          </button>
+          <button id="btnSeedBacteria" class="btn-step primary">
+            1. Seed plate with staphylococci
+          </button>
+          <button id="btnAddMold" class="btn-step">
+            2. Introduce stray Penicillium colony
+          </button>
+          <button id="btnGrow" class="btn-step">
+            3. Let them grow (zones of inhibition)
+          </button>
+          <button id="btnToggleOverlay" class="btn-step">
+            ⓘ Show labels / tooltips
+          </button>
+          <div class="pill">
+            State:
+            <span id="stepLabel" class="status-label">Clean agar plate</span>
+          </div>
+        </div>
+
+        <!-- Short explanation -->
+        <p id="summaryText" class="mt-1 text-[0.7rem] leading-relaxed text-slate-600">
+          Start with a sterile agar plate. Add a uniform lawn of bacteria, then a single mold colony.
+          As the mold spreads, a clear halo appears where bacteria cannot grow &mdash; this is the visual clue that led Fleming to penicillin.
+        </p>
+      </div>
+
+      <!-- RIGHT: Brief guide and historical context -->
+      <aside class="glass-card p-4 flex flex-col gap-3">
+        <!-- How to use -->
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-[var(--teal-main)] uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-[var(--teal-main)]"></span>
+            How to use this plate
+          </div>
+          <ul class="explain-list list-disc pl-4">
+            <li>Click “Seed plate” to coat the agar with bacteria (a confluent lawn).</li>
+            <li>Add a Penicillium colony: a blue-violet spot appears on the plate.</li>
+            <li>Press “Let them grow” to see mold expand and bacteria cleared around it.</li>
+          </ul>
+        </div>
+
+        <!-- What this shows -->
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1.5">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-sky-700 uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+            What to notice
+          </div>
+          <ul class="explain-list list-disc pl-4">
+            <li>The mold colony secretes an antibiotic into nearby agar.</li>
+            <li>Bacterial dots fade inside the halo: this is a <strong>zone of inhibition</strong>.</li>
+            <li>The sharp edge between clear and green lawn is how we visualize antimicrobial activity on plates.</li>
+          </ul>
+        </div>
+
+        <!-- Link to Fleming's discovery and modern labs -->
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1.5">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-emerald-700 uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            Link to Fleming and modern antibiotic tests
+          </div>
+          <ul class="explain-list list-disc pl-4">
+            <li>Fleming saw contaminant mold surrounded by bacteria-free zones on staph plates.</li>
+            <li>He inferred the mold released a substance lethal to bacteria: later called <strong>penicillin</strong>.</li>
+            <li>Modern disk diffusion assays reuse this logic: measure antibiotic potency by zone size.</li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    // Simple state machine for Fleming's plate
+    const steps = {
+      CLEAN: "Clean agar plate",
+      BACTERIA: "Plate seeded with staphylococcal lawn",
+      MOLD: "Penicillium colony introduced",
+      GROWN: "Mold grown with clear zone of inhibition"
+    };
+
+    const state = {
+      step: steps.CLEAN,
+      showOverlay: false,
+      time: 0
+    };
+
+    const stepLabel = document.getElementById("stepLabel");
+    const summaryText = document.getElementById("summaryText");
+
+    const btnReset = document.getElementById("btnReset");
+    const btnSeedBacteria = document.getElementById("btnSeedBacteria");
+    const btnAddMold = document.getElementById("btnAddMold");
+    const btnGrow = document.getElementById("btnGrow");
+    const btnToggleOverlay = document.getElementById("btnToggleOverlay");
+
+    function setStep(newStep) {
+      state.step = newStep;
+      state.time = 0;
+      stepLabel.textContent = newStep;
+      updateSummary();
+    }
+
+    function updateSummary() {
+      if (state.step === steps.CLEAN) {
+        summaryText.textContent =
+          "This is a clean nutrient agar plate: no bacteria, no mold. Fleming’s real plates started like this, ready for inoculation.";
+      } else if (state.step === steps.BACTERIA) {
+        summaryText.textContent =
+          "A uniform lawn of staphylococci covers the agar. Everywhere should grow bacteria — unless something inhibits them.";
+      } else if (state.step === steps.MOLD) {
+        summaryText.textContent =
+          "A stray Penicillium colony lands on the crowded plate. At first, bacteria still surround it, but the mold begins to secrete antimicrobial compounds.";
+      } else if (state.step === steps.GROWN) {
+        summaryText.textContent =
+          "As the mold spreads, a clear halo forms where staphylococci fail to grow. Fleming noticed these zones of inhibition and realized the mold was releasing an antibacterial substance: penicillin.";
+      }
+    }
+
+    btnReset.addEventListener("click", () => {
+      setStep(steps.CLEAN);
+    });
+
+    btnSeedBacteria.addEventListener("click", () => {
+      setStep(steps.BACTERIA);
+    });
+
+    btnAddMold.addEventListener("click", () => {
+      // Only meaningful if bacteria are present
+      if (state.step === steps.CLEAN) {
+        setStep(steps.BACTERIA);
+      }
+      setStep(steps.MOLD);
+    });
+
+    btnGrow.addEventListener("click", () => {
+      // Advance to grown state; animation will show expansion
+      if (state.step === steps.CLEAN) {
+        setStep(steps.BACTERIA);
+      }
+      if (state.step === steps.BACTERIA) {
+        setStep(steps.MOLD);
+      }
+      setStep(steps.GROWN);
+    });
+
+    btnToggleOverlay.addEventListener("click", () => {
+      state.showOverlay = !state.showOverlay;
+    });
+
+    // p5.js: agar plate with bacteria vs mold
+    let bacteria = [];
+    let mold;
+    let cnv;
+
+    function setup() {
+      const container = document.getElementById("sketch-container");
+      const rect = container.getBoundingClientRect();
+      cnv = createCanvas(rect.width, rect.height);
+      cnv.parent("sketch-container");
+      initPlate();
+      updateSummary();
+    }
+
+    function windowResized() {
+      const container = document.getElementById("sketch-container");
+      const rect = container.getBoundingClientRect();
+      resizeCanvas(rect.width, rect.height);
+      initPlate();
+    }
+
+    function initPlate() {
+      bacteria = [];
+      // Pre-generate bacteria positions (used when step >= BACTERIA)
+      const cx = width / 2;
+      const cy = height / 2 + 8;
+      const r = min(width, height) * 0.7 / 2;
+
+      const total = 400;
+      for (let i = 0; i < total; i++) {
+        let angle = random(TWO_PI);
+        let rad = random(r * 0.1, r * 0.96);
+        let x = cx + cos(angle) * rad;
+        let y = cy + sin(angle) * rad;
+        bacteria.push({
+          x,
+          y,
+          jitter: random(0.3, 0.7),
+          phase: random(TWO_PI)
+        });
+      }
+
+      // Mold colony at an off-center position
+      const moldX = cx - r * 0.25;
+      const moldY = cy - r * 0.18;
+      mold = {
+        x: moldX,
+        y: moldY,
+        baseRadius: r * 0.08
+      };
+    }
+
+    function drawPlateBackground() {
+      background(249, 250, 251);
+
+      const cx = width / 2;
+      const cy = height / 2 + 8;
+      const rOuter = min(width, height) * 0.78 / 2;
+      const rAgar = rOuter * 0.9;
+
+      // Plate outer ring
+      noStroke();
+      fill(229, 231, 235, 255);
+      circle(cx, cy, rOuter * 2);
+
+      // Agar
+      fill(254, 252, 232, 245);
+      circle(cx, cy, rAgar * 2);
+
+      // Title
+      noStroke();
+      fill(148, 163, 253);
+      textAlign(CENTER, TOP);
+      textSize(8);
+      text("Agar plate with bacterial lawn and Penicillium colony", cx, cy - rOuter - 10);
+    }
+
+    function drawBacteriaLayer() {
+      if (state.step === steps.CLEAN) return;
+
+      const cx = width / 2;
+      const cy = height / 2 + 8;
+      const rOuter = min(width, height) * 0.78 / 2;
+
+      // Determine effective inhibition radius
+      let inhibitionRadius = 0;
+      if (state.step === steps.MOLD) {
+        // small halo
+        inhibitionRadius = mold.baseRadius * 1.4;
+      } else if (state.step === steps.GROWN) {
+        // large halo + small animation
+        const growthFactor = 1.5 + 0.4 * sin(frameCount * 0.01);
+        inhibitionRadius = mold.baseRadius * growthFactor;
+      }
+
+      // Draw bacteria as subtle green dots; fade inside halo
+      noStroke();
+      for (let cell of bacteria) {
+        // gentle jitter for "alive" effect
+        cell.phase += 0.02;
+        const jx = sin(cell.phase) * cell.jitter;
+        const jy = cos(cell.phase * 0.7) * cell.jitter;
+        const x = cell.x + jx;
+        const y = cell.y + jy;
+
+        // keep within plate
+        if (dist(x, y, cx, cy) > rOuter * 0.9) continue;
+
+        let alpha = 180;
+        let col = color(34, 197, 94, alpha); // bright green
+
+        if (state.step === steps.BACTERIA) {
+          // dense lawn
+          alpha = 170;
+          col = color(34, 197, 94, alpha);
+        }
+
+        if (state.step === steps.MOLD || state.step === steps.GROWN) {
+          const dToMold = dist(x, y, mold.x, mold.y);
+          if (dToMold < inhibitionRadius * 0.9) {
+            // inside strong inhibition zone: nearly no bacteria
+            if (state.step === steps.GROWN) {
+              // faint ghost to show "would be here"
+              alpha = 8;
+            } else {
+              alpha = 25;
+            }
+          } else if (dToMold < inhibitionRadius * 1.2) {
+            // gradient fade at edge
+            const t = (dToMold - inhibitionRadius * 0.9) / (inhibitionRadius * 0.3);
+            alpha = 40 + 130 * constrain(t, 0, 1);
+          } else {
+            // far away: normal intensity
+            alpha = 170;
+          }
+          col = color(34, 197, 94, alpha);
+        }
+
+        fill(col);
+        circle(x, y, 2.1);
+      }
+    }
+
+    function drawMoldColony() {
+      if (state.step === steps.CLEAN || state.step === steps.BACTERIA) return;
+
+      const cx = mold.x;
+      const cy = mold.y;
+
+      // Base radius grows when in GROWN state
+      let base = mold.baseRadius;
+      if (state.step === steps.MOLD) {
+        base = mold.baseRadius * (1.05 + 0.05 * sin(frameCount * 0.05));
+      } else if (state.step === steps.GROWN) {
+        const growth = 1.9 + 0.25 * sin(frameCount * 0.03);
+        base = mold.baseRadius * growth;
+      }
+
+      // Outer fuzzy ring (hyphae)
+      noStroke();
+      for (let i = 0; i < 180; i++) {
+        const ang = (TWO_PI * i) / 180;
+        const jitter = random(-3, 3);
+        const r = base + 6 + jitter;
+        const x = cx + cos(ang) * r;
+        const y = cy + sin(ang) * r;
+        fill(79, 70, 229, 25);
+        circle(x, y, 2.2);
+      }
+
+      // Middle blue-violet ring
+      fill(79, 70, 229, 80);
+      circle(cx, cy, base * 2 * 0.9);
+
+      // Darker core
+      fill(49, 46, 129, 190);
+      circle(cx, cy, base * 2 * 0.4);
+    }
+
+    function drawInhibitionZoneOverlay() {
+      if (state.step !== steps.MOLD && state.step !== steps.GROWN) return;
+
+      const cx = mold.x;
+      const cy = mold.y;
+
+      let radius = mold.baseRadius * 1.3;
+      if (state.step === steps.GROWN) {
+        const growth = 1.9 + 0.4 * sin(frameCount * 0.02);
+        radius = mold.baseRadius * growth;
+      }
+
+      // Soft halo to emphasize zone of inhibition
+      noStroke();
+      for (let i = 0; i < 22; i++) {
+        const t = i / 22;
+        const r = radius * (0.6 + 0.9 * t);
+        const alpha = 40 - 35 * t;
+        fill(148, 163, 253, alpha);
+        circle(cx, cy, r * 2);
+      }
+
+      if (state.showOverlay) {
+        // Label the halo region directly
+        fill(255, 255, 255, 235);
+        const labelX = cx + radius * 0.6;
+        const labelY = cy - radius * 0.4;
+        const w = 84;
+        const h = 30;
+        rect(labelX - w / 2, labelY - h / 2, w, h, 14);
+
+        fill(79, 70, 229);
+        textAlign(CENTER, TOP);
+        textSize(7.2);
+        text("Zone of inhibition", labelX, labelY - 7);
+        fill(107, 114, 128);
+        textSize(6.4);
+        text("No bacterial growth\nnear mold", labelX, labelY + 2);
+      }
+    }
+
+    function drawCornerOverlay() {
+      if (!state.showOverlay) return;
+
+      // Top-left info legend inside canvas
+      const padX = 10;
+      const padY = 8;
+
+      noStroke();
+      fill(255, 255, 255, 235);
+      rect(padX, padY, 130, 52, 14);
+
+      textAlign(LEFT, TOP);
+      textSize(7);
+      fill(107, 114, 128);
+      text("Visual key", padX + 8, padY + 4);
+
+      // Bacteria
+      fill(34, 197, 94);
+      circle(padX + 10, padY + 17, 4);
+      fill(75, 85, 99);
+      text("Staph lawn", padX + 18, padY + 14);
+
+      // Mold
+      fill(79, 70, 229);
+      circle(padX + 10, padY + 27, 4);
+      fill(75, 85, 99);
+      text("Penicillium colony", padX + 18, padY + 24);
+
+      // Zone
+      fill(148, 163, 253, 160);
+      circle(padX + 10, padY + 38, 4);
+      fill(75, 85, 99);
+      text("Zone of inhibition", padX + 18, padY + 34);
+    }
+
+    function draw() {
+      state.time += 0.01;
+
+      drawPlateBackground();
+      drawBacteriaLayer();
+      drawMoldColony();
+      drawInhibitionZoneOverlay();
+      drawCornerOverlay();
+    }
+  </script>
+</body>
+</html>

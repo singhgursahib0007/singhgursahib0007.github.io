@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Antibiotic Resistance Evolution - Generations Under Drug Pressure</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+
+  <!-- p5.js -->
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.2/lib/p5.min.js"></script>
+
+  <style>
+    :root {
+      --teal-main: #0f766e;
+      --teal-soft: #5eead4;
+      --bg-soft: #f4fbfa;
+      --ink: #0f172a;
+      --muted: #6b7280;
+      --susceptible: #38bdf8; /* blue: killed by antibiotic */
+      --resistant: #22c55e;   /* teal/green: survives antibiotic */
+      --dead: #9ca3af;        /* gray: killed cells */
+      --drug: #f97316;        /* orange: antibiotic */
+      --zone: rgba(148, 163, 253, 0.18);
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, #e0fbff 0, #f9fafb 60%);
+      color: var(--ink);
+    }
+
+    .glass-card {
+      border-radius: 1.4rem;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow:
+        0 16px 40px rgba(15, 23, 42, 0.12),
+        0 0 0 1px rgba(148, 163, 253, 0.06);
+      backdrop-filter: blur(14px);
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.66rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal-main);
+      background: linear-gradient(
+        to right,
+        rgba(15, 118, 110, 0.08),
+        rgba(56, 189, 248, 0.02)
+      );
+      border: 1px solid rgba(15, 118, 110, 0.18);
+    }
+
+    .chip span.dot {
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 999px;
+      background: var(--teal-soft);
+      box-shadow: 0 0 10px rgba(94, 234, 212, 0.9);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.26rem;
+      padding: 0.18rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.64rem;
+      color: var(--muted);
+      background-color: rgba(15, 118, 110, 0.03);
+    }
+
+    .pill-color {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 999px;
+    }
+
+    #sketch-container {
+      border-radius: 1rem;
+      overflow: hidden;
+      background: radial-gradient(circle at top, #e0f2fe, #ffffff);
+      border: 1px solid rgba(148, 163, 253, 0.16);
+      position: relative;
+    }
+
+    .overlay-label {
+      position: absolute;
+      right: 0.7rem;
+      top: 0.5rem;
+      padding: 0.16rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.6rem;
+      background: rgba(255, 255, 255, 0.96);
+      color: var(--teal-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      box-shadow: 0 4px 10px rgba(148, 163, 253, 0.2);
+    }
+
+    .overlay-label span.swatch {
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 999px;
+      background: var(--teal-main);
+    }
+
+    .btn-step {
+      padding: 0.4rem 0.9rem;
+      font-size: 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 118, 110, 0.18);
+      background-color: rgba(240, 253, 250, 0.98);
+      color: var(--teal-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      cursor: pointer;
+      transition: all 0.18s ease-out;
+      white-space: nowrap;
+    }
+
+    .btn-step:hover {
+      background-color: rgba(209, 250, 229, 0.98);
+      box-shadow: 0 4px 10px rgba(148, 163, 253, 0.16);
+    }
+
+    .btn-step.primary {
+      background-color: var(--teal-main);
+      color: #ffffff;
+      border-color: transparent;
+    }
+
+    .btn-step.primary:hover {
+      background-color: #115e59;
+      box-shadow: 0 5px 14px rgba(15, 23, 42, 0.22);
+    }
+
+    .status-label {
+      font-size: 0.66rem;
+      color: var(--muted);
+    }
+
+    .explain-list {
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .explain-list li {
+      margin-bottom: 0.12rem;
+    }
+
+    .metric-label {
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+
+    .metric-value {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--teal-main);
+    }
+
+    .metric-sub {
+      font-size: 0.62rem;
+      color: #9ca3af;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 140px;
+      height: 4px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: var(--teal-main);
+      border: 2px solid #ecfeff;
+      box-shadow: 0 0 8px rgba(15, 118, 110, 0.6);
+      transition: all 0.16s ease-out;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 14px rgba(15, 118, 110, 0.8);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex justify-center px-4 py-6">
+  <main class="w-full max-w-6xl space-y-5">
+    <!-- Header -->
+    <section class="glass-card px-6 py-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <div class="space-y-1.5">
+        <div class="chip">
+          <span class="dot"></span>
+          Antibiotic Resistance Evolution
+        </div>
+        <h1 class="text-xl md:text-2xl font-semibold text-slate-900">
+          How Bacterial Populations Adapt to Antibiotics Over Generations
+        </h1>
+        <p class="text-xs md:text-sm text-slate-600 max-w-2xl">
+          Start with mostly susceptible bacteria, then apply antibiotics across generations.
+          Watch surviving mutants expand until resistant cells dominate, illustrating natural selection.
+        </p>
+      </div>
+      <div class="flex flex-col items-end gap-1">
+        <div class="pill">
+          <span class="pill-color" style="background:var(--susceptible);"></span>
+          Blue = susceptible cells
+        </div>
+        <div class="pill">
+          <span class="pill-color" style="background:var(--resistant);"></span>
+          Green = resistant mutants
+        </div>
+        <div class="status-label text-right">
+          More antibiotic pressure → stronger selection for resistant bacteria.
+        </div>
+      </div>
+    </section>
+
+    <section class="grid gap-4 md:grid-cols-[minmax(0,_1.9fr)_minmax(260px,_1.1fr)] items-stretch">
+      <!-- LEFT: Simulation -->
+      <div class="glass-card p-4 flex flex-col gap-3">
+        <!-- Legend -->
+        <div class="flex flex-wrap gap-2 text-[0.65rem] text-slate-600">
+          <div class="pill">
+            <span class="pill-color" style="background:var(--susceptible);"></span>
+            Susceptible bacteria (killed by antibiotic)
+          </div>
+          <div class="pill">
+            <span class="pill-color" style="background:var(--resistant);"></span>
+            Resistant bacteria (survive antibiotic)
+          </div>
+          <div class="pill">
+            <span class="pill-color" style="background:var(--dead);"></span>
+            Killed cells / cleared space
+          </div>
+          <div class="pill">
+            <span class="pill-color" style="background:var(--drug);"></span>
+            Antibiotic pressure
+          </div>
+        </div>
+
+        <!-- Canvas -->
+        <div id="sketch-container" class="mt-1 w-full aspect-[16/9]">
+          <div class="overlay-label">
+            <span class="swatch"></span>
+            Generations under antibiotic pressure
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="mt-3 flex flex-wrap items-center gap-3 text-xs">
+          <button id="btnReset" class="btn-step">
+            ⟳ Reset population
+          </button>
+          <button id="btnStep" class="btn-step primary">
+            ▶ Step 1 generation
+          </button>
+          <button id="btnAuto" class="btn-step">
+            ⏵ Auto-run
+          </button>
+
+          <div class="flex items-center gap-2">
+            <div>
+              <div class="metric-label font-semibold text-[0.65rem] text-[var(--teal-main)] uppercase tracking-wide">
+                Antibiotic level
+              </div>
+              <div class="metric-sub">Higher = more susceptible cells die</div>
+            </div>
+            <input id="abSlider" type="range" min="0" max="100" value="60" />
+            <div class="status-label">
+              <span id="abLabel">60%</span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <div>
+              <div class="metric-label font-semibold text-[0.65rem] text-sky-700 uppercase tracking-wide">
+                Mutation rate
+              </div>
+              <div class="metric-sub">Chance a child is resistant</div>
+            </div>
+            <input id="mutSlider" type="range" min="0" max="10" value="2" />
+            <div class="status-label">
+              <span id="mutLabel">0.2%</span>
+            </div>
+          </div>
+
+          <div class="pill">
+            Gen:
+            <span id="genLabel" class="status-label">0</span>
+          </div>
+        </div>
+
+        <!-- Summary -->
+        <p id="summaryText" class="mt-1 text-[0.7rem] leading-relaxed text-slate-600">
+          Start at generation 0 with a mostly susceptible population and a few resistant mutants.
+          Apply moderate antibiotic levels: most blue cells die, green survivors repopulate.
+          Step forward to see resistance become more common by selection, not purpose.
+        </p>
+      </div>
+
+      <!-- RIGHT: Explanation & metrics -->
+      <aside class="glass-card p-4 flex flex-col gap-3">
+        <!-- Population metrics -->
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1.5">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-[var(--teal-main)] uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-[var(--teal-main)]"></span>
+            Population snapshot
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <div>
+              <div class="metric-label">Total cells</div>
+              <div id="metricTotal" class="metric-value">0</div>
+              <div class="metric-sub">After last generation</div>
+            </div>
+            <div>
+              <div class="metric-label">Resistant fraction</div>
+              <div id="metricFracRes" class="metric-value">0.00</div>
+              <div class="metric-sub">Resistant / total</div>
+            </div>
+            <div>
+              <div class="metric-label">Susceptible count</div>
+              <div id="metricSus" class="metric-value">0</div>
+              <div class="metric-sub">Blue cells</div>
+            </div>
+            <div>
+              <div class="metric-label">Resistant count</div>
+              <div id="metricRes" class="metric-value">0</div>
+              <div class="metric-sub">Green cells</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- How to use -->
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-sky-700 uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+            How to explore evolution
+          </div>
+          <ul class="explain-list list-disc pl-4">
+            <li>Set antibiotic level (0–100%).</li>
+            <li>Set mutation rate (rare but non-zero is realistic).</li>
+            <li>Click “Step 1 generation” to apply:
+              <ul class="list-disc pl-4">
+                <li>Antibiotic kills susceptible cells based on level.</li>
+                <li>Survivors reproduce to refill space.</li>
+                <li>Some offspring mutate into resistant form.</li>
+              </ul>
+            </li>
+            <li>Use “Auto-run” to watch multiple generations in sequence.</li>
+          </ul>
+        </div>
+
+        <!-- Conceptual takeaways -->
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1.5">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-emerald-700 uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            What this illustrates
+          </div>
+          <ul class="explain-list list-disc pl-4">
+            <li>Mutations creating resistance are random, not triggered by the drug.</li>
+            <li>Antibiotics act as a filter: susceptible cells die, resistant ones survive.</li>
+            <li>Generation by generation, the population shifts toward resistance.</li>
+            <li>High antibiotic pressure with incomplete killing accelerates selection for resistant strains.</li>
+            <li>Stopping too early or under-dosing leaves resistant survivors to expand.</li>
+          </ul>
+          <p class="text-[0.65rem] text-slate-500 leading-relaxed">
+            The numbers and motion are schematic, tuned for intuition: focus on the
+            trend from mostly blue to mostly green as selection plays out.
+          </p>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    // State representing the evolving bacterial population
+    const summaryText = document.getElementById("summaryText");
+    const genLabel = document.getElementById("genLabel");
+    const abSlider = document.getElementById("abSlider");
+    const abLabel = document.getElementById("abLabel");
+    const mutSlider = document.getElementById("mutSlider");
+    const mutLabel = document.getElementById("mutLabel");
+
+    const metricTotal = document.getElementById("metricTotal");
+    const metricFracRes = document.getElementById("metricFracRes");
+    const metricSus = document.getElementById("metricSus");
+    const metricRes = document.getElementById("metricRes");
+
+    const btnReset = document.getElementById("btnReset");
+    const btnStep = document.getElementById("btnStep");
+    const btnAuto = document.getElementById("btnAuto");
+
+    const sim = {
+      generation: 0,
+      antibioticLevel: 0.6, // 0-1
+      mutationRate: 0.002,  // e.g., 0.2%
+      autoRun: false,
+      cells: [],
+      gridCols: 26,
+      gridRows: 16
+    };
+
+    abSlider.addEventListener("input", () => {
+      sim.antibioticLevel = parseInt(abSlider.value, 10) / 100;
+      abLabel.textContent = abSlider.value + "%";
+      updateSummary();
+    });
+
+    mutSlider.addEventListener("input", () => {
+      const val = parseInt(mutSlider.value, 10); // 0-10
+      sim.mutationRate = val / 1000; // 0 to 1% (0.000 to 0.010)
+      mutLabel.textContent = (sim.mutationRate * 100).toFixed(1) + "%";
+      updateSummary();
+    });
+
+    btnReset.addEventListener("click", () => {
+      resetPopulation();
+    });
+
+    btnStep.addEventListener("click", () => {
+      stepGeneration();
+    });
+
+    btnAuto.addEventListener("click", () => {
+      sim.autoRun = !sim.autoRun;
+      btnAuto.textContent = sim.autoRun ? "⏸ Pause auto-run" : "⏵ Auto-run";
+    });
+
+    function resetPopulation() {
+      sim.generation = 0;
+      initCells();
+      updateMetrics();
+      updateSummary(true);
+    }
+
+    function initCells() {
+      sim.cells = [];
+      const total = sim.gridCols * sim.gridRows;
+      for (let i = 0; i < total; i++) {
+        // Start mostly susceptible with rare resistant mutants
+        const isResistant = Math.random() < 0.02;
+        sim.cells.push({
+          type: isResistant ? "R" : "S"
+        });
+      }
+    }
+
+    function stepGeneration() {
+      if (sim.cells.length === 0) return;
+
+      sim.generation += 1;
+
+      // 1) Apply antibiotic: susceptible cells die with probability ~ antibioticLevel
+      const afterDrug = [];
+      for (let cell of sim.cells) {
+        if (cell.type === "S") {
+          const killProb = sim.antibioticLevel;
+          if (Math.random() < killProb) {
+            afterDrug.push({ type: "D" }); // D = dead/empty
+          } else {
+            afterDrug.push({ type: "S" });
+          }
+        } else if (cell.type === "R") {
+          // Resistant: much less likely to die
+          const killProb = sim.antibioticLevel * 0.05;
+          if (Math.random() < killProb) {
+            afterDrug.push({ type: "D" });
+          } else {
+            afterDrug.push({ type: "R" });
+          }
+        } else {
+          // Already dead
+          afterDrug.push({ type: "D" });
+        }
+      }
+
+      // 2) Refill empty spaces by reproduction from survivors
+      // For each dead cell, pick a random neighbor; if neighbor is alive, copy (with mutation chance).
+      const nextGen = afterDrug.map(c => ({ ...c }));
+
+      function neighbors(index) {
+        const col = index % sim.gridCols;
+        const row = Math.floor(index / sim.gridCols);
+        const inds = [];
+        for (let dc = -1; dc <= 1; dc++) {
+          for (let dr = -1; dr <= 1; dr++) {
+            if (dc === 0 && dr === 0) continue;
+            const nc = col + dc;
+            const nr = row + dr;
+            if (nc >= 0 && nc < sim.gridCols && nr >= 0 && nr < sim.gridRows) {
+              inds.push(nr * sim.gridCols + nc);
+            }
+          }
+        }
+        return inds;
+      }
+
+      for (let i = 0; i < nextGen.length; i++) {
+        if (nextGen[i].type === "D") {
+          const neigh = neighbors(i);
+          if (neigh.length === 0) continue;
+          const parentIndex = neigh[Math.floor(Math.random() * neigh.length)];
+          const parent = afterDrug[parentIndex];
+          if (parent.type === "S" || parent.type === "R") {
+            // Offspring inherits resistance with mutation chance
+            let newType = parent.type;
+            if (parent.type === "S" && Math.random() < sim.mutationRate) {
+              newType = "R";
+            }
+            nextGen[i] = { type: newType };
+          }
+        }
+      }
+
+      sim.cells = nextGen;
+      updateMetrics();
+      updateSummary();
+    }
+
+    function updateMetrics() {
+      const total = sim.cells.length;
+      let sus = 0;
+      let res = 0;
+
+      for (let c of sim.cells) {
+        if (c.type === "S") sus++;
+        else if (c.type === "R") res++;
+      }
+
+      const alive = sus + res;
+      const fracRes = alive > 0 ? res / alive : 0;
+
+      genLabel.textContent = sim.generation.toString();
+      metricTotal.textContent = alive.toString();
+      metricSus.textContent = sus.toString();
+      metricRes.textContent = res.toString();
+      metricFracRes.textContent = fracRes.toFixed(2);
+    }
+
+    function updateSummary(isReset) {
+      const ab = Math.round(sim.antibioticLevel * 100);
+      const mut = (sim.mutationRate * 100).toFixed(2);
+
+      if (isReset) {
+        summaryText.textContent =
+          `Generation 0: mostly susceptible cells with a few resistant mutants. ` +
+          `Antibiotic level set to ${ab}%, mutation rate ~${mut}%. Step generations to see how selection shifts the population.`;
+        return;
+      }
+
+      const total = sim.cells.length;
+      let sus = 0;
+      let res = 0;
+      for (let c of sim.cells) {
+        if (c.type === "S") sus++;
+        else if (c.type === "R") res++;
+      }
+      const alive = sus + res;
+      const fracRes = alive > 0 ? (res / alive) : 0;
+
+      if (alive === 0) {
+        summaryText.textContent =
+          `At generation ${sim.generation}, this antibiotic pressure wiped out the entire population. ` +
+          `In reality, such complete clearance is ideal; if survivors remain, they can drive resistance.`;
+        return;
+      }
+
+      if (fracRes < 0.1) {
+        summaryText.textContent =
+          `Generation ${sim.generation}: antibiotic level ${ab}% has killed many susceptible cells, ` +
+          `but most survivors are still susceptible. Resistance is present at a low frequency (~${(fracRes * 100).toFixed(1)}%).`;
+      } else if (fracRes < 0.6) {
+        summaryText.textContent =
+          `Generation ${sim.generation}: under ${ab}% antibiotic, resistant cells now form a substantial fraction ` +
+          `(~${(fracRes * 100).toFixed(1)}%). This shows selection favoring mutants that survive treatment.`;
+      } else {
+        summaryText.textContent =
+          `Generation ${sim.generation}: resistant cells dominate (~${(fracRes * 100).toFixed(1)}% of survivors). ` +
+          `High antibiotic pressure, combined with surviving mutants, has selected for a resistant population.`;
+      }
+    }
+
+    // p5.js rendering: simple grid of circles
+    let cnv;
+    let cellSize = 14;
+    let gridOffsetX = 0;
+    let gridOffsetY = 0;
+
+    function setup() {
+      const container = document.getElementById("sketch-container");
+      const rect = container.getBoundingClientRect();
+      cnv = createCanvas(rect.width, rect.height);
+      cnv.parent("sketch-container");
+      computeLayout();
+      initCells();
+      updateMetrics();
+      updateSummary(true);
+    }
+
+    function windowResized() {
+      const container = document.getElementById("sketch-container");
+      const rect = container.getBoundingClientRect();
+      resizeCanvas(rect.width, rect.height);
+      computeLayout();
+    }
+
+    function computeLayout() {
+      // Fit grid nicely inside canvas
+      const padding = 26;
+      const availableW = width - padding * 2;
+      const availableH = height - padding * 2;
+      const sizeX = availableW / sim.gridCols;
+      const sizeY = availableH / sim.gridRows;
+      cellSize = Math.min(sizeX, sizeY, 18);
+      const gridW = cellSize * sim.gridCols;
+      const gridH = cellSize * sim.gridRows;
+      gridOffsetX = (width - gridW) / 2;
+      gridOffsetY = (height - gridH) / 2 + 6;
+    }
+
+    function drawBackground() {
+      background(246, 248, 252);
+
+      // Soft panel behind grid
+      noStroke();
+      fill(255, 255, 255, 240);
+      rect(gridOffsetX - 14, gridOffsetY - 18, cellSize * sim.gridCols + 28, cellSize * sim.gridRows + 28, 18);
+
+      // Label
+      fill(148, 163, 253);
+      textAlign(LEFT, TOP);
+      textSize(8);
+      text(
+        "Each circle is a cell: blue = susceptible, green = resistant, gray = killed. " +
+        "Selection and mutation update this field every generation.",
+        gridOffsetX - 12,
+        gridOffsetY - 26
+      );
+    }
+
+    function drawCells() {
+      const jitterAmp = 0.18;
+
+      for (let i = 0; i < sim.cells.length; i++) {
+        const c = sim.cells[i];
+        const col = i % sim.gridCols;
+        const row = Math.floor(i / sim.gridCols);
+
+        const baseX = gridOffsetX + col * cellSize + cellSize / 2;
+        const baseY = gridOffsetY + row * cellSize + cellSize / 2;
+
+        const jx = (Math.random() - 0.5) * jitterAmp;
+        const jy = (Math.random() - 0.5) * jitterAmp;
+
+        let fillCol;
+        if (c.type === "S") {
+          fillCol = color(56, 189, 248, 210); // susceptible blue
+        } else if (c.type === "R") {
+          fillCol = color(34, 197, 94, 220);  // resistant green
+        } else {
+          fillCol = color(156, 163, 175, 80); // dead/gray
+        }
+
+        noStroke();
+        fill(fillCol);
+        circle(baseX + jx, baseY + jy, cellSize * 0.6);
+      }
+    }
+
+    function drawAntibioticOverlay() {
+      if (sim.antibioticLevel <= 0.01) return;
+
+      const alpha = 10 + 40 * sim.antibioticLevel;
+      noStroke();
+      fill(249, 115, 22, alpha * 0.25);
+      rect(gridOffsetX - 18, gridOffsetY - 22, cellSize * sim.gridCols + 36, 10, 10);
+      fill(249, 115, 22, alpha * 0.12);
+      rect(gridOffsetX - 18, gridOffsetY - 12, cellSize * sim.gridCols + 36, cellSize * sim.gridRows + 24, 18);
+
+      // Label at corner
+      fill(249, 115, 22, 220);
+      textAlign(RIGHT, TOP);
+      textSize(7);
+      text("Antibiotic pressure " + Math.round(sim.antibioticLevel * 100) + "%", gridOffsetX + cellSize * sim.gridCols + 14, gridOffsetY - 22);
+    }
+
+    function draw() {
+      if (sim.autoRun && frameCount % 25 === 0) {
+        stepGeneration();
+      }
+
+      drawBackground();
+      drawCells();
+      drawAntibioticOverlay();
+    }
+  </script>
+</body>
+</html>
