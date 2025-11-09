@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bacterial Growth in Broth - Temperature & Oxygen Simulation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+
+  <!-- p5.js CDN (for simple growth + curve visualization) -->
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.2/lib/p5.min.js"></script>
+
+  <style>
+    :root {
+      --teal-main: #0f766e;
+      --teal-soft: #5eead4;
+      --bg-soft: #f4fbfa;
+      --ink: #0f172a;
+      --muted: #6b7280;
+      --curve: #0f766e;
+      --curve-alt: #38bdf8;
+      --broth-low: #e5f5f3;
+      --broth-high: #0f766e;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, -system-ui, sans-serif;
+      background: radial-gradient(circle at top, #e0fbff 0, #f9fafb 56%);
+      color: var(--ink);
+    }
+
+    .glass-card {
+      border-radius: 1.5rem;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow:
+        0 18px 50px rgba(15, 23, 42, 0.12),
+        0 0 0 1px rgba(15, 23, 42, 0.03);
+      backdrop-filter: blur(16px);
+    }
+
+    .chip-soft {
+      border-radius: 999px;
+      padding: 0.24rem 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: linear-gradient(
+        to right,
+        rgba(13, 148, 136, 0.08),
+        rgba(56, 189, 248, 0.02)
+      );
+      border: 1px solid rgba(13, 148, 136, 0.18);
+      font-size: 0.68rem;
+      color: var(--teal-main);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .chip-soft span.dot {
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 999px;
+      background: var(--teal-soft);
+      box-shadow: 0 0 10px rgba(94, 234, 212, 0.9);
+    }
+
+    .badge-pill {
+      border-radius: 999px;
+      padding: 0.18rem 0.52rem;
+      font-size: 0.64rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.26rem;
+      background-color: rgba(15, 118, 110, 0.03);
+      color: var(--muted);
+    }
+
+    .pill-color {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 999px;
+    }
+
+    /* Sliders */
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 150px;
+      height: 4px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: var(--teal-main);
+      border: 2px solid #ecfeff;
+      box-shadow: 0 0 8px rgba(13, 148, 136, 0.55);
+      transition: transform 0.16s ease-out, box-shadow 0.16s ease-out;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 16px rgba(13, 148, 136, 0.9);
+    }
+
+    .metric-label {
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+
+    .metric-value {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--teal-main);
+    }
+
+    .metric-sub {
+      font-size: 0.6rem;
+      color: #9ca3af;
+    }
+
+    #sketch-container {
+      border-radius: 1.1rem;
+      overflow: hidden;
+      background: radial-gradient(circle at top, #e0f2fe, #f9fafb);
+      border: 1px solid rgba(148, 163, 253, 0.16);
+      position: relative;
+    }
+
+    .overlay-label {
+      position: absolute;
+      right: 0.7rem;
+      top: 0.5rem;
+      padding: 0.16rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.6rem;
+      background: rgba(255, 255, 255, 0.95);
+      color: var(--teal-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.32rem;
+      box-shadow: 0 4px 10px rgba(148, 163, 253, 0.25);
+    }
+
+    .overlay-label span.swatch {
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 999px;
+      background: var(--teal-main);
+    }
+
+    .subtitle-sm {
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+
+    .concept-list li {
+      margin-bottom: 0.12rem;
+    }
+
+    .concept-list strong {
+      color: var(--teal-main);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex justify-center px-4 py-6">
+  <main class="w-full max-w-6xl space-y-5">
+    <!-- Header -->
+    <section class="glass-card px-6 py-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <div class="space-y-1.5">
+        <div class="chip-soft">
+          <span class="dot"></span>
+          Broth Culture Growth Studio
+        </div>
+        <h1 class="text-xl md:text-2xl font-semibold text-slate-900">
+          Temperature, oxygen, and bacterial growth in a virtual broth
+        </h1>
+        <p class="text-xs md:text-sm text-slate-600 max-w-2xl">
+          Use simple sliders to see how changing temperature and oxygen availability affects bacterial growth rate,
+          turbidity color, and a basic growth curve. Designed for early undergraduate microbiology.
+        </p>
+      </div>
+      <div class="flex flex-col items-end gap-1">
+        <div class="badge-pill">
+          <span class="pill-color" style="background:#0f766e;"></span>
+          Teal-themed, low-cognitive-load
+        </div>
+        <div class="subtitle-sm text-right">
+          37°C + high O₂ → fast growth (model organism).
+          Lower / no O₂ → slower or limited growth (for aerobes).
+        </div>
+      </div>
+    </section>
+
+    <section class="grid gap-4 md:grid-cols-[minmax(0,_1.8fr)_minmax(260px,_1.2fr)] items-stretch">
+      <!-- LEFT: Simulation Panel -->
+      <div class="glass-card p-4 flex flex-col gap-3">
+        <!-- Legend -->
+        <div class="flex flex-wrap gap-2 text-[0.65rem] text-slate-600">
+          <div class="badge-pill">
+            <span class="pill-color" style="background:#bbf7d0;"></span>
+            Low cell density (clear / pale broth)
+          </div>
+          <div class="badge-pill">
+            <span class="pill-color" style="background:#22c55e;"></span>
+            Moderate growth (light teal-green)
+          </div>
+          <div class="badge-pill">
+            <span class="pill-color" style="background:#0f766e;"></span>
+            High growth (deep teal, turbid)
+          </div>
+          <div class="badge-pill">
+            <span class="pill-color" style="background:#38bdf8;"></span>
+            Growth curve line
+          </div>
+        </div>
+
+        <!-- Canvas -->
+        <div id="sketch-container" class="mt-1 w-full aspect-[16/9]">
+          <div class="overlay-label">
+            <span class="swatch"></span>
+            Broth turbidity & growth curve
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="mt-3 flex flex-wrap items-center gap-3 text-xs">
+          <!-- Temperature slider -->
+          <div class="flex items-center gap-2 bg-[var(--bg-soft)] border border-teal-100 px-3 py-2 rounded-xl">
+            <div>
+              <div class="text-[0.63rem] font-semibold tracking-wide text-teal-700 uppercase">
+                Temperature
+              </div>
+              <div class="metric-label">
+                Incubation (°C) — assume mesophilic aerobe (optimum ~37°C)
+              </div>
+            </div>
+            <input id="tempSlider" type="range" min="10" max="50" value="37" />
+            <div class="metric-value min-w-[3.4rem] text-right">
+              <span id="tempValue">37</span>°C
+            </div>
+          </div>
+
+          <!-- Oxygen slider -->
+          <div class="flex items-center gap-2 bg-[var(--bg-soft)] border border-sky-100 px-3 py-2 rounded-xl">
+            <div>
+              <div class="text-[0.63rem] font-semibold tracking-wide text-sky-700 uppercase">
+                Oxygen level
+              </div>
+              <div class="metric-label">
+                Relative O₂ (%) for an obligate aerobe-style organism
+              </div>
+            </div>
+            <input id="o2Slider" type="range" min="0" max="100" value="80" />
+            <div class="metric-value min-w-[3.2rem] text-right">
+              <span id="o2Value">80</span>%
+            </div>
+          </div>
+
+          <!-- Preset buttons -->
+          <button
+            id="btnOptimal"
+            class="px-3 py-1.5 rounded-full text-[0.7rem] font-semibold text-white bg-teal-600 hover:bg-teal-700 shadow-sm transition-colors"
+          >
+            Optimal aerobic (fast growth)
+          </button>
+          <button
+            id="btnCoolLowO2"
+            class="px-3 py-1.5 rounded-full text-[0.7rem] font-semibold text-teal-800 bg-emerald-50 border border-emerald-100 hover:bg-emerald-100 transition-colors"
+          >
+            Cool & low O₂ (slow)
+          </button>
+          <button
+            id="btnHotNoO2"
+            class="px-3 py-1.5 rounded-full text-[0.7rem] font-semibold text-amber-800 bg-amber-50 border border-amber-100 hover:bg-amber-100 transition-colors"
+          >
+            Hot & no O₂ (poor growth)
+          </button>
+        </div>
+
+        <!-- Summary -->
+        <p id="summaryText" class="mt-1.5 text-[0.7rem] leading-relaxed text-slate-600">
+          At 37°C and 80% O₂, conditions are near optimal for a typical aerobic lab bacterium:
+          the broth deepens in teal as cells multiply quickly, and the growth curve rises steeply.
+        </p>
+      </div>
+
+      <!-- RIGHT: Explanation / Metrics -->
+      <aside class="glass-card p-4 flex flex-col gap-3">
+        <!-- Metrics -->
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div class="bg-[var(--bg-soft)] border border-teal-100 rounded-xl px-2.5 py-2">
+            <div class="metric-label">Relative growth rate</div>
+            <div id="metricMu" class="metric-value">0.95</div>
+            <div class="metric-sub">0 = no growth, 1 = very fast</div>
+          </div>
+          <div class="bg-emerald-50/90 border border-emerald-100 rounded-xl px-2.5 py-2">
+            <div class="metric-label">Carrying capacity (visual)</div>
+            <div id="metricK" class="metric-value">High</div>
+            <div class="metric-sub">How dense culture can get</div>
+          </div>
+          <div class="bg-sky-50/80 border border-sky-100 rounded-xl px-2.5 py-2">
+            <div class="metric-label">Lag/Log tendency</div>
+            <div id="metricPhase" class="metric-value">Rapid log phase</div>
+            <div class="metric-sub">Qualitative phase behavior</div>
+          </div>
+          <div class="bg-slate-50 border border-slate-100 rounded-xl px-2.5 py-2">
+            <div class="metric-label">Conceptual outcome</div>
+            <div id="metricOutcome" class="metric-value">Vigorous growth</div>
+            <div class="metric-sub">For the chosen conditions</div>
+          </div>
+        </div>
+
+        <!-- Conceptual bullets -->
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-teal-700 uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-teal-500"></span>
+            How to read this simulation
+          </div>
+          <ul class="concept-list list-disc pl-4 text-[0.7rem] text-slate-600">
+            <li>
+              We model an <strong>aerobic mesophile</strong> (like many lab strains) with an
+              optimum near <strong>37°C</strong> and high oxygen.
+            </li>
+            <li>
+              Growth rate increases as you approach this optimum, and drops off at low/high temperatures
+              or when O₂ is low.
+            </li>
+            <li>
+              The broth color deepens from pale to rich teal as population increases (a stand-in for turbidity).
+            </li>
+            <li>
+              The growth curve (teal line) shows relative cell density over a short incubation period.
+            </li>
+            <li>
+              This is a qualitative teaching tool, not a quantitative growth kinetics simulator.
+            </li>
+          </ul>
+        </div>
+
+        <!-- Guided activities -->
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1.5">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-slate-700 uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+            Try these quick checks
+          </div>
+          <ol class="list-decimal pl-4 text-[0.7rem] text-slate-600 space-y-0.5">
+            <li>
+              Set 37°C & 90–100% O₂:
+              observe deep teal broth and a steep growth curve.
+            </li>
+            <li>
+              Set 20°C & high O₂:
+              curve is shallower, color change slower → cooler temps slow metabolism.
+            </li>
+            <li>
+              Set 45–50°C or 0% O₂:
+              growth rate drops near zero; broth stays pale → stress/unsuitable conditions.
+            </li>
+          </ol>
+          <p class="text-[0.65rem] text-slate-500 leading-relaxed">
+            Encourage learners to match each visual pattern with terms like
+            <strong>optimal range</strong>, <strong>suboptimal</strong>, and <strong>no growth</strong>
+            for aerobic bacteria.
+          </p>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    // Conceptual model:
+    // - Organism: aerobic mesophile (optimum ~37°C, requires O2)
+    // - Inputs: temp (10-50°C), o2% (0-100)
+    // - Output: relative growth rate mu (0-1)
+    // Visuals:
+    // - p5: broth rectangle color deepens with population
+    // - p5: simple growth curve line over a fixed "time" axis
+
+    const state = {
+      temp: 37,
+      o2: 80,
+      mu: 0.9,
+      outcome: "Vigorous growth",
+      phase: "Rapid log phase",
+      Klabel: "High"
+    };
+
+    const tempSlider = document.getElementById("tempSlider");
+    const tempValue = document.getElementById("tempValue");
+    const o2Slider = document.getElementById("o2Slider");
+    const o2Value = document.getElementById("o2Value");
+    const summaryText = document.getElementById("summaryText");
+
+    const metricMu = document.getElementById("metricMu");
+    const metricK = document.getElementById("metricK");
+    const metricPhase = document.getElementById("metricPhase");
+    const metricOutcome = document.getElementById("metricOutcome");
+
+    const btnOptimal = document.getElementById("btnOptimal");
+    const btnCoolLowO2 = document.getElementById("btnCoolLowO2");
+    const btnHotNoO2 = document.getElementById("btnHotNoO2");
+
+    function computeMu(temp, o2) {
+      // Temperature effect: Gaussian around 37°C
+      const tOpt = 37;
+      const tWidth = 8; // broader to keep it simple
+      const tFactor = Math.exp(-Math.pow((temp - tOpt) / tWidth, 2));
+
+      // Oxygen effect: for an obligate aerobe-style curve
+      // Use smooth sigmoidal: low below 20%, near-max above 60%
+      const x = o2 / 100;
+      const o2Factor = 1 / (1 + Math.exp(-10 * (x - 0.4))); // midpoint ~40%
+
+      let mu = tFactor * o2Factor;
+      mu = Math.max(0, Math.min(1, mu));
+      return mu;
+    }
+
+    function updateModel() {
+      const mu = computeMu(state.temp, state.o2);
+      state.mu = mu;
+
+      // Simple labels:
+      let outcome, phase, Klabel;
+      if (mu > 0.75) {
+        outcome = "Vigorous growth";
+        phase = "Rapid log phase";
+        Klabel = "High";
+      } else if (mu > 0.4) {
+        outcome = "Moderate growth";
+        phase = "Slower log phase";
+        Klabel = "Medium";
+      } else if (mu > 0.15) {
+        outcome = "Limited growth";
+        phase = "Extended lag / shallow log";
+        Klabel = "Low";
+      } else {
+        outcome = "Minimal or no growth";
+        phase = "No effective log phase";
+        Klabel = "Very low";
+      }
+
+      state.outcome = outcome;
+      state.phase = phase;
+      state.Klabel = Klabel;
+
+      updateUI();
+    }
+
+    function updateUI() {
+      tempValue.textContent = state.temp.toFixed(0);
+      o2Value.textContent = state.o2.toFixed(0);
+
+      metricMu.textContent = state.mu.toFixed(2);
+      metricK.textContent = state.Klabel;
+      metricPhase.textContent = state.phase;
+      metricOutcome.textContent = state.outcome;
+
+      const t = state.temp;
+      const o = state.o2;
+      const mu = state.mu;
+
+      let text = `At ${t.toFixed(0)}°C and ${o.toFixed(
+        0
+      )}% oxygen: `;
+
+      if (state.outcome === "Vigorous growth") {
+        text += `conditions are close to optimal for this aerobic mesophile. The broth turns a deep teal as cells multiply rapidly, and the growth curve climbs steeply.`;
+      } else if (state.outcome === "Moderate growth") {
+        text += `cells grow, but not at their maximum rate. The broth slowly becomes more turbid, and the curve rises gently, showing a slower log phase.`;
+      } else if (state.outcome === "Limited growth") {
+        text += `only a portion of the population can grow. Expect a very shallow curve and only a mild color change, illustrating suboptimal conditions.`;
+      } else {
+        text += `growth is essentially suppressed; the broth stays pale and the curve remains near baseline, highlighting that microbes need the right temperature and enough oxygen.`;
+      }
+
+      summaryText.textContent = text;
+    }
+
+    // Event handlers
+    tempSlider.addEventListener("input", () => {
+      state.temp = parseInt(tempSlider.value, 10);
+      updateModel();
+    });
+
+    o2Slider.addEventListener("input", () => {
+      state.o2 = parseInt(o2Slider.value, 10);
+      updateModel();
+    });
+
+    btnOptimal.addEventListener("click", () => {
+      state.temp = 37;
+      state.o2 = 90;
+      tempSlider.value = 37;
+      o2Slider.value = 90;
+      updateModel();
+    });
+
+    btnCoolLowO2.addEventListener("click", () => {
+      state.temp = 20;
+      state.o2 = 30;
+      tempSlider.value = 20;
+      o2Slider.value = 30;
+      updateModel();
+    });
+
+    btnHotNoO2.addEventListener("click", () => {
+      state.temp = 45;
+      state.o2 = 0;
+      tempSlider.value = 45;
+      o2Slider.value = 0;
+      updateModel();
+    });
+
+    // p5.js sketch: broth + growth curve
+    let growthPoints = [];
+
+    function setup() {
+      const container = document.getElementById("sketch-container");
+      const rect = container.getBoundingClientRect();
+      const cnv = createCanvas(rect.width, rect.height);
+      cnv.parent("sketch-container");
+      initCurve();
+      updateModel();
+    }
+
+    function windowResized() {
+      const container = document.getElementById("sketch-container");
+      const rect = container.getBoundingClientRect();
+      resizeCanvas(rect.width, rect.height);
+      initCurve();
+    }
+
+    function initCurve() {
+      growthPoints = [];
+      const steps = 80;
+      for (let i = 0; i <= steps; i++) {
+        growthPoints.push({ t: i / steps, n: 0 });
+      }
+    }
+
+    function updateCurveShape() {
+      // Simple logistic-like curves scaled by mu
+      const mu = state.mu;
+      const steps = growthPoints.length - 1;
+      const K = 0.2 + 0.8 * mu; // max normalized density
+      const rate = 2.0 * mu; // how fast it reaches K
+
+      for (let i = 0; i <= steps; i++) {
+        const t = i / steps; // 0-1
+        // logistic: N(t) = K / (1 + e^(-rate*(t-0.3)))
+        const x = rate * (t - 0.25);
+        const N = K / (1 + Math.exp(-x));
+        growthPoints[i].n = N;
+      }
+    }
+
+    function drawBroth() {
+      const mu = state.mu;
+      const maxN = 0.2 + 0.8 * mu; // use mu to infer final density (for color)
+
+      // Base background already drawn outside
+      // Draw a simple broth "tube"
+      const tubeX = width * 0.08;
+      const tubeY = height * 0.14;
+      const tubeW = width * 0.34;
+      const tubeH = height * 0.72;
+      const r = 18;
+
+      // Tube outline
+      noFill();
+      stroke(148, 163, 253, 150);
+      strokeWeight(1.4);
+      rect(tubeX, tubeY, tubeW, tubeH, r);
+
+      // Broth color: interpolate from pale to deep teal with density
+      const base = color(229, 245, 243);
+      const rich = color(15, 118, 110);
+      const turbidity = maxN; // 0-1
+      const c = lerpColor(base, rich, turbidity);
+
+      noStroke();
+      fill(red(c), green(c), blue(c), 230);
+      const liquidMargin = 6;
+      rect(
+        tubeX + liquidMargin,
+        tubeY + 22,
+        tubeW - 2 * liquidMargin,
+        tubeH - 30,
+        r - 6
+      );
+
+      // Subtle sparkle dots are more numerous with higher mu
+      const dots = 40 + 80 * mu;
+      for (let i = 0; i < dots; i++) {
+        const x = random(tubeX + 14, tubeX + tubeW - 14);
+        const y = random(tubeY + 30, tubeY + tubeH - 14);
+        fill(255, 255, 255, 40 + 80 * mu);
+        circle(x, y, random(1, 2.2));
+      }
+    }
+
+    function drawGrowthCurve() {
+      updateCurveShape();
+
+      const plotX = width * 0.5;
+      const plotY = height * 0.2;
+      const plotW = width * 0.42;
+      const plotH = height * 0.6;
+
+      // Plot background
+      noStroke();
+      fill(255, 255, 255, 230);
+      rect(plotX, plotY, plotW, plotH, 14);
+
+      // Axes
+      stroke(209, 213, 219);
+      strokeWeight(1);
+      // y-axis
+      line(plotX + 28, plotY + 10, plotX + 28, plotY + plotH - 18);
+      // x-axis
+      line(plotX + 28, plotY + plotH - 18, plotX + plotW - 10, plotY + plotH - 18);
+
+      // Labels
+      noStroke();
+      fill(148, 163, 253);
+      textAlign(LEFT, CENTER);
+      textSize(7.5);
+      text("Time", plotX + plotW - 40, plotY + plotH - 26);
+      push();
+      translate(plotX + 16, plotY + 24);
+      rotate(-HALF_PI);
+      text("Relative cell density", 0, 0);
+      pop();
+
+      // Curve
+      noFill();
+      stroke(56, 189, 248);
+      strokeWeight(2);
+      beginShape();
+      for (let i = 0; i < growthPoints.length; i++) {
+        const gp = growthPoints[i];
+        const x = map(gp.t, 0, 1, plotX + 28, plotX + plotW - 14);
+        const y = map(gp.n, 0, 1, plotY + plotH - 18, plotY + 16);
+        vertex(x, y);
+      }
+      endShape();
+
+      // Small marker where curve ends
+      const last = growthPoints[growthPoints.length - 1];
+      const endX = map(last.t, 0, 1, plotX + 28, plotX + plotW - 14);
+      const endY = map(last.n, 0, 1, plotY + plotH - 18, plotY + 16);
+      fill(56, 189, 248);
+      noStroke();
+      circle(endX, endY, 4);
+    }
+
+    function draw() {
+      background(249, 250, 251);
+
+      // Sync model with current sliders each frame (lightweight)
+      state.temp = parseInt(tempSlider.value, 10);
+      state.o2 = parseInt(o2Slider.value, 10);
+      updateModel();
+
+      // Left: broth visualization
+      drawBroth();
+
+      // Right: growth curve panel
+      drawGrowthCurve();
+    }
+  </script>
+</body>
+</html>
