@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pasteur's Rabies Vaccine - Attenuation & Immune Response Simulation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+
+  <!-- p5.js CDN for subtle animations -->
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.2/lib/p5.min.js"></script>
+
+  <style>
+    :root {
+      --teal-main: #0f766e;
+      --teal-soft: #5eead4;
+      --ink: #0f172a;
+      --muted: #6b7280;
+      --bg-soft: #f4fbfa;
+      --danger: #ef4444;
+      --virus-strong: #dc2626;
+      --virus-weak: #fed7d7;
+      --immune: #38bdf8;
+      --neutralized: #22c55e;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, -system-ui, sans-serif;
+      background: radial-gradient(circle at top, #e0fbff 0, #f9fafb 56%);
+      color: var(--ink);
+    }
+
+    .glass-card {
+      border-radius: 1.5rem;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow:
+        0 18px 55px rgba(15, 23, 42, 0.14),
+        0 0 0 1px rgba(15, 23, 42, 0.03);
+      backdrop-filter: blur(16px);
+    }
+
+    .chip-soft {
+      border-radius: 999px;
+      padding: 0.25rem 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: linear-gradient(
+        to right,
+        rgba(13, 148, 136, 0.09),
+        rgba(56, 189, 248, 0.02)
+      );
+      border: 1px solid rgba(13, 148, 136, 0.18);
+      font-size: 0.68rem;
+      color: var(--teal-main);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .chip-soft span.dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 999px;
+      background: var(--teal-soft);
+      box-shadow: 0 0 12px rgba(45, 212, 191, 0.9);
+    }
+
+    .badge-pill {
+      border-radius: 999px;
+      padding: 0.18rem 0.55rem;
+      font-size: 0.64rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      background-color: rgba(15, 118, 110, 0.03);
+      color: var(--muted);
+    }
+
+    .pill-color {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 999px;
+    }
+
+    /* Sliders */
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 150px;
+      height: 4px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 15px;
+      height: 15px;
+      border-radius: 999px;
+      background: var(--teal-main);
+      border: 2px solid #ecfeff;
+      box-shadow: 0 0 8px rgba(13, 148, 136, 0.5);
+      transition: transform 0.16s ease-out, box-shadow 0.16s ease-out;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 16px rgba(13, 148, 136, 0.9);
+    }
+
+    .metric-label {
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+
+    .metric-value {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--teal-main);
+    }
+
+    .metric-sub {
+      font-size: 0.6rem;
+      color: #9ca3af;
+    }
+
+    #sketch-container {
+      border-radius: 1.1rem;
+      overflow: hidden;
+      background: radial-gradient(circle at top, #e0f2fe, #f9fafb);
+      border: 1px solid rgba(148, 163, 253, 0.16);
+      position: relative;
+    }
+
+    .overlay-label {
+      position: absolute;
+      right: 0.7rem;
+      top: 0.5rem;
+      padding: 0.16rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.6rem;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--teal-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.32rem;
+      box-shadow: 0 4px 10px rgba(148, 163, 253, 0.25);
+    }
+
+    .overlay-label span.swatch {
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 999px;
+      background: var(--virus-strong);
+    }
+
+    .immune-pill {
+      background-color: rgba(56, 189, 248, 0.08);
+      color: #0369a1;
+    }
+
+    .virus-pill {
+      background-color: rgba(239, 68, 68, 0.06);
+      color: #b91c1c;
+    }
+
+    .atten-pill {
+      background-color: rgba(22, 163, 74, 0.04);
+      color: #15803d;
+    }
+
+    .subtitle-sm {
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+
+    .try-list li {
+      margin-bottom: 0.12rem;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex justify-center px-4 py-6">
+  <main class="w-full max-w-6xl space-y-5">
+    <!-- Header -->
+    <section class="glass-card px-6 py-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <div class="space-y-1.5">
+        <div class="chip-soft">
+          <span class="dot"></span>
+          Pasteur's Rabies Vaccine Studio
+        </div>
+        <h1 class="text-xl md:text-2xl font-semibold text-slate-900">
+          Attenuating rabies virus and triggering protection: a conceptual simulation
+        </h1>
+        <p class="text-xs md:text-sm text-slate-600 max-w-2xl">
+          Adjust drying time and temperature to weaken a virtual rabies virus, then visualize how an attenuated inoculum
+          can safely elicit an immune response. Inspired by Pasteur's spinal cord desiccation method, simplified for teaching.
+        </p>
+      </div>
+      <div class="flex flex-col items-end gap-1">
+        <div class="badge-pill">
+          <span class="pill-color" style="background:#0f766e;"></span>
+          Live but weakened virus concept
+        </div>
+        <div class="subtitle-sm text-right">
+          More attenuation → less virulence, more safety.<br />
+          Sufficient antigen + low virulence → robust neutralizing antibodies.
+        </div>
+      </div>
+    </section>
+
+    <section class="grid gap-4 md:grid-cols-[minmax(0,_1.8fr)_minmax(260px,_1.2fr)] items-stretch">
+      <!-- LEFT: Simulation Panel -->
+      <div class="glass-card p-4 flex flex-col gap-3">
+        <!-- Legend -->
+        <div class="flex flex-wrap gap-2 text-[0.65rem] text-slate-600">
+          <div class="badge-pill virus-pill">
+            <span class="pill-color" style="background:var(--virus-strong);"></span>
+            Virulent rabies virions
+          </div>
+          <div class="badge-pill atten-pill">
+            <span class="pill-color" style="background:var(--virus-weak);"></span>
+            Attenuated (weakened) virions
+          </div>
+          <div class="badge-pill immune-pill">
+            <span class="pill-color" style="background:var(--immune);"></span>
+            Antibodies / immune cells
+          </div>
+          <div class="badge-pill">
+            <span class="pill-color" style="background:var(--neutralized);"></span>
+            Neutralized virus
+          </div>
+        </div>
+
+        <!-- Canvas Container -->
+        <div id="sketch-container" class="mt-1 w-full aspect-[16/9]">
+          <div class="overlay-label">
+            <span class="swatch"></span>
+            Attenuation & immune response
+          </div>
+        </div>
+
+        <!-- Controls Row -->
+        <div class="mt-3 flex flex-wrap items-center gap-3 text-xs">
+          <!-- Time slider -->
+          <div class="flex items-center gap-2 bg-[var(--bg-soft)] border border-teal-100 px-3 py-2 rounded-xl">
+            <div>
+              <div class="text-[0.63rem] font-semibold tracking-wide text-teal-700 uppercase">
+                Drying time
+              </div>
+              <div class="metric-label">
+                Days of spinal cord desiccation (0 = fresh, 14 = strongly attenuated)
+              </div>
+            </div>
+            <input id="timeSlider" type="range" min="0" max="14" value="7" />
+            <div class="metric-value min-w-[2.4rem] text-right">
+              <span id="timeValue">7</span>d
+            </div>
+          </div>
+
+          <!-- Temperature slider -->
+          <div class="flex items-center gap-2 bg-[var(--bg-soft)] border border-sky-100 px-3 py-2 rounded-xl">
+            <div>
+              <div class="text-[0.63rem] font-semibold tracking-wide text-sky-700 uppercase">
+                Drying temperature
+              </div>
+              <div class="metric-label">
+                Incubation temperature (°C) shaping attenuation kinetics
+              </div>
+            </div>
+            <input id="tempSlider" type="range" min="4" max="40" value="24" />
+            <div class="metric-value min-w-[3.4rem] text-right">
+              <span id="tempValue">24</span>°C
+            </div>
+          </div>
+
+          <!-- Presets -->
+          <button
+            id="btnHighVirulence"
+            class="px-3 py-1.5 rounded-full text-[0.7rem] font-semibold text-red-700 bg-red-50 border border-red-100 hover:bg-red-100 transition-colors"
+          >
+            Fresh cord (high virulence)
+          </button>
+          <button
+            id="btnPasteur"
+            class="px-3 py-1.5 rounded-full text-[0.7rem] font-semibold text-white bg-teal-600 hover:bg-teal-700 shadow-sm transition-colors"
+          >
+            Pasteur-like attenuation
+          </button>
+          <button
+            id="btnOverAttenuated"
+            class="px-3 py-1.5 rounded-full text-[0.7rem] font-semibold text-amber-800 bg-amber-50 border border-amber-100 hover:bg-amber-100 transition-colors"
+          >
+            Over-attenuated (weak antigen)
+          </button>
+        </div>
+
+        <!-- Summary text -->
+        <p id="summaryText" class="mt-1.5 text-[0.7rem] leading-relaxed text-slate-600">
+          With 7 days at 24°C, virulence is substantially reduced while antigen remains;
+          vaccination yields strong antibody visuals with minimal pathogenic risk, capturing Pasteur's principle.
+        </p>
+      </div>
+
+      <!-- RIGHT: Explanation / Metrics -->
+      <aside class="glass-card p-4 flex flex-col gap-3">
+        <!-- Metrics -->
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div class="bg-[var(--bg-soft)] border border-teal-100 rounded-xl px-2.5 py-2">
+            <div class="metric-label">Residual virulence (relative)</div>
+            <div id="metricVirulence" class="metric-value">0.35</div>
+            <div class="metric-sub">Probability of causing disease</div>
+          </div>
+          <div class="bg-orange-50/90 border border-orange-100 rounded-xl px-2.5 py-2">
+            <div class="metric-label">Antigenic signal</div>
+            <div id="metricAntigen" class="metric-value">0.78</div>
+            <div class="metric-sub">How "visible" to immune system</div>
+          </div>
+          <div class="bg-sky-50/80 border border-sky-100 rounded-xl px-2.5 py-2">
+            <div class="metric-label">Antibody response</div>
+            <div id="metricAb" class="metric-value">0.82</div>
+            <div class="metric-sub">Neutralizing capacity</div>
+          </div>
+          <div class="bg-slate-50 border border-slate-100 rounded-xl px-2.5 py-2">
+            <div class="metric-label">Conceptual outcome</div>
+            <div id="metricOutcome" class="metric-value">Protected</div>
+            <div class="metric-sub">Pedagogical classification</div>
+          </div>
+        </div>
+
+        <!-- Conceptual explanation -->
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-teal-700 uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-teal-500"></span>
+            What this visualization encodes
+          </div>
+          <ul class="list-disc pl-4 text-[0.7rem] text-slate-600 space-y-0.5">
+            <li>
+              Pasteur attenuated rabies virus by
+              <strong>air-drying infected spinal cords</strong> over days at controlled temperatures.
+            </li>
+            <li>
+              <strong>Longer time / appropriate temperature</strong> → virus loses virulence but retains antigens.
+            </li>
+            <li>
+              An effective vaccine:
+              <span class="font-semibold text-teal-700">low residual virulence</span> +
+              <span class="font-semibold text-sky-700">adequate antigenic signal</span>
+              → robust antibody response without causing disease.
+            </li>
+            <li>
+              If <strong>too little attenuation</strong>, virulent particles (red) dominate → unsafe.
+            </li>
+            <li>
+              If <strong>too much attenuation</strong>, almost no antigen remains →
+              weak immune activation, poor protection.
+            </li>
+          </ul>
+        </div>
+
+        <!-- Guided experiments -->
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1.5">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-slate-700 uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+            Try these scenarios
+          </div>
+          <ol class="try-list list-decimal pl-4 text-[0.7rem] text-slate-600">
+            <li>
+              Fresh cord (0 days, ~20–24°C):
+              <span class="badge-pill virus-pill">Virulent</span>
+              High red virions, minimal antibodies → unsafe as a "vaccine".
+            </li>
+            <li>
+              Pasteur-like (7–10 days, 20–24°C):
+              <span class="badge-pill atten-pill">Attenuated</span>
+              Red fades to pale, teal immune dots appear → protective profile.
+            </li>
+            <li>
+              Over-attenuated (>12 days, high temp):
+              Very few particles, weak antibody halo →
+              concept of "too weak to teach the immune system".
+            </li>
+          </ol>
+          <p class="text-[0.65rem] text-slate-500 leading-relaxed">
+            Watch the animation: as attenuation increases, virions soften in color and shrink,
+            while teal immune cells and neutralized particles appear after vaccination.
+            This visually encodes Pasteur's insight that
+            <strong>controlled weakening of a pathogen can safely induce protection.</strong>
+          </p>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    // Simplified conceptual model:
+    // Controls:
+    //  - timeDays: duration of drying (0-14)
+    //  - tempC: drying temperature (4-40°C)
+    // Model outputs:
+    //  - residualVirulence (0-1)
+    //  - antigenicity (0-1)
+    //  - antibodyResponse (0-1)
+    //  - outcome label
+
+    const state = {
+      timeDays: 7,
+      tempC: 24,
+      residualVirulence: 0.3,
+      antigenicity: 0.8,
+      antibodyResponse: 0.8,
+      outcome: "Protected"
+    };
+
+    const timeSlider = document.getElementById("timeSlider");
+    const timeValue = document.getElementById("timeValue");
+    const tempSlider = document.getElementById("tempSlider");
+    const tempValue = document.getElementById("tempValue");
+    const summaryText = document.getElementById("summaryText");
+
+    const metricVirulence = document.getElementById("metricVirulence");
+    const metricAntigen = document.getElementById("metricAntigen");
+    const metricAb = document.getElementById("metricAb");
+    const metricOutcome = document.getElementById("metricOutcome");
+
+    const btnHighVirulence = document.getElementById("btnHighVirulence");
+    const btnPasteur = document.getElementById("btnPasteur");
+    const btnOverAttenuated = document.getElementById("btnOverAttenuated");
+
+    function computeModel(timeDays, tempC) {
+      // Idealized: attenuation increases with time; moderate temps favor safe attenuation.
+      const t = Math.max(0, Math.min(14, timeDays));
+      const T = Math.max(4, Math.min(40, tempC));
+
+      // Virulence: high when short time, decays with time; temp modulates rate.
+      const tempFactor =
+        T < 10 ? 0.5 :
+        T <= 30 ? 1 :
+        1.4; // high temp: faster loss (and possible antigen loss)
+
+      let residualVirulence = Math.exp(-0.22 * t * tempFactor);
+      residualVirulence = Math.max(0, Math.min(1, residualVirulence));
+
+      // Antigenicity: highest for moderate attenuation (roughly t in 5-10 at 18-28°C)
+      const tNorm = (t - 7.5) / 4.5;
+      const TNorm = (T - 24) / 8;
+      let antigenicity = Math.exp(-0.5 * (tNorm * tNorm + 0.4 * TNorm * TNorm));
+      antigenicity = Math.max(0, Math.min(1, antigenicity));
+
+      // Antibody response: strong when virulence is low AND antigenicity is reasonable
+      const safeFactor = 1 - residualVirulence;
+      let antibodyResponse = safeFactor * 0.6 + antigenicity * 0.6;
+      antibodyResponse = Math.max(0, Math.min(1, antibodyResponse));
+
+      // Outcome classification
+      let outcome = "Protected";
+      if (residualVirulence > 0.4 && antigenicity > 0.3) {
+        outcome = "Too virulent / unsafe";
+      } else if (antibodyResponse < 0.25) {
+        outcome = "Under-stimulated (weak protection)";
+      } else if (residualVirulence < 0.15 && antigenicity > 0.3) {
+        outcome = "Protected";
+      } else {
+        outcome = "Borderline";
+      }
+
+      state.residualVirulence = residualVirulence;
+      state.antigenicity = antigenicity;
+      state.antibodyResponse = antibodyResponse;
+      state.outcome = outcome;
+    }
+
+    function updateUI() {
+      timeValue.textContent = state.timeDays.toFixed(0);
+      tempValue.textContent = state.tempC.toFixed(0);
+
+      metricVirulence.textContent = state.residualVirulence.toFixed(2);
+      metricAntigen.textContent = state.antigenicity.toFixed(2);
+      metricAb.textContent = state.antibodyResponse.toFixed(2);
+      metricOutcome.textContent = state.outcome;
+
+      const t = state.timeDays;
+      const T = state.tempC;
+      const v = state.residualVirulence;
+      const ag = state.antigenicity;
+      const ab = state.antibodyResponse;
+
+      let text = `With ${t.toFixed(0)} days at ${T.toFixed(
+        0
+      )}°C: `;
+
+      if (v > 0.45) {
+        text += `residual virulence remains high (${v.toFixed(
+          2
+        )}), so this preparation behaves too much like live pathogenic virus. Antibody formation (${ab.toFixed(
+          2
+        )}) does not justify the risk → conceptually unsafe as a vaccine.`;
+      } else if (ab > 0.6 && ag > 0.4 && v < 0.25) {
+        text += `virulence is substantially reduced (${v.toFixed(
+          2
+        )}) while antigen is preserved (${ag.toFixed(
+          2
+        )}), generating a strong antibody response (${ab.toFixed(
+          2
+        )}). This matches the logic of Pasteur's attenuated rabies vaccine.`;
+      } else if (ag < 0.25 && v < 0.15) {
+        text += `the virus is overly weakened: although safe (very low virulence ${v.toFixed(
+          2
+        )}), antigenic signal (${ag.toFixed(
+          2
+        )}) is too low, leading to a modest immune response (${ab.toFixed(
+          2
+        )}). This illustrates under-attenuating risk vs. over-attenuating efficacy.`;
+      } else {
+        text += `you are in a borderline zone: virulence (${v.toFixed(
+          2
+        )}) and antigen (${ag.toFixed(
+          2
+        )}) yield an intermediate antibody response (${ab.toFixed(
+          2
+        )}). Small changes in time or temperature could shift safety and protection.`;
+      }
+
+      summaryText.textContent = text;
+    }
+
+    function recalcAndUpdate() {
+      computeModel(state.timeDays, state.tempC);
+      updateUI();
+    }
+
+    // Slider interactions
+    timeSlider.addEventListener("input", () => {
+      state.timeDays = parseInt(timeSlider.value, 10);
+      recalcAndUpdate();
+    });
+
+    tempSlider.addEventListener("input", () => {
+      state.tempC = parseInt(tempSlider.value, 10);
+      recalcAndUpdate();
+    });
+
+    // Preset buttons
+    btnHighVirulence.addEventListener("click", () => {
+      state.timeDays = 0;
+      state.tempC = 22;
+      timeSlider.value = 0;
+      tempSlider.value = 22;
+      recalcAndUpdate();
+    });
+
+    btnPasteur.addEventListener("click", () => {
+      state.timeDays = 8;
+      state.tempC = 24;
+      timeSlider.value = 8;
+      tempSlider.value = 24;
+      recalcAndUpdate();
+    });
+
+    btnOverAttenuated.addEventListener("click", () => {
+      state.timeDays = 13;
+      state.tempC = 34;
+      timeSlider.value = 13;
+      tempSlider.value = 34;
+      recalcAndUpdate();
+    });
+
+    // p5.js animation: virions + immune cells visualization
+    let virions = [];
+    let immuneCells = [];
+    let neutralized = [];
+
+    function setup() {
+      const container = document.getElementById("sketch-container");
+      const rect = container.getBoundingClientRect();
+      const cnv = createCanvas(rect.width, rect.height);
+      cnv.parent("sketch-container");
+      initEntities();
+      recalcAndUpdate();
+    }
+
+    function windowResized() {
+      const container = document.getElementById("sketch-container");
+      const rect = container.getBoundingClientRect();
+      resizeCanvas(rect.width, rect.height);
+      initEntities();
+    }
+
+    function initEntities() {
+      virions = [];
+      immuneCells = [];
+      neutralized = [];
+
+      const baseVirions = 70;
+      for (let i = 0; i < baseVirions; i++) {
+        virions.push({
+          x: random(width * 0.12, width * 0.88),
+          y: random(height * 0.18, height * 0.85),
+          r: random(4, 7),
+          phase: random(TWO_PI),
+          speed: random(0.2, 0.5)
+        });
+      }
+
+      const baseImmune = 35;
+      for (let i = 0; i < baseImmune; i++) {
+        immuneCells.push({
+          x: random(width * 0.1, width * 0.9),
+          y: random(height * 0.55, height * 0.92),
+          r: random(4, 6),
+          phase: random(TWO_PI),
+          speed: random(0.15, 0.35)
+        });
+      }
+    }
+
+    function drawBackground() {
+      background(249, 250, 251);
+
+      // Subtle gradient band
+      noStroke();
+      for (let y = 0; y < height; y++) {
+        const t = y / height;
+        const c = lerpColor(
+          color(224, 242, 254, 230),
+          color(240, 253, 250, 255),
+          t
+        );
+        fill(c);
+        rect(0, y, width, 1);
+      }
+
+      // Center "tissue" zone
+      noStroke();
+      fill(255, 255, 255, 220);
+      rect(width * 0.08, height * 0.18, width * 0.84, height * 0.68, 18);
+    }
+
+    function drawVirions() {
+      const v = state.residualVirulence;
+      const ag = state.antigenicity;
+
+      for (let virion of virions) {
+        // Motion intensity reflects virulence
+        const mobility = 0.2 + v * 1.4;
+        virion.phase += virion.speed * 0.02 + v * 0.02;
+        virion.x += sin(virion.phase) * mobility;
+        virion.y += cos(virion.phase * 0.9) * mobility * 0.6;
+
+        // Keep inside region
+        const left = width * 0.1;
+        const right = width * 0.9;
+        const top = height * 0.2;
+        const bottom = height * 0.82;
+        if (virion.x < left) virion.x = left;
+        if (virion.x > right) virion.x = right;
+        if (virion.y < top) virion.y = top;
+        if (virion.y > bottom) virion.y = bottom;
+
+        // Color shifts from strong red (virulent) to pale (attenuated)
+        const base = color(220, 38, 38);
+        const weak = color(254, 215, 215);
+        const mix = lerpColor(weak, base, v);
+
+        // Slight outline to suggest rabies bullet shape (minimal)
+        push();
+        translate(virion.x, virion.y);
+        noStroke();
+        fill(mix);
+        const len = virion.r * (1.3 + 0.6 * v);
+        const wid = virion.r * (0.8 + 0.3 * v);
+        ellipse(0, 0, len, wid);
+
+        // "Spikes" or texture subtle
+        if (ag > 0.35) {
+          stroke(red(mix), green(mix), blue(mix), 130);
+          strokeWeight(0.4);
+          const spikes = 5;
+          for (let i = 0; i < spikes; i++) {
+            const a = (TWO_PI / spikes) * i;
+            line(
+              cos(a) * (wid * 0.4),
+              sin(a) * (wid * 0.4),
+              cos(a) * (wid * 0.7),
+              sin(a) * (wid * 0.7)
+            );
+          }
+        }
+        pop();
+
+        // If strong immune & low virulence, mark some as neutralized (turned greenish)
+        if (state.antibodyResponse > 0.5 && v < 0.3 && random() < 0.02) {
+          neutralized.push({
+            x: virion.x,
+            y: virion.y,
+            r: virion.r,
+            alpha: 220
+          });
+        }
+      }
+    }
+
+    function drawImmuneCells() {
+      const ab = state.antibodyResponse;
+
+      for (let cell of immuneCells) {
+        // Activity scales with antibodyResponse
+        const mobility = 0.15 + ab * 0.8;
+        cell.phase += cell.speed * 0.02 + ab * 0.02;
+        cell.x += cos(cell.phase) * mobility;
+        cell.y += sin(cell.phase * 0.9) * mobility * 0.6;
+
+        // Keep near bottom half for "lymphoid" region
+        const left = width * 0.1;
+        const right = width * 0.9;
+        const top = height * 0.5;
+        const bottom = height * 0.9;
+        if (cell.x < left) cell.x = left;
+        if (cell.x > right) cell.x = right;
+        if (cell.y < top) cell.y = top;
+        if (cell.y > bottom) cell.y = bottom;
+
+        // Draw immune cell: teal/blue halo
+        const core = color(56, 189, 248);
+        noStroke();
+        fill(red(core), green(core), blue(core), 40 + 80 * ab);
+        ellipse(cell.x, cell.y, cell.r * 2.4, cell.r * 2.4);
+        fill(red(core), green(core), blue(core), 180);
+        ellipse(cell.x, cell.y, cell.r * 1.2, cell.r * 1.2);
+      }
+    }
+
+    function drawNeutralized() {
+      // Green neutralized spots where antibodies bound
+      for (let n of neutralized) {
+        noStroke();
+        fill(34, 197, 94, n.alpha);
+        ellipse(n.x, n.y, n.r * 1.3, n.r * 1.1);
+        n.alpha -= 1.0;
+      }
+      neutralized = neutralized.filter((n) => n.alpha > 10);
+    }
+
+    function drawOverlayText() {
+      const v = state.residualVirulence;
+      const ab = state.antibodyResponse;
+
+      // Virulence badge (top-left)
+      const padX = 10;
+      const padY = 8;
+      noStroke();
+      fill(255, 255, 255, 230);
+      rect(padX, padY, 120, 40, 14);
+      textAlign(LEFT, TOP);
+      textSize(9.5);
+      fill(v > 0.4 ? 220 : 15, v > 0.4 ? 38 : 118, v > 0.4 ? 38 : 110);
+      text(`Virulence ${v.toFixed(2)}`, padX + 8, padY + 6);
+      fill(107, 114, 128);
+      textSize(7.5);
+      text(v > 0.4 ? "Unsafe" : v < 0.15 ? "Strongly attenuated" : "Partial attenuation", padX + 8, padY + 19);
+
+      // Antibody badge (top-right)
+      const padX2 = width - 128;
+      fill(255, 255, 255, 230);
+      rect(padX2, padY, 118, 40, 14);
+      fill(56, 189, 248);
+      textAlign(LEFT, TOP);
+      textSize(9.5);
+      text(`Ab ${ab.toFixed(2)}`, padX2 + 8, padY + 6);
+      fill(148, 163, 253);
+      textSize(7.4);
+      text(
+        ab > 0.6 ? "Robust response" : ab < 0.25 ? "Weak response" : "Intermediate",
+        padX2 + 8,
+        padY + 19
+      );
+    }
+
+    function draw() {
+      drawBackground();
+      // Recompute model frequently to keep animation linked to controls
+      computeModel(state.timeDays, state.tempC);
+      updateUI();
+      drawVirions();
+      drawImmuneCells();
+      drawNeutralized();
+      drawOverlayText();
+    }
+  </script>
+</body>
+</html>
