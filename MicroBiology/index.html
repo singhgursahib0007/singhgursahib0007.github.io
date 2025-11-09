@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Microbiology Discoveries Studio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+
+  <!-- SF / system font stack + custom styles -->
+  <style>
+    :root {
+      --bg-main: #f5f7fb;
+      --bg-elevated: #ffffff;
+      --teal-main: #0f766e;
+      --teal-soft: #5eead4;
+      --ink: #0f172a;
+      --muted: #6b7280;
+      --border-soft: rgba(148, 163, 253, 0.14);
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.10);
+      --radius-xl: 1.6rem;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, system-ui, -system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+      background:
+        radial-gradient(circle at top left, rgba(148, 163, 253, 0.08), transparent 60%),
+        radial-gradient(circle at top right, rgba(94, 234, 212, 0.08), transparent 55%),
+        var(--bg-main);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page-shell {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 24px 16px 32px;
+    }
+
+    .glass-header {
+      border-radius: var(--radius-xl);
+      padding: 18px 20px 16px;
+      background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.98));
+      box-shadow:
+        0 22px 50px rgba(15, 23, 42, 0.10),
+        0 0 0 0.5px rgba(148, 163, 253, 0.12);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    @media (min-width: 768px) {
+      .glass-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    .chip-soft {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.36rem;
+      padding: 0.22rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.63rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--teal-main);
+      background: linear-gradient(
+        to right,
+        rgba(15, 118, 110, 0.09),
+        rgba(148, 163, 253, 0.04)
+      );
+      border: 1px solid rgba(148, 163, 253, 0.26);
+      backdrop-filter: blur(18px);
+    }
+
+    .chip-soft span.dot {
+      width: 0.42rem;
+      height: 0.42rem;
+      border-radius: 999px;
+      background: var(--teal-soft);
+      box-shadow: 0 0 10px rgba(94, 234, 212, 0.95);
+    }
+
+    .header-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: #0f172a;
+    }
+
+    .header-subtitle {
+      margin-top: 2px;
+      font-size: 0.74rem;
+      color: var(--muted);
+      max-width: 32rem;
+    }
+
+    .header-right {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: flex-end;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.26rem;
+      padding: 0.18rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.6rem;
+      color: var(--muted);
+      background: rgba(15, 118, 110, 0.02);
+      border: 0.5px solid rgba(148, 163, 253, 0.26);
+    }
+
+    .pill-color {
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 999px;
+      background: var(--teal-main);
+    }
+
+    .hint-text {
+      font-size: 0.6rem;
+      color: #9ca3af;
+    }
+
+    .grid-section-label {
+      margin-top: 18px;
+      margin-bottom: 8px;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #9ca3af;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .grid-section-label span.bar {
+      width: 26px;
+      height: 1px;
+      border-radius: 999px;
+      background: rgba(148, 163, 253, 0.75);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    @media (min-width: 640px) {
+      .cards-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .cards-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .sim-card {
+      position: relative;
+      border-radius: 1.35rem;
+      padding: 12px 11px 11px;
+      background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.98));
+      box-shadow:
+        0 14px 34px rgba(15, 23, 42, 0.08),
+        0 0 0 0.4px var(--border-soft);
+      border: 0.5px solid rgba(148, 163, 253, 0.18);
+      backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease-out;
+      overflow: hidden;
+    }
+
+    .sim-card:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 22px 48px rgba(15, 23, 42, 0.18),
+        0 0 0 0.5px rgba(79, 209, 197, 0.18);
+      background: radial-gradient(circle at top, #ffffff, #f5f7fb);
+    }
+
+    .sim-label {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #9ca3af;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.26rem;
+    }
+
+    .sim-label span.dot {
+      width: 0.26rem;
+      height: 0.26rem;
+      border-radius: 999px;
+      background: var(--teal-soft);
+      box-shadow: 0 0 6px rgba(94, 234, 212, 0.9);
+    }
+
+    .sim-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #0f172a;
+      letter-spacing: -0.01em;
+    }
+
+    .sim-desc {
+      font-size: 0.63rem;
+      color: var(--muted);
+      line-height: 1.5;
+      max-width: 18rem;
+    }
+
+    .sim-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 2px;
+      font-size: 0.58rem;
+      color: #9ca3af;
+    }
+
+    .sim-pill-soft {
+      padding: 0.16rem 0.52rem;
+      border-radius: 999px;
+      font-size: 0.58rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.26rem;
+      background: rgba(240, 253, 250, 0.98);
+      color: var(--teal-main);
+      border: 0.5px solid rgba(148, 163, 253, 0.24);
+    }
+
+    .sim-pill-soft span.dot {
+      width: 0.3rem;
+      height: 0.3rem;
+      border-radius: 999px;
+      background: var(--teal-main);
+    }
+
+    .sim-arrow {
+      margin-left: auto;
+      font-size: 0.8rem;
+      color: rgba(15, 23, 42, 0.12);
+      transition: color 0.2s ease-out, transform 0.2s ease-out;
+    }
+
+    .sim-card:hover .sim-arrow {
+      color: var(--teal-main);
+      transform: translateX(2px);
+    }
+
+    .sim-glow {
+      position: absolute;
+      right: -14px;
+      bottom: -14px;
+      width: 46px;
+      height: 46px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(94, 234, 212, 0.18), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.2s ease-out;
+      pointer-events: none;
+    }
+
+    .sim-card:hover .sim-glow {
+      opacity: 1;
+    }
+
+    a.card-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .section-divider {
+      margin: 18px 0 10px;
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        rgba(148, 163, 253, 0.0),
+        rgba(148, 163, 253, 0.22),
+        rgba(148, 163, 253, 0.0)
+      );
+      border-radius: 999px;
+    }
+
+    .credit-text {
+      font-size: 0.6rem;
+      color: #9ca3af;
+    }
+  </style>
+</head>
+<body>
+  <main class="page-shell">
+    <!-- Header -->
+    <header class="glass-header">
+      <div>
+        <div class="chip-soft">
+          <span class="dot"></span>
+          Microbiology Discoveries Studio
+        </div>
+        <div class="header-title">
+          An interactive hub for exploring key microbiology breakthroughs
+        </div>
+        <p class="header-subtitle">
+          Built for microbiology learners to move beyond memorization, this studio lets you step into the landmark experiments and reasoning of Pasteur, Koch, and Fleming through simple, exploratory simulations.
+        </p>
+      </div>
+      <div class="header-right">
+        <div class="pill">
+          <span class="pill-color"></span>
+          Designed for undergraduate microbiology courses
+        </div>
+        <div class="pill">
+          <span class="pill-color" style="background:#5eead4;"></span>
+          Focused on scientist contributions and core lab ideas
+        </div>
+        <div class="hint-text">
+          Click any card to open its simulation in a clean, focused view.
+        </div>
+      </div>
+    </header>
+
+    <!-- Pasteur -->
+    <div class="grid-section-label">
+      <span class="bar"></span>
+      Louis Pasteur • Experiments that shaped germ theory
+    </div>
+    <section class="cards-grid">
+      <a class="card-link" href="Louis-Pasteur/pasteurization_simulation.html">
+        <article class="sim-card">
+          <div class="sim-label">
+            <span class="dot"></span>
+            Pasteur
+          </div>
+          <div class="sim-title">
+            Pasteurization & microbial control
+          </div>
+          <p class="sim-desc">
+            Adjust time and temperature to balance pathogen kill with flavor and nutrient preservation.
+          </p>
+          <div class="sim-meta">
+            <span class="sim-pill-soft">
+              <span class="dot"></span>
+              Heat vs safety
+            </span>
+            <span>Visual log-reduction</span>
+            <span class="sim-arrow">↗</span>
+          </div>
+          <div class="sim-glow"></div>
+        </article>
+      </a>
+
+      <a class="card-link" href="Louis-Pasteur/pasteur_fermentation_simulation.html">
+        <article class="sim-card">
+          <div class="sim-label">
+            <span class="dot"></span>
+            Pasteur
+          </div>
+          <div class="sim-title">
+            Fermentation & living yeast
+          </div>
+          <p class="sim-desc">
+            See how yeast convert sugar to CO₂ and ethanol, proving fermentation is a biological process.
+          </p>
+          <div class="sim-meta">
+            <span class="sim-pill-soft">
+              <span class="dot"></span>
+              Yeast metabolism
+            </span>
+            <span>Substrate → products</span>
+            <span class="sim-arrow">↗</span>
+          </div>
+          <div class="sim-glow"></div>
+        </article>
+      </a>
+
+      <a class="card-link" href="Louis-Pasteur/pasteur_rabies_vaccine_simulation.html">
+        <article class="sim-card">
+          <div class="sim-label">
+            <span class="dot"></span>
+            Pasteur
+          </div>
+          <div class="sim-title">
+            Rabies vaccine strategy
+          </div>
+          <p class="sim-desc">
+            Follow attenuation and post-exposure vaccination as a logic chain, not just a story.
+          </p>
+          <div class="sim-meta">
+            <span class="sim-pill-soft">
+              <span class="dot"></span>
+              Attenuation
+            </span>
+            <span>Risk vs protection</span>
+            <span class="sim-arrow">↗</span>
+          </div>
+          <div class="sim-glow"></div>
+        </article>
+      </a>
+
+      <a class="card-link" href="Louis-Pasteur/microscopic_observation_lab.html">
+        <article class="sim-card">
+          <div class="sim-label">
+            <span class="dot"></span>
+            Pasteur
+          </div>
+          <div class="sim-title">
+            Microscopic observation lab
+          </div>
+          <p class="sim-desc">
+            Practice magnification and focus while bringing rods and cocci into view.
+          </p>
+          <div class="sim-meta">
+            <span class="sim-pill-soft">
+              <span class="dot"></span>
+              Virtual microscope
+            </span>
+            <span>Hands-on seeing</span>
+            <span class="sim-arrow">↗</span>
+          </div>
+          <div class="sim-glow"></div>
+        </article>
+      </a>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Koch -->
+    <div class="grid-section-label">
+      <span class="bar"></span>
+      Robert Koch • Connecting specific microbes to specific diseases
+    </div>
+    <section class="cards-grid">
+      <a class="card-link" href="koch/koch_postulates_simulation.html">
+        <article class="sim-card">
+          <div class="sim-label">
+            <span class="dot"></span>
+            Koch
+          </div>
+          <div class="sim-title">
+            Koch's postulates
+          </div>
+          <p class="sim-desc">
+            Step through the four criteria linking a microbe to a disease using simple visuals.
+          </p>
+          <div class="sim-meta">
+            <span class="sim-pill-soft">
+              <span class="dot"></span>
+              Causation logic
+            </span>
+            <span>Great for class discussion</span>
+            <span class="sim-arrow">↗</span>
+          </div>
+          <div class="sim-glow"></div>
+        </article>
+      </a>
+
+      <a class="card-link" href="koch/staining_technique_simulation.html">
+        <article class="sim-card">
+          <div class="sim-label">
+            <span class="dot"></span>
+            Koch
+          </div>
+          <div class="sim-title">
+            Staining techniques
+          </div>
+          <p class="sim-desc">
+            Explore how stains increase contrast to reveal pathogens among host cells.
+          </p>
+          <div class="sim-meta">
+            <span class="sim-pill-soft">
+              <span class="dot"></span>
+              Color cues
+            </span>
+            <span>Concept-first visuals</span>
+            <span class="sim-arrow">↗</span>
+          </div>
+          <div class="sim-glow"></div>
+        </article>
+      </a>
+
+      <a class="card-link" href="koch/pure_culture_agar_plate_simulation.html">
+        <article class="sim-card">
+          <div class="sim-label">
+            <span class="dot"></span>
+            Koch
+          </div>
+          <div class="sim-title">
+            Pure culture on agar
+          </div>
+          <p class="sim-desc">
+            See isolated colonies emerge and why they are essential for proof of causation.
+          </p>
+          <div class="sim-meta">
+            <span class="sim-pill-soft">
+              <span class="dot"></span>
+              Colony isolation
+            </span>
+            <span>Technique focus</span>
+            <span class="sim-arrow">↗</span>
+          </div>
+          <div class="sim-glow"></div>
+        </article>
+      </a>
+
+      <a class="card-link" href="koch/broth_bacterial_growth_simulation.html">
+        <article class="sim-card">
+          <div class="sim-label">
+            <span class="dot"></span>
+            Koch
+          </div>
+          <div class="sim-title">
+            Broth bacterial growth
+          </div>
+          <p class="sim-desc">
+            Link turbidity changes to classic growth phases in liquid culture.
+          </p>
+          <div class="sim-meta">
+            <span class="sim-pill-soft">
+              <span class="dot"></span>
+              Growth phases
+            </span>
+            <span>Environmental effects</span>
+            <span class="sim-arrow">↗</span>
+          </div>
+          <div class="sim-glow"></div>
+        </article>
+      </a>
+
+      <a class="card-link" href="koch/tb_identification_simulation.html">
+        <article class="sim-card">
+          <div class="sim-label">
+            <span class="dot"></span>
+            Koch
+          </div>
+          <div class="sim-title">
+            Tuberculosis identification
+          </div>
+          <p class="sim-desc">
+            Use acid-fast staining steps to highlight Mycobacterium tuberculosis.
+          </p>
+          <div class="sim-meta">
+            <span class="sim-pill-soft">
+              <span class="dot"></span>
+              Acid-fast vs non–acid-fast
+            </span>
+            <span>Single-field comparison</span>
+            <span class="sim-arrow">↗</span>
+          </div>
+          <div class="sim-glow"></div>
+        </article>
+      </a>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- Fleming & Antibiotics -->
+    <div class="grid-section-label">
+      <span class="bar"></span>
+      Alexander Fleming & Antibiotics • Discovery, testing, resistance, production
+    </div>
+    <section class="cards-grid">
+      <a class="card-link" href="fleming/fleming_penicillin_discovery_simulation.html">
+        <article class="sim-card">
+          <div class="sim-label">
+            <span class="dot"></span>
+            Fleming
+          </div>
+          <div class="sim-title">
+            Penicillin discovery plate
+          </div>
+          <p class="sim-desc">
+            Observe a mold colony clearing nearby bacteria and recognize zones of inhibition.
+          </p>
+          <div class="sim-meta">
+            <span class="sim-pill-soft">
+              <span class="dot"></span>
+              Serendipity explained
+            </span>
+            <span>Visual halo insight</span>
+            <span class="sim-arrow">↗</span>
+          </div>
+          <div class="sim-glow"></div>
+        </article>
+      </a>
+
+      <a class="card-link" href="fleming/zone_of_inhibition_measurement_simulation.html">
+        <article class="sim-card">
+          <div class="sim-label">
+            <span class="dot"></span>
+            Fleming
+          </div>
+          <div class="sim-title">
+            Zone of inhibition measurement
+          </div>
+          <p class="sim-desc">
+            Drop antibiotic disks and compare halo sizes to build intuition for disk diffusion tests.
+          </p>
+          <div class="sim-meta">
+            <span class="sim-pill-soft">
+              <span class="dot"></span>
+              Kirby-Bauer logic
+            </span>
+            <span>Relative potency</span>
+            <span class="sim-arrow">↗</span>
+          </div>
+          <div class="sim-glow"></div>
+        </article>
+      </a>
+
+      <a class="card-link" href="fleming/antibiotic_resistance_evolution_simulation.html">
+        <article class="sim-card">
+          <div class="sim-label">
+            <span class="dot"></span>
+            Fleming
+          </div>
+          <div class="sim-title">
+            Antibiotic resistance evolution
+          </div>
+          <p class="sim-desc">
+            Run generations under antibiotic pressure and watch resistant cells dominate.
+          </p>
+          <div class="sim-meta">
+            <span class="sim-pill-soft">
+              <span class="dot"></span>
+              Selection & mutation
+            </span>
+            <span>Population shifts</span>
+            <span class="sim-arrow">↗</span>
+          </div>
+          <div class="sim-glow"></div>
+        </article>
+      </a>
+
+      <a class="card-link" href="fleming/antibiotic_production_visualization_simulation.html">
+        <article class="sim-card">
+          <div class="sim-label">
+            <span class="dot"></span>
+            Fleming
+          </div>
+          <div class="sim-title">
+            Industrial antibiotic production
+          </div>
+          <p class="sim-desc">
+            Follow antibiotic manufacturing from fermenters through purification to final vials.
+          </p>
+          <div class="sim-meta">
+            <span class="sim-pill-soft">
+              <span class="dot"></span>
+              Ferment → extract → vial
+            </span>
+            <span>Process overview</span>
+            <span class="sim-arrow">↗</span>
+          </div>
+          <div class="sim-glow"></div>
+        </article>
+      </a>
+    </section>
+
+    <!-- Footer / credits -->
+    <div class="section-divider"></div>
+    <footer class="mt-1 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+      <div class="credit-text">
+        Developed as a teaching companion for microbiology courses to let students explore how classic experiments and simple visuals connect concepts to real-world practice.
+      </div>
+      <div class="credit-text">
+        Built by <strong>Gursahib Singh</strong> • Concept idea by <strong>Naowarat Cheeptham</strong> • Thompson Rivers University
+      </div>
+    </footer>
+  </main>
+</body>
+</html>
