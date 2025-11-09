@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Antibiotic Production Visualization - From Fermenter to Vial</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+
+  <!-- p5.js -->
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.2/lib/p5.min.js"></script>
+
+  <style>
+    :root {
+      --teal-main: #0f766e;
+      --teal-soft: #5eead4;
+      --bg-soft: #f4fbfa;
+      --ink: #0f172a;
+      --muted: #6b7280;
+      --ferment: #22c55e;
+      --broth: #e0f2fe;
+      --product: #38bdf8;
+      --vial: #6366f1;
+      --accent-amber: #fbbf24;
+      --accent-orange: #f97316;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, #e0fbff 0, #f9fafb 60%);
+      color: var(--ink);
+    }
+
+    .glass-card {
+      border-radius: 1.4rem;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow:
+        0 16px 40px rgba(15, 23, 42, 0.12),
+        0 0 0 1px rgba(148, 163, 253, 0.06);
+      backdrop-filter: blur(14px);
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.66rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal-main);
+      background: linear-gradient(
+        to right,
+        rgba(15, 118, 110, 0.08),
+        rgba(56, 189, 248, 0.02)
+      );
+      border: 1px solid rgba(15, 118, 110, 0.18);
+    }
+
+    .chip span.dot {
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 999px;
+      background: var(--teal-soft);
+      box-shadow: 0 0 10px rgba(94, 234, 212, 0.9);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.26rem;
+      padding: 0.18rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.64rem;
+      color: var(--muted);
+      background-color: rgba(15, 118, 110, 0.03);
+    }
+
+    .pill-color {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 999px;
+    }
+
+    #sketch-container {
+      border-radius: 1rem;
+      overflow: hidden;
+      background: radial-gradient(circle at top, #e0f2fe, #ffffff);
+      border: 1px solid rgba(148, 163, 253, 0.16);
+      position: relative;
+    }
+
+    .overlay-label {
+      position: absolute;
+      right: 0.7rem;
+      top: 0.5rem;
+      padding: 0.16rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.6rem;
+      background: rgba(255, 255, 255, 0.96);
+      color: var(--teal-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      box-shadow: 0 4px 10px rgba(148, 163, 253, 0.2);
+    }
+
+    .overlay-label span.swatch {
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 999px;
+      background: var(--teal-main);
+    }
+
+    .btn-step {
+      padding: 0.4rem 0.9rem;
+      font-size: 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 118, 110, 0.18);
+      background-color: rgba(240, 253, 250, 0.98);
+      color: var(--teal-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      cursor: pointer;
+      transition: all 0.18s ease-out;
+      white-space: nowrap;
+    }
+
+    .btn-step:hover {
+      background-color: rgba(209, 250, 229, 0.98);
+      box-shadow: 0 4px 10px rgba(148, 163, 253, 0.16);
+    }
+
+    .btn-step.primary {
+      background-color: var(--teal-main);
+      color: #ffffff;
+      border-color: transparent;
+    }
+
+    .btn-step.primary:hover {
+      background-color: #115e59;
+      box-shadow: 0 5px 14px rgba(15, 23, 42, 0.22);
+    }
+
+    .status-label {
+      font-size: 0.66rem;
+      color: var(--muted);
+    }
+
+    .explain-list {
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .explain-list li {
+      margin-bottom: 0.12rem;
+    }
+
+    .metric-label {
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+
+    .metric-value {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--teal-main);
+    }
+
+    .metric-sub {
+      font-size: 0.62rem;
+      color: #9ca3af;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex justify-center px-4 py-6">
+  <main class="w-full max-w-6xl space-y-5">
+    <!-- Header -->
+    <section class="glass-card px-6 py-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <div class="space-y-1.5">
+        <div class="chip">
+          <span class="dot"></span>
+          Industrial Antibiotic Production
+        </div>
+        <h1 class="text-xl md:text-2xl font-semibold text-slate-900">
+          From Fermentation Tank to Purified Antibiotic
+        </h1>
+        <p class="text-xs md:text-sm text-slate-600 max-w-2xl">
+          Step through a simplified industrial process: large-scale fermentation, biomass removal, extraction, and final formulation.
+          The animated diagram highlights where microbes, product, and purification steps fit together.
+        </p>
+      </div>
+      <div class="flex flex-col items-end gap-1">
+        <div class="pill">
+          <span class="pill-color" style="background:#22c55e;"></span>
+          Green culture = producing microbe
+        </div>
+        <div class="pill">
+          <span class="pill-color" style="background:#38bdf8;"></span>
+          Blue = antibiotic-rich broth / product
+        </div>
+        <div class="status-label text-right">
+          Use the step buttons to animate each stage of manufacturing.
+        </div>
+      </div>
+    </section>
+
+    <section class="grid gap-4 md:grid-cols-[minmax(0,_1.9fr)_minmax(260px,_1.1fr)] items-stretch">
+      <!-- LEFT: Animated process diagram -->
+      <div class="glass-card p-4 flex flex-col gap-3">
+        <!-- Legend -->
+        <div class="flex flex-wrap gap-2 text-[0.65rem] text-slate-600">
+          <div class="pill">
+            <span class="pill-color" style="background:#22c55e;"></span>
+            Production microbe (e.g., Penicillium / Streptomyces)
+          </div>
+          <div class="pill">
+            <span class="pill-color" style="background:#bbf7d0;"></span>
+            Nutrient medium in fermenter
+          </div>
+          <div class="pill">
+            <span class="pill-color" style="background:#38bdf8;"></span>
+            Antibiotic-rich broth / extracted product
+          </div>
+          <div class="pill">
+            <span class="pill-color" style="background:#6366f1;"></span>
+            Purified antibiotic in vials
+          </div>
+        </div>
+
+        <!-- Canvas -->
+        <div id="sketch-container" class="mt-1 w-full aspect-[16/9]">
+          <div class="overlay-label">
+            <span class="swatch"></span>
+            Visual pipeline: ferment → separate → extract → formulate
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="mt-3 flex flex-wrap items-center gap-2 text-xs">
+          <button id="btnReset" class="btn-step">
+            ⟳ Reset process
+          </button>
+          <button id="btnStage1" class="btn-step primary">
+            1. Inoculate & grow in fermenter
+          </button>
+          <button id="btnStage2" class="btn-step">
+            2. Harvest broth & remove cells
+          </button>
+          <button id="btnStage3" class="btn-step">
+            3. Extract & concentrate antibiotic
+          </button>
+          <button id="btnStage4" class="btn-step">
+            4. Formulate into vials
+          </button>
+          <div class="pill">
+            Stage:
+            <span id="stageLabel" class="status-label">Overview</span>
+          </div>
+        </div>
+
+        <!-- Summary -->
+        <p id="summaryText" class="mt-1 text-[0.7rem] leading-relaxed text-slate-600">
+          Start at the left with a large stainless-steel fermenter.
+          Click through the steps to see cultured microbes produce antibiotic, then watch how industry
+          separates cells, extracts the drug, and fills standardized vials for clinical use.
+        </p>
+      </div>
+
+      <!-- RIGHT: Explanatory cards -->
+      <aside class="glass-card p-4 flex flex-col gap-3">
+        <!-- Stage explanations -->
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1.5">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-[var(--teal-main)] uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-[var(--teal-main)]"></span>
+            Process stages
+          </div>
+          <ul class="explain-list list-disc pl-4">
+            <li><strong>Fermentation:</strong> Production strain grows in aerated tanks and secretes antibiotic into broth.</li>
+            <li><strong>Cell removal:</strong> Biomass is removed (e.g., filtration/centrifugation) to clarify broth.</li>
+            <li><strong>Extraction & purification:</strong> Solvent extraction, chromatography, or resins enrich the antibiotic.</li>
+            <li><strong>Formulation:</strong> Adjusted for stability and dosing, then filled into vials or tablets.</li>
+          </ul>
+        </div>
+
+        <!-- Live indicators -->
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1.5">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-sky-700 uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+            Live indicators (schematic)
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <div>
+              <div class="metric-label">Culture activity</div>
+              <div id="metricCulture" class="metric-value">0.0</div>
+              <div class="metric-sub">How "busy" the fermenter is</div>
+            </div>
+            <div>
+              <div class="metric-label">Broth antibiotic level</div>
+              <div id="metricBroth" class="metric-value">0.0</div>
+              <div class="metric-sub">Relative concentration</div>
+            </div>
+            <div>
+              <div class="metric-label">Purity</div>
+              <div id="metricPurity" class="metric-value">0.0</div>
+              <div class="metric-sub">% of desired product</div>
+            </div>
+            <div>
+              <div class="metric-label">Filled vials</div>
+              <div id="metricVials" class="metric-value">0</div>
+              <div class="metric-sub">Units of final dose</div>
+            </div>
+          </div>
+          <p class="text-[0.65rem] text-slate-500 leading-relaxed">
+            Values are qualitative, tuned to visually reinforce that fermentation
+            generates product, downstream steps increase purity, and formulation
+            yields standardized doses.
+          </p>
+        </div>
+
+        <!-- Teaching card -->
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1.5">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-emerald-700 uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            What students should take away
+          </div>
+          <ul class="explain-list list-disc pl-4">
+            <li>Antibiotics are often produced by microbes at large scale, not synthesized one molecule at a time in flasks.</li>
+            <li>Most of the industrial work is purification and formulation after fermentation.</li>
+            <li>Quality control ensures consistent potency from tank to vial.</li>
+            <li>The same logic applies broadly to many biologically produced drugs.</li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    // Simple staged visualization of antibiotic production
+
+    const stages = {
+      OVERVIEW: "Overview",
+      FERMENT: "Fermentation: microbes producing antibiotic",
+      SEPARATE: "Cell removal: clarify antibiotic-rich broth",
+      EXTRACT: "Extraction: enrich and purify antibiotic",
+      FORMULATE: "Formulation: fill stable doses"
+    };
+
+    const state = {
+      stage: stages.OVERVIEW,
+      t: 0,
+      cultureActivity: 0.0,
+      brothLevel: 0.0,
+      purity: 0.0,
+      vials: 0
+    };
+
+    const stageLabel = document.getElementById("stageLabel");
+    const summaryText = document.getElementById("summaryText");
+
+    const metricCulture = document.getElementById("metricCulture");
+    const metricBroth = document.getElementById("metricBroth");
+    const metricPurity = document.getElementById("metricPurity");
+    const metricVials = document.getElementById("metricVials");
+
+    const btnReset = document.getElementById("btnReset");
+    const btnStage1 = document.getElementById("btnStage1");
+    const btnStage2 = document.getElementById("btnStage2");
+    const btnStage3 = document.getElementById("btnStage3");
+    const btnStage4 = document.getElementById("btnStage4");
+
+    function setStage(stage) {
+      state.stage = stage;
+      state.t = 0;
+      if (stage === stages.OVERVIEW) {
+        state.cultureActivity = 0.0;
+        state.brothLevel = 0.0;
+        state.purity = 0.0;
+        state.vials = 0;
+        summaryText.textContent =
+          "This diagram shows a simplified pipeline used for many classic antibiotics: fermentation tanks on the left, purification units in the middle, and finished vials on the right.";
+      } else if (stage === stages.FERMENT) {
+        state.cultureActivity = 0.8;
+        state.brothLevel = 0.4;
+        state.purity = 0.1;
+        state.vials = 0;
+        summaryText.textContent =
+          "Fermentation: a production strain (such as Penicillium or Streptomyces) grows in a large aerated tank. Nutrients are converted into biomass and secreted antibiotic in the broth.";
+      } else if (stage === stages.SEPARATE) {
+        state.cultureActivity = 0.5;
+        state.brothLevel = 0.7;
+        state.purity = 0.4;
+        state.vials = 0;
+        summaryText.textContent =
+          "Cell removal: the culture broth is harvested. Filters and centrifuges remove most cells and solids, leaving a clearer antibiotic-containing liquid.";
+      } else if (stage === stages.EXTRACT) {
+        state.cultureActivity = 0.2;
+        state.brothLevel = 0.9;
+        state.purity = 0.8;
+        state.vials = 0;
+        summaryText.textContent =
+          "Extraction and purification: solvents, resins, or chromatography selectively concentrate the antibiotic, increasing purity while reducing impurities.";
+      } else if (stage === stages.FORMULATE) {
+        state.cultureActivity = 0.1;
+        state.brothLevel = 0.5;
+        state.purity = 0.98;
+        state.vials = 32;
+        summaryText.textContent =
+          "Formulation: the purified antibiotic is adjusted for stability and dosing, then filled into standardized vials or tablets for clinical use.";
+      }
+      stageLabel.textContent = stage;
+      updateMetrics();
+    }
+
+    function updateMetrics() {
+      metricCulture.textContent = state.cultureActivity.toFixed(2);
+      metricBroth.textContent = state.brothLevel.toFixed(2);
+      metricPurity.textContent = state.purity.toFixed(2);
+      metricVials.textContent = state.vials.toString();
+    }
+
+    btnReset.addEventListener("click", () => setStage(stages.OVERVIEW));
+    btnStage1.addEventListener("click", () => setStage(stages.FERMENT));
+    btnStage2.addEventListener("click", () => setStage(stages.SEPARATE));
+    btnStage3.addEventListener("click", () => setStage(stages.EXTRACT));
+    btnStage4.addEventListener("click", () => setStage(stages.FORMULATE));
+
+    // p5.js: process diagram with gentle animations
+    let cnv;
+    let layout = {};
+
+    function setup() {
+      const container = document.getElementById("sketch-container");
+      const rect = container.getBoundingClientRect();
+      cnv = createCanvas(rect.width, rect.height);
+      cnv.parent("sketch-container");
+      computeLayout();
+      setStage(stages.OVERVIEW);
+    }
+
+    function windowResized() {
+      const container = document.getElementById("sketch-container");
+      const rect = container.getBoundingClientRect();
+      resizeCanvas(rect.width, rect.height);
+      computeLayout();
+    }
+
+    function computeLayout() {
+      const h = height;
+      const w = width;
+
+      // Define x-positions for units: fermenter -> separation -> extraction -> vials
+      const yMid = h * 0.58;
+      layout.fermenterX = w * 0.16;
+      layout.separatorX = w * 0.4;
+      layout.extractorX = w * 0.64;
+      layout.vialX = w * 0.84;
+      layout.unitY = yMid;
+      layout.unitH = h * 0.38;
+      layout.unitW = w * 0.12;
+    }
+
+    function drawBackground() {
+      background(246, 248, 252);
+
+      // Soft base panel
+      noStroke();
+      fill(255, 255, 255, 240);
+      rect(width * 0.04, height * 0.16, width * 0.92, height * 0.7, 18);
+
+      // Stage labels along the top
+      const labels = [
+        "Fermenter",
+        "Cell removal",
+        "Extraction / purification",
+        "Formulation"
+      ];
+      const xs = [
+        layout.fermenterX,
+        layout.separatorX,
+        layout.extractorX,
+        layout.vialX
+      ];
+
+      textAlign(CENTER, TOP);
+      textSize(8);
+      fill(148, 163, 253);
+      for (let i = 0; i < labels.length; i++) {
+        text(labels[i], xs[i], height * 0.18);
+      }
+
+      // Connecting arrows
+      stroke(148, 163, 253, 180);
+      strokeWeight(1);
+      const yArrow = height * 0.24;
+      for (let i = 0; i < xs.length - 1; i++) {
+        const x1 = xs[i] + 26;
+        const x2 = xs[i + 1] - 26;
+        line(x1, yArrow, x2, yArrow);
+        noStroke();
+        fill(148, 163, 253, 200);
+        triangle(
+          x2, yArrow,
+          x2 - 6, yArrow - 3,
+          x2 - 6, yArrow + 3
+        );
+        stroke(148, 163, 253, 180);
+      }
+    }
+
+    function drawFermenter() {
+      const x = layout.fermenterX;
+      const baseY = layout.unitY + layout.unitH / 2;
+      const topY = layout.unitY - layout.unitH / 2;
+
+      // Vessel body
+      noFill();
+      stroke(148, 163, 253, 200);
+      strokeWeight(1.4);
+      const w = layout.unitW;
+      const h = layout.unitH;
+      rect(x - w / 2, topY, w, h, 18);
+
+      // Liquid level
+      const fillHeight = h * 0.7;
+      noStroke();
+      const gradientTop = color(187, 247, 208, 230);
+      const gradientBottom = color(22, 163, 74, 180);
+      for (let i = 0; i < fillHeight; i++) {
+        const t = i / fillHeight;
+        const c = lerpColor(gradientTop, gradientBottom, t * 0.9);
+        fill(c);
+        rect(x - w / 2 + 2, baseY - fillHeight + i, w - 4, 1);
+      }
+
+      // Small bubbles / cells
+      if (state.stage === stages.FERMENT || state.stage === stages.SEPARATE || state.stage === stages.EXTRACT) {
+        const activity = state.cultureActivity;
+        for (let i = 0; i < 18; i++) {
+          const rx = random(x - w / 2 + 4, x + w / 2 - 4);
+          const ry = random(baseY - fillHeight + 6, baseY - 4);
+          fill(34, 197, 94, 80 + 80 * activity);
+          noStroke();
+          circle(rx, ry, random(2, 4));
+        }
+      }
+
+      // Aeration / impeller hint
+      stroke(148, 163, 253, 160);
+      line(x, baseY, x, baseY - 16);
+      line(x - 6, baseY - 10, x + 6, baseY - 10);
+    }
+
+    function drawSeparator() {
+      const x = layout.separatorX;
+      const w = layout.unitW * 0.9;
+      const h = layout.unitH * 0.6;
+      const topY = layout.unitY - h / 2;
+      const baseY = topY + h;
+
+      // Clarifier / centrifuge rectangle
+      stroke(148, 163, 253, 200);
+      strokeWeight(1);
+      fill(248, 250, 252, 250);
+      rect(x - w / 2, topY, w, h, 12);
+
+      // Broth flow line from fermenter
+      stroke(56, 189, 248, 180);
+      const fX = layout.fermenterX + layout.unitW / 2;
+      const fY = layout.unitY;
+      line(fX, fY, x - w / 2, layout.unitY);
+
+      // Inside: top clear layer, bottom pellet
+      noStroke();
+      const clarity = state.stage === stages.SEPARATE || state.stage === stages.EXTRACT || state.stage === stages.FORMULATE ? 220 : 120;
+      fill(190, 230, 253, clarity);
+      rect(x - w / 2 + 3, topY + 4, w - 6, h * 0.55, 10);
+      fill(22, 163, 74, 80);
+      rect(x - w / 2 + 3, baseY - h * 0.18, w - 6, h * 0.16, 8);
+    }
+
+    function drawExtractor() {
+      const x = layout.extractorX;
+      const w = layout.unitW * 0.9;
+      const h = layout.unitH * 0.75;
+      const topY = layout.unitY - h / 2;
+      const baseY = topY + h;
+
+      // Column/resin style
+      stroke(148, 163, 253, 200);
+      strokeWeight(1);
+      fill(248, 250, 252, 250);
+      rect(x - w / 2, topY, w, h, 14);
+
+      // Inlet from separator
+      stroke(56, 189, 248, 180);
+      const sX = layout.separatorX + layout.unitW * 0.45;
+      const sY = layout.unitY;
+      line(sX, sY, x - w / 2, layout.unitY);
+
+      // Gradient bands representing separation
+      noStroke();
+      for (let i = 0; i < 8; i++) {
+        const t = i / 7;
+        const bandY = topY + 6 + t * (h - 18);
+        const c = lerpColor(
+          color(191, 219, 254, 160),
+          color(56, 189, 248, 240),
+          t * state.purity
+        );
+        fill(c);
+        rect(x - w / 2 + 4, bandY, w - 8, 4, 6);
+      }
+
+      // Droplet outlet
+      const outletX = x + w / 2;
+      const outletY = layout.unitY + h * 0.1;
+      if (state.stage === stages.EXTRACT || state.stage === stages.FORMULATE) {
+        noStroke();
+        fill(56, 189, 248, 220);
+        circle(outletX + 10, outletY + 10 + 4 * sin(frameCount * 0.15), 5);
+      }
+    }
+
+    function drawVials() {
+      const centerX = layout.vialX;
+      const baseY = layout.unitY + layout.unitH * 0.32;
+
+      // Inlet line from extractor
+      stroke(56, 189, 248, 180);
+      const eX = layout.extractorX + layout.unitW * 0.45;
+      const eY = layout.unitY;
+      line(eX, eY, centerX, eY);
+      line(centerX, eY, centerX, baseY - 24);
+
+      // Draw 6–8 small vials representing final product
+      const count = 6;
+      const spacing = 16;
+      for (let i = 0; i < count; i++) {
+        const x = centerX - ((count - 1) * spacing) / 2 + i * spacing;
+        const h = 16;
+        const w = 7;
+        const filled = state.stage === stages.FORMULATE && i < Math.min(state.vials / 4, count);
+
+        // glass
+        stroke(148, 163, 253, 200);
+        strokeWeight(0.7);
+        fill(248, 250, 252, 240);
+        rect(x - w / 2, baseY - h, w, h, 3);
+
+        // liquid
+        if (filled) {
+          noStroke();
+          fill(99, 102, 241, 210);
+          rect(x - w / 2 + 1, baseY - 6, w - 2, 5, 2);
+        }
+
+        // cap
+        noStroke();
+        fill(148, 163, 253, 220);
+        rect(x - w / 2, baseY - h - 3, w, 3, 2);
+      }
+    }
+
+    function drawFlowHints() {
+      // Soft arrow-like bands under units to show direction left->right
+      noStroke();
+      fill(209, 250, 229, 40);
+      const y = layout.unitY + layout.unitH / 2 + 12;
+      rect(width * 0.1, y, width * 0.8, 6, 999);
+    }
+
+    function draw() {
+      state.t += 0.01;
+
+      drawBackground();
+      drawFlowHints();
+
+      // Draw units in order to keep layering sensible
+      drawFermenter();
+      drawSeparator();
+      drawExtractor();
+      drawVials();
+
+      // Gentle pulsing of metrics for active stages
+      if (state.stage === stages.FERMENT) {
+        state.cultureActivity = 0.7 + 0.15 * sin(frameCount * 0.05);
+        state.brothLevel = 0.4 + 0.1 * sin(frameCount * 0.04 + 1);
+      } else if (state.stage === stages.SEPARATE) {
+        state.brothLevel = 0.6 + 0.1 * sin(frameCount * 0.04);
+        state.purity = 0.4 + 0.05 * sin(frameCount * 0.03 + 1);
+      } else if (state.stage === stages.EXTRACT) {
+        state.purity = 0.75 + 0.08 * sin(frameCount * 0.04);
+      } else if (state.stage === stages.FORMULATE) {
+        // Slight shimmer in vials
+        state.vials = 32;
+      }
+
+      updateMetrics();
+    }
+  </script>
+</body>
+</html>
