@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tuberculosis Bacterium Identification - Koch & Acid-Fast Stain</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+
+  <!-- p5.js -->
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.2/lib/p5.min.js"></script>
+
+  <style>
+    :root {
+      --main-color: #0f766e;
+      --soft-color: #5eead4;
+      --bg-soft: #f4fbfa;
+      --ink: #0f172a;
+      --muted: #6b7280;
+      --acidfast: #dc2626;
+      --nonacidfast: #94a3b8;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, #e0fbff 0, #f9fafb 60%);
+      color: var(--ink);
+    }
+
+    .glass-card {
+      border-radius: 1.4rem;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow:
+        0 16px 40px rgba(15, 23, 42, 0.12),
+        0 0 0 1px rgba(148, 163, 253, 0.06);
+      backdrop-filter: blur(14px);
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.66rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--main-color);
+      background: linear-gradient(
+        to right,
+        rgba(15, 118, 110, 0.08),
+        rgba(56, 189, 248, 0.02)
+      );
+      border: 1px solid rgba(15, 118, 110, 0.18);
+    }
+
+    .chip span.dot {
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 999px;
+      background: var(--soft-color);
+      box-shadow: 0 0 10px rgba(94, 234, 212, 0.9);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.26rem;
+      padding: 0.18rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.64rem;
+      color: var(--muted);
+      background-color: rgba(15, 118, 110, 0.03);
+    }
+
+    .pill-color {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 999px;
+    }
+
+    #sketch-container {
+      border-radius: 1rem;
+      overflow: hidden;
+      background: radial-gradient(circle at top, #e0f2fe, #ffffff);
+      border: 1px solid rgba(148, 163, 253, 0.16);
+      position: relative;
+    }
+
+    .overlay-label {
+      position: absolute;
+      right: 0.7rem;
+      top: 0.5rem;
+      padding: 0.16rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.6rem;
+      background: rgba(255, 255, 255, 0.96);
+      color: var(--main-color);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      box-shadow: 0 4px 10px rgba(148, 163, 253, 0.2);
+    }
+
+    .overlay-label span.swatch {
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 999px;
+      background: var(--main-color);
+    }
+
+    .btn-step {
+      padding: 0.4rem 0.9rem;
+      font-size: 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 118, 110, 0.18);
+      background-color: rgba(240, 253, 250, 0.98);
+      color: var(--main-color);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      cursor: pointer;
+      transition: all 0.18s ease-out;
+      white-space: nowrap;
+    }
+
+    .btn-step:hover {
+      background-color: rgba(209, 250, 229, 0.98);
+      box-shadow: 0 4px 10px rgba(148, 163, 253, 0.16);
+    }
+
+    .btn-step.primary {
+      background-color: var(--main-color);
+      color: #ffffff;
+      border-color: transparent;
+    }
+
+    .btn-step.primary:hover {
+      background-color: #115e59;
+      box-shadow: 0 5px 14px rgba(15, 23, 42, 0.22);
+    }
+
+    .status-label {
+      font-size: 0.66rem;
+      color: var(--muted);
+    }
+
+    .explain-list {
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .explain-list li {
+      margin-bottom: 0.12rem;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex justify-center px-4 py-6">
+  <main class="w-full max-w-6xl space-y-5">
+    <!-- Header -->
+    <section class="glass-card px-6 py-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <div class="space-y-1.5">
+        <div class="chip">
+          <span class="dot"></span>
+          Robert Koch • Tuberculosis Lab
+        </div>
+        <h1 class="text-xl md:text-2xl font-semibold text-slate-900">
+          Identifying Mycobacterium tuberculosis with Acid-Fast Staining
+        </h1>
+        <p class="text-xs md:text-sm text-slate-600 max-w-2xl">
+          Use the buttons to apply an acid-fast stain and watch rod-shaped bacteria that keep the red dye stand out.
+          This models how Koch and others linked a specific bacterium to tuberculosis.
+        </p>
+      </div>
+      <div class="flex flex-col items-end gap-1">
+        <div class="pill">
+          <span class="pill-color" style="background:#0f766e;"></span>
+          Short steps, clear visuals
+        </div>
+        <div class="status-label text-right">
+          Follow: stain → decolorize → counterstain.
+        </div>
+      </div>
+    </section>
+
+    <section class="grid gap-4 md:grid-cols-[minmax(0,_1.9fr)_minmax(260px,_1.1fr)] items-stretch">
+      <!-- LEFT: Interactive microscope view -->
+      <div class="glass-card p-4 flex flex-col gap-3">
+        <!-- Legend -->
+        <div class="flex flex-wrap gap-2 text-[0.65rem] text-slate-600">
+          <div class="pill">
+            <span class="pill-color" style="background:var(--acidfast);"></span>
+            Acid-fast rods (M. tuberculosis-like)
+          </div>
+          <div class="pill">
+            <span class="pill-color" style="background:var(--nonacidfast);"></span>
+            Non–acid-fast bacteria
+          </div>
+          <div class="pill">
+            <span class="pill-color" style="background:#0ea5e9;"></span>
+            Counterstained background cells
+          </div>
+        </div>
+
+        <!-- Canvas -->
+        <div id="sketch-container" class="mt-1 w-full aspect-[16/9]">
+          <div class="overlay-label">
+            <span class="swatch"></span>
+            Virtual microscope field
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="mt-3 flex flex-wrap items-center gap-2 text-xs">
+          <button id="btnReset" class="btn-step">
+            ⟳ Reset slide
+          </button>
+          <button id="btnStain" class="btn-step primary">
+            1. Apply carbol fuchsin
+          </button>
+          <button id="btnDecolorize" class="btn-step">
+            2. Acid alcohol
+          </button>
+          <button id="btnCounter" class="btn-step">
+            3. Methylene blue
+          </button>
+          <div class="pill">
+            Step:
+            <span id="stepLabel" class="status-label">Unstained smear</span>
+          </div>
+        </div>
+
+        <!-- Short explanation -->
+        <p id="summaryText" class="mt-1 text-[0.7rem] leading-relaxed text-slate-600">
+          Start with a mixed smear. After carbol fuchsin, all rods look red. After acid alcohol, only acid-fast rods keep the red dye.
+          After methylene blue, other cells turn blue, while acid-fast rods stay bright red.
+        </p>
+      </div>
+
+      <!-- RIGHT: Very brief textual guide -->
+      <aside class="glass-card p-4 flex flex-col gap-3">
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-[var(--main-color)] uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-[var(--main-color)]"></span>
+            What to notice
+          </div>
+          <ul class="explain-list list-disc pl-4">
+            <li>Red, thin rods that keep their color after acid alcohol suggest M. tuberculosis–type cells.</li>
+            <li>Other bacteria lose red and can take up blue counterstain.</li>
+            <li>This staining pattern helps focus on the tuberculosis bacterium in a mixed sample.</li>
+          </ul>
+        </div>
+
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1.5">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-sky-700 uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+            Simple walkthrough
+          </div>
+          <ul class="explain-list list-disc pl-4">
+            <li>Click through steps 1 → 3 and watch colors change.</li>
+            <li>Red rods that never fade = acid-fast = key clue for tuberculosis.</li>
+            <li>Connect this to Koch showing a specific bacterium in TB lesions.</li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    // Very small state machine for acid-fast staining.
+    const steps = {
+      UNSTAINED: "Unstained smear",
+      STAINED: "Carbol fuchsin applied",
+      DECOLORIZED: "Acid alcohol used",
+      COUNTER: "Methylene blue added"
+    };
+
+    const state = {
+      step: steps.UNSTAINED
+    };
+
+    const stepLabel = document.getElementById("stepLabel");
+    const summaryText = document.getElementById("summaryText");
+
+    const btnReset = document.getElementById("btnReset");
+    const btnStain = document.getElementById("btnStain");
+    const btnDecolorize = document.getElementById("btnDecolorize");
+    const btnCounter = document.getElementById("btnCounter");
+
+    function setStep(newStep) {
+      state.step = newStep;
+      stepLabel.textContent = newStep;
+      updateSummary();
+    }
+
+    function updateSummary() {
+      if (state.step === steps.UNSTAINED) {
+        summaryText.textContent =
+          "Unstained smear: rods and other cells are faint. Hard to tell anything apart.";
+      } else if (state.step === steps.STAINED) {
+        summaryText.textContent =
+          "After carbol fuchsin: all cells look red. Acid-fast and non–acid-fast cells both hold the dye for now.";
+      } else if (state.step === steps.DECOLORIZED) {
+        summaryText.textContent =
+          "After acid alcohol: only acid-fast rods keep the red dye. Others lose most of the red.";
+      } else if (state.step === steps.COUNTER) {
+        summaryText.textContent =
+          "After methylene blue: non–acid-fast cells turn blue, while acid-fast rods stay bright red. The red rods stand out as tuberculosis-type bacteria.";
+      }
+    }
+
+    btnReset.addEventListener("click", () => {
+      setStep(steps.UNSTAINED);
+    });
+
+    btnStain.addEventListener("click", () => {
+      setStep(steps.STAINED);
+    });
+
+    btnDecolorize.addEventListener("click", () => {
+      setStep(steps.DECOLORIZED);
+    });
+
+    btnCounter.addEventListener("click", () => {
+      setStep(steps.COUNTER);
+    });
+
+    // p5.js: microscope field with animated rods and color changes.
+    let acidFast = [];
+    let nonAcidFast = [];
+    let canvasRef;
+
+    function setup() {
+      const container = document.getElementById("sketch-container");
+      const rect = container.getBoundingClientRect();
+      canvasRef = createCanvas(rect.width, rect.height);
+      canvasRef.parent("sketch-container");
+      initCells();
+    }
+
+    function windowResized() {
+      const container = document.getElementById("sketch-container");
+      const rect = container.getBoundingClientRect();
+      resizeCanvas(rect.width, rect.height);
+      initCells();
+    }
+
+    function initCells() {
+      acidFast = [];
+      nonAcidFast = [];
+      const totalAF = 35;
+      const totalNon = 40;
+
+      for (let i = 0; i < totalAF; i++) {
+        acidFast.push(makeRod(true));
+      }
+      for (let i = 0; i < totalNon; i++) {
+        nonAcidFast.push(makeRod(false));
+      }
+    }
+
+    function makeRod(isAF) {
+      return {
+        x: random(width * 0.18, width * 0.82),
+        y: random(height * 0.22, height * 0.82),
+        len: isAF ? random(14, 20) : random(9, 14),
+        thick: isAF ? 2.4 : 2,
+        angle: random(TWO_PI),
+        dx: random(-0.15, 0.15),
+        dy: random(-0.15, 0.15),
+        isAF
+      };
+    }
+
+    function drawBackground() {
+      background(246, 248, 252);
+      noStroke();
+      fill(255, 255, 255, 240);
+      const cx = width / 2;
+      const cy = height / 2 + 6;
+      const r = min(width, height) * 0.78;
+      circle(cx, cy, r);
+
+      // Soft vignette
+      noFill();
+      stroke(226, 232, 240, 180);
+      strokeWeight(1);
+      circle(cx, cy, r - 6);
+
+      // label
+      noStroke();
+      fill(148, 163, 253);
+      textAlign(CENTER, TOP);
+      textSize(8);
+      text("Microscope view of stained smear", cx, cy - r / 2 - 10);
+    }
+
+    function updateAndDrawRods() {
+      const cx = width / 2;
+      const cy = height / 2 + 6;
+      const r = min(width, height) * 0.78 / 2;
+
+      function moveRod(rod) {
+        rod.x += rod.dx;
+        rod.y += rod.dy;
+        if (dist(rod.x, rod.y, cx, cy) > r - 8) {
+          rod.dx *= -1;
+          rod.dy *= -1;
+        }
+        rod.angle += random(-0.01, 0.01);
+      }
+
+      // Colors depend on step
+      for (const rod of acidFast) {
+        moveRod(rod);
+
+        let c;
+        if (state.step === steps.UNSTAINED) {
+          c = color(148, 163, 253, 70);
+        } else if (state.step === steps.STAINED) {
+          c = color(220, 38, 38, 230); // red
+        } else if (state.step === steps.DECOLORIZED) {
+          c = color(220, 38, 38, 240); // still red
+        } else {
+          c = color(220, 38, 38, 240); // stay red with counterstain
+        }
+
+        drawRod(rod, c);
+      }
+
+      for (const rod of nonAcidFast) {
+        moveRod(rod);
+
+        let c;
+        if (state.step === steps.UNSTAINED) {
+          c = color(148, 163, 253, 50);
+        } else if (state.step === steps.STAINED) {
+          c = color(220, 38, 38, 200); // also red at first
+        } else if (state.step === steps.DECOLORIZED) {
+          c = color(148, 163, 253, 25); // lose red
+        } else {
+          c = color(14, 165, 233, 200); // blue after counterstain
+        }
+
+        drawRod(rod, c);
+      }
+    }
+
+    function drawRod(rod, col) {
+      push();
+      translate(rod.x, rod.y);
+      rotate(rod.angle);
+      stroke(col);
+      strokeWeight(rod.thick);
+      line(-rod.len / 2, 0, rod.len / 2, 0);
+      pop();
+    }
+
+    function draw() {
+      drawBackground();
+      updateAndDrawRods();
+    }
+  </script>
+</body>
+</html>

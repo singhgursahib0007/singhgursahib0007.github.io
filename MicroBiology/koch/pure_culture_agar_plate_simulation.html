@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pure Culture on Agar Plate - Streak for Isolation Simulation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+
+  <!-- p5.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.2/lib/p5.min.js"></script>
+
+  <style>
+    :root {
+      --teal-main: #0f766e;
+      --teal-soft: #5eead4;
+      --bg-soft: #f4fbfa;
+      --ink: #0f172a;
+      --muted: #6b7280;
+      --plate-base: #fefce8;
+      --colony-strong: #0f766e;
+      --colony-light: #a7f3d0;
+      --accent-sky: #38bdf8;
+      --accent-amber: #fbbf24;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, -system-ui, sans-serif;
+      background: radial-gradient(circle at top, #e0fbff 0, #f9fafb 56%);
+      color: var(--ink);
+    }
+
+    .glass-card {
+      border-radius: 1.5rem;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow:
+        0 18px 50px rgba(15, 23, 42, 0.12),
+        0 0 0 1px rgba(15, 23, 42, 0.03);
+      backdrop-filter: blur(16px);
+    }
+
+    .chip-soft {
+      border-radius: 999px;
+      padding: 0.26rem 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: linear-gradient(
+        to right,
+        rgba(13, 148, 136, 0.09),
+        rgba(56, 189, 248, 0.02)
+      );
+      border: 1px solid rgba(13, 148, 136, 0.18);
+      font-size: 0.68rem;
+      color: var(--teal-main);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .chip-soft span.dot {
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 999px;
+      background: var(--teal-soft);
+      box-shadow: 0 0 10px rgba(94, 234, 212, 0.9);
+    }
+
+    .badge-pill {
+      border-radius: 999px;
+      padding: 0.18rem 0.6rem;
+      font-size: 0.64rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.26rem;
+      background-color: rgba(15, 118, 110, 0.03);
+      color: var(--muted);
+    }
+
+    .pill-color {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 999px;
+    }
+
+    #sketch-container {
+      border-radius: 1.1rem;
+      overflow: hidden;
+      background: radial-gradient(circle at top, #e0f2fe, #f9fafb);
+      border: 1px solid rgba(148, 163, 253, 0.16);
+      position: relative;
+    }
+
+    .overlay-label {
+      position: absolute;
+      right: 0.7rem;
+      top: 0.5rem;
+      padding: 0.16rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.6rem;
+      background: rgba(255, 255, 255, 0.95);
+      color: var(--teal-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.32rem;
+      box-shadow: 0 4px 10px rgba(148, 163, 253, 0.25);
+    }
+
+    .overlay-label span.swatch {
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 999px;
+      background: var(--teal-main);
+    }
+
+    .subtitle-sm {
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+
+    .btn-step {
+      padding: 0.38rem 0.85rem;
+      font-size: 0.68rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border: 1px solid rgba(15, 118, 110, 0.16);
+      color: var(--teal-main);
+      background-color: rgba(240, 253, 250, 0.98);
+      cursor: pointer;
+      transition: all 0.18s ease-out;
+      white-space: nowrap;
+    }
+
+    .btn-step:hover {
+      background-color: rgba(209, 250, 229, 0.98);
+      box-shadow: 0 4px 12px rgba(148, 163, 253, 0.18);
+    }
+
+    .btn-step.primary {
+      background-color: var(--teal-main);
+      color: #ffffff;
+      border-color: transparent;
+    }
+
+    .btn-step.primary:hover {
+      background-color: #115e59;
+      box-shadow: 0 5px 16px rgba(15, 23, 42, 0.22);
+    }
+
+    .explain-list li {
+      margin-bottom: 0.12rem;
+    }
+
+    .explain-list strong {
+      color: var(--teal-main);
+    }
+
+    .step-indicator {
+      font-size: 0.66rem;
+      color: var(--muted);
+    }
+
+    .hint-text {
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex justify-center px-4 py-6">
+  <main class="w-full max-w-6xl space-y-5">
+    <!-- Header -->
+    <section class="glass-card px-6 py-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <div class="space-y-1.5">
+        <div class="chip-soft">
+          <span class="dot"></span>
+          Robert Koch • Pure Culture Studio
+        </div>
+        <h1 class="text-xl md:text-2xl font-semibold text-slate-900">
+          Streaking for Isolation: Virtual Agar Plate Simulation
+        </h1>
+        <p class="text-xs md:text-sm text-slate-600 max-w-2xl">
+          Practice a simple 4-quadrant streak on a teal-themed virtual agar plate.
+          Drag the loop to spread bacteria and then "incubate" to see isolated colonies.
+          Designed for undergraduate microbiology labs.
+        </p>
+      </div>
+      <div class="flex flex-col items-end gap-1">
+        <div class="badge-pill">
+          <span class="pill-color" style="background:#0f766e;"></span>
+          Teal-themed and minimal
+        </div>
+        <div class="subtitle-sm text-right">
+          Just follow the steps shown: flame → load → streak 1→2→3→4 → incubate.
+        </div>
+      </div>
+    </section>
+
+    <section class="grid gap-4 md:grid-cols-[minmax(0,_1.9fr)_minmax(260px,_1.1fr)] items-stretch">
+      <!-- LEFT: Interactive plate -->
+      <div class="glass-card p-4 flex flex-col gap-3">
+        <!-- Legend -->
+        <div class="flex flex-wrap gap-2 text-[0.65rem] text-slate-600">
+          <div class="badge-pill">
+            <span class="pill-color" style="background:#bbf7d0;"></span>
+            Dense growth (heavy streak)
+          </div>
+          <div class="badge-pill">
+            <span class="pill-color" style="background:#22c55e;"></span>
+            Thinning growth
+          </div>
+          <div class="badge-pill">
+            <span class="pill-color" style="background:#0f766e;"></span>
+            Isolated colonies
+          </div>
+          <div class="badge-pill">
+            <span class="pill-color" style="background:#38bdf8;"></span>
+            Loop streak path
+          </div>
+        </div>
+
+        <!-- Canvas -->
+        <div id="sketch-container" class="mt-1 w-full aspect-[16/9]">
+          <div class="overlay-label">
+            <span class="swatch"></span>
+            Drag to streak • Then incubate
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="mt-3 flex flex-wrap items-center gap-2 text-xs">
+          <button id="btnReset" class="btn-step">
+            ⟳ Reset plate
+          </button>
+          <button id="btnFlame" class="btn-step primary">
+            1. Flame loop
+          </button>
+          <button id="btnInoculate" class="btn-step">
+            2. Touch mixed culture
+          </button>
+          <button id="btnIncubate" class="btn-step">
+            3. Incubate plate
+          </button>
+          <div class="badge-pill">
+            Status:
+            <span id="statusLabel" class="step-indicator">Step 1: Flame the loop</span>
+          </div>
+        </div>
+
+        <!-- Hints -->
+        <p id="hintText" class="hint-text mt-1">
+          Simple sequence:
+          (1) Click "Flame loop" to sterilize it.
+          (2) Click "Touch mixed culture" to load many cells.
+          (3) Drag in Quadrant 1 (top-right) for a thick streak.
+          (4) Without reloading, drag into Quadrants 2 → 3 → 4 so the streak gets lighter.
+          (5) Click "Incubate plate" to see where isolated colonies appear.
+        </p>
+
+        <!-- Summary -->
+        <p id="summaryText" class="mt-1 text-[0.7rem] leading-relaxed text-slate-600">
+          The goal is to turn a very crowded starting streak into a gentle gradient,
+          ending with single, well-separated colonies in the last quadrant. Each isolated colony represents a pure culture from one starting cell.
+        </p>
+      </div>
+
+      <!-- RIGHT: Explanation -->
+      <aside class="glass-card p-4 flex flex-col gap-3">
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-teal-700 uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-teal-500"></span>
+            Learning goals
+          </div>
+          <ul class="explain-list list-disc pl-4 text-[0.7rem] text-slate-600">
+            <li>Use a <strong>sterile loop</strong> (aseptic technique).</li>
+            <li>Understand the 4-quadrant streak: each new quadrant = fewer cells.</li>
+            <li>See how <strong>dilution by streaking</strong> creates isolated colonies.</li>
+            <li>Connect isolated colonies to <strong>pure cultures</strong> used in Koch-style experiments.</li>
+          </ul>
+        </div>
+
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1.5">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-sky-700 uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+            How this simulation works
+          </div>
+          <div id="detailText" class="text-[0.7rem] text-slate-600 leading-relaxed">
+            1) Flame = clean loop (no extra microbes).
+            2) Touch mixed culture = loop has many starting cells.
+            3) Streak Quadrant 1 = heavy growth zone (too crowded to see singles).
+            4) Drag into Quadrants 2, 3, and 4 without reloading = each pass carries fewer cells (dilution).
+            5) Incubate = early quadrants look like lawns; edges of later quadrants show single teal dots.
+               Each dot represents a colony from one original cell: a pure culture.
+          </div>
+        </div>
+
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1.5">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-slate-700 uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+            Suggested activities
+          </div>
+          <ol class="list-decimal pl-4 text-[0.7rem] text-slate-600 space-y-0.4">
+            <li>Do an orderly 1→2→3→4 streak and incubate. Find where single colonies appear.</li>
+            <li>Reset and scribble heavily in all quadrants. Incubate and compare: almost no isolated colonies.</li>
+            <li>Ask which areas you would pick from to start a pure culture and why.</li>
+          </ol>
+          <p class="text-[0.65rem] text-slate-500 leading-relaxed">
+            Focus on the idea: each step should reduce cell numbers on the loop, not draw artistic patterns.
+          </p>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    // Simulation state for loop streaking and colony visualization.
+    const statusLabel = document.getElementById("statusLabel");
+    const hintText = document.getElementById("hintText");
+    const summaryText = document.getElementById("summaryText");
+    const detailText = document.getElementById("detailText");
+
+    const btnReset = document.getElementById("btnReset");
+    const btnFlame = document.getElementById("btnFlame");
+    const btnInoculate = document.getElementById("btnInoculate");
+    const btnIncubate = document.getElementById("btnIncubate");
+
+    const state = {
+      loopSterile: false,
+      loopLoaded: false,
+      plateStreaks: [],   // line segments of streaks
+      sectorCounts: [0, 0, 0, 0],
+      incubated: false
+    };
+
+    function setStatus(text) {
+      statusLabel.textContent = text;
+    }
+
+    function setHint(text) {
+      hintText.textContent = text;
+    }
+
+    function setSummary(text) {
+      summaryText.textContent = text;
+    }
+
+    function resetSimulation() {
+      state.loopSterile = false;
+      state.loopLoaded = false;
+      state.plateStreaks = [];
+      state.sectorCounts = [0, 0, 0, 0];
+      state.incubated = false;
+      setStatus("Step 1: Flame the loop");
+      setHint("Click “Flame loop”, then “Touch mixed culture”, then streak Quadrant 1, then 2→3→4. Finally click “Incubate plate”.");
+      setSummary("Goal: single teal colonies in the last quadrant. Each isolated colony ≈ one starting cell (a pure culture).");
+      detailText.textContent =
+        "Think dilution, not drawing lines: early streaks deposit many cells; later streaks drag only a few. After incubation you should see thick growth near the start and isolated colonies near the end.";
+    }
+
+    // Button handlers
+    btnReset.addEventListener("click", () => {
+      resetSimulation();
+    });
+
+    btnFlame.addEventListener("click", () => {
+      state.loopSterile = true;
+      state.loopLoaded = false;
+      setStatus("Step 2: Loop flamed • Now click “Touch mixed culture”");
+      setHint("Your loop is clean. Next, load bacteria by clicking “Touch mixed culture”.");
+    });
+
+    btnInoculate.addEventListener("click", () => {
+      if (!state.loopSterile) {
+        setStatus("Flame first • Sterilize the loop before touching culture");
+        setHint("Click “Flame loop” to start aseptically, then “Touch mixed culture”.");
+        return;
+      }
+      state.loopLoaded = true;
+      setStatus("Step 3: Loop loaded • Streak Quadrant 1 (heavy)");
+      setHint("Click and drag inside Quadrant 1 for a thick streak, then drag into 2, 3, and 4 without reloading so the streak gets lighter.");
+    });
+
+    btnIncubate.addEventListener("click", () => {
+      if (state.plateStreaks.length === 0) {
+        setStatus("No streaks yet • Streak before incubating");
+        setHint("Drag your loop across Quadrants 1 → 4 to simulate streaking, then click “Incubate plate”.");
+        return;
+      }
+      state.incubated = true;
+      updatePostIncubationSummary();
+    });
+
+    function updatePostIncubationSummary() {
+      const [q1, q2, q3, q4] = state.sectorCounts;
+      let text = "After incubation: ";
+
+      const isoSectors = [];
+      if (q3 > 5 && q3 < 40) isoSectors.push("Quadrant 3");
+      if (q4 > 3 && q4 < 30) isoSectors.push("Quadrant 4");
+
+      if (isoSectors.length > 0) {
+        text += isoSectors.join(" & ") +
+          " show clear isolated colonies (good streak). Earlier quadrants are more confluent.";
+      } else if (q1 + q2 + q3 + q4 === 0) {
+        text += "no colonies formed; likely the loop was never loaded or everything was burned.";
+      } else {
+        text += "most areas are still crowded; streaking was too heavy or not carried into later quadrants, so isolation is poor.";
+      }
+
+      setSummary(text);
+      setStatus("Step 4: Incubated • Inspect colony pattern");
+      setHint("Look for single teal dots at the edges of later quadrants. Those are your pure colonies.");
+    }
+
+    // p5.js: plate layout, streak drawing, and colonies.
+    let plate = {
+      cx: 0,
+      cy: 0,
+      r: 0
+    };
+    let dragging = false;
+    let lastX = 0;
+    let lastY = 0;
+
+    function setup() {
+      const container = document.getElementById("sketch-container");
+      const rect = container.getBoundingClientRect();
+      const cnv = createCanvas(rect.width, rect.height);
+      cnv.parent("sketch-container");
+      initPlateGeometry();
+      resetSimulation();
+    }
+
+    function windowResized() {
+      const container = document.getElementById("sketch-container");
+      const rect = container.getBoundingClientRect();
+      resizeCanvas(rect.width, rect.height);
+      initPlateGeometry();
+    }
+
+    function initPlateGeometry() {
+      const size = min(width, height) * 0.8;
+      plate.r = size / 2;
+      plate.cx = width / 2;
+      plate.cy = height / 2 + 10;
+    }
+
+    function mouseInPlate(mx, my) {
+      const dx = mx - plate.cx;
+      const dy = my - plate.cy;
+      return dx * dx + dy * dy <= plate.r * plate.r;
+    }
+
+    function mousePressed() {
+      if (!mouseInPlate(mouseX, mouseY)) return;
+      if (!state.loopLoaded) return;
+      dragging = true;
+      lastX = mouseX;
+      lastY = mouseY;
+    }
+
+    function mouseReleased() {
+      dragging = false;
+    }
+
+    function mouseDragged() {
+      if (!dragging || !state.loopLoaded) return;
+      if (!mouseInPlate(mouseX, mouseY)) return;
+
+      const path = {
+        x1: lastX,
+        y1: lastY,
+        x2: mouseX,
+        y2: mouseY
+      };
+      state.plateStreaks.push(path);
+
+      // Count contributions by sector for incubation logic.
+      const midX = (path.x1 + path.x2) / 2;
+      const midY = (path.y1 + path.y2) / 2;
+      const sectorIndex = getSector(midX, midY);
+      if (sectorIndex !== null) {
+        const weight =
+          sectorIndex === 0 ? 5 :
+          sectorIndex === 1 ? 3 :
+          sectorIndex === 2 ? 2 : 1;
+        state.sectorCounts[sectorIndex] += weight;
+      }
+
+      lastX = mouseX;
+      lastY = mouseY;
+    }
+
+    function getSector(x, y) {
+      // Q1: top-right, Q2: top-left, Q3: bottom-left, Q4: bottom-right
+      const dx = x - plate.cx;
+      const dy = y - plate.cy;
+      if (dx * dx + dy * dy > plate.r * plate.r) return null;
+      if (dx >= 0 && dy <= 0) return 0;
+      if (dx <= 0 && dy <= 0) return 1;
+      if (dx <= 0 && dy >= 0) return 2;
+      if (dx >= 0 && dy >= 0) return 3;
+      return null;
+    }
+
+    function drawPlate() {
+      background(249, 250, 251);
+
+      // Plate base
+      noStroke();
+      fill(255, 255, 255, 230);
+      circle(plate.cx, plate.cy, plate.r * 2 + 18);
+
+      // Agar surface
+      fill(254, 252, 232);
+      circle(plate.cx, plate.cy, plate.r * 2);
+
+      // Light quadrant guides
+      stroke(209, 213, 219, 120);
+      strokeWeight(1);
+      line(plate.cx - plate.r, plate.cy, plate.cx + plate.r, plate.cy);
+      line(plate.cx, plate.cy - plate.r, plate.cx, plate.cy + plate.r);
+
+      // Label
+      noStroke();
+      fill(148, 163, 253);
+      textAlign(CENTER, TOP);
+      textSize(8);
+      text("Virtual agar plate (Quadrant 1 = top-right → 2 → 3 → 4)", plate.cx, plate.cy - plate.r - 14);
+    }
+
+    function drawStreaks() {
+      // Thicker, clearer teal streak lines
+      for (const s of state.plateStreaks) {
+        const mx = (s.x1 + s.x2) / 2;
+        const my = (s.y1 + s.y2) / 2;
+        const sectorIndex = getSector(mx, my);
+        let alpha = 90;
+        if (sectorIndex === 0) alpha = 130;
+        else if (sectorIndex === 1) alpha = 100;
+        else if (sectorIndex === 2) alpha = 80;
+        else if (sectorIndex === 3) alpha = 60;
+
+        stroke(56, 189, 248, alpha);
+        strokeWeight(4); // thicker for clarity
+        line(s.x1, s.y1, s.x2, s.y2);
+      }
+    }
+
+    function drawColonies() {
+      if (!state.incubated) return;
+
+      const [q1, q2, q3, q4] = state.sectorCounts;
+      const sectors = [q1, q2, q3, q4];
+
+      for (let i = 0; i < 4; i++) {
+        const count = sectors[i];
+        if (count <= 0) continue;
+
+        const targetN = Math.min(80, Math.max(4, Math.round(count * 0.8)));
+        for (let c = 0; c < targetN; c++) {
+          const ang = random(i * HALF_PI, (i + 1) * HALF_PI);
+          const rad = random(plate.r * 0.2, plate.r * 0.95);
+          const x = plate.cx + cos(ang) * rad;
+          const y = plate.cy + sin(ang) * rad;
+
+          const isoBias =
+            i === 0 ? 0.05 :
+            i === 1 ? 0.15 :
+            i === 2 ? 0.3 : 0.6;
+          const isolated = random() < isoBias;
+
+          if (isolated) {
+            noStroke();
+            fill(15, 118, 110, 235);
+            circle(x, y, random(4, 6));
+          } else {
+            noStroke();
+            fill(34, 197, 94, 130);
+            circle(x, y, random(3, 5));
+          }
+        }
+      }
+    }
+
+    function draw() {
+      drawPlate();
+      drawStreaks();
+      drawColonies();
+    }
+  </script>
+</body>
+</html>

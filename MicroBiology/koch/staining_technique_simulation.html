@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Staining Technique Simulation - Koch & Gram Stain Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+
+  <!-- p5.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.2/lib/p5.min.js"></script>
+
+  <style>
+    :root {
+      --teal-main: #0f766e;
+      --teal-soft: #5eead4;
+      --bg-soft: #f4fbfa;
+      --ink: #0f172a;
+      --muted: #6b7280;
+      --gram-pos: #4f46e5;
+      --gram-neg: #0ea5e9;
+      --safranin: #f97316;
+      --crystal: #6366f1;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, -system-ui, sans-serif;
+      background: radial-gradient(circle at top, #e0fbff 0, #f9fafb 56%);
+      color: var(--ink);
+    }
+
+    .glass-card {
+      border-radius: 1.5rem;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow:
+        0 18px 50px rgba(15, 23, 42, 0.12),
+        0 0 0 1px rgba(15, 23, 42, 0.03);
+      backdrop-filter: blur(16px);
+    }
+
+    .chip-soft {
+      border-radius: 999px;
+      padding: 0.26rem 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: linear-gradient(
+        to right,
+        rgba(13, 148, 136, 0.09),
+        rgba(56, 189, 248, 0.02)
+      );
+      border: 1px solid rgba(13, 148, 136, 0.18);
+      font-size: 0.68rem;
+      color: var(--teal-main);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .chip-soft span.dot {
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 999px;
+      background: var(--teal-soft);
+      box-shadow: 0 0 10px rgba(94, 234, 212, 0.9);
+    }
+
+    .badge-pill {
+      border-radius: 999px;
+      padding: 0.18rem 0.6rem;
+      font-size: 0.64rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.26rem;
+      background-color: rgba(15, 118, 110, 0.03);
+      color: var(--muted);
+    }
+
+    .pill-color {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 999px;
+    }
+
+    #sketch-container {
+      border-radius: 1.1rem;
+      overflow: hidden;
+      background: radial-gradient(circle at top, #e0f2fe, #f9fafb);
+      border: 1px solid rgba(148, 163, 253, 0.16);
+      position: relative;
+    }
+
+    .overlay-label {
+      position: absolute;
+      right: 0.7rem;
+      top: 0.5rem;
+      padding: 0.16rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.6rem;
+      background: rgba(255, 255, 255, 0.95);
+      color: var(--teal-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.32rem;
+      box-shadow: 0 4px 10px rgba(148, 163, 253, 0.25);
+    }
+
+    .overlay-label span.swatch {
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 999px;
+      background: var(--teal-main);
+    }
+
+    .subtitle-sm {
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+
+    .btn-step {
+      padding: 0.38rem 0.85rem;
+      font-size: 0.68rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border: 1px solid rgba(15, 118, 110, 0.16);
+      color: var(--teal-main);
+      background-color: rgba(240, 253, 250, 0.98);
+      cursor: pointer;
+      transition: all 0.18s ease-out;
+      white-space: nowrap;
+    }
+
+    .btn-step:hover {
+      background-color: rgba(209, 250, 229, 0.98);
+      box-shadow: 0 4px 12px rgba(148, 163, 253, 0.18);
+    }
+
+    .btn-step.primary {
+      background-color: var(--teal-main);
+      color: #ffffff;
+      border-color: transparent;
+    }
+
+    .btn-step.primary:hover {
+      background-color: #115e59;
+      box-shadow: 0 5px 16px rgba(15, 23, 42, 0.22);
+    }
+
+    .step-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--teal-main);
+    }
+
+    .step-desc {
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+
+    .explain-list li {
+      margin-bottom: 0.12rem;
+    }
+
+    .explain-list strong {
+      color: var(--teal-main);
+    }
+
+    .step-indicator {
+      font-size: 0.66rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex justify-center px-4 py-6">
+  <main class="w-full max-w-6xl space-y-5">
+    <!-- Header -->
+    <section class="glass-card px-6 py-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <div class="space-y-1.5">
+        <div class="chip-soft">
+          <span class="dot"></span>
+          Robert Koch • Staining Studio
+        </div>
+        <h1 class="text-xl md:text-2xl font-semibold text-slate-900">
+          Gram Stain & Koch-Era Staining: A Simple Virtual Slide
+        </h1>
+        <p class="text-xs md:text-sm text-slate-600 max-w-2xl">
+          Walk through a classic staining sequence: apply crystal violet, iodine, decolorizer, and safranin.
+          Watch Gram-positive and Gram-negative bacteria change color under a virtual microscope.
+          Designed to be fun, simple, and memorable for undergraduate microbiology.
+        </p>
+      </div>
+      <div class="flex flex-col items-end gap-1">
+        <div class="badge-pill">
+          <span class="pill-color" style="background:#0f766e;"></span>
+          Teal-themed, low-friction interaction
+        </div>
+        <div class="subtitle-sm text-right">
+          Use the buttons below the slide to "apply" stains and observe the dye diffusion animation.
+        </div>
+      </div>
+    </section>
+
+    <section class="grid gap-4 md:grid-cols-[minmax(0,_1.9fr)_minmax(260px,_1.1fr)] items-stretch">
+      <!-- LEFT: Interactive Slide -->
+      <div class="glass-card p-4 flex flex-col gap-3">
+        <!-- Legend -->
+        <div class="flex flex-wrap gap-2 text-[0.65rem] text-slate-600">
+          <div class="badge-pill">
+            <span class="pill-color" style="background:var(--gram-pos);"></span>
+            Gram-positive rods/cocci
+          </div>
+          <div class="badge-pill">
+            <span class="pill-color" style="background:var(--gram-neg);"></span>
+            Gram-negative rods
+          </div>
+          <div class="badge-pill">
+            <span class="pill-color" style="background:var(--crystal);"></span>
+            Crystal violet + iodine complex
+          </div>
+          <div class="badge-pill">
+            <span class="pill-color" style="background:var(--safranin);"></span>
+            Safranin counterstain
+          </div>
+        </div>
+
+        <!-- Canvas -->
+        <div id="sketch-container" class="mt-1 w-full aspect-[16/9]">
+          <div class="overlay-label">
+            <span class="swatch"></span>
+            Virtual slide & dye diffusion
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="mt-3 flex flex-wrap items-center gap-2 text-xs">
+          <button id="btnReset" class="btn-step">
+            ⟳ Reset slide
+          </button>
+          <button id="btnCrystal" class="btn-step primary">
+            1. Crystal violet
+          </button>
+          <button id="btnIodine" class="btn-step">
+            2. Iodine (mordant)
+          </button>
+          <button id="btnDecolorize" class="btn-step">
+            3. Decolorizer
+          </button>
+          <button id="btnSafranin" class="btn-step">
+            4. Safranin
+          </button>
+          <div class="badge-pill">
+            Step:
+            <span id="currentStep" class="step-indicator">Unstained smear</span>
+          </div>
+        </div>
+
+        <!-- Summary -->
+        <p id="summaryText" class="mt-1.5 text-[0.7rem] leading-relaxed text-slate-600">
+          Start with an unstained smear: both Gram-positive and Gram-negative cells are transparent and difficult to see.
+          Apply crystal violet to flood the slide with purple dye.
+        </p>
+      </div>
+
+      <!-- RIGHT: Explanation / Guidance -->
+      <aside class="glass-card p-4 flex flex-col gap-3">
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-teal-700 uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-teal-500"></span>
+            What this sim shows
+          </div>
+          <ul class="explain-list list-disc pl-4 text-[0.7rem] text-slate-600">
+            <li>
+              A mixed smear with <strong>Gram-positive</strong> (thick peptidoglycan) and
+              <strong>Gram-negative</strong> (thin peptidoglycan + outer membrane) bacteria.
+            </li>
+            <li>
+              Each button applies a step of the Gram stain:
+              crystal violet, iodine, alcohol/acetone, and safranin.
+            </li>
+            <li>
+              Colors and subtle diffusion effects illustrate dye binding and loss.
+            </li>
+            <li>
+              Links to Koch-era emphasis on visualization: staining makes invisible microbes visible and classifiable.
+            </li>
+          </ul>
+        </div>
+
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1.5">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-sky-700 uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+            Step-by-step logic (under the microscope)
+          </div>
+          <div id="detailText" class="text-[0.7rem] text-slate-600 leading-relaxed">
+            Unstained smear: both cell types are nearly invisible. This highlights why Koch and others
+            developed staining — to turn transparent cells into high-contrast shapes.
+          </div>
+        </div>
+
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1.5">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-slate-700 uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+            Quick activities
+          </div>
+          <ol class="list-decimal pl-4 text-[0.7rem] text-slate-600 space-y-0.4">
+            <li>Run through all four steps in order. Ask students to call out which cells stay purple vs. turn pink.</li>
+            <li>Reset and stop after decolorizer. Discuss which group has lost crystal violet and why.</li>
+            <li>Connect the final colors (purple vs. pink) back to cell wall structure and diagnostic Gram stains.</li>
+          </ol>
+          <p class="text-[0.65rem] text-slate-500 leading-relaxed">
+            The visualization is intentionally schematic and teal-accented so students can focus on the concept,
+            not microscope realism.
+          </p>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    // State machine for Gram staining steps.
+    // We simulate:
+    //  - Mixed smear: Gram+ and Gram-
+    //  - Each step changes dye state
+    //  - p5.js uses that state to color cells + show dye diffusion
+
+    const steps = {
+      UNSTAINED: "Unstained smear",
+      CRYSTAL: "Crystal violet applied",
+      IODINE: "Crystal violet-iodine complex",
+      DECOLORIZE: "Decolorizer applied",
+      SAFRANIN: "Safranin counterstain"
+    };
+
+    const state = {
+      step: steps.UNSTAINED
+    };
+
+    const currentStepEl = document.getElementById("currentStep");
+    const summaryTextEl = document.getElementById("summaryText");
+    const detailTextEl = document.getElementById("detailText");
+
+    const btnReset = document.getElementById("btnReset");
+    const btnCrystal = document.getElementById("btnCrystal");
+    const btnIodine = document.getElementById("btnIodine");
+    const btnDecolorize = document.getElementById("btnDecolorize");
+    const btnSafranin = document.getElementById("btnSafranin");
+
+    function setStep(newStep) {
+      state.step = newStep;
+      currentStepEl.textContent = newStep;
+      updateTexts();
+    }
+
+    function updateTexts() {
+      const s = state.step;
+      if (s === steps.UNSTAINED) {
+        summaryTextEl.textContent =
+          "Unstained smear: Gram-positive and Gram-negative cells are nearly invisible. This is why Koch and colleagues needed stains.";
+        detailTextEl.textContent =
+          "At this stage, you would see only faint outlines under the microscope. No differential information is visible yet.";
+      } else if (s === steps.CRYSTAL) {
+        summaryTextEl.textContent =
+          "Crystal violet floods the smear, staining all cells deep purple. Both Gram-positive and Gram-negative bacteria appear colored.";
+        detailTextEl.textContent =
+          "Crystal violet enters all cells. At this step, you cannot distinguish Gram type: everything is purple.";
+      } else if (s === steps.IODINE) {
+        summaryTextEl.textContent =
+          "Iodine acts as a mordant, forming a crystal violet–iodine complex. This complex is strongly retained by thick Gram-positive walls.";
+        detailTextEl.textContent =
+          "The CV–I complex becomes trapped more tightly in Gram-positive peptidoglycan. Gram-negative cells also hold it for now, but less securely.";
+      } else if (s === steps.DECOLORIZE) {
+        summaryTextEl.textContent =
+          "Decolorizer (alcohol/acetone) dehydrates Gram-positive walls, locking in CV–I, but dissolves Gram-negative outer membranes, letting purple wash out.";
+        detailTextEl.textContent =
+          "Now Gram-positive cells remain purple, while Gram-negative cells lose most of the stain and become very pale or colorless.";
+      } else if (s === steps.SAFRANIN) {
+        summaryTextEl.textContent =
+          "Safranin counterstain colors decolorized Gram-negative cells pink/red, while Gram-positive cells stay purple: the classic Gram stain result.";
+        detailTextEl.textContent =
+          "Final view: purple Gram-positive cells and pink Gram-negative cells in the same field. This simple color split encodes major structural differences.";
+      }
+    }
+
+    // Button wiring
+    btnReset.addEventListener("click", () => setStep(steps.UNSTAINED));
+    btnCrystal.addEventListener("click", () => setStep(steps.CRYSTAL));
+    btnIodine.addEventListener("click", () => setStep(steps.IODINE));
+    btnDecolorize.addEventListener("click", () => setStep(steps.DECOLORIZE));
+    btnSafranin.addEventListener("click", () => setStep(steps.SAFRANIN));
+
+    // p5.js visualization
+    let cells = [];
+    let dyeParticles = [];
+
+    function initCells() {
+      cells = [];
+      const total = 70;
+      for (let i = 0; i < total; i++) {
+        const isGramPos = i < total * 0.5; // 50% Gram+
+        cells.push({
+          x: 0,
+          y: 0,
+          r: isGramPos ? random(5, 7) : random(4, 6),
+          angle: random(TWO_PI),
+          isGramPos,
+          baseColor: isGramPos ? color(148, 163, 253) : color(148, 163, 253, 80)
+        });
+      }
+    }
+
+    function layoutCells() {
+      const slideX = width * 0.14;
+      const slideY = height * 0.18;
+      const slideW = width * 0.72;
+      const slideH = height * 0.64;
+      for (let c of cells) {
+        c.x = random(slideX + 12, slideX + slideW - 12);
+        c.y = random(slideY + 12, slideY + slideH - 12);
+      }
+    }
+
+    function resetDye() {
+      dyeParticles = [];
+    }
+
+    function spawnDyeParticles(colorVal) {
+      // Create a short burst of dye particles for diffusion effect.
+      const count = 80;
+      for (let i = 0; i < count; i++) {
+        dyeParticles.push({
+          x: random(width * 0.12, width * 0.88),
+          y: random(height * 0.16, height * 0.82),
+          dx: random(-0.2, 0.2),
+          dy: random(-0.2, 0.2),
+          life: random(40, 80),
+          col: colorVal
+        });
+      }
+    }
+
+    function setup() {
+      const container = document.getElementById("sketch-container");
+      const rect = container.getBoundingClientRect();
+      const cnv = createCanvas(rect.width, rect.height);
+      cnv.parent("sketch-container");
+      initCells();
+      layoutCells();
+      setStep(steps.UNSTAINED);
+    }
+
+    function windowResized() {
+      const container = document.getElementById("sketch-container");
+      const rect = container.getBoundingClientRect();
+      resizeCanvas(rect.width, rect.height);
+      layoutCells();
+    }
+
+    function updateDye() {
+      // Spawn dye according to state periodically
+      if (frameCount % 15 === 0) {
+        if (state.step === steps.CRYSTAL || state.step === steps.IODINE) {
+          spawnDyeParticles(color(99, 102, 241, 40));
+        } else if (state.step === steps.DECOLORIZE) {
+          spawnDyeParticles(color(148, 163, 253, 26));
+        } else if (state.step === steps.SAFRANIN) {
+          spawnDyeParticles(color(249, 115, 22, 34));
+        }
+      }
+
+      for (let d of dyeParticles) {
+        d.x += d.dx;
+        d.y += d.dy;
+        d.life -= 1;
+      }
+      dyeParticles = dyeParticles.filter((d) => d.life > 0);
+    }
+
+    function drawBackground() {
+      background(249, 250, 251);
+
+      // Slide area
+      const slideX = width * 0.14;
+      const slideY = height * 0.18;
+      const slideW = width * 0.72;
+      const slideH = height * 0.64;
+
+      noStroke();
+      fill(255, 255, 255, 235);
+      rect(slideX, slideY, slideW, slideH, 18);
+
+      // Slight vignette
+      noFill();
+      stroke(226, 232, 240);
+      strokeWeight(1);
+      rect(slideX + 4, slideY + 4, slideW - 8, slideH - 8, 14);
+
+      // Title (small)
+      noStroke();
+      fill(148, 163, 253);
+      textAlign(LEFT, TOP);
+      textSize(8);
+      text("Virtual microscope field", slideX + 6, slideY - 14);
+    }
+
+    function drawDyeLayer() {
+      // Soft dye background overlay based on step
+      if (state.step === steps.CRYSTAL || state.step === steps.IODINE) {
+        fill(99, 102, 241, 12);
+      } else if (state.step === steps.DECOLORIZE) {
+        fill(148, 163, 253, 6);
+      } else if (state.step === steps.SAFRANIN) {
+        fill(249, 115, 22, 6);
+      } else {
+        return;
+      }
+      const slideX = width * 0.14;
+      const slideY = height * 0.18;
+      const slideW = width * 0.72;
+      const slideH = height * 0.64;
+      noStroke();
+      rect(slideX + 4, slideY + 4, slideW - 8, slideH - 8, 14);
+    }
+
+    function drawCells() {
+      // Color logic per state
+      for (let c of cells) {
+        let col;
+
+        if (state.step === steps.UNSTAINED) {
+          // Very pale gray / faint blue
+          col = c.isGramPos
+            ? color(148, 163, 253, 60)
+            : color(148, 163, 253, 30);
+        } else if (state.step === steps.CRYSTAL) {
+          // All purple
+          col = color(99, 102, 241, 220);
+        } else if (state.step === steps.IODINE) {
+          // All dark purple (complex)
+          col = color(79, 70, 229, 240);
+        } else if (state.step === steps.DECOLORIZE) {
+          // Gram+ stay purple; Gram- fade
+          col = c.isGramPos
+            ? color(79, 70, 229, 230)
+            : color(148, 163, 253, 30);
+        } else if (state.step === steps.SAFRANIN) {
+          // Gram+ stay purple; Gram- become pink/orange-red
+          col = c.isGramPos
+            ? color(79, 70, 229, 230)
+            : color(249, 115, 22, 210);
+        }
+
+        // Draw as small rods/cocci
+        push();
+        translate(c.x, c.y);
+        rotate(c.angle);
+        noStroke();
+        fill(col);
+
+        if (c.isGramPos) {
+          // cocci chains or short rods
+          const segments = 2;
+          for (let i = 0; i < segments; i++) {
+            circle(i * (c.r * 0.9), 0, c.r);
+          }
+        } else {
+          // slender rods
+          rectMode(CENTER);
+          rect(0, 0, c.r * 1.6, c.r * 0.6, c.r * 0.4);
+        }
+
+        pop();
+      }
+    }
+
+    function drawDyeParticles() {
+      noStroke();
+      for (let d of dyeParticles) {
+        const alpha = map(d.life, 0, 80, 0, 50);
+        const base = d.col || color(56, 189, 248, 30);
+        fill(red(base), green(base), blue(base), alpha);
+        circle(d.x, d.y, 2);
+      }
+    }
+
+    function draw() {
+      drawBackground();
+      updateDye();
+      drawDyeLayer();
+      drawCells();
+      drawDyeParticles();
+    }
+  </script>
+</body>
+</html>

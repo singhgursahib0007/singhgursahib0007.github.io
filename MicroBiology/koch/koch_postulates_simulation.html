@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Koch's Postulates Demonstration - Interactive Steps</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+
+  <!-- Optional p5.js for subtle animations -->
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.2/lib/p5.min.js"></script>
+
+  <style>
+    :root {
+      --teal-main: #0f766e;
+      --teal-soft: #5eead4;
+      --bg-soft: #f4fbfa;
+      --ink: #0f172a;
+      --muted: #6b7280;
+      --accent-sky: #38bdf8;
+      --accent-emerald: #22c55e;
+      --accent-amber: #fbbf24;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, -system-ui, sans-serif;
+      background: radial-gradient(circle at top, #e0fbff 0, #f9fafb 56%);
+      color: var(--ink);
+    }
+
+    .glass-card {
+      border-radius: 1.5rem;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow:
+        0 18px 50px rgba(15, 23, 42, 0.12),
+        0 0 0 1px rgba(15, 23, 42, 0.03);
+      backdrop-filter: blur(16px);
+    }
+
+    .chip-soft {
+      border-radius: 999px;
+      padding: 0.26rem 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: linear-gradient(
+        to right,
+        rgba(13, 148, 136, 0.09),
+        rgba(56, 189, 248, 0.02)
+      );
+      border: 1px solid rgba(13, 148, 136, 0.18);
+      font-size: 0.68rem;
+      color: var(--teal-main);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .chip-soft span.dot {
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 999px;
+      background: var(--teal-soft);
+      box-shadow: 0 0 10px rgba(94, 234, 212, 0.9);
+    }
+
+    .step-pill {
+      border-radius: 999px;
+      padding: 0.18rem 0.55rem;
+      font-size: 0.62rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.26rem;
+      background-color: rgba(15, 118, 110, 0.03);
+      color: var(--muted);
+    }
+
+    .pill-color {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 999px;
+    }
+
+    .step-card {
+      border-radius: 1rem;
+      padding: 0.7rem 0.8rem;
+      border: 1px solid rgba(148, 163, 253, 0.12);
+      background: rgba(255, 255, 255, 0.98);
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 0.5rem;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.22s ease-out;
+    }
+
+    .step-card.active {
+      border-color: rgba(15, 118, 110, 0.5);
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.14);
+      background: linear-gradient(
+        to right,
+        rgba(240, 253, 250, 0.98),
+        rgba(219, 244, 255, 0.98)
+      );
+      transform: translateY(-1px);
+    }
+
+    .step-icon {
+      width: 2.2rem;
+      height: 2.2rem;
+      border-radius: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: var(--teal-main);
+      background: rgba(15, 118, 110, 0.06);
+    }
+
+    .step-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--teal-main);
+    }
+
+    .step-desc {
+      font-size: 0.7rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    #sketch-container {
+      border-radius: 1.1rem;
+      overflow: hidden;
+      background: radial-gradient(circle at top, #e0f2fe, #f9fafb);
+      border: 1px solid rgba(148, 163, 253, 0.16);
+      position: relative;
+    }
+
+    .overlay-label {
+      position: absolute;
+      right: 0.7rem;
+      top: 0.5rem;
+      padding: 0.16rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.6rem;
+      background: rgba(255, 255, 255, 0.95);
+      color: var(--teal-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.32rem;
+      box-shadow: 0 4px 10px rgba(148, 163, 253, 0.25);
+    }
+
+    .overlay-label span.swatch {
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 999px;
+      background: var(--teal-main);
+    }
+
+    .subtitle-sm {
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+
+    .explain-list li {
+      margin-bottom: 0.12rem;
+    }
+
+    .explain-list strong {
+      color: var(--teal-main);
+    }
+
+    .btn-step {
+      padding: 0.4rem 0.85rem;
+      font-size: 0.68rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border: 1px solid rgba(15, 118, 110, 0.16);
+      color: var(--teal-main);
+      background-color: rgba(240, 253, 250, 0.98);
+      cursor: pointer;
+      transition: all 0.18s ease-out;
+    }
+
+    .btn-step:hover {
+      background-color: rgba(209, 250, 229, 0.98);
+      box-shadow: 0 4px 12px rgba(148, 163, 253, 0.18);
+    }
+
+    .btn-step.primary {
+      background-color: var(--teal-main);
+      color: #ffffff;
+      border-color: transparent;
+    }
+
+    .btn-step.primary:hover {
+      background-color: #115e59;
+      box-shadow: 0 5px 16px rgba(15, 23, 42, 0.22);
+    }
+
+    .step-index {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--accent-sky);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex justify-center px-4 py-6">
+  <main class="w-full max-w-6xl space-y-5">
+    <!-- Header -->
+    <section class="glass-card px-6 py-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <div class="space-y-1.5">
+        <div class="chip-soft">
+          <span class="dot"></span>
+          Robert Koch • Causation Studio
+        </div>
+        <h1 class="text-xl md:text-2xl font-semibold text-slate-900">
+          Koch's Postulates: Interactive demonstration of linking microbes to disease
+        </h1>
+        <p class="text-xs md:text-sm text-slate-600 max-w-2xl">
+          Step through Koch’s classic framework: from finding a microbe in sick hosts, to isolating it in pure culture,
+          reproducing the disease in a test subject, and re-isolating the same organism. Designed for undergraduate microbiology.
+        </p>
+      </div>
+      <div class="flex flex-col items-end gap-1">
+        <div class="step-pill">
+          <span class="pill-color" style="background:#0f766e;"></span>
+          Teal-themed, low-friction learning
+        </div>
+        <div class="subtitle-sm text-right">
+          Click each step or use the guided flow to see icons animate and the explanation update.
+        </div>
+      </div>
+    </section>
+
+    <section class="grid gap-4 md:grid-cols-[minmax(0,_1.9fr)_minmax(260px,_1.1fr)] items-stretch">
+      <!-- LEFT: Visual + Controls -->
+      <div class="glass-card p-4 flex flex-col gap-3">
+        <!-- Steps row (clickable) -->
+        <div class="grid md:grid-cols-2 gap-2">
+          <!-- Step 1 -->
+          <div class="step-card" data-step="1" id="stepCard1">
+            <div class="step-icon">
+              🧪
+            </div>
+            <div>
+              <div class="step-label">
+                Step 1: Association in diseased hosts
+              </div>
+              <div class="step-desc">
+                The suspected pathogen is found in all cases of the disease, but not in healthy individuals.
+              </div>
+            </div>
+          </div>
+          <!-- Step 2 -->
+          <div class="step-card" data-step="2" id="stepCard2">
+            <div class="step-icon">
+              🧫
+            </div>
+            <div>
+              <div class="step-label">
+                Step 2: Isolate & grow pure culture
+              </div>
+              <div class="step-desc">
+                The microbe is isolated from the host and grown as a pure culture on lab media.
+              </div>
+            </div>
+          </div>
+          <!-- Step 3 -->
+          <div class="step-card" data-step="3" id="stepCard3">
+            <div class="step-icon">
+              🐭
+            </div>
+            <div>
+              <div class="step-label">
+                Step 3: Reproduce disease in test subject
+              </div>
+              <div class="step-desc">
+                The pure culture causes the same disease when introduced into a healthy, susceptible host.
+              </div>
+            </div>
+          </div>
+          <!-- Step 4 -->
+          <div class="step-card" data-step="4" id="stepCard4">
+            <div class="step-icon">
+              🔁
+            </div>
+            <div>
+              <div class="step-label">
+                Step 4: Re-isolate the same organism
+              </div>
+              <div class="step-desc">
+                The same microbe is re-isolated from the newly diseased host, confirming the link.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas area -->
+        <div id="sketch-container" class="mt-2 w-full aspect-[16/9]">
+          <div class="overlay-label">
+            <span class="swatch"></span>
+            Follow the microbe through Koch's postulates
+          </div>
+        </div>
+
+        <!-- Step navigation + dynamic explanation -->
+        <div class="mt-3 flex flex-wrap items-center gap-2 text-xs">
+          <button id="btnStartFlow" class="btn-step primary">
+            <span>▶</span> Guided sequence
+          </button>
+          <button id="btnPrev" class="btn-step">
+            ← Previous
+          </button>
+          <button id="btnNext" class="btn-step">
+            Next →
+          </button>
+          <div class="step-pill">
+            <span class="pill-color" style="background:#38bdf8;"></span>
+            Current step:
+            <span id="currentStepLabel" class="step-index">1 / 4</span>
+          </div>
+        </div>
+
+        <p id="stepSummary" class="mt-1.5 text-[0.7rem] leading-relaxed text-slate-600">
+          Step 1 focuses on consistent association: the same suspect bacterium appears in all diseased hosts,
+          but is absent or rare in healthy controls. This is the starting clue for causation.
+        </p>
+      </div>
+
+      <!-- RIGHT: Textual explanation -->
+      <aside class="glass-card p-4 flex flex-col gap-3">
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-teal-700 uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-teal-500"></span>
+            Learning goals
+          </div>
+          <ul class="explain-list list-disc pl-4 text-[0.7rem] text-slate-600">
+            <li>Visualize how Koch’s postulates link a specific microbe to a specific disease.</li>
+            <li>See each step as a separate, testable requirement, not just a memorized list.</li>
+            <li>Connect icons and motion with real lab ideas: microscopy, pure culture, infection, and re-isolation.</li>
+            <li>Recognize that modern microbiology adapts these ideas (e.g., viruses, unculturable microbes).</li>
+          </ul>
+        </div>
+
+        <!-- Step detail panel -->
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1.5">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-sky-700 uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+            Step-by-step interpretation
+          </div>
+          <div id="detailText" class="text-[0.7rem] text-slate-600 leading-relaxed">
+            In Step 1, diseased hosts on the left show clusters of teal-highlighted bacteria,
+            while healthy hosts show none. This visual emphasizes "found in diseased, not in healthy".
+          </div>
+        </div>
+
+        <!-- Guided checks -->
+        <div class="border border-slate-100 rounded-xl px-3 py-2.5 space-y-1.5">
+          <div class="text-[0.65rem] font-semibold tracking-wide text-slate-700 uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+            Quick classroom uses
+          </div>
+          <ol class="list-decimal pl-4 text-[0.7rem] text-slate-600 space-y-0.4">
+            <li>Have students narrate each step while the animation runs.</li>
+            <li>Ask which types of pathogens do NOT fully fit Koch’s postulates (e.g., viruses, polymicrobial diseases).</li>
+            <li>Use the visuals to distinguish correlation vs. causation in infectious disease.</li>
+          </ol>
+          <p class="text-[0.65rem] text-slate-500 leading-relaxed">
+            The simulation is intentionally simple and teal-themed so learners can focus on the causal logic,
+            not interface complexity.
+          </p>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    // Simple state machine for the four steps.
+    const steps = [
+      {
+        id: 1,
+        label: "1 / 4",
+        summary:
+          "Step 1: The suspected pathogen is consistently associated with the disease: present in all diseased hosts, absent (or rare) in healthy ones.",
+        detail:
+          "You see diseased hosts containing teal-highlighted bacteria, while healthy hosts lack them. This visualizes the idea that a candidate pathogen must track with the disease, not appear randomly."
+      },
+      {
+        id: 2,
+        label: "2 / 4",
+        summary:
+          "Step 2: The pathogen is isolated from a diseased host and grown in pure culture on lab media.",
+        detail:
+          "The animation shifts to a plate with uniform teal colonies, representing a pure culture. Only one colony type dominates, emphasizing that we have isolated a single microbial species."
+      },
+      {
+        id: 3,
+        label: "3 / 4",
+        summary:
+          "Step 3: The pure culture causes the same disease when introduced into a healthy, susceptible test subject.",
+        detail:
+          "A healthy test subject receives the cultured bacteria and develops the same pattern of disease. Icons show transmission from plate to host, highlighting experimental causation."
+      },
+      {
+        id: 4,
+        label: "4 / 4",
+        summary:
+          "Step 4: The same pathogen is re-isolated from the experimentally infected host.",
+        detail:
+          "The same teal colonies and cell shapes appear again from the newly sick host. This closes the loop: same organism in original and experimental cases, confirming a causal link."
+      }
+    ];
+
+    let currentStepIndex = 0;
+    let autoFlow = false;
+
+    const stepSummaryEl = document.getElementById("stepSummary");
+    const detailTextEl = document.getElementById("detailText");
+    const currentStepLabelEl = document.getElementById("currentStepLabel");
+
+    const stepCards = [
+      document.getElementById("stepCard1"),
+      document.getElementById("stepCard2"),
+      document.getElementById("stepCard3"),
+      document.getElementById("stepCard4")
+    ];
+
+    const btnStartFlow = document.getElementById("btnStartFlow");
+    const btnPrev = document.getElementById("btnPrev");
+    const btnNext = document.getElementById("btnNext");
+
+    function setStep(index) {
+      if (index < 0 || index > steps.length - 1) return;
+      currentStepIndex = index;
+
+      // Update UI classes
+      stepCards.forEach((card, i) => {
+        if (i === currentStepIndex) card.classList.add("active");
+        else card.classList.remove("active");
+      });
+
+      // Update texts
+      const step = steps[currentStepIndex];
+      stepSummaryEl.textContent = step.summary;
+      detailTextEl.textContent = step.detail;
+      currentStepLabelEl.textContent = step.label;
+    }
+
+    // Click on step cards
+    stepCards.forEach((card, i) => {
+      card.addEventListener("click", () => {
+        autoFlow = false;
+        setStep(i);
+      });
+    });
+
+    btnPrev.addEventListener("click", () => {
+      autoFlow = false;
+      const nextIndex = (currentStepIndex - 1 + steps.length) % steps.length;
+      setStep(nextIndex);
+    });
+
+    btnNext.addEventListener("click", () => {
+      autoFlow = false;
+      const nextIndex = (currentStepIndex + 1) % steps.length;
+      setStep(nextIndex);
+    });
+
+    btnStartFlow.addEventListener("click", () => {
+      autoFlow = true;
+    });
+
+    // p5.js visualization:
+    // We render a minimalist scene whose layout changes based on the current step:
+    //  - Step 1: left = sick hosts with teal microbes, right = healthy hosts.
+    //  - Step 2: petri dish / plate with teal colonies.
+    //  - Step 3: arrow from plate to test subject, microbes appear.
+    //  - Step 4: re-isolation plate + confirmation highlight.
+    let cnv;
+
+    function setup() {
+      const container = document.getElementById("sketch-container");
+      const rect = container.getBoundingClientRect();
+      cnv = createCanvas(rect.width, rect.height);
+      cnv.parent("sketch-container");
+      setStep(0);
+    }
+
+    function windowResized() {
+      const container = document.getElementById("sketch-container");
+      const rect = container.getBoundingClientRect();
+      resizeCanvas(rect.width, rect.height);
+    }
+
+    function drawBackground() {
+      background(249, 250, 251);
+      // Soft center panel
+      noStroke();
+      fill(255, 255, 255, 230);
+      rect(width * 0.04, height * 0.1, width * 0.92, height * 0.8, 18);
+    }
+
+    function drawStep1() {
+      // Diseased hosts on left with microbes
+      const leftX = width * 0.14;
+      const rightX = width * 0.54;
+      const y = height * 0.55;
+      const hostW = 54;
+      const hostH = 70;
+
+      textAlign(CENTER, TOP);
+      textSize(9);
+      fill(15, 23, 42, 180);
+      text("Diseased hosts", leftX, height * 0.16);
+      text("Healthy hosts", rightX, height * 0.16);
+
+      // Diseased host icons
+      for (let i = 0; i < 3; i++) {
+        const x = leftX - hostW + i * (hostW + 10);
+        // body
+        noStroke();
+        fill(226, 232, 240);
+        rect(x, y - hostH / 2, hostW, hostH, 18);
+
+        // microbes inside (teal spots)
+        for (let j = 0; j < 10; j++) {
+          const mx = x + 10 + random(hostW - 20);
+          const my = y - hostH / 2 + 12 + random(hostH - 24);
+          fill(15, 118, 110, 180);
+          circle(mx, my, 3);
+        }
+
+        // subtle "sick" mark
+        fill(248, 113, 113, 180);
+        circle(x + hostW / 2, y - hostH / 2 - 6, 6);
+      }
+
+      // Healthy host icons
+      for (let i = 0; i < 3; i++) {
+        const x = rightX - hostW + i * (hostW + 10);
+        noStroke();
+        fill(226, 232, 240);
+        rect(x, y - hostH / 2, hostW, hostH, 18);
+
+        // no microbes: only pale dots
+        for (let j = 0; j < 4; j++) {
+          const mx = x + 10 + random(hostW - 20);
+          const my = y - hostH / 2 + 12 + random(hostH - 24);
+          fill(148, 163, 253, 40);
+          circle(mx, my, 2);
+        }
+
+        fill(22, 163, 74, 190);
+        circle(x + hostW / 2, y - hostH / 2 - 6, 6);
+      }
+    }
+
+    function drawStep2() {
+      textAlign(CENTER, TOP);
+      textSize(9);
+      fill(15, 23, 42, 190);
+      text("Isolate & grow pure culture", width / 2, height * 0.14);
+
+      // Petri dish
+      const cx = width / 2;
+      const cy = height * 0.58;
+      const r = min(width, height) * 0.26;
+
+      noFill();
+      stroke(148, 163, 253, 160);
+      strokeWeight(1.5);
+      circle(cx, cy, r * 2);
+
+      // Colonies (uniform teal)
+      noStroke();
+      for (let i = 0; i < 22; i++) {
+        const ang = random(TWO_PI);
+        const rad = random(r * 0.1, r * 0.8);
+        const x = cx + cos(ang) * rad;
+        const y = cy + sin(ang) * rad;
+        fill(15, 118, 110, 210);
+        circle(x, y, random(4, 7));
+      }
+
+      // Label
+      textSize(7.5);
+      fill(107, 114, 128);
+      text("Pure culture: one colony type from diseased host", width / 2, cy + r + 8);
+    }
+
+    function drawStep3() {
+      textAlign(CENTER, TOP);
+      textSize(9);
+      fill(15, 23, 42, 190);
+      text("Infect healthy host with pure culture", width / 2, height * 0.14);
+
+      // Left: plate
+      const px = width * 0.24;
+      const py = height * 0.55;
+      noFill();
+      stroke(148, 163, 253, 160);
+      strokeWeight(1.3);
+      circle(px, py, 80);
+      noStroke();
+      for (let i = 0; i < 12; i++) {
+        const ang = random(TWO_PI);
+        const rad = random(8, 34);
+        const x = px + cos(ang) * rad;
+        const y = py + sin(ang) * rad;
+        fill(15, 118, 110, 220);
+        circle(x, y, 4);
+      }
+
+      // Right: test subject (mouse / host)
+      const hx = width * 0.7;
+      const hy = height * 0.56;
+      noStroke();
+      fill(226, 232, 240);
+      rect(hx - 38, hy - 30, 76, 60, 20);
+      // initial microbes appear progressively
+      for (let i = 0; i < 10; i++) {
+        const mx = hx - 30 + random(60);
+        const my = hy - 22 + random(44);
+        fill(15, 118, 110, 200);
+        circle(mx, my, 3);
+      }
+
+      // Arrow from plate to host
+      stroke(56, 189, 248, 220);
+      strokeWeight(2);
+      const ax1 = px + 40;
+      const ay1 = py;
+      const ax2 = hx - 48;
+      const ay2 = hy;
+      line(ax1, ay1, ax2, ay2);
+      // arrowhead
+      noStroke();
+      fill(56, 189, 248, 220);
+      triangle(
+        ax2, ay2,
+        ax2 - 8, ay2 - 4,
+        ax2 - 8, ay2 + 4
+      );
+
+      textSize(7.5);
+      fill(107, 114, 128);
+      text("If this microbe truly causes the disease, the test host should develop similar signs.", width / 2, hy + 50);
+    }
+
+    function drawStep4() {
+      textAlign(CENTER, TOP);
+      textSize(9);
+      fill(15, 23, 42, 190);
+      text("Re-isolate the same organism from the newly diseased host", width / 2, height * 0.14);
+
+      // Left: diseased host
+      const hx = width * 0.25;
+      const hy = height * 0.56;
+      noStroke();
+      fill(226, 232, 240);
+      rect(hx - 40, hy - 34, 80, 68, 22);
+      for (let i = 0; i < 12; i++) {
+        const mx = hx - 30 + random(60);
+        const my = hy - 24 + random(48);
+        fill(15, 118, 110, 210);
+        circle(mx, my, 3);
+      }
+      fill(248, 113, 113, 200);
+      circle(hx, hy - 38, 7);
+
+      // Right: plate with confirmation
+      const px = width * 0.7;
+      const py = height * 0.56;
+      noFill();
+      stroke(148, 163, 253, 180);
+      strokeWeight(1.5);
+      circle(px, py, 82);
+      noStroke();
+      for (let i = 0; i < 12; i++) {
+        const ang = random(TWO_PI);
+        const rad = random(10, 30);
+        const x = px + cos(ang) * rad;
+        const y = py + sin(ang) * rad;
+        fill(15, 118, 110, 220);
+        circle(x, y, 4);
+      }
+
+      // Arrow from host to plate
+      stroke(22, 163, 74, 220);
+      strokeWeight(2);
+      const ax1 = hx + 44;
+      const ay1 = hy;
+      const ax2 = px - 44;
+      const ay2 = py;
+      line(ax1, ay1, ax2, ay2);
+      noStroke();
+      fill(22, 163, 74, 220);
+      triangle(
+        ax2, ay2,
+        ax2 - 8, ay2 - 4,
+        ax2 - 8, ay2 + 4
+      );
+
+      // Checkmark badge
+      fill(22, 163, 74);
+      circle(px + 50, py - 40, 14);
+      fill(255);
+      textAlign(CENTER, CENTER);
+      textSize(9);
+      text("✓", px + 50, py - 40);
+
+      textSize(7.5);
+      fill(107, 114, 128);
+      text(
+        "Re-isolating the same colony type completes Koch's logical chain from association to causation.",
+        width / 2,
+        py + 56
+      );
+    }
+
+    function draw() {
+      // Auto-flow progression
+      if (autoFlow && frameCount % 120 === 0) {
+        const nextIndex = (currentStepIndex + 1) % steps.length;
+        setStep(nextIndex);
+      }
+
+      drawBackground();
+
+      const stepId = steps[currentStepIndex].id;
+      if (stepId === 1) drawStep1();
+      else if (stepId === 2) drawStep2();
+      else if (stepId === 3) drawStep3();
+      else if (stepId === 4) drawStep4();
+    }
+  </script>
+</body>
+</html>
