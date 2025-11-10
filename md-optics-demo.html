@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <title>MB Optics | Advanced Eye Care in Kamloops</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="MB Optics Optometry Clinic in downtown Kamloops. Advanced technology, compassionate care, and affordable, accessible eye exams with Dr. Mitchell Bennett." />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Montserrat', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            optic: {
+              50: '#f4f8ff',
+              100: '#e1efff',
+              200: '#c4ddff',
+              300: '#9dc4ff',
+              400: '#6da4ff',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e3a8a',
+              900: '#0b183b',
+            },
+          },
+          boxShadow: {
+            'soft-xl': '0 24px 80px rgba(15,23,42,0.30)',
+          },
+          backdropBlur: {
+            xs: '2px',
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      color-scheme: light;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(99, 179, 237, 0.16), transparent),
+        radial-gradient(circle at top right, rgba(56, 189, 248, 0.12), transparent),
+        radial-gradient(circle at bottom, rgba(15, 23, 42, 0.35), #020817);
+      background-attachment: fixed;
+    }
+
+    .glass-panel {
+      background: radial-gradient(circle at top left, rgba(148, 163, 253, 0.06), transparent)
+                  ,rgba(15,23,42,0.82);
+      backdrop-filter: blur(24px) saturate(150%);
+      -webkit-backdrop-filter: blur(24px) saturate(150%);
+      border-radius: 18px;
+      border: 1px solid rgba(148, 163, 253, 0.22);
+      box-shadow: 0 18px 70px rgba(15,23,42,0.65);
+    }
+
+    .subtle-glass {
+      background: rgba(6, 16, 35, 0.9);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 253, 0.16);
+    }
+
+    .nav-glass {
+      background: radial-gradient(circle at top, rgba(148,163,253,0.14), transparent)
+                  ,rgba(2,6,23,0.94);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(148, 163, 253, 0.22);
+    }
+
+    .pill {
+      background: linear-gradient(to right, rgba(59,130,246,0.24), rgba(56,189,248,0.12));
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,253,0.26);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .floating-orbit {
+      position: fixed;
+      width: 420px;
+      height: 420px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(56,189,248,0.10), transparent);
+      filter: blur(8px);
+      opacity: 0.7;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      z-index: -1;
+      animation: drift 26s ease-in-out infinite alternate;
+    }
+
+    @keyframes drift {
+      0%   { transform: translate3d(-8%, -4%, 0) scale(1); opacity: 0.8; }
+      100% { transform: translate3d(6%, 4%, 0) scale(1.08); opacity: 0.4; }
+    }
+
+    .soft-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .soft-scroll::-webkit-scrollbar-thumb {
+      background-color: rgba(148,163,253,0.55);
+      border-radius: 999px;
+    }
+
+    .section-fade {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 700ms ease, transform 700ms ease;
+    }
+    .section-fade.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .btn-primary {
+      background: linear-gradient(to right, #2563eb, #38bdf8);
+      box-shadow: 0 16px 40px rgba(37, 99, 235, 0.45);
+    }
+    .btn-primary:hover {
+      box-shadow: 0 26px 60px rgba(37, 99, 235, 0.65);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,253,0.45);
+    }
+    .btn-ghost:hover {
+      background: rgba(15,23,42,1);
+      box-shadow: 0 18px 40px rgba(15,23,42,0.85);
+      transform: translateY(-1px);
+    }
+
+    .glow-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: #38bdf8;
+      box-shadow: 0 0 16px #38bdf8;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-slate-50 font-sans antialiased soft-scroll">
+
+  <!-- Ambient orbits -->
+  <div class="floating-orbit" style="top:-80px; right:-40px;"></div>
+  <div class="floating-orbit" style="bottom:-160px; left:-40px; animation-delay: -8s;"></div>
+
+  <!-- Navigation -->
+  <header class="fixed inset-x-0 top-0 z-40">
+    <div class="nav-glass">
+      <div class="mx-auto max-w-6xl px-5 py-3 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="flex items-center justify-center w-9 h-9 rounded-2xl bg-gradient-to-br from-optic-400/90 to-sky-400/80 shadow-soft-xl">
+            <div class="w-4 h-4 rounded-full border border-white/70 border-t-transparent border-l-transparent rotate-12 shadow-inner"></div>
+          </div>
+          <div class="leading-tight">
+            <div class="flex items-center gap-2">
+              <span class="text-sm tracking-[0.16em] text-slate-300 uppercase">MB Optics</span>
+              <span class="w-1 h-1 rounded-full bg-sky-400"></span>
+            </div>
+            <p class="text-[10px] text-slate-400">Advanced Eye Care in Kamloops</p>
+          </div>
+        </div>
+        <nav class="hidden md:flex items-center gap-7 text-[11px] text-slate-300">
+          <a href="#about" class="hover:text-white transition-colors">Clinic</a>
+          <a href="#services" class="hover:text-white transition-colors">Services</a>
+          <a href="#technology" class="hover:text-white transition-colors">Technology</a>
+          <a href="#insurance" class="hover:text-white transition-colors">Coverage</a>
+          <a href="#visit" class="hover:text-white transition-colors">Visit</a>
+        </nav>
+        <div class="flex items-center gap-3">
+          <div class="hidden sm:flex flex-col items-end text-[9px] leading-tight text-slate-300">
+            <span class="flex items-center gap-2">
+              <span class="glow-dot"></span>
+              Booking now open
+            </span>
+            <span class="text-[9px] text-slate-400">Kids & Seniors fully covered by MSP</span>
+          </div>
+          <a href="#book" class="pill text-[10px] font-medium text-slate-50 px-4 py-2 flex items-center gap-2 hover:scale-[1.02] transition-transform">
+            <span>Book Exam</span>
+            <span class="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[10px] text-sky-300">
+              &rarr;
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="pt-24 pb-20">
+    <!-- Hero -->
+    <section id="top" class="mx-auto max-w-6xl px-5 section-fade">
+      <div class="grid md:grid-cols-[1.7fr,1.4fr] gap-10 items-center">
+        <div class="space-y-6">
+          <div class="pill inline-flex items-center gap-2 px-4 py-1.5 text-[9px] text-slate-100/90 shadow-soft-xl">
+            <span class="w-1.5 h-1.5 rounded-full bg-sky-400 shadow-[0_0_12px_#38bdf8]"></span>
+            Locally built. Technology-led. Community focused.
+          </div>
+          <div class="space-y-3">
+            <h1 class="text-[32px] md:text-[40px] lg:text-[46px] font-semibold leading-tight text-slate-50">
+              Precision eye care in downtown Kamloops,
+              <span class="bg-gradient-to-r from-sky-300 via-cyan-200 to-white bg-clip-text text-transparent">
+                crafted around you.
+              </span>
+            </h1>
+            <p class="text-[12px] md:text-[13px] text-slate-300 max-w-xl">
+              MB Optics is Kamloops&rsquo; newest optometry clinic, led by
+              <span class="font-semibold text-sky-200">Dr. Mitchell Bennett</span>.
+              State-of-the-art diagnostics, transparent pricing, and genuinely compassionate care &mdash; all in a calm,
+              minimal environment designed to put your vision first.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3">
+            <a href="#book" class="btn-primary px-5 py-2.5 rounded-full text-[10px] font-semibold tracking-wide uppercase flex items-center gap-2 transition-all">
+              <span>Book Your Eye Exam</span>
+              <span class="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[10px]">
+                &#8594;
+              </span>
+            </a>
+            <a href="#services" class="btn-ghost px-4 py-2.5 rounded-full text-[10px] font-medium text-sky-100/90 flex items-center gap-2 transition-all">
+              <span>Explore Services & Coverage</span>
+            </a>
+          </div>
+
+          <div class="flex flex-wrap gap-6 text-[9px] text-slate-400">
+            <div class="flex items-center gap-2">
+              <div class="w-5 h-5 rounded-full bg-sky-500/15 border border-sky-300/50 flex items-center justify-center text-[11px] text-sky-300">
+                ✓
+              </div>
+              <div>
+                <div class="text-slate-200/95 font-medium">Kids & Seniors</div>
+                <div>Fully covered by MSP</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-5 h-5 rounded-full bg-sky-500/15 border border-sky-300/50 flex items-center justify-center text-[11px] text-sky-300">
+                ⬤
+              </div>
+              <div>
+                <div class="text-slate-200/95 font-medium">OCT Retina Scan</div>
+                <div>Included with every comprehensive exam</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-5 h-5 rounded-full bg-sky-500/15 border border-sky-300/50 flex items-center justify-center text-[11px] text-sky-300">
+                $
+              </div>
+              <div>
+                <div class="text-slate-200/95 font-medium">Direct billing</div>
+                <div>For valid vision insurance plans</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right hero glass card -->
+        <div class="glass-panel p-5 space-y-5">
+          <div class="flex justify-between items-start gap-3">
+            <div>
+              <p class="text-[9px] uppercase tracking-[0.18em] text-slate-400">Led by</p>
+              <p class="text-[15px] font-semibold text-slate-50">Dr. Mitchell Bennett</p>
+              <p class="text-[9px] text-slate-400 mt-0.5">Doctor of Optometry &mdash; Arizona College of Optometry</p>
+            </div>
+            <div class="flex flex-col items-end gap-1">
+              <div class="flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_#22c55e]"></span>
+                <span class="text-[8px] text-emerald-300/95">Accepting new patients</span>
+              </div>
+              <div class="text-[8px] px-2 py-1 rounded-full bg-sky-500/15 border border-sky-400/50 text-sky-200/90">
+                Advanced diagnostics · Personalized care
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5 text-[8px] text-slate-300">
+            <div class="subtle-glass p-2.5 flex flex-col gap-1">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-[9px] font-semibold text-sky-200">Adult Exam</span>
+                <span class="px-2 py-0.5 rounded-full bg-slate-900/80 text-[8px] text-sky-300 border border-sky-500/50">
+                  $100 CAD
+                </span>
+              </div>
+              <p class="leading-snug">Comprehensive exam with direct billing for valid vision plans.</p>
+            </div>
+            <div class="subtle-glass p-2.5 flex flex-col gap-1">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-[9px] font-semibold text-sky-200">Kids & Seniors Exam</span>
+                <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-[8px] text-emerald-300 border border-emerald-400/40">
+                  Fully Covered
+                </span>
+              </div>
+              <p class="leading-snug">Covered by MSP. Eye health for the most important people.</p>
+            </div>
+            <div class="subtle-glass p-2.5 flex flex-col gap-1">
+              <span class="text-[9px] font-semibold text-sky-200">OCT Retina Scan</span>
+              <p class="leading-snug">Included with every comprehensive exam &mdash; no surprise fees.</p>
+            </div>
+            <div class="subtle-glass p-2.5 flex flex-col gap-1">
+              <span class="text-[9px] font-semibold text-sky-200">Surgical & Medical Care</span>
+              <p class="leading-snug">Pre & post-op care, medically necessary contact lens fits, and more.</p>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between gap-3 pt-1 border-t border-slate-700/70">
+            <div class="text-[8px] text-slate-400">
+              <div class="flex items-center gap-1.5">
+                <span class="w-4 h-4 rounded-full bg-sky-500/20 flex items-center justify-center text-[10px] text-sky-300">i</span>
+                <span class="text-slate-200/95">338 Seymour St, Kamloops</span>
+              </div>
+              <div>In the heart of downtown Kamloops.</div>
+            </div>
+            <a href="tel:17786962485" class="btn-primary px-3.5 py-1.75 rounded-full text-[9px] flex items-center gap-1.5">
+              <span class="w-3.5 h-3.5 rounded-full bg-white/10 flex items-center justify-center text-[9px]">📞</span>
+              <span>778-696-2485</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features / Why MB Optics -->
+    <section id="about" class="mx-auto max-w-6xl px-5 mt-20 section-fade">
+      <div class="grid md:grid-cols-[1.9fr,1.6fr] gap-8 items-stretch">
+        <div class="space-y-4">
+          <h2 class="text-[18px] md:text-[22px] font-semibold text-slate-50 mb-1">
+            A calm, minimal space for meticulous eye care.
+          </h2>
+          <p class="text-[11px] text-slate-300 max-w-xl">
+            MB Optics was created to bring an Apple-level experience to eye care in Kamloops:
+            clean design, intuitive flow, and technology that quietly works in the background
+            while humans stay at the centre of every decision.
+          </p>
+          <div class="grid sm:grid-cols-3 gap-3 mt-2">
+            <div class="subtle-glass p-3 flex flex-col gap-1.5">
+              <span class="text-[9px] font-semibold text-sky-200">Locally Owned</span>
+              <p class="text-[9px] text-slate-300">Built, owned, and operated in Kamloops for Kamloops.</p>
+            </div>
+            <div class="subtle-glass p-3 flex flex-col gap-1.5">
+              <span class="text-[9px] font-semibold text-sky-200">Accessible & Transparent</span>
+              <p class="text-[9px] text-slate-300">Fair pricing, direct billing, and clear communication.</p>
+            </div>
+            <div class="subtle-glass p-3 flex flex-col gap-1.5">
+              <span class="text-[9px] font-semibold text-sky-200">Advanced Technology</span>
+              <p class="text-[9px] text-slate-300">OCT, modern diagnostics, and data-driven decisions.</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-3 text-[9px] text-slate-400 pt-1">
+            <div class="flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-sky-300"></span>
+              Direct billing for valid plans
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-sky-300"></span>
+              Kids & seniors exams covered by MSP
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-sky-300"></span>
+              Inclusive, community-focused care
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-panel p-4 flex flex-col justify-between gap-3">
+          <div>
+            <p class="text-[9px] text-slate-400 uppercase tracking-[0.16em] mb-1">Clinic Snapshot</p>
+            <p class="text-[12px] text-slate-50 font-medium">Visit us in downtown Kamloops</p>
+          </div>
+          <div class="grid grid-cols-2 gap-3 text-[9px]">
+            <div class="subtle-glass p-2.5 space-y-1.5">
+              <p class="text-slate-400 text-[8px] uppercase tracking-[0.14em]">Location</p>
+              <p class="text-slate-50">338 Seymour St</p>
+              <p class="text-slate-400">Kamloops, BC &middot; V2C 2G2</p>
+              <p class="text-slate-500 text-[8px]">In the heart of downtown.</p>
+            </div>
+            <div class="subtle-glass p-2.5 space-y-1.5">
+              <p class="text-slate-400 text-[8px] uppercase tracking-[0.14em]">Core Hours</p>
+              <p class="text-slate-50">Tue - Fri</p>
+              <p class="text-slate-400">10:00am &ndash; 5:30pm</p>
+              <p class="text-slate-50 mt-1">Sat (occasional)</p>
+              <p class="text-slate-400">10:00am &ndash; 2:00pm</p>
+              <p class="text-slate-500 text-[8px]">Call to confirm Saturday availability.</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between gap-3 pt-2 border-t border-slate-700/70">
+            <div class="flex flex-col gap-0.5 text-[8px] text-slate-400">
+              <span>Mon & Sun &mdash; Closed</span>
+              <span>Call for urgent concerns. If emergency, dial 911.</span>
+            </div>
+            <a href="#visit" class="px-3 py-1.5 rounded-full bg-slate-900/90 text-[8px] text-sky-200 border border-sky-500/40 hover:bg-slate-950/95 transition-all">
+              Plan your visit
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="mx-auto max-w-6xl px-5 mt-20 section-fade">
+      <div class="flex items-baseline justify-between gap-4 mb-4">
+        <div>
+          <h2 class="text-[18px] md:text-[22px] font-semibold text-slate-50">Services designed around clarity.</h2>
+          <p class="text-[11px] text-slate-300 max-w-xl">
+            From routine exams to advanced imaging and surgical co-management, MB Optics offers a curated suite of services tailored to your vision, lifestyle, and coverage.
+          </p>
+        </div>
+        <div class="hidden md:flex flex-col items-end text-[9px] text-sky-200">
+          <span class="flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_#22c55e]"></span>
+            Direct billing available
+          </span>
+          <span class="text-slate-400">Kids & Seniors exams fully covered by MSP.</span>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-3">
+        <div class="glass-panel p-3.5 flex flex-col gap-1.5">
+          <div class="flex items-center justify-between gap-2">
+            <h3 class="text-[11px] font-semibold text-sky-200">Adult Comprehensive Exam</h3>
+            <span class="px-2 py-0.5 rounded-full bg-slate-900/90 text-[8px] text-sky-200 border border-sky-500/50">$100 CAD</span>
+          </div>
+          <p class="text-[9px] text-slate-300">Thorough eye health assessment, vision testing, and tailored recommendations.</p>
+          <p class="text-[8px] text-slate-400">Direct billing for valid vision plans.</p>
+        </div>
+
+        <div class="glass-panel p-3.5 flex flex-col gap-1.5">
+          <div class="flex items-center justify-between gap-2">
+            <h3 class="text-[11px] font-semibold text-sky-200">Kids & Seniors Exam</h3>
+            <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-[8px] text-emerald-300 border border-emerald-400/40">Fully Covered by MSP</span>
+          </div>
+          <p class="text-[9px] text-slate-300">Gentle, detailed care for developing and aging eyes.</p>
+          <p class="text-[8px] text-slate-400">Bring BC Services Card for coverage.</p>
+        </div>
+
+        <div class="glass-panel p-3.5 flex flex-col gap-1.5">
+          <h3 class="text-[11px] font-semibold text-sky-200">Glasses Prescription Update</h3>
+          <p class="text-[9px] text-slate-300">Quick, precise prescription updates to keep your vision sharp.</p>
+          <p class="text-[8px] text-slate-400">$50 glasses prescription recheck fee applies.</p>
+        </div>
+
+        <div class="glass-panel p-3.5 flex flex-col gap-1.5">
+          <h3 class="text-[11px] font-semibold text-sky-200">OCT Retina Scan</h3>
+          <p class="text-[9px] text-slate-300">High-resolution imaging to detect issues early and track eye health.</p>
+          <p class="text-[8px] text-slate-400">Included with every comprehensive exam at no extra cost.</p>
+        </div>
+
+        <div class="glass-panel p-3.5 flex flex-col gap-1.5">
+          <h3 class="text-[11px] font-semibold text-sky-200">Surgical Pre-OP & Post-OP Care</h3>
+          <p class="text-[9px] text-slate-300">Coordinated care for cataract, LASIK, and other procedures.</p>
+          <p class="text-[8px] text-slate-400">In sync with your surgical team for a seamless experience.</p>
+        </div>
+
+        <div class="glass-panel p-3.5 flex flex-col gap-1.5">
+          <h3 class="text-[11px] font-semibold text-sky-200">Frame Adjustments & Medical Contact Lens Fits</h3>
+          <p class="text-[9px] text-slate-300">Professional adjustments for comfort and clarity.</p>
+          <p class="text-[8px] text-slate-400">Medically necessary contact lens fits only at this time.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technology & Experience -->
+    <section id="technology" class="mx-auto max-w-6xl px-5 mt-20 section-fade">
+      <div class="grid md:grid-cols-[1.7fr,1.6fr] gap-6 items-stretch">
+        <div class="space-y-3">
+          <h2 class="text-[18px] md:text-[22px] font-semibold text-slate-50">Technology you feel, without ever seeing.</h2>
+          <p class="text-[11px] text-slate-300 max-w-xl">
+            Inspired by modern product design, MB Optics integrates advanced diagnostics into a seamless, low-stress experience.
+            Every touchpoint is intentional, from online discovery to the final adjustment of your frames.
+          </p>
+          <div class="grid sm:grid-cols-3 gap-3 mt-1">
+            <div class="subtle-glass p-2.5 text-[8px] space-y-1">
+              <p class="text-sky-200 font-semibold text-[9px]">OCT Included</p>
+              <p class="text-slate-300">Deep retinal insight with every comprehensive exam.</p>
+            </div>
+            <div class="subtle-glass p-2.5 text-[8px] space-y-1">
+              <p class="text-sky-200 font-semibold text-[9px]">Direct Billing</p>
+              <p class="text-slate-300">Less paperwork, more clarity. We bill eligible plans directly.</p>
+            </div>
+            <div class="subtle-glass p-2.5 text-[8px] space-y-1">
+              <p class="text-sky-200 font-semibold text-[9px]">Precision First</p>
+              <p class="text-slate-300">Modern equipment, human interpretation, attentive follow-up.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-panel p-4 flex flex-col gap-3">
+          <div class="flex items-center justify-between gap-3">
+            <div class="flex flex-col gap-0.5">
+              <span class="text-[8px] uppercase tracking-[0.18em] text-slate-400">At-a-glance</span>
+              <span class="text-[12px] text-slate-50 font-medium">Your visit, simplified</span>
+            </div>
+            <div class="pill px-3 py-1 text-[8px] text-sky-100 flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_#22c55e]"></span>
+              Avg. visit under 60 minutes
+            </div>
+          </div>
+
+          <ul class="grid grid-cols-2 gap-2 text-[8px] text-slate-300">
+            <li class="subtle-glass p-2">
+              <p class="text-sky-200 font-semibold text-[9px] mb-0.5">Before your exam</p>
+              <ul class="space-y-0.5 list-disc list-inside text-slate-400">
+                <li>Bring your BC Services Card.</li>
+                <li>Arrive 10 minutes early.</li>
+                <li>Bring current glasses / prescriptions.</li>
+              </ul>
+            </li>
+            <li class="subtle-glass p-2">
+              <p class="text-sky-200 font-semibold text-[9px] mb-0.5">During your exam</p>
+              <ul class="space-y-0.5 list-disc list-inside text-slate-400">
+                <li>Comprehensive eye health review.</li>
+                <li>Recommended dilation when appropriate.</li>
+                <li>OCT scan included for deeper insight.</li>
+              </ul>
+            </li>
+            <li class="subtle-glass p-2 col-span-2">
+              <p class="text-sky-200 font-semibold text-[9px] mb-0.5">After your exam</p>
+              <ul class="space-y-0.5 list-disc list-inside text-slate-400">
+                <li>Clear explanation of your results and options.</li>
+                <li>Transparent pricing and next steps.</li>
+                <li>Support for surgical referrals and follow-ups.</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Coverage & Callouts -->
+    <section id="insurance" class="mx-auto max-w-6xl px-5 mt-20 section-fade">
+      <div class="glass-panel p-4 md:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+        <div class="space-y-2 max-w-xl">
+          <h2 class="text-[17px] md:text-[20px] font-semibold text-slate-50">
+            Coverage that feels effortless.
+          </h2>
+          <p class="text-[10px] text-slate-300">
+            MB Optics offers direct billing to many major vision insurance providers and honours MSP coverage
+            for children and seniors. No cluttered paperwork, no guesswork &mdash; just clear answers.
+          </p>
+          <ul class="text-[9px] text-slate-300 space-y-0.5">
+            <li class="flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-sky-300"></span>
+              Kids & Seniors comprehensive exams fully covered by MSP.
+            </li>
+            <li class="flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-sky-300"></span>
+              Direct billing available for valid vision insurance plans.
+            </li>
+            <li class="flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-sky-300"></span>
+              Transparent fees &mdash; $100 CAD adult exam, $50 recheck fee where applicable.
+            </li>
+          </ul>
+        </div>
+        <div class="subtle-glass p-3.5 flex flex-col gap-2 w-full md:w-64">
+          <p class="text-[8px] uppercase tracking-[0.18em] text-slate-400">Quick reference</p>
+          <div class="flex flex-col gap-1.5 text-[9px] text-slate-200">
+            <div class="flex items-center justify-between gap-3">
+              <span>Adult Exam</span>
+              <span class="px-2 py-0.5 rounded-full bg-slate-900/90 text-[8px] text-sky-200 border border-sky-500/50">$100 CAD</span>
+            </div>
+            <div class="flex items-center justify-between gap-3">
+              <span>Kids & Seniors Exam</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-[8px] text-emerald-300 border border-emerald-400/40">MSP Covered</span>
+            </div>
+            <div class="flex items-center justify-between gap-3">
+              <span>OCT Retina Scan</span>
+              <span class="px-2 py-0.5 rounded-full bg-sky-500/10 text-[8px] text-sky-300 border border-sky-400/40">Included</span>
+            </div>
+            <div class="flex items-center justify-between gap-3">
+              <span>Glasses Rx Recheck</span>
+              <span class="px-2 py-0.5 rounded-full bg-slate-900/90 text-[8px] text-sky-200 border border-slate-600">$50</span>
+            </div>
+          </div>
+          <p class="text-[8px] text-slate-500">
+            For specific plan eligibility, call
+            <a href="tel:17786962485" class="text-sky-300 hover:text-sky-200">778-696-2485</a>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visit & Contact -->
+    <section id="visit" class="mx-auto max-w-6xl px-5 mt-20 section-fade">
+      <div class="grid md:grid-cols-[1.8fr,1.6fr] gap-6 items-stretch">
+        <div class="glass-panel p-4 flex flex-col gap-3">
+          <div>
+            <h2 class="text-[18px] md:text-[22px] font-semibold text-slate-50">Visit MB Optics.</h2>
+            <p class="text-[10px] text-slate-300">
+              Located on Seymour Street in downtown Kamloops, MB Optics is intentionally designed
+              to feel bright, calm, and effortlessly modern.
+            </p>
+          </div>
+          <div class="grid grid-cols-2 gap-3 text-[9px] text-slate-300">
+            <div class="subtle-glass p-2.5 space-y-0.5">
+              <p class="text-slate-400 text-[8px] uppercase tracking-[0.16em]">Address</p>
+              <p class="text-slate-50">338 Seymour St</p>
+              <p>Kamloops, BC &middot; V2C 2G2</p>
+              <p class="text-slate-500 text-[8px]">In the heart of downtown Kamloops.</p>
+            </div>
+            <div class="subtle-glass p-2.5 space-y-0.5">
+              <p class="text-slate-400 text-[8px] uppercase tracking-[0.16em]">Hours</p>
+              <p class="text-slate-50">Tue - Fri: 10:00am - 5:30pm</p>
+              <p>Sat (occasional): 10:00am - 2:00pm</p>
+              <p class="text-slate-500 text-[8px]">Call ahead to confirm Saturdays.</p>
+            </div>
+          </div>
+          <div class="subtle-glass p-2.5 flex flex-col md:flex-row md:items-center justify-between gap-2 text-[9px] text-slate-300">
+            <div class="flex flex-col gap-0.5">
+              <p class="text-slate-400 text-[8px] uppercase tracking-[0.16em]">Contact</p>
+              <p><span class="text-slate-500">Phone:</span> <a href="tel:17786962485" class="text-sky-300 hover:text-sky-200">778-696-2485</a></p>
+              <p><span class="text-slate-500">Email:</span> <a href="mailto:mboptics2025@gmail.com" class="text-sky-300 hover:text-sky-200">mboptics2025@gmail.com</a></p>
+            </div>
+            <div class="flex flex-col gap-1">
+              <a href="tel:17786962485" class="btn-primary px-4 py-1.75 rounded-full text-[9px] flex items-center justify-center gap-1.5">
+                <span>Call to Book</span>
+              </a>
+              <a href="#book" class="px-4 py-1.5 rounded-full bg-slate-950/90 text-[8px] text-sky-200 border border-slate-600 hover:bg-black/95 text-center">
+                View booking details
+              </a>
+            </div>
+          </div>
+          <div class="mt-2">
+            <div class="subtle-glass w-full h-40 md:h-52 overflow-hidden border border-slate-700/70 hover:border-sky-500/40 transition-colors">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2528.418403296645!2d-120.33584622342941!3d50.67505817163593!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x537e2d912aec571d%3A0xc28ef1213baed17!2sMB%20Optics!5e0!3m2!1sen!2sca!4v1762796782342!5m2!1sen!2sca"
+                width="100%"
+                height="100%"
+                style="border:0;"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+              </iframe>
+            </div>
+          </div>
+        </div>
+
+        <!-- Booking & Instructions -->
+        <div id="book" class="glass-panel p-4 flex flex-col gap-3">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <p class="text-[8px] uppercase tracking-[0.18em] text-slate-400">Book your exam</p>
+              <h3 class="text-[14px] font-semibold text-slate-50">Ready when you are.</h3>
+            </div>
+            <div class="pill px-3 py-1 text-[8px] text-sky-100 flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_#22c55e]"></span>
+              New patients welcome
+            </div>
+          </div>
+          <p class="text-[9px] text-slate-300">
+            To schedule your comprehensive eye exam with
+            <span class="text-sky-200 font-medium">Dr. Mitchell Bennett</span>, call or email our clinic.
+            Our team will confirm availability, coverage details, and any pre-appointment notes.
+          </p>
+
+          <div class="grid grid-cols-1 gap-2 text-[9px] text-slate-300">
+            <button onclick="window.location.href='tel:17786962485'"
+                    class="btn-primary w-full px-4 py-2 rounded-2xl flex items-center justify-center gap-2 text-[9px]">
+              <span class="w-3.5 h-3.5 rounded-full bg-white/10 flex items-center justify-center text-[9px]">📞</span>
+              <span>Call 778-696-2485 to Book</span>
+            </button>
+            <button onclick="window.location.href='mailto:mboptics2025@gmail.com?subject=Book%20an%20Eye%20Exam%20-%20MB%20Optics'"
+                    class="btn-ghost w-full px-4 py-2 rounded-2xl flex items-center justify-center gap-2 text-[9px]">
+              <span class="w-3.5 h-3.5 rounded-full bg-white/5 flex items-center justify-center text-[9px]">@</span>
+              <span>Email mboptics2025@gmail.com</span>
+            </button>
+          </div>
+
+          <div class="subtle-glass p-3 mt-1 text-[8px] text-slate-300">
+            <p class="text-sky-200 font-semibold text-[9px] mb-1">Before you arrive</p>
+            <ul class="space-y-0.5 list-disc list-inside">
+              <li>Bring your BC Services Card.</li>
+              <li>Arrive 10 minutes before your appointment.</li>
+              <li>Bring your current glasses or contact lens details.</li>
+              <li>Pupil dilation may be recommended &mdash; consider arranging a driver.</li>
+              <li>$50 glasses prescription recheck fee may apply where noted.</li>
+            </ul>
+          </div>
+
+          <div class="flex flex-col gap-0.5 text-[7.5px] text-slate-500 pt-1 border-t border-slate-700/80">
+            <span>Emergency or sudden vision loss? Please seek immediate care at your nearest emergency department or call 911.</span>
+            <span>This page is for informational purposes and does not replace personalized medical advice.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-16 pb-10 px-5">
+    <div class="mx-auto max-w-6xl glass-panel border border-sky-500/40 bg-gradient-to-r from-slate-900/96 via-slate-950/98 to-slate-900/96 px-5 py-4 flex flex-col md:flex-row items-center justify-between gap-3 text-[10px]">
+      <div class="flex items-center gap-3">
+        <div class="w-7 h-7 rounded-full bg-sky-500 flex items-center justify-center text-[11px] text-slate-950 font-semibold shadow-soft-xl">
+          MB
+        </div>
+        <div class="flex flex-col leading-snug">
+          <span class="text-slate-50 font-semibold">MB Optics Optometry Clinic</span>
+          <span class="text-slate-200">Advanced eye care in downtown Kamloops, BC.</span>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-3 items-center justify-center md:justify-end">
+        <span class="text-slate-100 font-medium">&copy; <span id="year"></span> MB Optics. All rights reserved.</span>
+        <span class="hidden md:inline text-slate-500 font-semibold">&middot;</span>
+        <span class="text-slate-100">338 Seymour St, Kamloops, BC V2C 2G2</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Dynamic year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Intersection Observer for subtle reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.section-fade').forEach(section => observer.observe(section));
+  </script>
+</body>
+</html>
