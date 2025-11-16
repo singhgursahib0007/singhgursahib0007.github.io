@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microbe Crew</title>
+    <!-- 
+      Modular structure: CSS and JavaScript are now separated into external files.
+      This makes it easy to add new tasks and labs without cluttering the main file.
+    -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1 style="margin-bottom: 1rem;">MicroLearn Platform</h1>
+
+    <div class="game-container">
+        <canvas id="gameCanvas"></canvas>
+    </div>
+
+    <!-- Scientist Info Panel -->
+    <div id="scientistPanel" class="scientist-panel">
+        <div class="scientist-content">
+            <h3 id="scientistName">Explore the labs to meet scientists</h3>
+            <p id="scientistDescription">Navigate near doors to learn about the great microbiologists!</p>
+        </div>
+    </div>
+
+    <!-- Generic Modal for Task Display -->
+    <div id="taskModal" class="modal-overlay">
+        <div class="modal-content">
+            <iframe id="taskFrame" src=""></iframe>
+            <div style="margin-top: 1rem;">
+                <button id="closeTaskModal" class="modal-close-button">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

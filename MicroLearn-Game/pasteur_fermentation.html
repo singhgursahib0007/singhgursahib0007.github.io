@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fermentation Process</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 2rem;
+            font-family: 'Inter', 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .experiment-container {
+            width: 650px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #dbe2e8;
+        }
+
+        header {
+            background-color: #16a085;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 4px solid #117a65;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .content {
+            display: flex;
+            flex-grow: 1;
+        }
+
+        .canvas-area {
+            flex-basis: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f9fbfd;
+            border-right: 1px solid #dbe2e8;
+            padding: 20px;
+        }
+
+        #canvas {
+            border: 2px solid #dbe2e8;
+            background-color: #ffffff;
+            border-radius: 8px;
+        }
+
+        .info-panel {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #f0f4f8;
+            overflow-y: auto;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .info-panel h2 {
+            font-size: 18px;
+            color: #117a65;
+            margin-top: 0;
+            border-bottom: 2px solid #a9dfbf;
+            padding-bottom: 5px;
+        }
+
+        .info-panel p {
+            margin: 10px 0;
+        }
+
+        .slider-group {
+            margin: 15px 0;
+            padding: 12px;
+            background-color: #d5f4e6;
+            border-radius: 5px;
+        }
+
+        .slider-label {
+            font-weight: 600;
+            color: #117a65;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #ecf0f1;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #16a085;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #16a085;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: 700;
+            background-color: #a9dfbf;
+            color: #117a65;
+            margin: 10px 0;
+        }
+
+        .status.warning {
+            background-color: #fadbd8;
+            color: #c0392b;
+        }
+
+        .controls {
+            padding: 15px;
+            background-color: #ecf0f1;
+            border-top: 1px solid #dbe2e8;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #16a085;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            flex: 1;
+        }
+
+        button:hover {
+            background-color: #117a65;
+        }
+
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #16a085;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .molecule-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin: 10px 0;
+            font-size: 13px;
+        }
+
+        .molecule-box {
+            padding: 8px;
+            border-radius: 5px;
+            text-align: center;
+            background-color: #ecf0f1;
+        }
+    </style>
+</head>
+<body>
+    <div class="experiment-container">
+        <header>
+            <h1>Fermentation Process</h1>
+        </header>
+
+        <div class="content">
+            <div class="canvas-area">
+                <canvas id="canvas" width="350" height="350"></canvas>
+            </div>
+
+            <div class="info-panel">
+                <h2>Pasteur's Fermentation</h2>
+                <p>Pasteur discovered that fermentation is caused by living microorganisms, not chemical reactions!</p>
+
+                <h2>The Process:</h2>
+                <p>Yeast microbes consume sugar and produce alcohol and CO₂ gas - the same process used in brewing and winemaking.</p>
+
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Temperature (°C)</span>
+                        <span id="temp-value">20</span>
+                    </div>
+                    <input type="range" id="temp-slider" min="5" max="40" value="20" step="1">
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Sugar Level</span>
+                        <span id="sugar-value">50%</span>
+                    </div>
+                    <input type="range" id="sugar-slider" min="0" max="100" value="50" step="5">
+                </div>
+
+                <div class="status" id="status">Adjust conditions and start</div>
+
+                <p style="font-size: 13px; margin: 10px 0;">
+                    <strong>Yeast produced:</strong> <span id="yeast-count">0</span> units
+                </p>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress"></div>
+                </div>
+
+                <div class="molecule-info">
+                    <div class="molecule-box">🍇 Sugar: <span id="sugar-amount">50</span>%</div>
+                    <div class="molecule-box">🔥 Temp: <span id="temp-amount">20</span>°C</div>
+                    <div class="molecule-box">🧬 Yeast: <span id="yeast-display">0</span></div>
+                    <div class="molecule-box">💨 Gas: <span id="gas-display">0</span></div>
+                </div>
+
+                <div class="controls">
+                    <button id="start-btn">Start Fermentation</button>
+                    <button id="reset-btn">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const state = {
+            temperature: 20,
+            sugar: 50,
+            yeast: 0,
+            gas: 0,
+            time: 0,
+            running: false,
+            maxYeast: 0,
+            optimal: false
+        };
+
+        const sliders = {
+            temp: document.getElementById('temp-slider'),
+            sugar: document.getElementById('sugar-slider')
+        };
+
+        const displays = {
+            tempValue: document.getElementById('temp-value'),
+            sugarValue: document.getElementById('sugar-value'),
+            tempAmount: document.getElementById('temp-amount'),
+            sugarAmount: document.getElementById('sugar-amount'),
+            yeastCount: document.getElementById('yeast-count'),
+            yeastDisplay: document.getElementById('yeast-display'),
+            gasDisplay: document.getElementById('gas-display'),
+            status: document.getElementById('status'),
+            progress: document.getElementById('progress')
+        };
+
+        sliders.temp.addEventListener('input', (e) => {
+            state.temperature = parseInt(e.target.value);
+            displays.tempValue.textContent = state.temperature;
+            displays.tempAmount.textContent = state.temperature;
+        });
+
+        sliders.sugar.addEventListener('input', (e) => {
+            state.sugar = parseInt(e.target.value);
+            displays.sugarValue.textContent = state.sugar + '%';
+            displays.sugarAmount.textContent = state.sugar + '%';
+        });
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#f9fbfd';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            drawVessel();
+            drawContent();
+            drawBubbles();
+        }
+
+        function drawVessel() {
+            // Vessel body
+            ctx.strokeStyle = '#34495e';
+            ctx.lineWidth = 3;
+            ctx.fillStyle = 'rgba(200, 220, 255, 0.05)';
+
+            // Flask shape
+            ctx.beginPath();
+            ctx.moveTo(100, 80);
+            ctx.lineTo(100, 150);
+            ctx.quadraticCurveTo(100, 200, 130, 220);
+            ctx.lineTo(270, 220);
+            ctx.quadraticCurveTo(300, 200, 300, 150);
+            ctx.lineTo(300, 80);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(200, 220, 85, 0, Math.PI);
+            ctx.fill();
+            ctx.stroke();
+
+            // Liquid level
+            const liquidHeight = 100 + (state.sugar / 100) * 60;
+            ctx.fillStyle = `rgba(210, 180, 140, 0.4)`;
+            ctx.beginPath();
+            ctx.moveTo(110, liquidHeight);
+            ctx.quadraticCurveTo(130, liquidHeight + 5, 200, liquidHeight + 5);
+            ctx.quadraticCurveTo(270, liquidHeight + 5, 290, liquidHeight);
+            ctx.lineTo(290, 210);
+            ctx.quadraticCurveTo(290, 215, 200, 215);
+            ctx.quadraticCurveTo(110, 215, 110, 210);
+            ctx.fill();
+
+            // Air lock at top
+            ctx.strokeStyle = '#117a65';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(180, 70);
+            ctx.quadraticCurveTo(185, 50, 220, 50);
+            ctx.quadraticCurveTo(225, 70, 220, 70);
+            ctx.stroke();
+
+            // Gas bubbles coming out
+            if (state.gas > 5) {
+                ctx.fillStyle = `rgba(100, 200, 150, ${0.3 + Math.sin(state.time * 0.05) * 0.2})`;
+                ctx.beginPath();
+                ctx.arc(210, 40 - (state.time % 30), 4, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function drawContent() {
+            const liquidY = 100 + (state.sugar / 100) * 60;
+
+            // Yeast cells
+            const yeastDisplay = Math.min(state.yeast, 30);
+            ctx.fillStyle = '#27ae60';
+            for (let i = 0; i < yeastDisplay; i++) {
+                const x = 130 + Math.random() * 140;
+                const y = liquidY - 20 + Math.random() * 50;
+                const size = 2 + Math.random() * 2;
+                ctx.beginPath();
+                ctx.arc(x, y, size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Sugar molecules
+            const sugarDisplay = Math.round((state.sugar / 100) * 20);
+            ctx.fillStyle = 'rgba(255, 200, 100, 0.6)';
+            for (let i = 0; i < sugarDisplay; i++) {
+                const x = 130 + Math.random() * 140;
+                const y = liquidY - 20 + Math.random() * 50;
+                ctx.fillRect(x - 2, y - 2, 4, 4);
+            }
+        }
+
+        function drawBubbles() {
+            if (state.gas < 1) return;
+
+            ctx.fillStyle = `rgba(200, 220, 100, ${0.3 + Math.sin(state.time * 0.05) * 0.2})`;
+            const bubbleCount = Math.min(Math.round(state.gas / 5), 10);
+
+            for (let i = 0; i < bubbleCount; i++) {
+                const time = state.time - (i * 5);
+                const y = 80 + ((time % 80) / 80) * 100;
+                const wobble = Math.sin(time * 0.02) * 20;
+                const x = 200 + wobble;
+                const size = 3 + (time % 30) / 10;
+
+                ctx.beginPath();
+                ctx.arc(x, y, size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function updateSimulation() {
+            if (!state.running) return;
+
+            state.time++;
+
+            // Check optimal conditions (18-25°C is optimal for wine yeast)
+            state.optimal = state.temperature >= 18 && state.temperature <= 25;
+
+            // Yeast growth rate depends on temperature and sugar
+            let growthRate = 0;
+
+            if (state.optimal && state.sugar > 10) {
+                growthRate = 0.8 + (state.sugar / 100) * 0.4; // 0.8-1.2 per frame
+            } else if (state.temperature >= 10 && state.temperature <= 35 && state.sugar > 10) {
+                growthRate = 0.3 + (state.sugar / 100) * 0.2; // Slower growth
+            }
+
+            state.yeast += growthRate;
+            state.gas = state.yeast * 0.6;
+
+            // Limit growth
+            if (state.yeast > 100) {
+                state.yeast = 100;
+                state.gas = 60;
+            }
+
+            // Update display
+            displays.yeastCount.textContent = Math.round(state.yeast);
+            displays.yeastDisplay.textContent = Math.round(state.yeast);
+            displays.gasDisplay.textContent = Math.round(state.gas);
+            displays.progress.style.width = (state.yeast / 100) * 100 + '%';
+
+            // Update status
+            updateStatus();
+
+            draw();
+
+            if (state.running && state.yeast < 95) {
+                requestAnimationFrame(updateSimulation);
+            } else if (state.yeast >= 95) {
+                state.running = false;
+                displays.status.textContent = '✓ Fermentation Complete!';
+                displays.status.style.background = '#a9dfbf';
+                displays.status.style.color = '#117a65';
+            }
+        }
+
+        function updateStatus() {
+            if (state.yeast < 10) {
+                displays.status.textContent = '⏳ Fermentation starting...';
+                displays.status.classList.remove('warning');
+            } else if (state.optimal) {
+                displays.status.textContent = '✓ Optimal conditions! Yeast growing fast';
+                displays.status.classList.remove('warning');
+            } else if (state.temperature < 10 || state.temperature > 35) {
+                displays.status.textContent = '⚠️ Temperature too extreme! Slow growth';
+                displays.status.classList.add('warning');
+            } else {
+                displays.status.textContent = '⏳ Yeast growing slowly...';
+                displays.status.classList.remove('warning');
+            }
+        }
+
+        function startFermentation() {
+            if (!state.running) {
+                state.running = true;
+                updateSimulation();
+            }
+        }
+
+        function reset() {
+            state.running = false;
+            state.time = 0;
+            state.yeast = 0;
+            state.gas = 0;
+
+            displays.yeastCount.textContent = '0';
+            displays.yeastDisplay.textContent = '0';
+            displays.gasDisplay.textContent = '0';
+            displays.progress.style.width = '0%';
+            displays.status.textContent = 'Adjust conditions and start';
+            displays.status.classList.remove('warning');
+            displays.status.style.background = '#a9dfbf';
+            displays.status.style.color = '#117a65';
+
+            draw();
+        }
+
+        document.getElementById('start-btn').addEventListener('click', startFermentation);
+        document.getElementById('reset-btn').addEventListener('click', reset);
+
+        // Initial draw
+        draw();
+    </script>
+</body>
+</html>

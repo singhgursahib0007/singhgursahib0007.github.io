@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Pasteurization Simulation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f4f8;
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            margin: 0;
+        }
+
+        .simulation-container {
+            width: 650px;
+            height: 660px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #dbe2e8;
+        }
+
+        header {
+            background-color: #0077c2;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 4px solid #005a9e;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .main-content {
+            display: flex;
+            flex-grow: 1;
+        }
+
+        .simulation-area {
+            flex-basis: 420px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #dbe2e8;
+        }
+
+        #canvas-holder {
+            width: 420px;
+            height: 420px;
+            position: relative;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        .controls {
+            padding: 20px;
+            background-color: #f9fbfd;
+            border-top: 1px solid #dbe2e8;
+            flex-grow: 1;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .slider-container label {
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 10px;
+            background: #dbe2e8;
+            outline: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: background 0.2s;
+        }
+        
+        input[type="range"]:hover::-webkit-slider-thumb {
+            background: #ff4747;
+        }
+
+        .info-panel {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #e9f1f8;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .info-panel h2 {
+            font-size: 18px;
+            color: #005a9e;
+            margin-top: 0;
+            border-bottom: 2px solid #bde0fe;
+            padding-bottom: 5px;
+        }
+        
+        .info-panel p {
+            margin-bottom: 15px;
+        }
+        
+        .status-box {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .status-idle { background-color: #cfe2f3; color: #3d85c6; }
+        .status-heating { background-color: #fff2cc; color: #f1c232; }
+        .status-pasteurizing { background-color: #d9ead3; color: #6aa84f; }
+        .status-overheated { background-color: #f4cccc; color: #cc0000; }
+        .status-complete { background-color: #b6d7a8; color: #38761d; }
+
+        .progress-bar-container {
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        #progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #4caf50;
+            transition: width 0.1s linear;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            background-color: #0077c2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: #005a9e;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="simulation-container">
+        <header>
+            <h1>Interactive Pasteurization Simulation</h1>
+        </header>
+
+        <div class="main-content">
+            <div class="simulation-area">
+                <div id="canvas-holder">
+                    <!-- p5.js canvas will be inserted here -->
+                </div>
+                <div class="controls">
+                    <div class="slider-container">
+                        <label for="temp-slider">🔥 Heat Control</label>
+                        <input type="range" id="temp-slider" min="10" max="110" value="20" step="1">
+                    </div>
+                    <div class="status-box status-idle" id="status-box">Status: Ready</div>
+                    <p style="text-align:center; margin-top:10px; margin-bottom: 5px; font-weight:bold;">Pasteurization Progress</p>
+                    <div class="progress-bar-container">
+                        <div id="progress-bar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-panel">
+                <h2>What is Pasteurization?</h2>
+                <p>It's a process that uses heat to kill harmful bacteria in beverages like milk, without significantly affecting its nutritional value.</p>
+                
+                <h2>Your Goal:</h2>
+                <p>
+                    1. Use the slider to heat the milk into the green <strong>Pasteurization Zone</strong> (72°C - 85°C).<br>
+                    2. Hold it there until the progress bar is full.<br>
+                    3. Avoid overheating above 90°C, which ruins the milk!
+                </p>
+                
+                <button id="reset-button">Reset Simulation</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- p5.js Sketch ---
+        let particles = [];
+        const NUM_MILK = 150;
+        const NUM_BACTERIA = 20;
+
+        // Simulation state
+        let temperature = 20;
+        let targetTemperature = 20;
+        let pasteurizationProgress = 0;
+        const TIME_TO_PASTEURIZE = 200; // frames
+        let simState = 'idle'; // idle, heating, pasteurizing, complete, overheated
+
+        // DOM Elements
+        let tempSlider, statusBox, progressBar, resetButton;
+
+        // Constants
+        const PASTEUR_TEMP_MIN = 72;
+        const PASTEUR_TEMP_MAX = 85;
+        const OVERHEAT_TEMP = 90;
+        const CANVAS_WIDTH = 420;
+        const CANVAS_HEIGHT = 420;
+        const BEAKER_WIDTH = 250;
+        const BEAKER_HEIGHT = 300;
+
+        function setup() {
+            let canvas = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+            canvas.parent('canvas-holder');
+            
+            // Get DOM elements
+            tempSlider = select('#temp-slider');
+            statusBox = select('#status-box');
+            progressBar = select('#progress-bar');
+            resetButton = select('#reset-button');
+
+            // Add event listeners
+            tempSlider.input(() => targetTemperature = tempSlider.value());
+            resetButton.mousePressed(resetSimulation);
+
+            resetSimulation();
+        }
+        
+        function resetSimulation() {
+            particles = [];
+            // Create particles inside the beaker
+            for (let i = 0; i < NUM_MILK; i++) {
+                particles.push(new Particle(false));
+            }
+            for (let i = 0; i < NUM_BACTERIA; i++) {
+                particles.push(new Particle(true));
+            }
+            temperature = 20;
+            targetTemperature = 20;
+            tempSlider.value(20);
+            pasteurizationProgress = 0;
+            simState = 'idle';
+        }
+
+        function draw() {
+            background('#f9fbfd');
+
+            updateSimulation();
+            
+            drawBeaker();
+
+            // Update and display all particles
+            for (let p of particles) {
+                p.update();
+                p.display();
+            }
+            
+            drawThermometer();
+            updateUI();
+        }
+        
+        function updateSimulation() {
+            // Smoothly adjust temperature towards the target
+            temperature = lerp(temperature, targetTemperature, 0.05);
+
+            // Update simulation state based on temperature
+            if (simState !== 'complete' && simState !== 'overheated') {
+                if (temperature >= OVERHEAT_TEMP) {
+                    simState = 'overheated';
+                    killAllBacteria(true); // Ruin the milk
+                } else if (temperature >= PASTEUR_TEMP_MIN && temperature <= PASTEUR_TEMP_MAX) {
+                    simState = 'pasteurizing';
+                    pasteurizationProgress += 1;
+                } else if (temperature > 25) {
+                    simState = 'heating';
+                    pasteurizationProgress = max(0, pasteurizationProgress - 2); // Progress slowly degrades if you leave the zone
+                } else {
+                    simState = 'idle';
+                     pasteurizationProgress = max(0, pasteurizationProgress - 2);
+                }
+            }
+            
+            if (pasteurizationProgress >= TIME_TO_PASTEURIZE && simState !== 'complete') {
+                simState = 'complete';
+                killAllBacteria(false); // Successfully pasteurized
+            }
+        }
+        
+        function killAllBacteria(isOverheated) {
+            for (let p of particles) {
+                if (p.isBacteria) {
+                    p.isAlive = false;
+                }
+                if(isOverheated && !p.isBacteria){
+                    p.isDenatured = true;
+                }
+            }
+        }
+
+        function updateUI() {
+            let statusText = '';
+            let statusClass = 'status-idle';
+            
+            switch(simState) {
+                case 'idle':
+                    statusText = 'Status: Ready';
+                    statusClass = 'status-idle';
+                    break;
+                case 'heating':
+                    statusText = `Status: Heating... ${temperature.toFixed(1)}°C`;
+                    statusClass = 'status-heating';
+                    break;
+                case 'pasteurizing':
+                    statusText = `Status: Pasteurizing! ${temperature.toFixed(1)}°C`;
+                    statusClass = 'status-pasteurizing';
+                    break;
+                case 'overheated':
+                    statusText = `Status: Overheated! Milk is ruined.`;
+                    statusClass = 'status-overheated';
+                    break;
+                case 'complete':
+                    statusText = 'Status: Pasteurization Complete!';
+                    statusClass = 'status-complete';
+                    break;
+            }
+            
+            statusBox.html(statusText);
+            statusBox.class('status-box ' + statusClass);
+            
+            let progressPercent = (pasteurizationProgress / TIME_TO_PASTEURIZE) * 100;
+            progressBar.style('width', `${progressPercent}%`);
+        }
+
+        function drawBeaker() {
+            let x = (width - BEAKER_WIDTH) / 2;
+            let y = height - BEAKER_HEIGHT - 20;
+            
+            // Heat effect
+            if (temperature > 50) {
+                let heatAlpha = map(temperature, 50, 110, 20, 100);
+                noStroke();
+                fill(255, 100, 100, heatAlpha);
+                ellipse(width/2, height-10, BEAKER_WIDTH, 30);
+            }
+
+            // Beaker glass
+            stroke(150, 180, 200);
+            strokeWeight(4);
+            noFill();
+            // Main body
+            line(x, y, x, y + BEAKER_HEIGHT);
+            line(x + BEAKER_WIDTH, y, x + BEAKER_WIDTH, y + BEAKER_HEIGHT);
+            // Bottom
+            arc(x + BEAKER_WIDTH / 2, y + BEAKER_HEIGHT, BEAKER_WIDTH, 40, 0, PI);
+            
+            // Milk liquid
+            noStroke();
+            let milkColor = color(245, 245, 240);
+            if(simState === 'overheated') milkColor = color(220, 215, 200);
+            fill(milkColor);
+            rect(x, y + 50, BEAKER_WIDTH, BEAKER_HEIGHT - 40);
+            arc(x + BEAKER_WIDTH / 2, y + BEAKER_HEIGHT, BEAKER_WIDTH, 40, 0, PI);
+            
+             // Liquid top surface
+            fill(255, 255, 255, 150);
+            ellipse(x + BEAKER_WIDTH / 2, y + 50, BEAKER_WIDTH, 15);
+        }
+
+        function drawThermometer() {
+            let x = 40;
+            let y = height - 50;
+            let h = 280;
+
+            // Casing
+            stroke(100);
+            strokeWeight(2);
+            fill(240);
+            rect(x - 10, y - h, 20, h, 10);
+            
+            // Bulb
+            fill(255, 0, 0);
+            noStroke();
+            ellipse(x, y, 30, 30);
+            
+            // Mercury
+            let tempHeight = map(temperature, 10, 110, 0, h - 20);
+            if (temperature > 10) {
+                rect(x - 5, y, 10, -min(tempHeight, h-15));
+            }
+            
+            // Markings
+            stroke(100);
+            strokeWeight(1);
+            for (let t = 20; t <= 100; t += 20) {
+                let markY = y - map(t, 10, 110, 0, h - 20);
+                line(x - 10, markY, x - 20, markY);
+                noStroke();
+                fill(50);
+                textAlign(RIGHT, CENTER);
+                textSize(12);
+                text(`${t}°`, x - 25, markY);
+            }
+            
+            // Pasteurization zone indicator
+            let zoneTop = y - map(PASTEUR_TEMP_MAX, 10, 110, 0, h - 20);
+            let zoneBottom = y - map(PASTEUR_TEMP_MIN, 10, 110, 0, h - 20);
+            noStroke();
+            fill(0, 200, 0, 50);
+            rect(x - 10, zoneTop, 20, zoneBottom - zoneTop);
+        }
+
+
+        // --- Particle Class ---
+        class Particle {
+            constructor(isBacteria) {
+                this.beakerBounds = {
+                    x1: (CANVAS_WIDTH - BEAKER_WIDTH) / 2,
+                    y1: (CANVAS_HEIGHT - BEAKER_HEIGHT - 20) + 50,
+                    x2: (CANVAS_WIDTH - BEAKER_WIDTH) / 2 + BEAKER_WIDTH,
+                    y2: (CANVAS_HEIGHT - BEAKER_HEIGHT - 20) + BEAKER_HEIGHT + 10
+                };
+                this.pos = createVector(random(this.beakerBounds.x1, this.beakerBounds.x2), random(this.beakerBounds.y1, this.beakerBounds.y2));
+                this.vel = p5.Vector.random2D().mult(random(0.5, 1.5));
+                this.isBacteria = isBacteria;
+                this.isAlive = true;
+                this.isDenatured = false;
+
+                if (this.isBacteria) {
+                    this.radius = 5;
+                    this.color = color(50, 200, 50);
+                } else {
+                    this.radius = 4;
+                    this.color = color(255, 255, 255, 200);
+                }
+            }
+
+            update() {
+                // Movement speed based on temperature
+                let agitation = map(temperature, 10, 110, 0.5, 5);
+                this.pos.add(this.vel.copy().mult(agitation));
+
+                // Bouncing off beaker walls
+                if (this.pos.x < this.beakerBounds.x1 + this.radius || this.pos.x > this.beakerBounds.x2 - this.radius) {
+                    this.vel.x *= -1;
+                }
+                if (this.pos.y < this.beakerBounds.y1 + this.radius || this.pos.y > this.beakerBounds.y2 - this.radius - 20) {
+                    this.vel.y *= -1;
+                }
+                
+                this.pos.x = constrain(this.pos.x, this.beakerBounds.x1 + this.radius, this.beakerBounds.x2 - this.radius);
+                this.pos.y = constrain(this.pos.y, this.beakerBounds.y1 + this.radius, this.beakerBounds.y2 - this.radius - 20);
+
+            }
+
+            display() {
+                noStroke();
+                if(this.isBacteria){
+                    if(this.isAlive){
+                        fill(this.color);
+                    } else {
+                        fill(150, 150, 150, 150); // Dead bacteria color
+                    }
+                    // Draw bacteria as spiky circles
+                    push();
+                    translate(this.pos.x, this.pos.y);
+                    for (let i = 0; i < 8; i++) {
+                        let angle = TWO_PI / 8 * i;
+                        let x = cos(angle) * this.radius;
+                        let y = sin(angle) * this.radius;
+                        triangle(0,0, x, y, cos(angle+0.4) * this.radius * 0.8, sin(angle+0.4) * this.radius * 0.8);
+                    }
+                    pop();
+
+                } else {
+                    if(this.isDenatured){
+                        fill(180, 170, 160, 150); // Denatured milk particle
+                    } else {
+                        fill(this.color);
+                    }
+                    ellipse(this.pos.x, this.pos.y, this.radius * 2);
+                }
+            }
+        }
+
+    </script>
+</body>
+</html>

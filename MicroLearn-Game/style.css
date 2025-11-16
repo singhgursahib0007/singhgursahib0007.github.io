@@ -1,0 +1,211 @@
+/* --- Basic Setup & Typography --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+body {
+    background-color: #1a1a2e; /* Dark space-blue background */
+    color: #e0e0e0;
+    font-family: 'Inter', 'Arial', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden; /* Prevent scrolling */
+}
+
+h1, h2 {
+    margin: 0;
+    padding: 0;
+    font-weight: 700;
+}
+
+/* --- Game Container --- */
+.game-container {
+    border: 4px solid #4a4a8a; /* Purple-ish border */
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    background-color: #000;
+    position: relative; /* For a virtual joystick, if added later */
+}
+
+canvas {
+    display: block;
+    background-color: #2c3e50; /* Default room color */
+}
+
+/* --- Modal Styling (for tasks and messages) --- */
+.modal-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(5px);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    color: #333;
+    padding: 0.75rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 650px;
+    height: 660px;
+    border-top: 8px solid #3498db; /* Blue accent */
+    text-align: center;
+    transform: scale(0.9);
+    opacity: 0;
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Show animation for modal */
+.modal-overlay.visible {
+    display: flex;
+}
+
+.modal-overlay.visible .modal-content {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.modal-content h2 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    font-size: 1.75rem;
+}
+
+.modal-content p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+/* --- Buttons --- */
+.task-button, .modal-close-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    margin: 0.5rem;
+}
+
+.task-button:hover, .modal-close-button:hover {
+    background-color: #2980b9;
+}
+
+.task-button:active, .modal-close-button:active {
+    transform: translateY(1px);
+}
+
+.task-button:disabled {
+    background-color: #bdc3c7; /* Gray */
+    cursor: not-allowed;
+}
+
+.modal-close-button {
+    background-color: #e74c3c;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    z-index: 1001;
+}
+.modal-close-button:hover {
+    background-color: #c0392b;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* --- Task Modal with Iframe --- */
+#taskFrame {
+    border: none;
+    border-radius: 8px;
+    width: 100%;
+    height: 520px;
+    background-color: white;
+    flex: 1;
+}
+
+/* --- Scientist Info Panel --- */
+.scientist-panel {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #1abc9c 0%, #0d7b6d 100%);
+    border-radius: 12px;
+    border: 2px solid #16a085;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 800px;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.scientist-content {
+    color: #ffffff;
+    text-align: center;
+    width: 100%;
+}
+
+.scientist-panel h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.scientist-panel p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    opacity: 0.95;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Fade in/out animation for scientist info */
+.scientist-panel.fade-out {
+    animation: fadeOut 0.2s ease-out;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0.6;
+    }
+}

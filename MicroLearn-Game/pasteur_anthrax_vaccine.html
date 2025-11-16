@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anthrax Vaccination Trial</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 2rem;
+            font-family: 'Inter', 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .experiment-container {
+            width: 650px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #dbe2e8;
+        }
+
+        header {
+            background-color: #d35400;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 4px solid #ba4a00;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .content {
+            display: flex;
+            flex-grow: 1;
+        }
+
+        .visualization {
+            flex-basis: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f9fbfd;
+            border-right: 1px solid #dbe2e8;
+            padding: 20px;
+        }
+
+        #canvas {
+            border: 2px solid #dbe2e8;
+            background-color: #ffffff;
+            border-radius: 8px;
+        }
+
+        .info-panel {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #f0f4f8;
+            overflow-y: auto;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .info-panel h2 {
+            font-size: 18px;
+            color: #ba4a00;
+            margin-top: 0;
+            border-bottom: 2px solid #fad7a0;
+            padding-bottom: 5px;
+        }
+
+        .info-panel p {
+            margin: 10px 0;
+        }
+
+        .sheep-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .sheep-box {
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #fdeaa8;
+            border: 2px solid #d35400;
+            text-align: center;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .sheep-box.vaccinated {
+            background-color: #d5f4e6;
+            border-color: #27ae60;
+        }
+
+        .sheep-box.infected {
+            background-color: #fadbd8;
+            border-color: #c0392b;
+        }
+
+        .sheep-box.protected {
+            background-color: #a9dfbf;
+            border-color: #17a589;
+        }
+
+        .controls {
+            padding: 15px;
+            background-color: #ecf0f1;
+            border-top: 1px solid #dbe2e8;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #d35400;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            flex: 1;
+        }
+
+        button:hover {
+            background-color: #ba4a00;
+        }
+
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: 700;
+            background-color: #fdeaa8;
+            color: #d35400;
+            margin: 10px 0;
+        }
+
+        .status.complete {
+            background-color: #a9dfbf;
+            color: #17a589;
+        }
+
+        .step-indicator {
+            padding: 8px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            font-size: 13px;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: 600;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="experiment-container">
+        <header>
+            <h1>Anthrax Vaccination Trial (1881)</h1>
+        </header>
+
+        <div class="content">
+            <div class="visualization">
+                <canvas id="canvas" width="350" height="350"></canvas>
+            </div>
+
+            <div class="info-panel">
+                <h2>Anthrax Vaccine Trial</h2>
+                <p>Pasteur's famous 1881 public test: vaccinate some sheep, expose all sheep to deadly anthrax, and prove the vaccine works!</p>
+
+                <h2>The Setup:</h2>
+                <div class="sheep-group">
+                    <div class="sheep-box">🐑 Vaccinated (4)</div>
+                    <div class="sheep-box">🐑 Not Vaccinated (4)</div>
+                </div>
+
+                <div class="step-indicator" id="step-indicator">
+                    Step 1: Vaccination Phase
+                </div>
+
+                <div class="status" id="status">Ready to begin trial</div>
+
+                <h2>Outcome:</h2>
+                <p id="outcome-text">Run the trial to see the results of Pasteur's breakthrough experiment!</p>
+
+                <div class="controls">
+                    <button id="start-btn">Start Trial</button>
+                    <button id="reset-btn">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const state = {
+            phase: 0, // 0: setup, 1: vaccinating, 2: exposing, 3: results
+            progress: 0,
+            vaccinated: [true, true, true, true, false, false, false, false],
+            alive: [true, true, true, true, true, true, true, true],
+            exposed: false
+        };
+
+        const PHASES = {
+            SETUP: 0,
+            VACCINATE: 1,
+            EXPOSE: 2,
+            RESULTS: 3
+        };
+
+        let animationRunning = false;
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#f9fbfd';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            drawSheep();
+            drawPhaseInfo();
+        }
+
+        function drawSheep() {
+            const sheetSize = 60;
+            const startX = 40;
+            const startY = 80;
+            const spacing = 80;
+
+            for (let i = 0; i < 8; i++) {
+                const row = Math.floor(i / 4);
+                const col = i % 4;
+                const x = startX + col * spacing;
+                const y = startY + row * spacing;
+
+                drawSingleSheep(x, y, i);
+            }
+        }
+
+        function drawSingleSheep(x, y, index) {
+            const isVaccinated = state.vaccinated[index];
+            const isAlive = state.alive[index];
+            const isExposed = state.exposed;
+
+            // Sheep body
+            ctx.fillStyle = isAlive ? '#f5deb3' : '#c0c0c0';
+            ctx.beginPath();
+            ctx.ellipse(x, y, 22, 18, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Sheep head
+            ctx.fillStyle = isAlive ? '#daa520' : '#808080';
+            ctx.beginPath();
+            ctx.arc(x + 18, y - 10, 8, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Eyes
+            ctx.fillStyle = isAlive ? '#000' : '#999';
+            ctx.beginPath();
+            ctx.arc(x + 20, y - 12, 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Vaccination mark
+            if (isVaccinated && state.phase >= PHASES.VACCINATE) {
+                ctx.fillStyle = '#27ae60';
+                ctx.beginPath();
+                ctx.arc(x - 15, y, 6, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#1e8449';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(x - 15, y, 6, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            // Infection mark (red X)
+            if (isExposed && !isAlive) {
+                ctx.strokeStyle = '#c0392b';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(x - 8, y - 8);
+                ctx.lineTo(x + 8, y + 8);
+                ctx.moveTo(x + 8, y - 8);
+                ctx.lineTo(x - 8, y + 8);
+                ctx.stroke();
+            }
+
+            // Protection indicator (shield)
+            if (isExposed && isAlive && isVaccinated) {
+                ctx.fillStyle = 'rgba(39, 174, 96, 0.3)';
+                ctx.beginPath();
+                ctx.arc(x, y, 28, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#27ae60';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(x, y, 28, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+        }
+
+        function drawPhaseInfo() {
+            ctx.fillStyle = '#34495e';
+            ctx.font = 'bold 12px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText('Vaccinated (Green)', 105, 30);
+            ctx.fillText('Not Vaccinated (No Mark)', 245, 30);
+        }
+
+        function startTrial() {
+            if (animationRunning) return;
+            animationRunning = true;
+            state.progress = 0;
+            state.phase = PHASES.VACCINATE;
+            animatePhases();
+        }
+
+        function animatePhases() {
+            if (!animationRunning) return;
+
+            switch (state.phase) {
+                case PHASES.VACCINATE:
+                    state.progress++;
+                    updateStatusUI('Vaccinating selected sheep... Step ' + Math.ceil(state.progress / 30));
+                    document.getElementById('step-indicator').textContent = 'Step 1: Vaccination Phase';
+
+                    if (state.progress >= 30) {
+                        state.phase = PHASES.EXPOSE;
+                        state.progress = 0;
+                    }
+                    break;
+
+                case PHASES.EXPOSE:
+                    state.progress++;
+                    updateStatusUI('Exposing all sheep to anthrax... Step ' + Math.ceil(state.progress / 30));
+                    document.getElementById('step-indicator').textContent = 'Step 2: Anthrax Exposure';
+                    state.exposed = true;
+
+                    if (state.progress >= 30) {
+                        state.phase = PHASES.RESULTS;
+                        state.progress = 0;
+                        applyResults();
+                    }
+                    break;
+
+                case PHASES.RESULTS:
+                    state.progress++;
+                    updateStatusUI('Monitoring sheep health... Step ' + Math.ceil(state.progress / 40));
+                    document.getElementById('step-indicator').textContent = 'Step 3: Observation Phase';
+
+                    if (state.progress >= 40) {
+                        completeExperiment();
+                        animationRunning = false;
+                        return;
+                    }
+                    break;
+            }
+
+            draw();
+            setTimeout(animatePhases, 80);
+        }
+
+        function applyResults() {
+            // Vaccinated sheep survive
+            for (let i = 0; i < 4; i++) {
+                state.alive[i] = true;
+            }
+            // Unvaccinated sheep die
+            for (let i = 4; i < 8; i++) {
+                state.alive[i] = false;
+            }
+        }
+
+        function updateStatusUI(message) {
+            document.getElementById('status').textContent = message;
+        }
+
+        function completeExperiment() {
+            document.getElementById('status').classList.add('complete');
+            document.getElementById('status').textContent = '✓ Trial Complete - Vaccine Works!';
+            
+            const outcomeText = document.getElementById('outcome-text');
+            outcomeText.innerHTML = `
+                <strong>Results:</strong><br>
+                ✓ All 4 vaccinated sheep: <strong>SURVIVED</strong><br>
+                ✗ All 4 unvaccinated sheep: <strong>DIED</strong><br><br>
+                This public demonstration proved the anthrax vaccine's effectiveness and established vaccination as a scientific tool!
+            `;
+        }
+
+        function reset() {
+            animationRunning = false;
+            state.phase = PHASES.SETUP;
+            state.progress = 0;
+            state.alive = [true, true, true, true, true, true, true, true];
+            state.exposed = false;
+
+            document.getElementById('status').classList.remove('complete');
+            document.getElementById('status').textContent = 'Ready to begin trial';
+            document.getElementById('step-indicator').textContent = 'Step 1: Vaccination Phase';
+            document.getElementById('outcome-text').textContent = 
+                'Run the trial to see the results of Pasteur\'s breakthrough experiment!';
+
+            draw();
+        }
+
+        document.getElementById('start-btn').addEventListener('click', startTrial);
+        document.getElementById('reset-btn').addEventListener('click', reset);
+
+        draw();
+    </script>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Germ Theory Experiment</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 2rem;
+            font-family: 'Inter', 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .experiment-container {
+            width: 650px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #dbe2e8;
+        }
+
+        header {
+            background-color: #8e44ad;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 4px solid #6c3483;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .content {
+            display: flex;
+            flex-grow: 1;
+        }
+
+        .canvas-area {
+            flex-basis: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f9fbfd;
+            border-right: 1px solid #dbe2e8;
+            padding: 20px;
+        }
+
+        #canvas {
+            border: 2px solid #dbe2e8;
+            background-color: #ffffff;
+            border-radius: 8px;
+        }
+
+        .info-panel {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #f0f4f8;
+            overflow-y: auto;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .info-panel h2 {
+            font-size: 18px;
+            color: #6c3483;
+            margin-top: 0;
+            border-bottom: 2px solid #d7bde2;
+            padding-bottom: 5px;
+        }
+
+        .info-panel p {
+            margin: 10px 0;
+        }
+
+        .controls {
+            padding: 15px;
+            background-color: #ecf0f1;
+            border-top: 1px solid #dbe2e8;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #8e44ad;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        button:hover {
+            background-color: #6c3483;
+        }
+
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: 700;
+            background-color: #d5f4e6;
+            color: #27ae60;
+        }
+
+        .status.contaminated {
+            background-color: #fadbd8;
+            color: #c0392b;
+        }
+
+        .step-indicator {
+            padding: 10px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="experiment-container">
+        <header>
+            <h1>Germ Theory Experiment</h1>
+        </header>
+
+        <div class="content">
+            <div class="canvas-area">
+                <canvas id="canvas" width="350" height="350"></canvas>
+            </div>
+
+            <div class="info-panel">
+                <h2>The Germ Theory</h2>
+                <p>Pasteur demonstrated that microorganisms are responsible for fermentation and decay, not "spontaneous generation."</p>
+
+                <h2>Your Experiment:</h2>
+                <p>You have two flasks:</p>
+                <ul style="margin: 8px 0; padding-left: 20px;">
+                    <li><strong>Flask A:</strong> Sealed with a curved neck</li>
+                    <li><strong>Flask B:</strong> Open to air</li>
+                </ul>
+
+                <p>Both contain sterile broth. Watch what happens over time!</p>
+
+                <div class="step-indicator">
+                    <span id="current-step">Step 1: Initial Setup</span>
+                </div>
+
+                <div class="status" id="status">
+                    <span id="status-text">Ready to begin</span>
+                </div>
+
+                <div class="controls">
+                    <button id="start-btn">Start Experiment</button>
+                    <button id="reset-btn">Reset</button>
+                </div>
+
+                <h2>Result:</h2>
+                <p id="result-text">Run the experiment to see the results!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let experimentRunning = false;
+        let timeElapsed = 0;
+        const TOTAL_TIME = 200;
+
+        const state = {
+            flaskA: { bacteria: 0, contaminated: false },
+            flaskB: { bacteria: 0, contaminated: false }
+        };
+
+        // Flask positions
+        const flaskA = { x: 60, y: 150, width: 80, height: 120, neckX: 75, neckY: 80 };
+        const flaskB = { x: 250, y: 150, width: 80, height: 120 };
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Background
+            ctx.fillStyle = '#f9fbfd';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Title
+            ctx.fillStyle = '#6c3483';
+            ctx.font = 'bold 14px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText('Flask A (Sealed)', flaskA.x + flaskA.width / 2, 30);
+            ctx.fillText('Flask B (Open)', flaskB.x + flaskB.width / 2, 30);
+
+            drawFlask(flaskA, true);
+            drawFlask(flaskB, false);
+            drawBacteria(flaskA);
+            drawBacteria(flaskB);
+        }
+
+        function drawFlask(flask, isCurved) {
+            ctx.strokeStyle = '#34495e';
+            ctx.lineWidth = 3;
+            ctx.fillStyle = 'rgba(200, 220, 255, 0.1)';
+
+            // Flask body
+            ctx.fillRect(flask.x, flask.y, flask.width, flask.height);
+            ctx.strokeRect(flask.x, flask.y, flask.width, flask.height);
+
+            // Neck
+            if (isCurved) {
+                // Curved/sealed neck for Flask A
+                ctx.beginPath();
+                ctx.moveTo(flask.x + 25, flask.y);
+                ctx.quadraticCurveTo(flask.x + 40, flask.y - 60, flask.x + 40, flask.y - 80);
+                ctx.stroke();
+
+                // Seal cap
+                ctx.fillStyle = '#16a085';
+                ctx.fillRect(flask.x + 35, flask.y - 85, 10, 8);
+                ctx.strokeStyle = '#117a65';
+                ctx.strokeRect(flask.x + 35, flask.y - 85, 10, 8);
+            } else {
+                // Open neck for Flask B
+                ctx.beginPath();
+                ctx.moveTo(flask.x + 25, flask.y);
+                ctx.lineTo(flask.x + 25, flask.y - 50);
+                ctx.lineTo(flask.x + 55, flask.y - 50);
+                ctx.lineTo(flask.x + 55, flask.y);
+                ctx.stroke();
+
+                // Open top indicator
+                ctx.fillStyle = '#c0392b';
+                ctx.fillRect(flask.x + 20, flask.y - 55, 40, 8);
+            }
+        }
+
+        function drawBacteria(flask) {
+            const count = Math.round(state[flask === flaskA ? 'flaskA' : 'flaskB'].bacteria);
+            const maxBacteria = 25;
+            const isContaminated = flask === flaskB ? state.flaskB.contaminated : state.flaskA.contaminated;
+            
+            ctx.fillStyle = isContaminated ? '#e74c3c' : '#2ecc71';
+
+            for (let i = 0; i < Math.min(count, maxBacteria); i++) {
+                const x = flask.x + Math.random() * flask.width;
+                const y = flask.y + Math.random() * flask.height;
+                const size = 2 + Math.random() * 2;
+                ctx.fillRect(x - size / 2, y - size / 2, size, size);
+            }
+
+            if (count > maxBacteria) {
+                ctx.fillStyle = '#2c3e50';
+                ctx.font = 'bold 16px Inter';
+                ctx.textAlign = 'center';
+                ctx.fillText('∞', flask.x + flask.width / 2, flask.y + flask.height / 2);
+            }
+        }
+
+        function updateSimulation() {
+            if (!experimentRunning || timeElapsed >= TOTAL_TIME) {
+                experimentRunning = false;
+                return;
+            }
+
+            timeElapsed++;
+
+            // Flask A (sealed): bacteria should remain low
+            if (state.flaskA.bacteria < 5) {
+                state.flaskA.bacteria += 0.01;
+            }
+
+            // Flask B (open): bacteria grow exponentially
+            state.flaskB.bacteria += Math.pow(1.02, timeElapsed / 10);
+            if (state.flaskB.bacteria > 50) {
+                state.flaskB.contaminated = true;
+            }
+
+            updateUI();
+            draw();
+
+            if (experimentRunning) {
+                requestAnimationFrame(updateSimulation);
+            } else {
+                showResults();
+            }
+        }
+
+        function updateUI() {
+            const progress = Math.round((timeElapsed / TOTAL_TIME) * 100);
+            const days = Math.round(timeElapsed / 20);
+
+            const stepText = document.getElementById('current-step');
+            if (progress < 33) {
+                stepText.textContent = `Step 1: Day ${days} - Initial Setup`;
+            } else if (progress < 66) {
+                stepText.textContent = `Step 2: Day ${days} - Flask B Shows Growth`;
+            } else {
+                stepText.textContent = `Step 3: Day ${days} - Clear Difference`;
+            }
+
+            const statusEl = document.getElementById('status');
+            const statusText = document.getElementById('status-text');
+
+            if (state.flaskB.contaminated) {
+                statusEl.classList.add('contaminated');
+                statusText.textContent = '⚠️ Flask B is contaminated with bacteria!';
+            } else if (progress > 50) {
+                statusEl.classList.add('contaminated');
+                statusText.textContent = '🔬 Contamination visible in Flask B!';
+            } else {
+                statusEl.classList.remove('contaminated');
+                statusText.textContent = '⏳ Experiment in progress...';
+            }
+        }
+
+        function showResults() {
+            const resultText = document.getElementById('result-text');
+            resultText.innerHTML = `
+                <strong>Conclusion:</strong><br>
+                ✓ Flask A (sealed): Remains clear<br>
+                ✗ Flask B (open): Shows bacterial growth<br><br>
+                This proves that microorganisms come from the air, not spontaneous generation!
+            `;
+        }
+
+        function startExperiment() {
+            if (!experimentRunning) {
+                experimentRunning = true;
+                updateSimulation();
+            }
+        }
+
+        function reset() {
+            experimentRunning = false;
+            timeElapsed = 0;
+            state.flaskA.bacteria = 0;
+            state.flaskB.bacteria = 0;
+            state.flaskA.contaminated = false;
+            state.flaskB.contaminated = false;
+
+            document.getElementById('current-step').textContent = 'Step 1: Initial Setup';
+            document.getElementById('status').classList.remove('contaminated');
+            document.getElementById('status-text').textContent = 'Ready to begin';
+            document.getElementById('result-text').textContent = 'Run the experiment to see the results!';
+            draw();
+        }
+
+        document.getElementById('start-btn').addEventListener('click', startExperiment);
+        document.getElementById('reset-btn').addEventListener('click', reset);
+
+        // Initial draw
+        draw();
+    </script>
+</body>
+</html>
