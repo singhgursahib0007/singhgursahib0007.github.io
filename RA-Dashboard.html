@@ -196,27 +196,14 @@
                     </div>
                 </div>
 
-                <!-- Weekly Volume Chart (New) -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="glass-panel rounded-xl p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="font-bold text-slate-800">Weekly Activity</h3>
-                            <span class="text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded">Last 8 Weeks</span>
-                        </div>
-                        <div class="relative h-48 w-full">
-                            <canvas id="weeklyChart"></canvas>
-                        </div>
+                <!-- Biweekly Hours Activity Chart -->
+                <div class="glass-panel rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-slate-800">Biweekly Hours Activity</h3>
+                        <span class="text-xs bg-slate-100 text-slate-600 px-3 py-1 rounded-full font-medium border border-slate-200">Pay Periods</span>
                     </div>
-
-                    <!-- Pie Chart (New) -->
-                    <div class="glass-panel rounded-xl p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="font-bold text-slate-800">Work Distribution</h3>
-                            <span class="text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded">By Day</span>
-                        </div>
-                        <div class="relative h-48 w-full flex justify-center">
-                            <canvas id="dayChart"></canvas>
-                        </div>
+                    <div class="relative h-72 w-full">
+                        <canvas id="biweeklyChart"></canvas>
                     </div>
                 </div>
 
@@ -249,46 +236,6 @@
 
             <!-- Right Column: Admin & Details -->
             <div class="lg:col-span-1 space-y-6">
-
-                <!-- Predictive Insights (New) -->
-                <div id="insightsPanel"
-                    class="glass-panel rounded-xl p-6 bg-gradient-to-br from-indigo-50 to-white border-indigo-100">
-                    <h3 class="font-bold text-indigo-900 mb-4 flex items-center gap-2">
-                        <i class="fas fa-sparkles text-indigo-500"></i> Smart Insights
-                    </h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center pb-3 border-b border-indigo-50">
-                            <div>
-                                <p class="text-xs text-indigo-400 uppercase tracking-wide font-semibold">Projected
-                                    Finish</p>
-                                <p class="text-sm text-slate-500">If you keep this pace</p>
-                            </div>
-                            <div class="text-right">
-                                <span id="projectedDate" class="text-lg font-bold text-indigo-700">Calculating...</span>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center pb-3 border-b border-indigo-50">
-                            <div>
-                                <p class="text-xs text-indigo-400 uppercase tracking-wide font-semibold">Current Pace
-                                </p>
-                                <p class="text-sm text-slate-500">Last 8 weeks avg</p>
-                            </div>
-                            <div class="text-right">
-                                <span id="avgWeekly" class="text-lg font-bold text-indigo-700">--</span>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <p class="text-xs text-indigo-400 uppercase tracking-wide font-semibold">Required Pace
-                                </p>
-                                <p class="text-sm text-slate-500">To finish exactly Mar 31</p>
-                            </div>
-                            <div class="text-right">
-                                <span id="reqWeekly" class="text-lg font-bold text-emerald-600">--</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Admin Panel (Hidden by default) -->
                 <div id="adminPanel" class="hidden">
@@ -422,8 +369,7 @@
         const db = getFirestore(app);
         const entryCollection = collection(db, "timesheet_entries");
         let chartInstance = null;
-        let weeklyChartInstance = null;
-        let dayChartInstance = null;
+        let biweeklyChartInstance = null;
         let allEntries = [];
 
         // --- AUTH LOGIC ---
@@ -714,41 +660,10 @@
             }
 
             renderBurnupChart(allEntries);
-            renderWeeklyChart(weeklyData);
-            renderDayChart(allEntries);
-            renderInsights(allEntries, totalHoursUsed, effectiveDays, totalContractDays);
+            renderBiweeklyChart(grouped);
         }
 
-        function renderInsights(entries, totalHours, daysPassed, totalDays) {
-            const insightsPanel = document.getElementById('insightsPanel');
-            if (!insightsPanel) {
-                // Inject panel if needed or just use console for now, but UI expects it.
-                // Actually, let's inject a new section in the DOM via JS if it doesn't exist, 
-                // or assume I will manually add the HTML container in a separate edit.
-                // For this edit, I will stick to logic calculation and rely on a subsequent HTML edit to add the container.
-                // ...Wait, I can't easily add HTML with this specific tool without a multi-replacer.
-                // Let's assume the container exists or I will add it in the next step.
-            }
 
-            // 1. Projected End Date
-            const avgHoursPerDay = totalHours / (daysPassed || 1);
-            const remainingHours = TOTAL_HOURS - totalHours;
-            const daysToFinish = avgHoursPerDay > 0 ? remainingHours / avgHoursPerDay : 999;
-            const projectedDate = new Date();
-            projectedDate.setDate(projectedDate.getDate() + daysToFinish);
-
-            // 2. Weekly Pace
-            const weeksPassed = daysPassed / 7;
-            const avgWeekly = weeksPassed > 0 ? (totalHours / weeksPassed).toFixed(1) : 0;
-            const requiredWeekly = (remainingHours / ((totalDays - daysPassed) / 7)).toFixed(1);
-
-            // Update UI Elements (will be added in HTML step)
-            if (document.getElementById('projectedDate')) {
-                document.getElementById('projectedDate').innerText = avgHoursPerDay > 0 ? projectedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : "N/A";
-                document.getElementById('avgWeekly').innerText = avgWeekly + " hrs/wk";
-                document.getElementById('reqWeekly').innerText = requiredWeekly + " hrs/wk";
-            }
-        }
 
         function renderBurnupChart(entries) {
             const ctx = document.getElementById('burnupChart').getContext('2d');
@@ -891,107 +806,93 @@
             });
         }
 
-        function renderWeeklyChart(weeklyData) {
-            const ctx = document.getElementById('weeklyChart').getContext('2d');
-            if (weeklyChartInstance) weeklyChartInstance.destroy();
+        function renderBiweeklyChart(grouped) {
+            const ctx = document.getElementById('biweeklyChart').getContext('2d');
+            if (biweeklyChartInstance) biweeklyChartInstance.destroy();
 
-            // Sort weeks
-            const sortedWeeks = Object.keys(weeklyData).sort();
-            const dataPoints = sortedWeeks.map(w => weeklyData[w]);
-            const labels = sortedWeeks.map(w => {
-                const d = new Date(w);
-                return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-            });
+            // Sort periods chronologically (most recent first for display)
+            const sortedKeys = Object.keys(grouped).sort((a, b) => grouped[b].sort - grouped[a].sort);
+            const labels = sortedKeys.map(key => key);
+            const dataPoints = sortedKeys.map(key => grouped[key].total);
 
-            weeklyChartInstance = new Chart(ctx, {
-                type: 'line',
+            biweeklyChartInstance = new Chart(ctx, {
+                type: 'bar',
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Hours / Week',
+                        label: 'Hours per Pay Period',
                         data: dataPoints,
-                        borderColor: '#003E51',
-                        backgroundColor: (context) => {
-                            const ctx = context.chart.ctx;
-                            const gradient = ctx.createLinearGradient(0, 0, 0, 200);
-                            gradient.addColorStop(0, 'rgba(0, 62, 81, 0.2)');
-                            gradient.addColorStop(1, 'rgba(0, 62, 81, 0)');
-                            return gradient;
+                        backgroundColor: '#475569',
+                        borderColor: '#1e293b',
+                        borderWidth: 1,
+                        borderRadius: 6,
+                        hoverBackgroundColor: '#1e293b'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { 
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: { size: 12, weight: '500' },
+                                color: '#475569',
+                                padding: 15
+                            }
                         },
-                        fill: true,
-                        tension: 0.4,
-                        borderWidth: 2,
-                        pointRadius: 4,
-                        pointBackgroundColor: '#fff',
-                        pointBorderColor: '#003E51',
-                        pointBorderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: { backgroundColor: '#1e293b', padding: 12, intersect: false, mode: 'index' }
-                    },
-                    scales: {
-                        y: { beginAtZero: true, grid: { color: '#f1f5f9' }, border: { display: false } },
-                        x: { grid: { display: false }, border: { display: false }, ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 6, font: { size: 10 } } }
-                    }
-                }
-            });
-        }
-
-        function renderDayChart(entries) {
-            const ctx = document.getElementById('dayChart').getContext('2d');
-            if (dayChartInstance) dayChartInstance.destroy();
-
-            const days = { 'Sunday': 0, 'Monday': 0, 'Tuesday': 0, 'Wednesday': 0, 'Thursday': 0, 'Friday': 0, 'Saturday': 0 };
-
-            entries.forEach(e => {
-                const dateObj = new Date(e.date + 'T12:00:00');
-                const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'long' });
-                if (days[dayName] !== undefined) days[dayName] += e.hours;
-            });
-
-            // Filter out empty days to keep chart clean? No, show all for pattern awareness.
-
-            dayChartInstance = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: Object.keys(days),
-                    datasets: [{
-                        data: Object.values(days),
-                        backgroundColor: [
-                            '#ef4444', // Sun
-                            '#f97316', // Mon
-                            '#eab308', // Tue
-                            '#22c55e', // Wed
-                            '#06b6d4', // Thu
-                            '#3b82f6', // Fri
-                            '#a855f7'  // Sat
-                        ],
-                        borderWidth: 0,
-                        hoverOffset: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'right', labels: { boxWidth: 10, font: { size: 10 } } },
-                        tooltip: {
+                        tooltip: { 
+                            backgroundColor: '#1e293b',
+                            padding: 12,
+                            titleFont: { size: 12, weight: '500' },
+                            bodyFont: { size: 11 },
+                            cornerRadius: 6,
                             callbacks: {
-                                label: function (context) {
-                                    const val = context.parsed;
-                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const perc = ((val / total) * 100).toFixed(0);
-                                    return ` ${val} hrs (${perc}%)`;
+                                label: function(context) {
+                                    const hours = context.parsed.y;
+                                    const earnings = (hours * HOURLY_RATE).toFixed(2);
+                                    return [
+                                        `Hours: ${hours}`,
+                                        `Earnings: $${earnings}`
+                                    ];
                                 }
                             }
                         }
                     },
-                    cutout: '65%'
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            grid: { 
+                                color: '#f1f5f9',
+                                drawBorder: false
+                            },
+                            border: { display: false },
+                            ticks: {
+                                font: { size: 11 },
+                                color: '#64748b',
+                                callback: function(value) {
+                                    return value + ' hrs';
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Hours Worked',
+                                font: { size: 11, weight: '500' },
+                                color: '#475569'
+                            }
+                        },
+                        x: { 
+                            grid: { display: false },
+                            border: { display: false },
+                            ticks: { 
+                                maxRotation: 45,
+                                minRotation: 45,
+                                font: { size: 10 },
+                                color: '#64748b'
+                            }
+                        }
+                    }
                 }
             });
         }
