@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRA Dashboard (RA2) | 05000.3117</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tru: {
+                            dark: '#4c1d95', // Violet 900 (New Theme)
+                            gold: '#f472b6', // Pink 400 (New Accent)
+                            light: '#f5f3ff', // Violet 50
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .glass-panel {
+            background: white;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Smooth fade in */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Loading Overlay -->
+    <div id="loader"
+        class="fixed inset-0 bg-white z-[9999] flex items-center justify-center transition-opacity duration-300">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-tru-dark"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="bg-tru-dark text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-layer-group text-tru-gold text-xl"></i>
+                    <div>
+                        <h1 class="font-bold text-lg tracking-wide leading-none">RA2 Dashboard</h1>
+                        <p class="text-[10px] text-slate-300 uppercase tracking-wider">Contract: 05000.3117</p>
+                    </div>
+                </div>
+                <div>
+                    <button id="authBtn" onclick="toggleAuth()"
+                        class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-all text-sm font-medium backdrop-blur-sm border border-white/10">
+                        <i class="fas fa-lock text-xs"></i> <span>Admin Login</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full fade-in">
+
+        <!-- Header & Quick Actions -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+            <div>
+                <h2 class="text-2xl font-bold text-slate-900">Dashboard Overview</h2>
+                <p class="text-slate-500 text-sm mt-1">Tracking 131 hours (Oct 22, 2025 - Feb 28, 2026)</p>
+            </div>
+            <div class="flex gap-2">
+                <!-- Links -->
+                <a href="https://mail.google.com/mail/u/0/#all/FMfcgzQcqRDrTRpXsxzWttXHZGkJWnfp" target="_blank"
+                    class="px-4 py-2 bg-white border border-slate-200 text-slate-600 rounded-lg text-sm hover:bg-slate-50 hover:text-tru-dark transition-colors shadow-sm flex items-center gap-2">
+                    <i class="fas fa-envelope"></i> Offer
+                </a>
+                <a href="https://employeessb-prod.ec.tru.ca/EmployeeSelfService/ssb/timeEntry#/teApp/timesheet/dashboard/payperiod"
+                    target="_blank"
+                    class="px-4 py-2 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-lg text-sm hover:bg-emerald-100 transition-colors shadow-sm flex items-center gap-2">
+                    <i class="fas fa-clock"></i> Submit Timesheet
+                </a>
+                <a href="https://console.firebase.google.com/project/researchproject-46440/firestore/databases/-default-/data/~2Ftimesheet_entries~2F1hXvE7UZ3Zg6gXte7EC5?fb_gclid=CjwKCAiA0eTJBhBaEiwA-Pa-hQ9MbdOlY2omeroOp2rwMPHpb9URBeHmqgN8GuzHhCkFcZB2blIOmBoCyqsQAvD_BwE"
+                    target="_blank"
+                    class="px-4 py-2 bg-amber-50 border border-amber-200 text-amber-700 rounded-lg text-sm hover:bg-amber-100 transition-colors shadow-sm flex items-center gap-2">
+                    <i class="fas fa-database"></i> Database
+                </a>
+            </div>
+        </div>
+
+        <!-- KPI Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Card 1: Hours Logged -->
+            <div class="glass-panel rounded-xl p-5 relative overflow-hidden group">
+                <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <i class="fas fa-stopwatch text-6xl text-tru-dark"></i>
+                </div>
+                <p class="text-slate-500 text-xs font-semibold uppercase tracking-wider">Total Hours</p>
+                <div class="mt-2 flex items-baseline gap-2">
+                    <span class="text-3xl font-bold text-slate-900" id="totalHours">0.0</span>
+                    <span class="text-sm text-slate-400">/ <span id="displayTotalHours">--</span></span>
+                </div>
+
+                <div class="w-full bg-slate-100 rounded-full h-1.5 mt-4">
+                    <div id="hoursProgressBar" class="bg-tru-dark h-1.5 rounded-full transition-all duration-1000"
+                        style="width: 0%"></div>
+                </div>
+                <p class="text-xs text-slate-500 mt-2 text-right" id="hoursProgressText">0% Completed</p>
+            </div>
+
+            <!-- Card 2: Earnings -->
+            <div class="glass-panel rounded-xl p-5 relative overflow-hidden">
+                <div class="absolute right-0 top-0 p-4 opacity-10">
+                    <i class="fas fa-sack-dollar text-6xl text-green-600"></i>
+                </div>
+                <p class="text-slate-500 text-xs font-semibold uppercase tracking-wider">Est. Earnings</p>
+                <div class="mt-2">
+                    <span class="text-3xl font-bold text-emerald-600" id="totalEarnings">$0.00</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-1">Based on $<span id="displayRate">--</span>/hr</p>
+            </div>
+
+            <!-- Card 3: Pacing -->
+            <div class="glass-panel rounded-xl p-5 relative overflow-hidden">
+                <div class="absolute right-0 top-0 p-4 opacity-10">
+                    <i class="fas fa-running text-6xl text-tru-gold"></i>
+                </div>
+                <p class="text-slate-500 text-xs font-semibold uppercase tracking-wider">Pacing Status</p>
+                <div class="mt-2 flex items-center gap-2" id="pacingContainer">
+                    <span class="text-xl font-bold text-slate-700">Checking...</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-2" id="pacingDesc">Compared to contract timeline</p>
+            </div>
+
+            <!-- Card 4: Remaining -->
+            <div class="glass-panel rounded-xl p-5 bg-slate-50 border-slate-200">
+                <p class="text-slate-500 text-xs font-semibold uppercase tracking-wider">Hours Remaining</p>
+                <div class="mt-2">
+                    <span class="text-3xl font-bold text-slate-700" id="hoursRemaining">--</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-1">Available budget</p>
+            </div>
+        </div>
+
+        <!-- Layout Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <!-- Left Column: Charts -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Burnup Chart -->
+                <div class="glass-panel rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-slate-800">Hours Burn-up</h3>
+                        <span class="text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded">Target vs Actual</span>
+                    </div>
+                    <div class="relative h-64 w-full">
+                        <canvas id="burnupChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Biweekly Hours Activity Chart -->
+                <div class="glass-panel rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-slate-800">Biweekly Hours Activity</h3>
+                        <span class="text-xs bg-slate-100 text-slate-600 px-3 py-1 rounded-full font-medium border border-slate-200">Pay Periods</span>
+                    </div>
+                    <div class="relative h-72 w-full">
+                        <canvas id="biweeklyChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Timesheet Table -->
+                <div class="glass-panel rounded-xl overflow-hidden">
+                    <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-white">
+                        <h3 class="font-bold text-slate-800">Bi-Weekly Timesheet Logs</h3>
+                        <span
+                            class="text-xs font-medium text-tru-dark bg-tru-light px-2 py-1 rounded border border-slate-100">Pay
+                            Period Grouped</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="text-xs text-slate-500 uppercase bg-slate-50 border-b border-slate-200">
+                                <tr>
+                                    <th class="px-6 py-3 font-medium">Date</th>
+                                    <th class="px-6 py-3 font-medium">Description</th>
+                                    <th class="px-6 py-3 font-medium text-right">Hours</th>
+                                    <th class="px-6 py-3 font-medium text-right">Est. Pay</th>
+                                    <th class="px-6 py-3 font-medium text-right admin-col hidden">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="timesheetBody" class="divide-y divide-slate-100">
+                                <!-- JS Injected Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Admin & Details -->
+            <div class="lg:col-span-1 space-y-6">
+
+                <!-- Admin Panel (Hidden by default) -->
+                <div id="adminPanel" class="hidden">
+                    <div class="glass-panel rounded-xl p-6 bg-white border-l-4 border-l-tru-dark">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-tru-dark"><i class="fas fa-user-shield mr-2"></i>Admin Entry</h3>
+                            <button onclick="toggleAuth()" class="text-xs text-slate-400 hover:text-red-500">Exit
+                                Admin</button>
+                        </div>
+
+                        <div id="editModeIndicator"
+                            class="hidden mb-3 p-2 bg-amber-50 border border-amber-200 rounded text-xs text-amber-700 flex justify-between items-center">
+                            <span><i class="fas fa-pencil-alt mr-1"></i> Editing Entry</span>
+                            <button onclick="cancelEdit()"
+                                class="text-amber-700 hover:text-amber-900 font-bold">&times;</button>
+                        </div>
+
+                        <form id="entryForm" class="space-y-4">
+                            <input type="hidden" id="entryId"> <!-- Hidden ID for updates -->
+                            <div>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">Date</label>
+                                <input type="date" id="inputDate" required
+                                    class="w-full rounded-lg border-slate-300 border px-3 py-2 text-sm focus:ring-2 focus:ring-tru-dark focus:border-transparent outline-none transition-shadow">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">Hours Worked</label>
+                                <input type="number" id="inputHours" step="0.5" placeholder="e.g. 4.0" required
+                                    class="w-full rounded-lg border-slate-300 border px-3 py-2 text-sm focus:ring-2 focus:ring-tru-dark focus:border-transparent outline-none transition-shadow">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">Description</label>
+                                <input type="text" id="inputDesc" placeholder="What did you work on?" required
+                                    class="w-full rounded-lg border-slate-300 border px-3 py-2 text-sm focus:ring-2 focus:ring-tru-dark focus:border-transparent outline-none transition-shadow">
+                            </div>
+                            <div class="flex gap-2">
+                                <button type="submit" id="submitBtn"
+                                    class="flex-1 bg-tru-dark hover:bg-slate-800 text-white font-medium py-2.5 rounded-lg shadow-md hover:shadow-lg transition-all transform active:scale-95 flex justify-center items-center gap-2">
+                                    <i class="fas fa-plus-circle"></i> Log Hours
+                                </button>
+                                <button type="button" id="cancelBtn" onclick="cancelEdit()"
+                                    class="hidden px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg transition-colors">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Public View Placeholder -->
+                <div id="publicPanel"
+                    class="glass-panel rounded-xl p-8 text-center border-dashed border-2 border-slate-200 bg-slate-50/50">
+                    <div
+                        class="mb-3 inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 text-slate-400">
+                        <i class="fas fa-lock text-xl"></i>
+                    </div>
+                    <h4 class="text-slate-600 font-medium text-sm">Read Only Mode</h4>
+                    <p class="text-slate-400 text-xs mt-1">Admin login required to modify entries.</p>
+                </div>
+
+                <!-- Information Card -->
+                <div class="glass-panel rounded-xl p-6 bg-gradient-to-br from-white to-tru-light border-slate-100">
+                    <h3 class="font-bold text-slate-800 mb-3 text-sm">Contract Details</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex justify-between pb-2 border-b border-slate-100">
+                            <span class="text-slate-500">Rate</span>
+                            <span class="font-mono font-medium text-tru-dark">$<span
+                                    id="displayRateSidbar">--</span>/hr</span>
+                        </li>
+                        <li class="flex justify-between pb-2 border-b border-slate-100">
+                            <span class="text-slate-500">Total Budget</span>
+                            <span class="font-mono font-medium text-tru-dark">$<span
+                                    id="displayTotalBudget">--</span></span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="text-slate-500">End Date</span>
+                            <span class="font-medium text-tru-dark" id="displayEndDate">--</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto py-6 text-center text-xs text-slate-400 border-t border-slate-200 bg-white">
+        <p>Built for personal tracking. Not an official TRU system. <span class="text-tru-gold">RA2 Edition</span></p>
+    </footer>
+
+    <!-- Login Modal (Hidden by default) -->
+    <div id="loginModal"
+        class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-sm transform transition-all scale-100">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-slate-800">Admin Authentication</h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i
+                        class="fas fa-times"></i></button>
+            </div>
+            <p class="text-sm text-slate-500 mb-4">Enter password to manage timesheets.</p>
+            <input type="password" id="passwordInput" placeholder="Password"
+                class="w-full rounded-lg border-slate-300 border px-3 py-2 mb-2 focus:ring-2 focus:ring-tru-dark outline-none">
+            <p id="loginError" class="text-red-500 text-xs mb-3 hidden"><i class="fas fa-exclamation-circle mr-1"></i>
+                Incorrect password</p>
+            <button onclick="checkLogin()"
+                class="w-full bg-tru-dark text-white font-medium py-2 rounded-lg hover:bg-slate-800 transition-colors">Unlock
+                Dashboard</button>
+        </div>
+    </div>
+
+    <!-- Firebase & App Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, deleteDoc, updateDoc, doc, onSnapshot, query, orderBy, Timestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // CONFIG
+        const firebaseConfig = {
+            apiKey: "AIzaSyAXs_nNQKaJUwFaEEL7Lq54hIMEmxsh1Zk",
+            authDomain: "researchproject-46440.firebaseapp.com",
+            projectId: "researchproject-46440",
+            storageBucket: "researchproject-46440.firebasestorage.app",
+            messagingSenderId: "300261831024",
+            appId: "1:300261831024:web:8b2a718c6038dd29e1dfb5"
+        };
+
+        // CONSTANTS
+        const CONTRACT_START = new Date("2025-10-22");
+        const CONTRACT_END = new Date("2026-02-28");
+        const TOTAL_HOURS = 131;
+        const HOURLY_RATE = 20.00;
+
+        // Display Constants on UI
+        document.getElementById('displayTotalHours').innerText = TOTAL_HOURS > 0 ? TOTAL_HOURS : "--";
+        document.getElementById('displayRate').innerText = HOURLY_RATE > 0 ? HOURLY_RATE : "--";
+        document.getElementById('displayRateSidbar').innerText = HOURLY_RATE > 0 ? HOURLY_RATE : "--";
+        document.getElementById('displayTotalBudget').innerText = HOURLY_RATE > 0 ? (TOTAL_HOURS * HOURLY_RATE).toLocaleString() : "--";
+        document.getElementById('displayEndDate').innerText = CONTRACT_END ? CONTRACT_END.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : "--";
+        document.getElementById('hoursRemaining').innerText = TOTAL_HOURS > 0 ? TOTAL_HOURS : "--";
+
+
+        // INIT
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const entryCollection = collection(db, "timesheet_entries_ra2"); // NEW COLLECTION
+        let chartInstance = null;
+        let biweeklyChartInstance = null;
+        let allEntries = [];
+
+        // --- AUTH LOGIC ---
+        window.isAdmin = false;
+
+        window.toggleAuth = () => {
+            if (window.isAdmin) {
+                // Logout
+                window.isAdmin = false;
+                document.getElementById('authBtn').innerHTML = '<i class="fas fa-lock text-xs"></i> <span>Admin Login</span>';
+                document.getElementById('authBtn').classList.remove('bg-red-500', 'hover:bg-red-600', 'border-transparent');
+                document.getElementById('authBtn').classList.add('bg-white/10', 'hover:bg-white/20', 'border-white/10');
+                updateUIForAuth();
+            } else {
+                // Show Login Modal
+                document.getElementById('loginModal').classList.remove('hidden');
+                document.getElementById('passwordInput').focus();
+            }
+        };
+
+        window.closeModal = () => {
+            document.getElementById('loginModal').classList.add('hidden');
+            document.getElementById('loginError').classList.add('hidden');
+            document.getElementById('passwordInput').value = '';
+        }
+
+        window.checkLogin = () => {
+            const pass = document.getElementById('passwordInput').value;
+            if (pass === 'abcd123') { // Assuming same default password
+                window.isAdmin = true;
+
+                // Update Button Style to Look Warning/Active
+                const btn = document.getElementById('authBtn');
+                btn.innerHTML = '<i class="fas fa-unlock text-xs"></i> <span>Logout</span>';
+                btn.classList.remove('bg-white/10', 'hover:bg-white/20', 'border-white/10');
+                btn.classList.add('bg-red-500', 'hover:bg-red-600', 'border-transparent'); // distinct active state
+
+                closeModal();
+                updateUIForAuth();
+            } else {
+                document.getElementById('loginError').classList.remove('hidden');
+            }
+        };
+
+        function updateUIForAuth() {
+            const adminPanel = document.getElementById('adminPanel');
+            const publicPanel = document.getElementById('publicPanel');
+            const adminCols = document.querySelectorAll('.admin-col');
+
+            if (window.isAdmin) {
+                adminPanel.classList.remove('hidden');
+                publicPanel.classList.add('hidden');
+                adminCols.forEach(el => el.classList.remove('hidden'));
+            } else {
+                adminPanel.classList.add('hidden');
+                publicPanel.classList.remove('hidden');
+                adminCols.forEach(el => el.classList.add('hidden'));
+            }
+        }
+
+        // --- DATA OPERATIONS ---
+
+        document.getElementById('entryForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('entryId').value; // Get hidden ID
+            const date = document.getElementById('inputDate').value;
+            const hours = document.getElementById('inputHours').value;
+            const desc = document.getElementById('inputDesc').value;
+
+            const btn = document.getElementById('submitBtn');
+            const originalText = btn.innerHTML;
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Saving...';
+
+            try {
+                if (id) {
+                    // Update existing
+                    const docRef = doc(db, "timesheet_entries_ra2", id);
+                    await updateDoc(docRef, {
+                        date: date,
+                        hours: Number(hours),
+                        desc: desc
+                    });
+                    // Reset edit mode
+                    cancelEdit();
+                } else {
+                    // Create new
+                    await addDoc(entryCollection, {
+                        date: date,
+                        hours: Number(hours),
+                        desc: desc,
+                        createdAt: Timestamp.now()
+                    });
+                    e.target.reset();
+                    document.getElementById('inputDate').valueAsDate = new Date();
+                }
+            } catch (error) {
+                alert("Error saving: " + error.message);
+            } finally {
+                btn.disabled = false;
+                if (!document.getElementById('entryId').value) btn.innerHTML = '<i class="fas fa-plus-circle"></i> Log Hours';
+                else btn.innerHTML = '<i class="fas fa-save"></i> Update Entry';
+            }
+        });
+
+        window.startEdit = (id, date, hours, desc) => {
+            // Populate form
+            document.getElementById('entryId').value = id;
+            document.getElementById('inputDate').value = date;
+            document.getElementById('inputHours').value = hours;
+            document.getElementById('inputDesc').value = desc;
+
+            // Update UI
+            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save"></i> Update Entry';
+            document.getElementById('submitBtn').classList.remove('bg-tru-dark');
+            document.getElementById('submitBtn').classList.add('bg-amber-600', 'hover:bg-amber-700');
+
+            document.getElementById('cancelBtn').classList.remove('hidden');
+            document.getElementById('editModeIndicator').classList.remove('hidden');
+
+            // Scroll to form on mobile
+            document.getElementById('adminPanel').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.cancelEdit = () => {
+            document.getElementById('entryForm').reset();
+            document.getElementById('entryId').value = '';
+            document.getElementById('inputDate').valueAsDate = new Date();
+
+            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-plus-circle"></i> Log Hours';
+            document.getElementById('submitBtn').classList.add('bg-tru-dark');
+            document.getElementById('submitBtn').classList.remove('bg-amber-600', 'hover:bg-amber-700');
+
+            document.getElementById('cancelBtn').classList.add('hidden');
+            document.getElementById('editModeIndicator').classList.add('hidden');
+        };
+
+        window.deleteEntry = async (id) => {
+            if (confirm("Are you sure you want to delete this entry?")) {
+                await deleteDoc(doc(db, "timesheet_entries_ra2", id));
+            }
+        };
+
+        // --- LISTENER & RENDER ---
+
+        const q = query(entryCollection, orderBy("date", "desc"));
+
+        onSnapshot(q, (snapshot) => {
+            // Hide Loader Fade Out
+            const loader = document.getElementById('loader');
+            if (loader) {
+                loader.classList.add('opacity-0');
+                setTimeout(() => loader.remove(), 300);
+            }
+
+            allEntries = [];
+            snapshot.forEach((doc) => {
+                allEntries.push({ id: doc.id, ...doc.data() });
+            });
+
+            renderDashboard();
+        });
+
+        function getBiWeeklyPeriod(dateStr) {
+            const entryDate = new Date(dateStr);
+            const oneDay = 24 * 60 * 60 * 1000;
+            const diffDays = Math.floor((entryDate - CONTRACT_START) / oneDay);
+            // Handle negative diffDays (if entry is before start date)
+            const correctedDiff = diffDays >= 0 ? diffDays : diffDays - 13;
+            const periodIndex = Math.floor(correctedDiff / 14);
+            const periodStart = new Date(CONTRACT_START.getTime() + (periodIndex * 14 * oneDay));
+            const periodEnd = new Date(periodStart.getTime() + (13 * oneDay));
+
+            return {
+                label: `${periodStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${periodEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`,
+                sortKey: periodStart.getTime()
+            };
+        }
+
+        function renderDashboard() {
+            const tbody = document.getElementById('timesheetBody');
+            tbody.innerHTML = '';
+
+            let totalHoursUsed = 0;
+            const grouped = {};
+            const weeklyData = {}; // For new chart
+
+            allEntries.forEach(entry => {
+                totalHoursUsed += entry.hours;
+
+                // Grouping Logic
+                const period = getBiWeeklyPeriod(entry.date);
+                if (!grouped[period.label]) grouped[period.label] = { entries: [], total: 0, sort: period.sortKey };
+                grouped[period.label].entries.push(entry);
+                grouped[period.label].total += entry.hours;
+
+                // Weekly Data specific Logic (Monday start)
+                const d = new Date(entry.date);
+                const day = d.getDay();
+                const diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
+                const monday = new Date(d.setDate(diff)).toISOString().split('T')[0];
+
+                if (!weeklyData[monday]) weeklyData[monday] = 0;
+                weeklyData[monday] += entry.hours;
+            });
+
+            const sortedKeys = Object.keys(grouped).sort((a, b) => grouped[b].sort - grouped[a].sort);
+
+            sortedKeys.forEach(key => {
+                const group = grouped[key];
+                // Header Row
+                const headerRow = `
+                    <tr class="bg-slate-50/80">
+                        <td colspan="5" class="px-6 py-3">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-slate-700 text-xs uppercase tracking-wider"><i class="fas fa-calendar-week mr-2 text-tru-gold"></i> Period: ${key}</span>
+                                <span class="text-xs font-bold bg-white border border-slate-200 px-2 py-0.5 rounded text-slate-600">Total: ${group.total} hrs</span>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += headerRow;
+
+                group.entries.forEach(entry => {
+                    const dateObj = new Date(entry.date + 'T12:00:00');
+                    const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'short' });
+                    const earned = (entry.hours * HOURLY_RATE).toFixed(2);
+
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-slate-50 transition-colors group">
+                            <td class="px-6 py-4 whitespace-nowrap text-slate-600">
+                                <span class="font-medium text-slate-800">${entry.date}</span> 
+                                <span class="text-xs text-slate-400 ml-1">(${dayName})</span>
+                            </td>
+                            <td class="px-6 py-4 text-slate-600">${entry.desc}</td>
+                            <td class="px-6 py-4 text-right font-bold text-slate-700">${entry.hours}</td>
+                            <td class="px-6 py-4 text-right text-emerald-600 font-medium">$${earned}</td>
+                            <td class="px-6 py-4 text-right admin-col ${window.isAdmin ? '' : 'hidden'}">
+                                <div class="flex justify-end gap-2">
+                                    <button class="text-slate-300 hover:text-amber-500 transition-colors" onclick="startEdit('${entry.id}', '${entry.date}', '${entry.hours}', '${entry.desc.replace(/'/g, "\\'")}')" title="Edit">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </button>
+                                    <button class="text-slate-300 hover:text-red-500 transition-colors" onclick="deleteEntry('${entry.id}')" title="Delete">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+            });
+
+            // Update stats
+            document.getElementById('totalHours').innerText = totalHoursUsed.toFixed(1);
+            if (TOTAL_HOURS > 0) {
+                document.getElementById('hoursRemaining').innerText = (TOTAL_HOURS - totalHoursUsed).toFixed(1);
+                const percent = (totalHoursUsed / TOTAL_HOURS) * 100;
+                document.getElementById('hoursProgressBar').style.width = percent + '%';
+                document.getElementById('hoursProgressText').innerText = percent.toFixed(1) + '% of Contract';
+            }
+
+            const earnings = totalHoursUsed * HOURLY_RATE;
+            document.getElementById('totalEarnings').innerText = '$' + earnings.toLocaleString(undefined, { minimumFractionDigits: 2 });
+
+
+            // Pacing Logic
+            const today = new Date();
+            const totalContractDays = (CONTRACT_END - CONTRACT_START) / (1000 * 3600 * 24);
+            const diffTime = today - CONTRACT_START;
+            let effectiveDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            if (effectiveDays < 0) effectiveDays = 0;
+            if (effectiveDays > totalContractDays) effectiveDays = totalContractDays;
+
+            const expectedHoursPerDay = TOTAL_HOURS / totalContractDays;
+            const expectedTotalNow = expectedHoursPerDay * effectiveDays;
+
+            const pacingDiffVal = totalHoursUsed - expectedTotalNow;
+            const pacingContainer = document.getElementById('pacingContainer');
+            const pacingDesc = document.getElementById('pacingDesc');
+
+            if (TOTAL_HOURS > 0) {
+                if (pacingDiffVal > 8) {
+                    pacingContainer.innerHTML = `<i class="fas fa-exclamation-circle text-amber-500"></i> <span class="text-xl font-bold text-amber-500">+${pacingDiffVal.toFixed(1)} hrs</span>`;
+                    pacingDesc.innerHTML = "Ahead of schedule. You can slow down.";
+                } else if (pacingDiffVal < -8) {
+                    pacingContainer.innerHTML = `<i class="fas fa-exclamation-triangle text-red-500"></i> <span class="text-xl font-bold text-red-500">${pacingDiffVal.toFixed(1)} hrs</span>`;
+                    pacingDesc.innerHTML = "Behind schedule. Consider logging more hours.";
+                } else {
+                    pacingContainer.innerHTML = `<i class="fas fa-check-circle text-emerald-500"></i> <span class="text-xl font-bold text-emerald-500">On Track</span>`;
+                    pacingDesc.innerHTML = "Perfect pacing. Keep it up!";
+                }
+            } else {
+                pacingContainer.innerHTML = `<span class="text-lg text-slate-400">Waiting for data...</span>`;
+                pacingDesc.innerHTML = "Update contract details in code";
+            }
+
+            renderBurnupChart(allEntries);
+            renderBiweeklyChart(grouped);
+        }
+
+        function renderBurnupChart(entries) {
+            const ctx = document.getElementById('burnupChart').getContext('2d');
+            if (chartInstance) chartInstance.destroy();
+
+            if (TOTAL_HOURS === 0) return; // Skip if no data
+
+            // 1. Generate Date Labels (Start to End)
+            const labels = [];
+            const idealData = [];
+            const maxData = [];
+
+            let currentDate = new Date(CONTRACT_START);
+            const endDate = new Date(CONTRACT_END);
+
+            while (currentDate <= endDate) {
+                labels.push(currentDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+                const progress = (currentDate - CONTRACT_START) / (CONTRACT_END - CONTRACT_START);
+                idealData.push(progress * TOTAL_HOURS);
+                maxData.push(TOTAL_HOURS);
+                currentDate.setDate(currentDate.getDate() + 7);
+            }
+
+            // 2. Generate Actual Data (Cumulative)
+            const actualData = [];
+            const entryMap = {};
+            entries.forEach(e => {
+                if (!entryMap[e.date]) entryMap[e.date] = 0;
+                entryMap[e.date] += e.hours;
+            });
+
+            const sortedEntryDates = Object.keys(entryMap).sort();
+            const today = new Date();
+            let currentDateIter = new Date(CONTRACT_START);
+
+            for (let i = 0; i < labels.length; i++) {
+                if (currentDateIter > today) {
+                    actualData.push(null);
+                } else {
+                    const checkDateStr = currentDateIter.toISOString().split('T')[0];
+                    let currentSum = 0;
+                    sortedEntryDates.forEach(dateStr => {
+                        if (dateStr <= checkDateStr) currentSum += entryMap[dateStr];
+                    });
+                    actualData.push(currentSum);
+                }
+                currentDateIter.setDate(currentDateIter.getDate() + 7);
+            }
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Actual Progress',
+                            data: actualData,
+                            borderColor: '#4c1d95',
+                            backgroundColor: 'rgba(76, 29, 149, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.1,
+                            pointRadius: 3,
+                            pointHoverRadius: 6
+                        },
+                        {
+                            label: 'Ideal Pace',
+                            data: idealData,
+                            borderColor: '#f472b6',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            pointRadius: 0,
+                            fill: false
+                        },
+                        {
+                            label: 'Max Budget',
+                            data: maxData,
+                            borderColor: '#cbd5e1',
+                            borderWidth: 1,
+                            pointRadius: 0,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index',
+                    },
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y.toFixed(1) + ' hrs';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Cumulative Hours' }
+                        },
+                        x: {
+                            ticks: { maxTicksLimit: 8 }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderBiweeklyChart(grouped) {
+            const ctx = document.getElementById('biweeklyChart').getContext('2d');
+            if (biweeklyChartInstance) biweeklyChartInstance.destroy();
+
+            // Sort periods chronologically (most recent first for display)
+            const sortedKeys = Object.keys(grouped).sort((a, b) => grouped[b].sort - grouped[a].sort);
+            const labels = sortedKeys.map(key => key);
+            const dataPoints = sortedKeys.map(key => grouped[key].total);
+
+            biweeklyChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Hours per Pay Period',
+                        data: dataPoints,
+                        backgroundColor: '#475569',
+                        borderColor: '#1e293b',
+                        borderWidth: 1,
+                        borderRadius: 6,
+                        hoverBackgroundColor: '#1e293b'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { 
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: { size: 12, weight: '500' },
+                                color: '#475569',
+                                padding: 15
+                            }
+                        },
+                        tooltip: { 
+                            backgroundColor: '#1e293b',
+                            padding: 12,
+                            titleFont: { size: 12, weight: '500' },
+                            bodyFont: { size: 11 },
+                            cornerRadius: 6,
+                            callbacks: {
+                                label: function(context) {
+                                    const hours = context.parsed.y;
+                                    const earnings = (hours * HOURLY_RATE).toFixed(2);
+                                    return [
+                                        `Hours: ${hours}`,
+                                        `Earnings: $${earnings}`
+                                    ];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            grid: { 
+                                color: '#f1f5f9',
+                                drawBorder: false
+                            },
+                            border: { display: false },
+                            ticks: {
+                                font: { size: 11 },
+                                color: '#64748b',
+                                callback: function(value) {
+                                    return value + ' hrs';
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Hours Worked',
+                                font: { size: 11, weight: '500' },
+                                color: '#475569'
+                            }
+                        },
+                        x: { 
+                            grid: { display: false },
+                            border: { display: false },
+                            ticks: { 
+                                maxRotation: 45,
+                                minRotation: 45,
+                                font: { size: 10 },
+                                color: '#64748b'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+    </script>
+</body>
+
+</html>
