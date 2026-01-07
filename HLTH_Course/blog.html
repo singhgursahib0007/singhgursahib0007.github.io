@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding Weight Loss | What Really Works?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=Playfair+Display:ital,wght@1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f4f1ef;
+            --card-color: #ffffff;
+            --text-color: #000000;
+            --accent-color: #000000;
+            --meta-color: #555555;
+            --max-width: 1200px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: var(--card-color);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-box {
+            border: 2px solid var(--accent-color);
+            padding: 5px 15px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            line-height: 1;
+            display: inline-block;
+        }
+
+        .logo-small {
+            font-size: 10px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .logo-large {
+            font-size: 24px;
+            display: block;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        nav a:hover,
+        nav a.active {
+            opacity: 1;
+        }
+
+        .cta-btn {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.2s;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Hero Image Section */
+        .hero {
+            height: 60vh;
+            width: 100%;
+            background-image: url('yoga.png');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        /* Main Content Area */
+        main {
+            max-width: var(--max-width);
+            margin: -150px auto 100px;
+            position: relative;
+            padding: 0 40px;
+        }
+
+        .content-card {
+            background-color: var(--card-color);
+            padding: 80px 100px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        .category-name {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        h1 {
+            font-size: 42px;
+            font-weight: 800;
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            letter-spacing: -1px;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin: 40px 0 20px;
+            letter-spacing: -1px;
+        }
+
+        .meta {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 16px;
+            color: var(--meta-color);
+            margin-bottom: 40px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+
+        .meta span {
+            margin-right: 20px;
+        }
+
+        .lead-text {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .body-text p {
+            font-size: 16px;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .body-text strong {
+            font-weight: 700;
+        }
+
+        .body-text ul {
+            margin-bottom: 25px;
+            padding-left: 20px;
+        }
+
+        .body-text li {
+            margin-bottom: 10px;
+        }
+
+        .img-block {
+            margin: 60px 0;
+            text-align: center;
+            width: 100%;
+        }
+
+        .img-block img {
+            width: 100%;
+            height: auto;
+            max-height: 450px;
+            object-fit: cover;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            aspect-ratio: 21 / 9;
+        }
+
+        .references {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .references h2 {
+            font-size: 24px;
+            margin-top: 0;
+        }
+
+        .references p {
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--card-color);
+            padding: 60px 40px;
+            text-align: center;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            opacity: 0.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .content-card {
+                padding: 40px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            nav {
+                display: none;
+            }
+
+            main {
+                margin-top: -50px;
+            }
+
+            .img-block img {
+                aspect-ratio: 16 / 9;
+                max-height: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-box">
+            <span class="logo-small">Health</span>
+            <span class="logo-large">Claims</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Analysis</a></li>
+                <li><a href="#" class="active">Health Blog</a></li>
+                <li><a href="#">Evidence</a></li>
+                <li><a href="#">Guidelines</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+        <a href="#" class="cta-btn">Free Consultation</a>
+    </header>
+
+    <div class="hero"></div>
+
+    <main>
+        <article class="content-card">
+            <span class="category-name">Obesity & Lifestyle Research</span>
+            <h1>Understanding Weight Loss: What Really Works?</h1>
+
+            <div class="meta">
+                <span>Written by Gursahib Singh</span>
+                <span>January 7, 2026</span>
+                <span>Medical Science</span>
+            </div>
+
+            <p class="lead-text">
+                Weight management is a topic many Canadians struggle with. Let's break down some common questions about
+                why weight gain happens and what actually works for losing weight.
+            </p>
+
+            <div class="body-text">
+                <h2>Why Are So Many Canadians Overweight?</h2>
+                <p>The numbers are concerning. According to Statistics Canada, about 64% of Canadian adults are
+                    overweight or obese (Statistics Canada, 2019). But why?</p>
+                <p>The main reasons are pretty straightforward:</p>
+                <p><strong>Our food environment has changed dramatically.</strong> Processed foods high in sugar, salt,
+                    and unhealthy fats are everywhere and often cheaper than healthy options (Pollan, 2008). A typical
+                    fast-food meal can contain over 1,500 calories – that's most of what an average person needs in a
+                    whole day.</p>
+                <p><strong>We're moving less.</strong> Many Canadians have desk jobs and spend hours sitting. We drive
+                    instead of walk, and screen time has replaced active hobbies (Tremblay et al., 2011). The average
+                    Canadian adult gets less than 150 minutes of moderate physical activity per week, which is the
+                    minimum recommended amount.</p>
+                <p><strong>Stress and sleep matter too.</strong> When we're stressed or sleep-deprived, our bodies
+                    produce more cortisol, a hormone that increases appetite and promotes fat storage (Spiegel et al.,
+                    2004). Many Canadians report high stress levels and don't get the recommended 7-9 hours of sleep.
+                </p>
+
+
+
+                <h2>Do Fad Diets Like Atkins Actually Work?</h2>
+                <p>Short answer: kind of, but not for the reasons people think.</p>
+                <p>High-protein, low-carbohydrate diets like Atkins became popular because people lost weight quickly.
+                    But what does the science actually say?</p>
+                <p>Research shows these diets can lead to initial weight loss, mainly because they cut out entire food
+                    groups, which naturally reduces calorie intake (Foster et al., 2003). When you stop eating bread,
+                    pasta, and sugary foods, you're probably eating less overall.</p>
+
+                <div class="img-block">
+                    <img src="food.png" alt="Healthy Food Spread">
+                </div>
+
+                <p>However, studies reveal some important findings:</p>
+                <p><strong>The weight loss isn't magic.</strong> A major study in the New England Journal of Medicine
+                    found that low-carb and low-fat diets led to similar weight loss after one year (Sacks et al.,
+                    2009). What mattered most was sticking to the diet, not the type of diet itself.</p>
+                <p><strong>There are health concerns.</strong> Very low-carb diets can cause headaches, fatigue,
+                    constipation, and bad breath in the short term (Astrup et al., 2004). Long-term, they may increase
+                    cholesterol levels in some people and can be hard on the kidneys if protein intake is extremely
+                    high.</p>
+                <p><strong>They're hard to maintain.</strong> Most people can't stick to these restrictive diets
+                    long-term. Research shows that within 12 months, many people regain the weight they lost (Mann et
+                    al., 2007).</p>
+
+                <h2>What About Weight Loss Medications?</h2>
+                <p>Both prescription and over-the-counter drugs are available, but they're not simple solutions.</p>
+                <p><strong>Prescription medications</strong> like orlistat or newer options like semaglutide can help
+                    when combined with lifestyle changes. Studies show they can lead to 5-10% weight loss over a year
+                    (Yanovski & Yanovski, 2014). However, they work best alongside diet and exercise, not instead of
+                    them. They also have side effects and can be expensive.</p>
+                <p><strong>Over-the-counter supplements</strong> are a different story. Most haven't been proven
+                    effective in rigorous scientific studies. The FDA doesn't regulate supplements as strictly as
+                    medications, so their safety and effectiveness aren't guaranteed (Dwyer et al., 2005). Many contain
+                    stimulants that can cause heart problems or interact with other medications.</p>
+                <p>The bottom line: medications might help some people, but they're not magic pills and should only be
+                    used under medical supervision.</p>
+
+                <h2>Five Evidence-Based Recommendations for Weight Loss</h2>
+                <p>If you're looking to lose weight, here's what actually works:</p>
+                <p><strong>1. Focus on whole foods.</strong> Fill your plate with vegetables, fruits, whole grains, lean
+                    proteins, and healthy fats. These foods keep you fuller longer and provide nutrients your body needs
+                    (Mozaffarian et al., 2011).</p>
+                <p><strong>2. Watch portion sizes, not just food types.</strong> You can gain weight eating too much of
+                    anything, even healthy foods. Use smaller plates and pay attention to hunger cues (Rolls et al.,
+                    2002).</p>
+
+                <div class="img-block">
+                    <img src="yoga.png" alt="Active Lifestyle Yoga Studio">
+                </div>
+
+                <p><strong>3. Move your body regularly.</strong> Aim for at least 150 minutes of moderate activity
+                    weekly – that's just 30 minutes, five days a week. Find activities you enjoy so you'll stick with
+                    them (Donnelly et al., 2009).</p>
+                <p><strong>4. Get enough sleep.</strong> Aim for 7-9 hours nightly. Poor sleep disrupts hunger hormones
+                    and makes it harder to resist unhealthy foods (Patel & Hu, 2008).</p>
+
+                <div class="img-block">
+                    <img src="sleep.png" alt="Serene Bedroom Rest">
+                </div>
+
+                <p><strong>5. Be patient and realistic.</strong> Healthy weight loss is 0.5-1 kg per week. Quick-fix
+                    diets usually lead to quick weight regain. Small, sustainable changes work better than dramatic
+                    overhauls (Wing & Phelan, 2005).</p>
+
+                <h2>Final Thoughts</h2>
+                <p>Weight loss isn't about finding the perfect diet or magic pill. It's about making sustainable changes
+                    to how you eat and move. If you're struggling with weight, talk to healthcare providers who can give
+                    personalized advice based on your specific situation.</p>
+
+                <div class="references">
+                    <h2>References</h2>
+                    <p>Astrup, A., Meinert Larsen, T., & Harper, A. (2004). Atkins and other low-carbohydrate diets:
+                        Hoax or an effective tool for weight loss? <em>The Lancet</em>, <em>364</em>(9437), 897-899.</p>
+                    <p>Donnelly, J. E., Blair, S. N., Jakicic, J. M., Manore, M. M., Rankin, J. W., & Smith, B. K.
+                        (2009). Appropriate physical activity intervention strategies for weight loss and prevention of
+                        weight regain for adults. <em>Medicine and Science in Sports and Exercise</em>, <em>41</em>(2),
+                        459-471.</p>
+                    <p>Dwyer, J. T., Allison, D. B., & Coates, P. M. (2005). Dietary supplements in weight reduction.
+                        <em>Journal of the American Dietetic Association</em>, <em>105</em>(5), 80-86.
+                    </p>
+                    <p>Foster, G. D., Wyatt, H. R., Hill, J. O., McGuckin, B. G., Brill, C., Mohammed, B. S., Szapary,
+                        P. O., Rader, D. J., Edman, J. S., & Klein, S. (2003). A randomized trial of a low-carbohydrate
+                        diet for obesity. <em>New England Journal of Medicine</em>, <em>348</em>(21), 2082-2090.</p>
+                    <p>Mann, T., Tomiyama, A. J., Westling, E., Lew, A. M., Samuels, B., & Chatman, J. (2007).
+                        Medicare's search for effective obesity treatments: Diets are not the answer. <em>American
+                            Psychologist</em>, <em>62</em>(3), 220-233.</p>
+                    <p>Mozaffarian, D., Hao, T., Rimm, E. B., Willett, W. C., & Hu, F. B. (2011). Changes in diet and
+                        lifestyle and long-term weight gain in women and men. <em>New England Journal of Medicine</em>,
+                        <em>364</em>(25), 2392-2404.
+                    </p>
+                    <p>Patel, S. R., & Hu, F. B. (2008). Short sleep duration and weight gain: A systematic review.
+                        <em>Obesity</em>, <em>16</em>(3), 643-653.
+                    </p>
+                    <p>Pollan, M. (2008). <em>In defense of food: An eater's manifesto</em>. Penguin Press.</p>
+                    <p>Rolls, B. J., Morris, E. L., & Roe, L. S. (2002). Portion size of food affects energy intake in
+                        normal-weight and overweight men and women. <em>American Journal of Clinical Nutrition</em>,
+                        <em>76</em>(6), 1207-1213.
+                    </p>
+                    <p>Sacks, F. M., Bray, G. A., Carey, V. J., Smith, S. R., Ryan, D. H., Anton, S. D., McManus, K.,
+                        Champagne, C. M., Bishop, L. M., Laranjo, N., Leboff, M. S., Rood, J. C., de Jonge, L.,
+                        Greenway, F. L., Loria, C. M., Obarzanek, E., & Williamson, D. A. (2009). Comparison of
+                        weight-loss diets with different compositions of fat, protein, and carbohydrates. <em>New
+                            England Journal of Medicine</em>, <em>360</em>(9), 859-873.</p>
+                    <p>Spiegel, K., Tasali, E., Penev, P., & Van Cauter, E. (2004). Brief communication: Sleep
+                        curtailment in healthy young men is associated with decreased leptin levels, elevated ghrelin
+                        levels, and increased hunger and appetite. <em>Annals of Internal Medicine</em>,
+                        <em>141</em>(11), 846-850.
+                    </p>
+                    <p>Statistics Canada. (2019). <em>Overweight and obese adults, 2018</em>.
+                        https://www150.statcan.gc.ca/n1/pub/82-625-x/2019001/article/00005-eng.htm</p>
+                    <p>Tremblay, M. S., Colley, R. C., Saunders, T. J., Healy, G. N., & Owen, N. (2011). Physiological
+                        and health implications of a sedentary lifestyle. <em>Applied Physiology, Nutrition, and
+                            Metabolism</em>, <em>35</em>(6), 725-740.</p>
+                    <p>Wing, R. R., & Phelan, S. (2005). Long-term weight loss maintenance. <em>American Journal of
+                            Clinical Nutrition</em>, <em>82</em>(1), 222S-225S.</p>
+                    <p>Yanovski, S. Z., & Yanovski, J. A. (2014). Long-term drug treatment for obesity: A systematic and
+                        clinical review. <em>JAMA</em>, <em>311</em>(1), 74-86.</p>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        &copy; 2026 Health Claims | Gursahib Singh
+    </footer>
+
+</body>
+
+</html>
