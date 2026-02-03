@@ -14,7 +14,7 @@ https://singhgursahib0007.github.io/PhysicsRA/RA-Dashboard.html
 ### Punjabi Kavita Platform
 https://singhgursahib0007.github.io/PunjabiKavita/index.html
 
-https://singhgursahib0007.github.io/ShabadStore/Website.html
+https://singhgursahib0007.github.io/ShabadStore/website.html
 
 
 ### HLTH Open Learning
