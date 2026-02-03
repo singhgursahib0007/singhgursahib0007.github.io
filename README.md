@@ -17,3 +17,6 @@ https://singhgursahib0007.github.io/PunjabiKavita/index.html
 ### HLTH Open Learning
 https://singhgursahib0007.github.io/HLTH_Course/blog.html
 
+
+### DayCare
+https://singhgursahib0007.github.io/Daycare/Planning.html
