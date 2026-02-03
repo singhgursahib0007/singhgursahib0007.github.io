@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ੴ Shabad Store – Gurbani Videos</title>
+
+    <!-- Google Fonts - Premium Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+Gurmukhi:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ============================================
+           🎨 Premium Color Palette - Spiritual & Elegant
+           Inspired by Sikh heritage: Saffron, Royal Blue, Gold
+        ============================================ */
+        :root {
+            /* Primary - Sacred Saffron to Gold */
+            --saffron: #FF6B35;
+            --saffron-light: #FF8C5A;
+            --saffron-glow: rgba(255, 107, 53, 0.3);
+
+            /* Secondary - Royal Nishan Sahib Blue */
+            --royal-blue: #1E3A8A;
+            --royal-light: #3B5998;
+            --navy: #0F172A;
+
+            /* Accent - Divine Gold */
+            --gold: #F59E0B;
+            --gold-light: #FBBF24;
+            --gold-glow: rgba(245, 158, 11, 0.25);
+
+            /* Backgrounds - Deep Celestial */
+            --bg-deep: #030712;
+            --bg-primary: #0A0F1C;
+            --bg-card: #111827;
+            --bg-card-hover: #1F2937;
+            --bg-elevated: #1E293B;
+
+            /* Text */
+            --text-white: #FFFFFF;
+            --text-primary: #F1F5F9;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
+
+            /* Borders & Accents */
+            --border: rgba(148, 163, 184, 0.15);
+            --border-glow: rgba(255, 107, 53, 0.4);
+
+            /* Status Colors */
+            --success: #10B981;
+            --success-bg: rgba(16, 185, 129, 0.15);
+            --danger: #EF4444;
+            --danger-bg: rgba(239, 68, 68, 0.15);
+
+            /* Gorgeous Gradients */
+            --gradient-saffron: linear-gradient(135deg, #FF6B35 0%, #F59E0B 100%);
+            --gradient-royal: linear-gradient(135deg, #1E3A8A 0%, #3B5998 50%, #6366F1 100%);
+            --gradient-divine: linear-gradient(135deg, #FF6B35 0%, #F59E0B 50%, #FBBF24 100%);
+            --gradient-bg: radial-gradient(ellipse at top, #1E293B 0%, #0A0F1C 50%, #030712 100%);
+            --gradient-card: linear-gradient(180deg, rgba(30, 41, 59, 0.5) 0%, rgba(17, 24, 39, 0.8) 100%);
+
+            /* Shadows */
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 30px rgba(255, 107, 53, 0.3);
+            --shadow-gold: 0 0 25px rgba(245, 158, 11, 0.2);
+
+            /* Spacing & Radius */
+            --radius-sm: 10px;
+            --radius: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+        }
+
+        /* ============================================
+           🔄 Reset & Base
+        ============================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gradient-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background Orbs */
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        body::before {
+            width: 600px;
+            height: 600px;
+            background: var(--saffron-glow);
+            top: -200px;
+            right: -200px;
+        }
+
+        body::after {
+            width: 500px;
+            height: 500px;
+            background: var(--gold-glow);
+            bottom: -150px;
+            left: -150px;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            33% {
+                transform: translate(30px, -30px) rotate(5deg);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) rotate(-5deg);
+            }
+        }
+
+        /* ============================================
+           ✨ Header - Majestic & Spiritual
+        ============================================ */
+        .header {
+            position: relative;
+            padding: 2.5rem 1.5rem 2rem;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(255, 107, 53, 0.08) 0%, transparent 100%);
+            border-bottom: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 2px;
+            background: var(--gradient-saffron);
+            border-radius: 2px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            filter: drop-shadow(0 0 15px var(--saffron-glow));
+        }
+
+        .header h1 {
+            font-family: 'Noto Sans Gurmukhi', 'Outfit', sans-serif;
+            font-size: clamp(1.75rem, 5vw, 2.5rem);
+            font-weight: 700;
+            background: var(--gradient-divine);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 40px var(--saffron-glow);
+        }
+
+        .header p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        /* ============================================
+           🎛️ Tab Navigation - Floating Pills
+        ============================================ */
+        .tab-nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1.25rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 15, 28, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab-container {
+            display: flex;
+            gap: 0.375rem;
+            padding: 0.375rem;
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.75rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: transparent;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: var(--bg-elevated);
+        }
+
+        .tab-btn.active {
+            background: var(--gradient-saffron);
+            color: white;
+            box-shadow: var(--shadow-glow);
+            transform: scale(1.02);
+        }
+
+        .tab-btn .icon {
+            font-size: 1.1rem;
+        }
+
+        /* ============================================
+           📦 Container
+        ============================================ */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                padding: 2rem;
+            }
+        }
+
+        .tab-content {
+            display: none;
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============================================
+           🎬 Video Grid - Stunning Cards
+        ============================================ */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-icon {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-saffron);
+            border-radius: var(--radius-sm);
+            font-size: 1.25rem;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .section-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-white);
+        }
+
+        .section-count {
+            margin-left: auto;
+            padding: 0.375rem 0.875rem;
+            background: var(--bg-elevated);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.25rem;
+        }
+
+        @media (min-width: 640px) {
+            .video-grid {
+                grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+                gap: 1.5rem;
+            }
+        }
+
+        .video-card {
+            background: var(--gradient-card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-md);
+            position: relative;
+        }
+
+        .video-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: var(--radius-lg);
+            padding: 1px;
+            background: linear-gradient(135deg, transparent 40%, var(--saffron) 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .video-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: var(--shadow-lg), var(--shadow-gold);
+            border-color: var(--gold);
+        }
+
+        .video-card:hover::before {
+            opacity: 1;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+        }
+
+        .video-wrapper::before {
+            content: '🎵';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            z-index: 1;
+        }
+
+        .video-info {
+            padding: 1.25rem;
+            background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+        }
+
+        .video-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-white);
+            margin-bottom: 0.625rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.4;
+        }
+
+        .video-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .video-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.625rem;
+            background: var(--bg-elevated);
+            border-radius: 50px;
+            font-size: 0.7rem;
+            color: var(--gold-light);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .video-url {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+        }
+
+        .video-url a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .video-url a:hover {
+            color: var(--saffron-light);
+        }
+
+        /* ============================================
+           ⚙️ Manage Tab - Beautiful Forms
+        ============================================ */
+        .manage-section {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 900px) {
+            .manage-section {
+                grid-template-columns: 380px 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .form-card,
+        .list-card {
+            background: var(--gradient-card);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-icon {
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-saffron);
+            border-radius: var(--radius-sm);
+            font-size: 1.1rem;
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-white);
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.625rem;
+        }
+
+        .form-group label .required {
+            color: var(--saffron);
+        }
+
+        .form-group label .optional {
+            color: var(--text-muted);
+            font-weight: 400;
+            font-size: 0.75rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1rem;
+            color: var(--text-muted);
+            pointer-events: none;
+            transition: color 0.2s;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 2.75rem;
+            font-size: 0.95rem;
+            font-family: 'Outfit', sans-serif;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--saffron);
+            box-shadow: 0 0 0 4px var(--saffron-glow);
+            background: var(--bg-primary);
+        }
+
+        .form-group input:focus+.input-icon,
+        .form-group input:not(:placeholder-shown)+.input-icon {
+            color: var(--saffron);
+        }
+
+        .form-group input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 1rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-saffron);
+            color: white;
+            width: 100%;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            background: var(--bg-elevated);
+            color: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-delete {
+            background: var(--danger-bg);
+            color: var(--danger);
+            padding: 0.625rem 1rem;
+            font-size: 0.8rem;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-delete:hover {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+
+        .btn-seed {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--saffron) 100%);
+            color: #000;
+            width: 100%;
+            font-weight: 700;
+        }
+
+        .btn-seed:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-gold);
+        }
+
+        /* Seeding Section */
+        .seeding-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px dashed var(--border);
+        }
+
+        .seeding-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .seeding-icon {
+            font-size: 1.25rem;
+        }
+
+        .seeding-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--gold-light);
+        }
+
+        .seeding-info {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        /* Manage List */
+        .manage-list {
+            list-style: none;
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .manage-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .manage-list::-webkit-scrollbar-track {
+            background: var(--bg-deep);
+            border-radius: 3px;
+        }
+
+        .manage-list::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        .manage-list::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        .manage-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            background: var(--bg-deep);
+            border-radius: var(--radius);
+            margin-bottom: 0.75rem;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+
+        .manage-item:hover {
+            border-color: var(--saffron);
+            background: var(--bg-primary);
+        }
+
+        .manage-item-icon {
+            font-size: 1.5rem;
+            opacity: 0.6;
+        }
+
+        .manage-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .manage-item-title {
+            font-weight: 600;
+            color: var(--text-white);
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 0.95rem;
+        }
+
+        .manage-item-id {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-family: 'SF Mono', 'Monaco', monospace;
+            background: var(--bg-elevated);
+            padding: 0.125rem 0.5rem;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        /* ============================================
+           🎯 Empty States
+        ============================================ */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1.25rem;
+            opacity: 0.4;
+            filter: grayscale(0.5);
+        }
+
+        .empty-state h3 {
+            font-size: 1.35rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-white);
+            font-weight: 700;
+        }
+
+        .empty-state p {
+            color: var(--text-muted);
+            max-width: 300px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           ⏳ Loading States
+        ============================================ */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            gap: 1rem;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid var(--border);
+            border-top-color: var(--saffron);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        /* ============================================
+           🔔 Toast Notifications
+        ============================================ */
+        .toast {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(150%);
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius);
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: var(--shadow-lg);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            max-width: calc(100% - 2rem);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast.success {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+        }
+
+        .toast.error {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+        }
+
+        .toast-icon {
+            font-size: 1.25rem;
+        }
+
+        /* ============================================
+           📱 Mobile Optimizations
+        ============================================ */
+        @media (max-width: 480px) {
+            .header {
+                padding: 2rem 1rem 1.5rem;
+            }
+
+            .header h1 {
+                font-size: 1.75rem;
+            }
+
+            .header p {
+                font-size: 0.85rem;
+            }
+
+            .tab-nav {
+                padding: 1rem 0.75rem;
+            }
+
+            .tab-btn {
+                padding: 0.625rem 1.25rem;
+                font-size: 0.85rem;
+            }
+
+            .tab-btn .icon {
+                display: none;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .section-header {
+                flex-wrap: wrap;
+            }
+
+            .section-count {
+                display: none;
+            }
+
+            .form-card,
+            .list-card {
+                padding: 1.25rem;
+            }
+
+            .manage-item {
+                padding: 0.875rem 1rem;
+            }
+
+            .manage-item-icon {
+                display: none;
+            }
+        }
+
+        /* ============================================
+           ♿ Accessibility
+        ============================================ */
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Focus styles */
+        :focus-visible {
+            outline: 2px solid var(--saffron);
+            outline-offset: 2px;
+        }
+
+        button:focus-visible {
+            outline: 2px solid var(--saffron);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ============================================
+         Header - Sacred & Majestic
+    ============================================ -->
+    <header class="header">
+        <div class="logo">
+            <span class="logo-icon">☬</span>
+            <h1>Shabad Store</h1>
+        </div>
+        <p>Save and Watch Divine Gurbani Videos</p>
+    </header>
+
+    <!-- ============================================
+         Tab Navigation - Floating Pills
+    ============================================ -->
+    <nav class="tab-nav">
+        <div class="tab-container">
+            <button class="tab-btn active" data-tab="view">
+                <span class="icon">🎬</span>
+                <span>View</span>
+            </button>
+            <button class="tab-btn" data-tab="manage">
+                <span class="icon">⚙️</span>
+                <span>Manage</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ============================================
+         Main Container
+    ============================================ -->
+    <main class="container">
+        <!-- View Tab -->
+        <section id="view-tab" class="tab-content active">
+            <div class="section-header">
+                <div class="section-icon">📿</div>
+                <h2 class="section-title">Gurbani Collection</h2>
+                <span id="video-count" class="section-count">0 shabads</span>
+            </div>
+            <div id="video-container" class="video-grid">
+                <!-- Videos loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- Manage Tab -->
+        <section id="manage-tab" class="tab-content">
+            <div class="manage-section">
+                <!-- Add Shabad Form -->
+                <div class="form-card">
+                    <div class="card-header">
+                        <div class="card-icon">➕</div>
+                        <h2 class="card-title">Add Shabad</h2>
+                    </div>
+                    <form id="add-shabad-form">
+                        <div class="form-group">
+                            <label>
+                                <span>Title</span>
+                                <span class="optional">(optional)</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="text" id="shabad-title" placeholder="Enter shabad name...">
+                                <span class="input-icon">📝</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <span>YouTube URL</span>
+                                <span class="required">*</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="url" id="shabad-url" placeholder="Paste YouTube link here..." required>
+                                <span class="input-icon">🔗</span>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="save-btn">
+                            <span>💾</span>
+                            <span>Save Shabad</span>
+                        </button>
+                    </form>
+
+                    <!-- Seeding Section -->
+                    <div class="seeding-section">
+                        <div class="seeding-header">
+                            <span class="seeding-icon">🌱</span>
+                            <span class="seeding-title">Initialize Collection</span>
+                        </div>
+                        <p class="seeding-info">
+                            First time? Click below to seed the initial Shabad and create your Firestore collection.
+                        </p>
+                        <button type="button" class="btn btn-seed" id="seed-btn">
+                            <span>⚡</span>
+                            <span>Seed First Shabad</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Existing Shabads List -->
+                <div class="list-card">
+                    <div class="card-header">
+                        <div class="card-icon">📋</div>
+                        <h2 class="card-title">Manage Shabads</h2>
+                    </div>
+                    <ul id="manage-list" class="manage-list">
+                        <!-- Shabads listed dynamically -->
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <span class="toast-icon"></span>
+        <span class="toast-message"></span>
+    </div>
+
+    <!-- ============================================
+         Firebase SDK & App Logic
+    ============================================ -->
+    <script type="module">
+        // ============================================
+        // Firebase Configuration & Initialization
+        // ============================================
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import {
+            getFirestore,
+            collection,
+            addDoc,
+            getDocs,
+            deleteDoc,
+            doc,
+            orderBy,
+            query,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Firebase config - hardcoded as requested
+        const firebaseConfig = {
+            apiKey: "AIzaSyAXs_nNQKaJUwFaEEL7Lq54hIMEmxsh1Zk",
+            authDomain: "researchproject-46440.firebaseapp.com",
+            projectId: "researchproject-46440",
+            storageBucket: "researchproject-46440.firebasestorage.app",
+            messagingSenderId: "300261831024",
+            appId: "1:300261831024:web:8b2a718c6038dd29e1dfb5"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const COLLECTION_NAME = "shabads";
+
+        // ============================================
+        // DOM Elements
+        // ============================================
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const viewTab = document.getElementById('view-tab');
+        const manageTab = document.getElementById('manage-tab');
+        const videoContainer = document.getElementById('video-container');
+        const videoCount = document.getElementById('video-count');
+        const manageList = document.getElementById('manage-list');
+        const addForm = document.getElementById('add-shabad-form');
+        const titleInput = document.getElementById('shabad-title');
+        const urlInput = document.getElementById('shabad-url');
+        const saveBtn = document.getElementById('save-btn');
+        const seedBtn = document.getElementById('seed-btn');
+        const toast = document.getElementById('toast');
+
+        // ============================================
+        // YouTube URL Parser
+        // Handles all common YouTube URL formats
+        // ============================================
+        function extractVideoId(url) {
+            if (!url) return null;
+            url = url.trim();
+
+            // Pattern 1: youtu.be/VIDEO_ID
+            const shortMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
+            if (shortMatch) return shortMatch[1];
+
+            // Pattern 2: youtube.com/watch?v=VIDEO_ID
+            const watchMatch = url.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
+            if (watchMatch) return watchMatch[1];
+
+            // Pattern 3: youtube.com/embed/VIDEO_ID
+            const embedMatch = url.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/);
+            if (embedMatch) return embedMatch[1];
+
+            // Pattern 4: youtube.com/shorts/VIDEO_ID
+            const shortsMatch = url.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/);
+            if (shortsMatch) return shortsMatch[1];
+
+            // Pattern 5: youtube.com/v/VIDEO_ID
+            const vMatch = url.match(/youtube\.com\/v\/([a-zA-Z0-9_-]{11})/);
+            if (vMatch) return vMatch[1];
+
+            return null;
+        }
+
+        // Generate embed URL with additional parameters for better compatibility
+        function generateEmbedUrl(videoId) {
+            return `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`;
+        }
+
+        // ============================================
+        // Toast Notifications
+        // ============================================
+        function showToast(message, type = 'success') {
+            const toastIcon = toast.querySelector('.toast-icon');
+            const toastMessage = toast.querySelector('.toast-message');
+
+            toastIcon.textContent = type === 'success' ? '✓' : '✕';
+            toastMessage.textContent = message;
+            toast.className = `toast ${type} show`;
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
+        }
+
+        // ============================================
+        // Tab Switching
+        // ============================================
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const tabName = btn.dataset.tab;
+                if (tabName === 'view') {
+                    viewTab.classList.add('active');
+                    manageTab.classList.remove('active');
+                    loadVideos();
+                } else {
+                    manageTab.classList.add('active');
+                    viewTab.classList.remove('active');
+                    loadManageList();
+                }
+            });
+        });
+
+        // ============================================
+        // Load Videos for View Tab
+        // ============================================
+        async function loadVideos() {
+            videoContainer.innerHTML = `
+                <div class="loading" style="grid-column: 1 / -1;">
+                    <div class="spinner"></div>
+                    <span class="loading-text">Loading Shabads...</span>
+                </div>
+            `;
+
+            try {
+                const q = query(collection(db, COLLECTION_NAME), orderBy('createdAt', 'desc'));
+                const snapshot = await getDocs(q);
+
+                videoCount.textContent = `${snapshot.size} shabad${snapshot.size !== 1 ? 's' : ''}`;
+
+                if (snapshot.empty) {
+                    videoContainer.innerHTML = `
+                        <div class="empty-state" style="grid-column: 1 / -1;">
+                            <div class="empty-state-icon">📿</div>
+                            <h3>No Shabads Yet</h3>
+                            <p>Switch to Manage tab to add your first divine Gurbani video</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                videoContainer.innerHTML = '';
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const card = createVideoCard(data);
+                    videoContainer.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Error loading videos:', error);
+                videoCount.textContent = '0 shabads';
+                videoContainer.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <div class="empty-state-icon">⚠️</div>
+                        <h3>Connection Error</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Create a video card element
+        // FIX: Added referrerpolicy="strict-origin-when-cross-origin" to fix Error 153
+        function createVideoCard(data) {
+            const card = document.createElement('div');
+            card.className = 'video-card';
+            card.innerHTML = `
+                <div class="video-wrapper">
+                    <iframe 
+                        src="${data.embedUrl}" 
+                        title="${data.title || 'Shabad Video'}"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen
+                        loading="lazy">
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">${data.title || 'Untitled Shabad'}</h3>
+                    <div class="video-meta">
+                        <span class="video-badge">☬ Shabad</span>
+                        <span class="video-url">
+                            <a href="${data.url}" target="_blank" rel="noopener noreferrer">
+                                ${data.url}
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        // ============================================
+        // Load Shabads for Manage Tab
+        // ============================================
+        async function loadManageList() {
+            manageList.innerHTML = `
+                <li class="loading">
+                    <div class="spinner"></div>
+                    <span class="loading-text">Loading...</span>
+                </li>
+            `;
+
+            try {
+                const q = query(collection(db, COLLECTION_NAME), orderBy('createdAt', 'desc'));
+                const snapshot = await getDocs(q);
+
+                if (snapshot.empty) {
+                    manageList.innerHTML = `
+                        <li class="empty-state" style="padding: 2.5rem 1.5rem;">
+                            <div class="empty-state-icon">📝</div>
+                            <h3>Empty Collection</h3>
+                            <p>Add your first shabad using the form above</p>
+                        </li>
+                    `;
+                    return;
+                }
+
+                manageList.innerHTML = '';
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const item = createManageItem(docSnap.id, data);
+                    manageList.appendChild(item);
+                });
+            } catch (error) {
+                console.error('Error loading manage list:', error);
+                manageList.innerHTML = `
+                    <li class="empty-state" style="padding: 2.5rem 1.5rem;">
+                        <div class="empty-state-icon">⚠️</div>
+                        <h3>Error</h3>
+                        <p>${error.message}</p>
+                    </li>
+                `;
+            }
+        }
+
+        // Create a manage list item
+        function createManageItem(id, data) {
+            const item = document.createElement('li');
+            item.className = 'manage-item';
+            item.innerHTML = `
+                <span class="manage-item-icon">🎵</span>
+                <div class="manage-item-info">
+                    <div class="manage-item-title">${data.title || 'Untitled Shabad'}</div>
+                    <span class="manage-item-id">${data.videoId}</span>
+                </div>
+                <button class="btn btn-delete delete-btn" data-id="${id}">
+                    🗑️ Delete
+                </button>
+            `;
+
+            const deleteBtn = item.querySelector('.delete-btn');
+            deleteBtn.addEventListener('click', () => deleteShabad(id, item));
+
+            return item;
+        }
+
+        // ============================================
+        // Add New Shabad
+        // ============================================
+        addForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const title = titleInput.value.trim();
+            const url = urlInput.value.trim();
+
+            if (!url) {
+                showToast('Please enter a YouTube URL', 'error');
+                return;
+            }
+
+            const videoId = extractVideoId(url);
+            if (!videoId) {
+                showToast('Invalid YouTube URL format', 'error');
+                return;
+            }
+
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<span>⏳</span><span>Saving...</span>';
+
+            try {
+                const shabadData = {
+                    title: title || null,
+                    url: url,
+                    videoId: videoId,
+                    embedUrl: generateEmbedUrl(videoId),
+                    createdAt: serverTimestamp()
+                };
+
+                await addDoc(collection(db, COLLECTION_NAME), shabadData);
+
+                titleInput.value = '';
+                urlInput.value = '';
+
+                showToast('Shabad saved successfully!', 'success');
+                loadManageList();
+            } catch (error) {
+                console.error('Error saving shabad:', error);
+                showToast(`Error: ${error.message}`, 'error');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<span>💾</span><span>Save Shabad</span>';
+            }
+        });
+
+        // ============================================
+        // Delete Shabad
+        // ============================================
+        async function deleteShabad(id, itemElement) {
+            if (!confirm('Delete this shabad permanently?')) {
+                return;
+            }
+
+            try {
+                await deleteDoc(doc(db, COLLECTION_NAME, id));
+                itemElement.style.transform = 'translateX(100%)';
+                itemElement.style.opacity = '0';
+
+                setTimeout(() => {
+                    itemElement.remove();
+                    if (manageList.children.length === 0) {
+                        loadManageList();
+                    }
+                }, 300);
+
+                showToast('Shabad deleted', 'success');
+            } catch (error) {
+                console.error('Error deleting shabad:', error);
+                showToast(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        // ============================================
+        // Seed Initial Video
+        // URL: https://youtu.be/TQEhDOHTNGo?si=oOT6qOAZiMvRJj3_
+        // videoId: TQEhDOHTNGo
+        // embedUrl: https://www.youtube.com/embed/TQEhDOHTNGo?rel=0&modestbranding=1
+        // ============================================
+        seedBtn.addEventListener('click', async () => {
+            const seedUrl = 'https://youtu.be/TQEhDOHTNGo?si=oOT6qOAZiMvRJj3_';
+            const videoId = extractVideoId(seedUrl);
+
+            if (!videoId) {
+                showToast('Error extracting video ID', 'error');
+                return;
+            }
+
+            seedBtn.disabled = true;
+            seedBtn.innerHTML = '<span>⏳</span><span>Seeding...</span>';
+
+            try {
+                const shabadData = {
+                    title: 'Mool Mantar',
+                    url: seedUrl,
+                    videoId: videoId,
+                    embedUrl: generateEmbedUrl(videoId),
+                    createdAt: serverTimestamp()
+                };
+
+                await addDoc(collection(db, COLLECTION_NAME), shabadData);
+
+                showToast('🌱 Collection initialized successfully!', 'success');
+                loadManageList();
+            } catch (error) {
+                console.error('Error seeding:', error);
+                showToast(`Seeding error: ${error.message}`, 'error');
+            } finally {
+                seedBtn.disabled = false;
+                seedBtn.innerHTML = '<span>⚡</span><span>Seed First Shabad</span>';
+            }
+        });
+
+        // ============================================
+        // Initial Load
+        // ============================================
+        loadVideos();
+    </script>
+</body>
+
+</html>
