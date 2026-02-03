@@ -639,48 +639,7 @@
             border-color: var(--danger);
         }
 
-        .btn-seed {
-            background: linear-gradient(135deg, var(--gold) 0%, var(--saffron) 100%);
-            color: #000;
-            width: 100%;
-            font-weight: 700;
-        }
 
-        .btn-seed:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-gold);
-        }
-
-        /* Seeding Section */
-        .seeding-section {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px dashed var(--border);
-        }
-
-        .seeding-header {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .seeding-icon {
-            font-size: 1.25rem;
-        }
-
-        .seeding-title {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--gold-light);
-        }
-
-        .seeding-info {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-            line-height: 1.5;
-        }
 
         /* Manage List */
         .manage-list {
@@ -1024,20 +983,7 @@
                         </button>
                     </form>
 
-                    <!-- Seeding Section -->
-                    <div class="seeding-section">
-                        <div class="seeding-header">
-                            <span class="seeding-icon">🌱</span>
-                            <span class="seeding-title">Initialize Collection</span>
-                        </div>
-                        <p class="seeding-info">
-                            First time? Click below to seed the initial Shabad and create your Firestore collection.
-                        </p>
-                        <button type="button" class="btn btn-seed" id="seed-btn">
-                            <span>⚡</span>
-                            <span>Seed First Shabad</span>
-                        </button>
-                    </div>
+
                 </div>
 
                 <!-- Existing Shabads List -->
@@ -1108,7 +1054,7 @@
         const titleInput = document.getElementById('shabad-title');
         const urlInput = document.getElementById('shabad-url');
         const saveBtn = document.getElementById('save-btn');
-        const seedBtn = document.getElementById('seed-btn');
+
         const toast = document.getElementById('toast');
 
         // ============================================
@@ -1402,45 +1348,7 @@
             }
         }
 
-        // ============================================
-        // Seed Initial Video
-        // URL: https://youtu.be/TQEhDOHTNGo?si=oOT6qOAZiMvRJj3_
-        // videoId: TQEhDOHTNGo
-        // embedUrl: https://www.youtube.com/embed/TQEhDOHTNGo?rel=0&modestbranding=1
-        // ============================================
-        seedBtn.addEventListener('click', async () => {
-            const seedUrl = 'https://youtu.be/TQEhDOHTNGo?si=oOT6qOAZiMvRJj3_';
-            const videoId = extractVideoId(seedUrl);
 
-            if (!videoId) {
-                showToast('Error extracting video ID', 'error');
-                return;
-            }
-
-            seedBtn.disabled = true;
-            seedBtn.innerHTML = '<span>⏳</span><span>Seeding...</span>';
-
-            try {
-                const shabadData = {
-                    title: 'Mool Mantar',
-                    url: seedUrl,
-                    videoId: videoId,
-                    embedUrl: generateEmbedUrl(videoId),
-                    createdAt: serverTimestamp()
-                };
-
-                await addDoc(collection(db, COLLECTION_NAME), shabadData);
-
-                showToast('🌱 Collection initialized successfully!', 'success');
-                loadManageList();
-            } catch (error) {
-                console.error('Error seeding:', error);
-                showToast(`Seeding error: ${error.message}`, 'error');
-            } finally {
-                seedBtn.disabled = false;
-                seedBtn.innerHTML = '<span>⚡</span><span>Seed First Shabad</span>';
-            }
-        });
 
         // ============================================
         // Initial Load
