@@ -19,4 +19,4 @@ https://singhgursahib0007.github.io/HLTH_Course/blog.html
 
 
 ### DayCare
-https://singhgursahib0007.github.io/Daycare/Planning.html
+https://singhgursahib0007.github.io/DayCare/Planning.html
