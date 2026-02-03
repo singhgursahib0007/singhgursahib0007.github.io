@@ -1,0 +1,1332 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Daycare Startup Document Pack — Vancouver, BC</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #0b1020;
+      --panel: rgba(255,255,255,.06);
+      --panel-2: rgba(255,255,255,.09);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.70);
+      --muted-2: rgba(255,255,255,.55);
+      --border: rgba(255,255,255,.12);
+      --brand: #7c5cff;
+      --brand-2:#33d6ff;
+      --ok:#32d583;
+      --warn:#fdb022;
+      --danger:#f97066;
+
+      --shadow: 0 24px 70px rgba(0,0,0,.45);
+      --shadow2: 0 10px 30px rgba(0,0,0,.35);
+
+      --radius: 18px;
+      --radius2: 12px;
+
+      --maxw: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin:0;
+      color: var(--text);
+      font-family: Manrope, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background:
+        radial-gradient(1200px 600px at 15% 10%, rgba(124,92,255,.35), transparent 55%),
+        radial-gradient(900px 500px at 80% 20%, rgba(51,214,255,.25), transparent 55%),
+        radial-gradient(700px 500px at 60% 90%, rgba(50,213,131,.18), transparent 60%),
+        var(--bg);
+      overflow-x:hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    a:hover{ text-decoration: underline; }
+
+    /* Layout */
+    .wrap{
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 28px 20px 70px;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    @media (max-width: 980px){
+      .wrap{ grid-template-columns: 1fr; }
+    }
+
+    /* Header */
+    .topbar{
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 26px 20px 0;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 16px;
+    }
+
+    .brandline{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .mark{
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background:
+        linear-gradient(135deg, rgba(124,92,255,.95), rgba(51,214,255,.9));
+      box-shadow: var(--shadow2);
+      position: relative;
+      overflow: hidden;
+      flex: 0 0 auto;
+    }
+    .mark:before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(120px 80px at 20% 25%, rgba(255,255,255,.65), transparent 60%),
+        radial-gradient(90px 60px at 70% 70%, rgba(255,255,255,.35), transparent 60%);
+      opacity:.55;
+      transform: rotate(12deg);
+    }
+
+    .titleblock{
+      min-width: 0;
+    }
+    .title{
+      margin:0;
+      font-family: Fraunces, serif;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      font-size: 24px;
+      line-height: 1.1;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .subtitle{
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.3;
+      max-width: 70ch;
+    }
+
+    .actions{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content:flex-end;
+    }
+
+    .btn{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 12px;
+      display:inline-flex;
+      align-items:center;
+      gap: 10px;
+      cursor:pointer;
+      box-shadow: 0 10px 22px rgba(0,0,0,.22);
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+      user-select:none;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.09);
+      border-color: rgba(255,255,255,.18);
+      text-decoration:none;
+    }
+    .btn.primary{
+      border-color: rgba(124,92,255,.55);
+      background: rgba(124,92,255,.18);
+    }
+    .btn.primary:hover{
+      border-color: rgba(124,92,255,.8);
+      background: rgba(124,92,255,.24);
+    }
+
+    .pill{
+      font-size: 12px;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      padding: 8px 10px;
+      border-radius: 999px;
+      display:inline-flex;
+      gap: 8px;
+      align-items:center;
+      white-space: nowrap;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:999px;background: var(--ok);
+      box-shadow: 0 0 0 4px rgba(50,213,131,.12);
+    }
+
+    /* Sidebar */
+    .sidebar{
+      position: sticky;
+      top: 14px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: var(--shadow2);
+      backdrop-filter: blur(10px);
+    }
+
+    @media (max-width: 980px){
+      .sidebar{ position: relative; top: 0; }
+    }
+
+    .search{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,.18);
+      padding: 10px 12px;
+      border-radius: 14px;
+    }
+    .search svg{ opacity:.8 }
+    .search input{
+      width:100%;
+      background: transparent;
+      border: 0;
+      outline: none;
+      color: var(--text);
+      font-size: 14px;
+    }
+    .search input::placeholder{ color: var(--muted-2); }
+
+    .nav{
+      margin-top: 12px;
+      display:flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .nav a{
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      color: var(--muted);
+      display:flex;
+      justify-content: space-between;
+      align-items:center;
+      gap: 10px;
+    }
+    .nav a:hover{
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.10);
+      text-decoration: none;
+      color: var(--text);
+    }
+    .nav .tag{
+      font-size: 11px;
+      color: var(--muted-2);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      padding: 3px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .sidebar .smallnote{
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px dashed rgba(255,255,255,.18);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    /* Main content */
+    .main{
+      display:flex;
+      flex-direction: column;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .hero{
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      overflow:hidden;
+      position: relative;
+    }
+    .hero:before{
+      content:"";
+      position:absolute;
+      inset: -2px;
+      background:
+        radial-gradient(800px 200px at 10% 0%, rgba(124,92,255,.25), transparent 60%),
+        radial-gradient(600px 180px at 90% 20%, rgba(51,214,255,.18), transparent 60%);
+      opacity: .7;
+      pointer-events:none;
+    }
+
+    .hero h2{
+      margin:0;
+      font-family: Fraunces, serif;
+      font-size: 26px;
+      letter-spacing: -0.02em;
+      position: relative;
+    }
+    .hero p{
+      margin: 10px 0 0;
+      color: var(--muted);
+      max-width: 85ch;
+      line-height: 1.55;
+      position: relative;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+      position: relative;
+    }
+    @media (max-width: 840px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: var(--shadow2);
+      backdrop-filter: blur(10px);
+      min-width: 0;
+    }
+
+    .card h3{
+      margin: 0 0 8px;
+      font-size: 14px;
+      letter-spacing: .01em;
+      color: rgba(255,255,255,.88);
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+
+    .icon{
+      width: 26px;
+      height: 26px;
+      display:grid;
+      place-items:center;
+      border-radius: 10px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      flex: 0 0 auto;
+    }
+
+    .card p{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 13px;
+    }
+
+    /* Sections */
+    section{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow2);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+    .sectionHead{
+      padding: 14px 16px;
+      display:flex;
+      align-items:flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .sectionHead h2{
+      margin:0;
+      font-size: 16px;
+      letter-spacing: .01em;
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+    .sectionHead .meta{
+      margin-top: 2px;
+      color: var(--muted-2);
+      font-size: 12px;
+      line-height: 1.35;
+      max-width: 60ch;
+    }
+    .content{
+      padding: 12px 16px 16px;
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .subgrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 840px){
+      .subgrid{ grid-template-columns: 1fr; }
+    }
+
+    details{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.14);
+      border-radius: 14px;
+      overflow:hidden;
+    }
+    summary{
+      cursor:pointer;
+      list-style:none;
+      padding: 12px 12px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+      user-select:none;
+    }
+    summary::-webkit-details-marker{ display:none; }
+    .sumTitle{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      min-width: 0;
+    }
+    .sumTitle strong{
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .01em;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .sumTitle span{
+      color: var(--muted-2);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .chev{
+      opacity:.75;
+      transition: transform .15s ease;
+      flex: 0 0 auto;
+    }
+    details[open] .chev{ transform: rotate(180deg); }
+
+    .detailsBody{
+      padding: 0 12px 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .detailsBody ul{
+      margin: 10px 0 0;
+      padding-left: 18px;
+    }
+    .detailsBody li{ margin: 6px 0; }
+
+    /* Checklist */
+    .checklist{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 840px){
+      .checklist{ grid-template-columns: 1fr; }
+    }
+
+    .check{
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.14);
+      border-radius: 14px;
+      padding: 12px;
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+    }
+    .check input{
+      margin-top: 2px;
+      width: 18px;
+      height: 18px;
+      accent-color: var(--brand);
+      flex: 0 0 auto;
+    }
+    .check .txt{
+      min-width:0;
+    }
+    .check .txt strong{
+      display:block;
+      font-size: 13px;
+      font-weight: 650;
+      color: rgba(255,255,255,.90);
+    }
+    .check .txt p{
+      margin: 5px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    /* Folder structure */
+    .codebox{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.20);
+      border-radius: 14px;
+      padding: 12px 12px;
+      overflow:auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      color: rgba(255,255,255,.85);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    /* Footer */
+    footer{
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0 20px 28px;
+      color: var(--muted-2);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    /* Print */
+    @media print{
+      body{
+        background: #fff;
+        color: #111;
+      }
+      .topbar, .sidebar, .actions, .pill { display:none !important; }
+      .wrap{ grid-template-columns: 1fr; padding: 0; }
+      section, .hero, .card{
+        background: #fff !important;
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+      }
+      .sectionHead{
+        background: #fafafa !important;
+        border-bottom: 1px solid #ddd !important;
+      }
+      .detailsBody, .hero p, .card p, .meta { color: #333 !important; }
+      a{ text-decoration: none !important; color: #111 !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="brandline">
+      <div class="mark" aria-hidden="true"></div>
+      <div class="titleblock">
+        <h1 class="title">Daycare Startup Document Pack</h1>
+        <p class="subtitle">A practical, organized checklist for launching a licensed daycare in Vancouver, BC — built for licensing, operations, hiring, funding/loans, and marketing.</p>
+      </div>
+    </div>
+
+    <div class="actions">
+      <span class="pill"><span class="dot"></span> Ready-to-plan format</span>
+      <button class="btn" type="button" onclick="window.print()">
+        <span aria-hidden="true">🖨️</span> Print / Save PDF
+      </button>
+      <button class="btn primary" type="button" onclick="expandAll(true)">
+        <span aria-hidden="true">➕</span> Expand all
+      </button>
+      <button class="btn" type="button" onclick="expandAll(false)">
+        <span aria-hidden="true">➖</span> Collapse all
+      </button>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <!-- Sidebar -->
+    <aside class="sidebar" aria-label="Navigation">
+      <div class="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M21 21l-4.35-4.35m1.35-5.65a7 7 0 11-14 0 7 7 0 0114 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <input id="search" type="search" placeholder="Search documents, policies, forms…" oninput="filterContent(this.value)" />
+      </div>
+
+      <nav class="nav" id="nav">
+        <a href="#core"><span>1) Core “Master Plan”</span><span class="tag">Plan</span></a>
+        <a href="#licensing"><span>2) Licensing Binder</span><span class="tag">Must</span></a>
+        <a href="#city"><span>3) City / Permitting File</span><span class="tag">Build</span></a>
+        <a href="#ops"><span>4) Operations Playbooks</span><span class="tag">Run</span></a>
+        <a href="#hr"><span>5) HR & Staffing Binder</span><span class="tag">Hire</span></a>
+        <a href="#risk"><span>6) Legal / Insurance / Risk</span><span class="tag">Protect</span></a>
+        <a href="#funding"><span>7) Funding & Loan Package</span><span class="tag">Finance</span></a>
+        <a href="#marketing"><span>8) Marketing & Sales</span><span class="tag">Fill</span></a>
+        <a href="#structure"><span>9) Folder Structure</span><span class="tag">Organize</span></a>
+      </nav>
+
+      <div class="smallnote">
+        <strong style="color:rgba(255,255,255,.9)">Tip:</strong> Start with the <em>Core Master Plan</em> + <em>Licensing Binder</em>. Everything else becomes faster once those are in place.
+        <div style="margin-top:10px;color:rgba(255,255,255,.55)">
+          You can edit the text right in this file, or copy sections into your docs.
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main" id="content">
+      <div class="hero">
+        <h2>Everything you should prepare — grouped, structured, and easy to follow</h2>
+        <p>
+          This page turns your daycare idea into a <strong>documentation system</strong> you can hand to licensing officers, contractors, staff, and banks.
+          Use the checkboxes as you build each part. You can also print it to PDF for a clean planning binder.
+        </p>
+
+        <div class="grid">
+          <div class="card">
+            <h3><span class="icon">📌</span> Fastest path to “open-ready”</h3>
+            <p>Build the <strong>Business Plan + Financial Model</strong>, then complete the <strong>Licensing Binder</strong> policies and forms. These unlock everything else.</p>
+          </div>
+          <div class="card">
+            <h3><span class="icon">🏦</span> Loan-ready from day one</h3>
+            <p>Your <strong>Funding & Loan Package</strong> is just your master plan + proof + estimates, organized like a lender’s due diligence folder.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1) CORE -->
+      <section id="core" data-keywords="business plan financial model pitch deck assumptions revenue expenses cashflow break-even timeline risk compliance">
+        <div class="sectionHead">
+          <div>
+            <h2>1) Core “Master Plan” (the backbone of everything)</h2>
+            <div class="meta">These docs power licensing, loans, hiring, marketing, and daily operations. Start here.</div>
+          </div>
+          <div class="pill" title="Priority level">⭐ Highest priority</div>
+        </div>
+
+        <div class="content">
+          <div class="checklist">
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Business Plan (loan-ready)</strong>
+                <p>Executive summary, market analysis, operations model, compliance plan, risks, and 3-year growth.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Financial Model + Assumptions Memo</strong>
+                <p>Monthly 24 months + annual view. Add a 1–3 page assumptions doc explaining every input.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Pitch Deck (banks / grants / partners)</strong>
+                <p>10–12 slides: demand, solution, facility plan, staffing, financial snapshot, funding ask & use of funds.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Milestone Timeline (opening roadmap)</strong>
+                <p>Lease → design/build → licensing → hiring → enrollment → soft launch → opening.</p>
+              </div>
+            </label>
+          </div>
+
+          <div class="subgrid">
+            <details>
+              <summary>
+                <div class="sumTitle">
+                  <span class="icon" aria-hidden="true">📄</span>
+                  <strong>Business Plan — what to include</strong>
+                  <span>(copy checklist)</span>
+                </div>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </summary>
+              <div class="detailsBody">
+                <ul>
+                  <li><strong>Executive summary</strong> (1 page): concept, ages served, capacity, location, start date, funding ask.</li>
+                  <li><strong>Business model</strong>: hours, pricing, enrollment ramp, waitlist strategy.</li>
+                  <li><strong>Market analysis</strong>: neighborhood demand, competitor comparison, differentiators.</li>
+                  <li><strong>Operations</strong>: staffing model, daily schedule, drop-off/pick-up flow, meals, supervision approach.</li>
+                  <li><strong>Compliance & risk</strong>: licensing pathway, safety, contingency plans.</li>
+                  <li><strong>Growth plan</strong>: 1–3 year expansion, programs, second location strategy.</li>
+                </ul>
+              </div>
+            </details>
+
+            <details>
+              <summary>
+                <div class="sumTitle">
+                  <span class="icon" aria-hidden="true">📊</span>
+                  <strong>Financial Model — recommended tabs</strong>
+                  <span>(structure)</span>
+                </div>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </summary>
+              <div class="detailsBody">
+                <ul>
+                  <li><strong>Startup costs</strong>: renos, equipment, deposits, licensing/permits, insurance.</li>
+                  <li><strong>Staffing</strong>: roles, wages, benefits, coverage assumptions.</li>
+                  <li><strong>Revenue</strong>: capacity by age group, enrollment ramp, subsidy assumptions.</li>
+                  <li><strong>Operating expenses</strong>: rent, utilities, food, cleaning, supplies, software.</li>
+                  <li><strong>Cash flow</strong>: break-even, worst-case scenario, contingency cash.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2) LICENSING -->
+      <section id="licensing" data-keywords="licensing binder policies procedures health safety emergency preparedness incident reporting consent forms criminal record checks staff qualifications">
+        <div class="sectionHead">
+          <div>
+            <h2>2) Licensing Application Binder</h2>
+            <div class="meta">Keep this as a single “binder” folder. Build policies + forms so inspections and approvals go smoothly.</div>
+          </div>
+          <div class="pill" title="Priority level" style="border-color:rgba(253,176,34,.35);background:rgba(253,176,34,.12);color:rgba(255,255,255,.88)">⚡ High priority</div>
+        </div>
+
+        <div class="content">
+          <div class="checklist">
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Licensing Application Packet</strong>
+                <p>Forms, operator details, floor plan, capacity plan, equipment list, staffing plan + qualifications.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Policy & Procedures Manual</strong>
+                <p>Health & safety, infection control, safe sleep, supervision rules, food & allergies, medication, incidents.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Emergency Preparedness Plan</strong>
+                <p>Response + recovery procedures, drill schedule, communication tree, supplies list, evacuation map.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Criminal Record Check Tracking</strong>
+                <p>CRC log + onboarding checklist so no one starts work before clearance is confirmed.</p>
+              </div>
+            </label>
+          </div>
+
+          <details>
+            <summary>
+              <div class="sumTitle">
+                <span class="icon" aria-hidden="true">🛡️</span>
+                <strong>Policies — your “must include” list</strong>
+                <span>(copy checklist)</span>
+              </div>
+              <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </summary>
+            <div class="detailsBody">
+              <ul>
+                <li><strong>Health & safety</strong>: sanitation schedule, infection control, safe sleep, supervision rules.</li>
+                <li><strong>Emergency</strong>: evacuation, shelter-in-place, earthquake/fire response, drills, parent communication.</li>
+                <li><strong>Food & nutrition</strong>: menus, allergies, food handling.</li>
+                <li><strong>Medication</strong>: storage, consent, dosing record, administration process.</li>
+                <li><strong>Incident reporting</strong>: injury/illness/near-miss reporting and parent notification workflow.</li>
+                <li><strong>Child protection</strong>: mandatory reporting process + internal escalation.</li>
+                <li><strong>Transportation</strong> (if applicable): car seat policy, trip forms, driver requirements.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details>
+            <summary>
+              <div class="sumTitle">
+                <span class="icon" aria-hidden="true">🗂️</span>
+                <strong>Suggested binder sections</strong>
+                <span>(organization)</span>
+              </div>
+              <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </summary>
+            <div class="detailsBody">
+              <ul>
+                <li><strong>A. Applications</strong> — completed forms, operator details, capacity plan.</li>
+                <li><strong>B. Facility</strong> — floor plan, room use, equipment lists, cleaning schedule.</li>
+                <li><strong>C. Policies</strong> — manual, safety, food, medication, incidents.</li>
+                <li><strong>D. Staffing</strong> — qualifications, onboarding checklist, CRC tracking.</li>
+                <li><strong>E. Parent & child forms</strong> — registration, consents, emergency contacts.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- 3) CITY / PERMITTING -->
+      <section id="city" data-keywords="city permits zoning site feasibility memo floor plans build-out renovation contractor fire safety occupancy egress design guidelines parking dropoff">
+        <div class="sectionHead">
+          <div>
+            <h2>3) City of Vancouver Development & Permitting File</h2>
+            <div class="meta">This is the folder you (and your designer/contractor) will use to confirm feasibility, plan the build-out, and reduce delays.</div>
+          </div>
+          <div class="pill">🏗️ Build + site</div>
+        </div>
+
+        <div class="content">
+          <div class="checklist">
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Site feasibility “Go / No-Go” memo</strong>
+                <p>Address, zoning summary, capacity target, outdoor space plan, parking/loading flow, risk flags.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Design + Build Documentation Set</strong>
+                <p>Final floor plans, room use, materials/safety specs, egress plan, occupancy assumptions.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Renovation Quotes & Timeline</strong>
+                <p>At least 2–3 quotes, a schedule, and a contingency plan for delays.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Drop-off / Pick-up Flow Plan</strong>
+                <p>Congestion & safety plan: where cars stop, how kids enter, staff supervision points.</p>
+              </div>
+            </label>
+          </div>
+
+          <details>
+            <summary>
+              <div class="sumTitle">
+                <span class="icon" aria-hidden="true">🧩</span>
+                <strong>What your feasibility memo should cover</strong>
+                <span>(copy checklist)</span>
+              </div>
+              <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </summary>
+            <div class="detailsBody">
+              <ul>
+                <li><strong>Address + neighborhood</strong>: target families, local demand, competitor density.</li>
+                <li><strong>Space plan</strong>: classroom sizes, storage, staff room, kitchen/food area, outdoor access.</li>
+                <li><strong>Safety & access</strong>: entrances, controlled access, visibility lines for supervision.</li>
+                <li><strong>Renovation scope</strong>: what must be changed to meet childcare use requirements.</li>
+                <li><strong>Timeline & risk</strong>: long lead items, permit dependencies, contingency budget.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- 4) OPS -->
+      <section id="ops" data-keywords="operations SOP daily checklist closing checklist cleaning schedule diapering nap safe sleep outdoor supervision visitor entry child records parent handbook consents forms">
+        <div class="sectionHead">
+          <div>
+            <h2>4) Operations “Playbooks”</h2>
+            <div class="meta">Short, printable SOPs + parent/child forms. This is what makes opening day smooth.</div>
+          </div>
+          <div class="pill">🧠 Run the center</div>
+        </div>
+
+        <div class="content">
+          <div class="checklist">
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Daily Operations SOPs (printable)</strong>
+                <p>Opening/closing, cleaning schedules, sign-in/out, nap routines, outdoor supervision, visitors.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Child Records + Parent Forms Templates</strong>
+                <p>Registration, emergency contacts, authorized pickup, allergies/medical, consent forms.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Parent Handbook</strong>
+                <p>Policies in plain English: fees, sick rules, communication, closures, what to bring, expectations.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Incident / Medication / Allergy Logs</strong>
+                <p>Standardized logs reduce mistakes and make compliance easier during inspections.</p>
+              </div>
+            </label>
+          </div>
+
+          <div class="subgrid">
+            <details>
+              <summary>
+                <div class="sumTitle">
+                  <span class="icon" aria-hidden="true">🧾</span>
+                  <strong>Forms to prepare (starter set)</strong>
+                  <span>(copy list)</span>
+                </div>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </summary>
+              <div class="detailsBody">
+                <ul>
+                  <li>Child registration & emergency contacts</li>
+                  <li>Authorized pickup list</li>
+                  <li>Allergy & medical information</li>
+                  <li>Photo/video consent</li>
+                  <li>Field trip consent</li>
+                  <li>Behavior guidance agreement</li>
+                  <li>Illness exclusion acknowledgement</li>
+                </ul>
+              </div>
+            </details>
+
+            <details>
+              <summary>
+                <div class="sumTitle">
+                  <span class="icon" aria-hidden="true">📘</span>
+                  <strong>Parent handbook essentials</strong>
+                  <span>(must include)</span>
+                </div>
+                <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </summary>
+              <div class="detailsBody">
+                <ul>
+                  <li><strong>Hours</strong>, closures, late pickup policy</li>
+                  <li><strong>Fees</strong>, payment methods, NSF policy</li>
+                  <li><strong>Sick policy</strong> + return-to-care rules</li>
+                  <li><strong>What to bring</strong> (clothes, diapers, etc.)</li>
+                  <li><strong>Communication</strong> expectations + reporting format</li>
+                  <li><strong>Inclusion</strong> statement and support approach</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5) HR -->
+      <section id="hr" data-keywords="hiring job descriptions interview scorecards reference checks offer letter employee handbook onboarding training certifications first aid scheduling ratios backups">
+        <div class="sectionHead">
+          <div>
+            <h2>5) HR & Staffing Binder</h2>
+            <div class="meta">Make staffing auditable and scalable: hiring docs, compliance files, and a coverage plan.</div>
+          </div>
+          <div class="pill">👥 Team</div>
+        </div>
+
+        <div class="content">
+          <div class="checklist">
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Hiring package</strong>
+                <p>Job descriptions, interview scorecards, reference checks, offer letters, onboarding checklist.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Employee handbook</strong>
+                <p>Code of conduct, confidentiality, social media, attendance, reporting structure.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Staff compliance files</strong>
+                <p>Qualifications, certifications, training logs, and criminal record check status tracking.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Scheduling + ratio coverage plan</strong>
+                <p>Weekly grid, breaks, sick coverage, minimum staffing rules, emergency closure plan.</p>
+              </div>
+            </label>
+          </div>
+
+          <details>
+            <summary>
+              <div class="sumTitle">
+                <span class="icon" aria-hidden="true">🧷</span>
+                <strong>Each staff file should contain</strong>
+                <span>(copy checklist)</span>
+              </div>
+              <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </summary>
+            <div class="detailsBody">
+              <ul>
+                <li>Qualifications + certifications copies</li>
+                <li>Criminal record check status & dates</li>
+                <li>First aid / required training records</li>
+                <li>Signed orientation checklist</li>
+                <li>Emergency contact info for staff</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- 6) RISK -->
+      <section id="risk" data-keywords="legal insurance risk lease incorporation liability policies waivers consents confidentiality safeguarding">
+        <div class="sectionHead">
+          <div>
+            <h2>6) Legal, Insurance, and Risk Documents</h2>
+            <div class="meta">Protect the business. This reduces liability and makes lenders more comfortable.</div>
+          </div>
+          <div class="pill">🧯 Protect</div>
+        </div>
+
+        <div class="content">
+          <div class="checklist">
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Business registration / incorporation docs</strong>
+                <p>Ownership structure, operator details, and key governance records.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Commercial lease + lease abstract</strong>
+                <p>Keep a 1-page summary of rent, term, renewals, improvement allowances, and key clauses.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Insurance policies</strong>
+                <p>General liability, property, business interruption, and any childcare-specific coverages your broker recommends.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Legal-reviewed waivers / consents</strong>
+                <p>Photo/video, field trips, emergency medical consent, and any special program consent forms.</p>
+              </div>
+            </label>
+          </div>
+
+          <div class="smallnote" style="margin-top:2px">
+            <strong style="color:rgba(255,255,255,.9)">Note:</strong> This section is a planning checklist and not legal advice—use it to prepare what you’ll review with a lawyer and insurance broker.
+          </div>
+        </div>
+      </section>
+
+      <!-- 7) FUNDING -->
+      <section id="funding" data-keywords="funding loan package bank due diligence proof of funds estimates quotes repayment plan pitch deck business plan model">
+        <div class="sectionHead">
+          <div>
+            <h2>7) Funding & Loan Package (bank-ready)</h2>
+            <div class="meta">A single “Due Diligence Folder” that a bank can scan quickly: plan + proof + estimates + risk controls.</div>
+          </div>
+          <div class="pill">💸 Finance</div>
+        </div>
+
+        <div class="content">
+          <div class="checklist">
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Business plan + pitch deck (final)</strong>
+                <p>Clean, consistent numbers and clear differentiators.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Financial model + assumptions memo</strong>
+                <p>Include break-even, worst-case scenario, and contingency cash requirement.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Quotes/estimates for buildout + equipment</strong>
+                <p>Attach invoices/quotes and a short “use of funds” breakdown.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Licensing pathway timeline + milestones</strong>
+                <p>Show dependencies and your plan to meet requirements without delays.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Proof of owner investment</strong>
+                <p>Document your cash-in, deposits, or assets being committed.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Risk plan</strong>
+                <p>Enrollment ramp strategy, staffing backup plan, and compliance controls.</p>
+              </div>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8) MARKETING -->
+      <section id="marketing" data-keywords="marketing flyer brochure website brand kit copywriting faq tours waitlist enrollment">
+        <div class="sectionHead">
+          <div>
+            <h2>8) Marketing & Sales Documents</h2>
+            <div class="meta">Your goal is simple: build trust fast and fill spots early with clear messaging and a smooth tour + intake process.</div>
+          </div>
+          <div class="pill">📣 Fill spots</div>
+        </div>
+
+        <div class="content">
+          <div class="checklist">
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Brand kit</strong>
+                <p>Logo variations, color palette, fonts, photo style, tone guidelines.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Flyer + brochure copy</strong>
+                <p>Ages served, hours, address, differentiators, intro offer, waitlist link.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Website content pack</strong>
+                <p>Home, programs, FAQ, “Book a tour” script, intake form questions.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Tour process & follow-up template</strong>
+                <p>Standard tour agenda + post-tour email/text that moves families to enroll.</p>
+              </div>
+            </label>
+          </div>
+
+          <details>
+            <summary>
+              <div class="sumTitle">
+                <span class="icon" aria-hidden="true">📰</span>
+                <strong>Flyer content structure (fast trust)</strong>
+                <span>(copy list)</span>
+              </div>
+              <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </summary>
+            <div class="detailsBody">
+              <ul>
+                <li><strong>Headline</strong>: “Safe, warm, structured care in Vancouver” (or your unique angle)</li>
+                <li><strong>Quick facts</strong>: ages, hours, location, contact</li>
+                <li><strong>What makes you different</strong>: curriculum style, outdoor time, nutrition, language, etc.</li>
+                <li><strong>Trust signals</strong>: staff qualifications, safety policies, communication style</li>
+                <li><strong>Clear CTA</strong>: “Join the waitlist” / “Book a tour”</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- 9) STRUCTURE -->
+      <section id="structure" data-keywords="folder structure organization document control versions log naming convention">
+        <div class="sectionHead">
+          <div>
+            <h2>9) Your “Single Source of Truth” Folder Structure</h2>
+            <div class="meta">Keep everything discoverable and versioned. Add a simple document-control log for updates.</div>
+          </div>
+          <div class="pill">🗃️ Organize</div>
+        </div>
+
+        <div class="content">
+          <div class="codebox" role="note" aria-label="Folder structure">
+01_BusinessPlan_&_Financials
+02_Licensing_Applications
+03_Policies_&_Manuals
+04_Permits_&_Design_Plans
+05_HR_&_Staffing
+06_Parent_Forms_&_Handbook
+07_Insurance_&_Legal
+08_Marketing
+
++ Document_Control_Log.xlsx
+  - Document name
+  - Owner
+  - Version
+  - Last updated
+  - Next review date
+          </div>
+
+          <div class="checklist">
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Document Control Log created</strong>
+                <p>Track versions so you always know what’s current during inspections and audits.</p>
+              </div>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <div class="txt">
+                <strong>Naming convention defined</strong>
+                <p>Example: <em>Policy_Medication_v1.2_2026-02-02</em> (date format keeps files sorted).</p>
+              </div>
+            </label>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <div style="max-width:var(--maxw);margin:0 auto;">
+      <strong style="color:rgba(255,255,255,.85)">How to use this page:</strong>
+      Start from the top, check off items as you create each document, and treat the folder structure as your operating system.
+      You can also print this to PDF to share with partners, lenders, or contractors.
+    </div>
+  </footer>
+
+  <script>
+    // Expand/collapse all <details>
+    function expandAll(open) {
+      document.querySelectorAll("details").forEach(d => d.open = open);
+    }
+
+    // Search filter: hides sections/details that don't match keywords/text
+    function filterContent(query){
+      const q = (query || "").trim().toLowerCase();
+      const sections = document.querySelectorAll("main section");
+
+      sections.forEach(sec => {
+        // Collect text
+        const text = (sec.innerText || "").toLowerCase();
+        const keys = (sec.dataset.keywords || "").toLowerCase();
+        const hit = !q || text.includes(q) || keys.includes(q);
+
+        sec.style.display = hit ? "" : "none";
+      });
+
+      // Also dim nav links if section hidden
+      document.querySelectorAll(".nav a").forEach(a => {
+        const id = a.getAttribute("href");
+        const target = document.querySelector(id);
+        if (!target) return;
+        const hidden = getComputedStyle(target).display === "none";
+        a.style.opacity = hidden ? .35 : 1;
+        a.style.pointerEvents = hidden ? "none" : "auto";
+      });
+    }
+
+    // Smooth scrolling for nav
+    document.querySelectorAll('.nav a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        if (!href || !href.startsWith('#')) return;
+        const el = document.querySelector(href);
+        if (!el) return;
+        e.preventDefault();
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.replaceState(null, "", href);
+      });
+    });
+  </script>
+</body>
+</html>
