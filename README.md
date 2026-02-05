@@ -25,4 +25,4 @@ https://singhgursahib0007.github.io/HLTH_Course/blog.html
 https://singhgursahib0007.github.io/DayCare/Planning.html
 
 ### Coop Timeline
-https://singhgursahib0007.github.io/Cop_Timeline/dashboard.html
+https://singhgursahib0007.github.io/Coop_Timeline/dashboard.html
