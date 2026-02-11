@@ -13,36 +13,8 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Firebase SDK -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, getDocs, doc, setDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    <script src="data.js"></script>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDZfp3ZrRKvLBVL9Tvi0AqTPiI1ndrzIGw",
-            authDomain: "cooptimeline.firebaseapp.com",
-            projectId: "cooptimeline",
-            storageBucket: "cooptimeline.firebasestorage.app",
-            messagingSenderId: "940069774334",
-            appId: "1:940069774334:web:c2b95c312fc0d3cfd296af"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // Make Firebase functions globally available
-        window.firebaseDB = db;
-        window.firebaseCollection = collection;
-        window.firebaseGetDocs = getDocs;
-        window.firebaseDoc = doc;
-        window.firebaseSetDoc = setDoc;
-        window.firebaseUpdateDoc = updateDoc;
-        window.firebaseDeleteDoc = deleteDoc;
-        window.firebaseReady = true;
-
-        // Dispatch event when Firebase is ready
-        window.dispatchEvent(new Event('firebaseReady'));
-    </script>
     <style type="text/tailwindcss">
         @layer base {
             :root {
@@ -87,7 +59,6 @@
             }
             .kanban-card {
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                cursor: grab;
             }
             .kanban-card:hover {
                 transform: translateY(-4px) scale(1.02);
@@ -162,9 +133,35 @@
                 opacity: 0.03;
                 background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
             }
+            .loading-spinner {
+                border: 3px solid rgba(139, 154, 125, 0.3);
+                border-radius: 50%;
+                border-top: 3px solid #8B9A7D;
+                width: 24px;
+                height: 24px;
+                animation: spin 1s linear infinite;
+            }
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            .subtask-bar {
+                opacity: 0.7;
+                height: 6px !important;
+                top: 3px !important;
+            }
+            .activity-chip {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                font-size: 0.75rem;
+                background: rgba(0,0,0,0.05);
+                border-radius: 999px;
+                padding: 3px 10px;
+                color: #555;
+            }
         }
     </style>
-    <base target="_blank">
 </head>
 
 <body class="antialiased">
@@ -180,7 +177,7 @@
                 </div>
                 <div>
                     <h1 class="text-2xl font-bold text-charcoal tracking-tight">TRU AI Platform</h1>
-                    <p class="text-sm text-gray-600">Project Execution Dashboard</p>
+                    <p class="text-sm text-gray-600">Project Progress Roadmap</p>
                 </div>
             </div>
             <div class="flex items-center gap-6">
@@ -194,8 +191,8 @@
                 </div>
                 <div class="h-10 w-px bg-stone"></div>
                 <div class="flex items-center gap-2">
-                    <div class="w-3 h-3 rounded-full bg-sage animate-pulse"></div>
-                    <span class="text-sm font-medium">Active</span>
+                    <div id="connectionStatus" class="w-3 h-3 rounded-full bg-sage"></div>
+                    <span class="text-sm font-medium" id="statusText">Local Data</span>
                 </div>
             </div>
         </div>
@@ -204,51 +201,8 @@
     <main class="max-w-7xl mx-auto px-8 py-8 space-y-8">
 
         <!-- Stats Overview -->
-        <section class="grid grid-cols-1 md:grid-cols-4 gap-4 animate-fade-in">
-            <div class="stat-card rounded-2xl p-6">
-                <div class="flex items-start justify-between">
-                    <div>
-                        <p class="text-sm text-gray-500 mb-1">Total Phases</p>
-                        <p class="text-3xl font-bold text-charcoal">6</p>
-                    </div>
-                    <div class="w-10 h-10 rounded-lg bg-sage/20 flex items-center justify-center">
-                        <i class="fas fa-layer-group text-sage"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="stat-card rounded-2xl p-6">
-                <div class="flex items-start justify-between">
-                    <div>
-                        <p class="text-sm text-gray-500 mb-1">Completed</p>
-                        <p class="text-3xl font-bold text-sage">1</p>
-                    </div>
-                    <div class="w-10 h-10 rounded-lg bg-sage/20 flex items-center justify-center">
-                        <i class="fas fa-check-circle text-sage"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="stat-card rounded-2xl p-6">
-                <div class="flex items-start justify-between">
-                    <div>
-                        <p class="text-sm text-gray-500 mb-1">In Progress</p>
-                        <p class="text-3xl font-bold text-terracotta">1</p>
-                    </div>
-                    <div class="w-10 h-10 rounded-lg bg-terracotta/20 flex items-center justify-center">
-                        <i class="fas fa-spinner text-terracotta"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="stat-card rounded-2xl p-6">
-                <div class="flex items-start justify-between">
-                    <div>
-                        <p class="text-sm text-gray-500 mb-1">Upcoming</p>
-                        <p class="text-3xl font-bold text-gold">4</p>
-                    </div>
-                    <div class="w-10 h-10 rounded-lg bg-gold/20 flex items-center justify-center">
-                        <i class="fas fa-clock text-gold"></i>
-                    </div>
-                </div>
-            </div>
+        <section class="grid grid-cols-1 md:grid-cols-4 gap-4 animate-fade-in" id="statsSection">
+            <!-- Populated by JS -->
         </section>
 
         <!-- View Toggle -->
@@ -261,10 +215,6 @@
                 <button onclick="switchView('kanban')" id="btn-kanban"
                     class="px-6 py-2 rounded-lg text-sm font-medium transition-all hover:bg-white/50">
                     <i class="fas fa-columns mr-2"></i>Kanban Board
-                </button>
-                <button onclick="switchView('manage')" id="btn-manage"
-                    class="px-6 py-2 rounded-lg text-sm font-medium transition-all hover:bg-white/50">
-                    <i class="fas fa-cog mr-2"></i>Manage Data
                 </button>
             </div>
             <div class="flex items-center gap-4 text-sm text-gray-600">
@@ -285,58 +235,33 @@
 
         <!-- Gantt View -->
         <section id="ganttView" class="glass-card rounded-3xl p-8 animate-fade-in" style="animation-delay: 0.2s;">
-            <div class="mb-6">
-                <h2 class="text-2xl font-bold mb-2 display-font">Project Timeline</h2>
-                <p class="text-gray-600">Visual roadmap from January to April 2026 • Today marked with <span
-                        class="text-terracotta font-semibold">red line</span></p>
+            <div class="mb-6 flex justify-between items-end">
+                <div>
+                    <h2 class="text-2xl font-bold mb-2 display-font">Project Timeline</h2>
+                    <p class="text-gray-600">Visual roadmap &bull; Today marked with <span
+                            class="text-terracotta font-semibold">red line</span></p>
+                </div>
+                <button onclick="loadData()" class="text-sm text-sage hover:underline"><i class="fas fa-sync mr-1"></i>
+                    Refresh Data</button>
             </div>
 
             <div class="relative overflow-x-auto" style="min-width: 1000px;">
                 <div id="ganttChart" class="relative">
-                    <!-- Header row with dates -->
                     <div class="flex border-b border-stone pb-2 mb-4" id="ganttHeader">
-                        <div class="w-48 flex-shrink-0 font-semibold text-sm text-gray-600 pl-4">Phase / Task</div>
-                        <div class="flex-1 flex">
-                            <!-- Date headers will be generated -->
+                        <div class="w-52 flex-shrink-0 font-semibold text-sm text-gray-600 pl-4">Phase / Task</div>
+                        <div class="flex-1 flex" id="ganttDateHeader">
+                            <!-- Date headers generated here -->
                         </div>
                     </div>
-                    <!-- Chart content -->
-                    <div id="ganttBody" class="space-y-3">
-                        <!-- Generated via JS -->
+                    <div id="ganttBody" class="space-y-1 min-h-[200px]">
+                        <!-- Loading State -->
+                        <div class="flex flex-col items-center justify-center h-48">
+                            <div class="loading-spinner mb-2"></div>
+                            <p class="text-gray-500">Loading timeline data...</p>
+                        </div>
                     </div>
-
-                    <!-- Today Marker -->
                     <div id="todayMarker" class="today-marker hidden">
                         <div class="today-label">TODAY</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-6 pt-4 border-t border-stone flex items-center justify-between text-sm">
-                <div class="flex items-center gap-6">
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 rounded bg-[#9CA3AF]"></div>
-                        <span class="text-gray-600">Phase 0: Prompt Refinement</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 rounded bg-[#8B9A7D]"></div>
-                        <span class="text-gray-600">Phase 1: Carbon Tracker</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 rounded bg-[#C17B5F]"></div>
-                        <span class="text-gray-600">Phase 2: AI Benchmarking</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 rounded bg-[#C9A962]"></div>
-                        <span class="text-gray-600">Phase 3: Content Pipeline</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 rounded bg-[#6B7280]"></div>
-                        <span class="text-gray-600">Phase 4: AI Literacy</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 rounded bg-[#4B5563]"></div>
-                        <span class="text-gray-600">Phase 5: Integration</span>
                     </div>
                 </div>
             </div>
@@ -347,12 +272,10 @@
             <div class="glass-card rounded-3xl p-8">
                 <div class="mb-6">
                     <h2 class="text-2xl font-bold mb-2 display-font">Task Board</h2>
-                    <p class="text-gray-600">Drag and drop to organize • <span class="text-terracotta">*</span>
-                        indicates deliverables</p>
+                    <p class="text-gray-600">Dynamic view based on Phase status</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6" id="kanbanBoard">
-                    <!-- To Do -->
                     <div class="kanban-column" data-status="todo">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="font-semibold text-gray-700">Upcoming</h3>
@@ -361,8 +284,6 @@
                         </div>
                         <div class="space-y-3" id="todo-tasks"></div>
                     </div>
-
-                    <!-- In Progress -->
                     <div class="kanban-column" data-status="progress">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="font-semibold text-terracotta">In Progress</h3>
@@ -371,8 +292,6 @@
                         </div>
                         <div class="space-y-3" id="progress-tasks"></div>
                     </div>
-
-                    <!-- Review -->
                     <div class="kanban-column" data-status="review">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="font-semibold text-gold">Review</h3>
@@ -381,8 +300,6 @@
                         </div>
                         <div class="space-y-3" id="review-tasks"></div>
                     </div>
-
-                    <!-- Done -->
                     <div class="kanban-column" data-status="done">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="font-semibold text-sage">Completed</h3>
@@ -395,270 +312,14 @@
             </div>
         </section>
 
-        <!-- Manage Data View (Password Protected) -->
-        <section id="manageView" class="hidden animate-fade-in">
-            <!-- Password Gate -->
-            <div id="passwordGate" class="glass-card rounded-3xl p-8 text-center">
-                <div class="max-w-md mx-auto">
-                    <div class="w-16 h-16 rounded-full bg-terracotta/20 flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-lock text-terracotta text-2xl"></i>
-                    </div>
-                    <h2 class="text-2xl font-bold mb-2 display-font">Protected Area</h2>
-                    <p class="text-gray-600 mb-6">Enter password to manage project data</p>
-                    <div class="flex gap-2">
-                        <input type="password" id="passwordInput" placeholder="Enter password"
-                            class="flex-1 px-4 py-3 rounded-xl border border-stone focus:outline-none focus:ring-2 focus:ring-sage">
-                        <button onclick="checkPassword()"
-                            class="px-6 py-3 text-white rounded-xl font-medium transition-colors"
-                            style="background-color: #8B9A7D;">
-                            <i class="fas fa-unlock mr-2"></i>Unlock
-                        </button>
-                    </div>
-                    <p id="passwordError" class="text-red-500 text-sm mt-2 hidden">Incorrect password</p>
-                </div>
+        <!-- Task Details Section -->
+        <section class="animate-fade-in" style="animation-delay: 0.3s;">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="h-8 w-1.5 bg-terracotta rounded-full"></div>
+                <h2 class="text-2xl font-bold display-font">Project Roadmap & Task Details</h2>
             </div>
-
-            <!-- Management Panel (Hidden until authenticated) -->
-            <div id="managementPanel" class="hidden space-y-6">
-                <!-- Actions Bar -->
-                <div class="glass-card rounded-3xl p-6">
-                    <div class="flex items-center justify-between flex-wrap gap-4">
-                        <div>
-                            <h2 class="text-2xl font-bold display-font">Data Management</h2>
-                            <p class="text-gray-600 text-sm">Add, edit, or remove project phases</p>
-                        </div>
-                        <div class="flex gap-3">
-                            <button onclick="seedData()" id="seedBtn"
-                                class="px-4 py-2 text-white rounded-lg font-medium transition-colors"
-                                style="background-color: #C9A962;">
-                                <i class="fas fa-database mr-2"></i>Seed Initial Data
-                            </button>
-                            <button onclick="addNewPhase()"
-                                class="px-4 py-2 text-white rounded-lg font-medium transition-colors"
-                                style="background-color: #8B9A7D;">
-                                <i class="fas fa-plus mr-2"></i>Add Phase
-                            </button>
-                            <button onclick="lockManagement()"
-                                class="px-4 py-2 bg-gray-500 text-white rounded-lg font-medium hover:bg-gray-600 transition-colors">
-                                <i class="fas fa-lock mr-2"></i>Lock
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Phase Cards Container -->
-                <div id="phaseCardsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Phase cards will be dynamically generated -->
-                </div>
-
-                <!-- Loading/Empty State -->
-                <div id="manageLoading" class="glass-card rounded-3xl p-12 text-center hidden">
-                    <i class="fas fa-spinner fa-spin text-4xl text-sage mb-4"></i>
-                    <p class="text-gray-600">Loading data from Firebase...</p>
-                </div>
-
-                <div id="emptyState" class="glass-card rounded-3xl p-12 text-center hidden">
-                    <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-inbox text-gray-400 text-2xl"></i>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2">No Data Found</h3>
-                    <p class="text-gray-600 mb-4">Click "Seed Initial Data" to populate with default phases</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Toast Notification -->
-        <div id="toast"
-            class="fixed bottom-6 right-6 px-6 py-3 rounded-xl shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-50">
-            <div class="flex items-center gap-3">
-                <i id="toastIcon" class="fas fa-check-circle"></i>
-                <span id="toastMessage"></span>
-            </div>
-        </div>
-
-        <!-- Phase Details Cards -->
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in" style="animation-delay: 0.3s;">
-            <!-- Current Phase Highlight -->
-            <div class="glass-card rounded-2xl p-6 border-l-4 border-terracotta md:col-span-2">
-                <div class="flex items-start gap-4">
-                    <div class="w-14 h-14 rounded-xl bg-terracotta/20 flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-fire text-terracotta text-2xl"></i>
-                    </div>
-                    <div class="flex-1">
-                        <div class="flex items-center gap-3 mb-2">
-                            <h3 class="text-xl font-bold">Current Focus: Phase 1</h3>
-                            <span
-                                class="bg-terracotta text-white px-3 py-1 rounded-full text-xs font-semibold">ACTIVE</span>
-                        </div>
-                        <p class="text-terracotta font-semibold mb-2">Carbon Tracker & Comparisons • Feb 1–Feb 5</p>
-                        <p class="text-gray-600 text-sm leading-relaxed">
-                            Building sustainability awareness with data-backed carbon estimates and multi-model output
-                            comparison tools.
-                            Deliverables include carbon footprint tracker and interactive comparison interface.
-                        </p>
-                        <div class="mt-4 flex items-center gap-4">
-                            <div class="flex items-center gap-2 text-sm text-gray-500">
-                                <i class="fas fa-calendar"></i>
-                                <span>5 days duration</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-sm text-gray-500">
-                                <i class="fas fa-tasks"></i>
-                                <span>4 deliverables</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quick Stats -->
-            <div class="glass-card rounded-2xl p-6">
-                <h3 class="text-lg font-bold mb-4 display-font">Project Health</h3>
-                <div class="space-y-4">
-                    <div>
-                        <div class="flex justify-between text-sm mb-1">
-                            <span class="text-gray-600">Overall Progress</span>
-                            <span class="font-semibold">18%</span>
-                        </div>
-                        <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                            <div class="h-full bg-gradient-to-r from-sage to-terracotta rounded-full"
-                                style="width: 18%"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-sm mb-1">
-                            <span class="text-gray-600">Timeline</span>
-                            <span class="font-semibold text-sage">On Track</span>
-                        </div>
-                        <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                            <div class="h-full bg-sage rounded-full" style="width: 24%"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-sm mb-1">
-                            <span class="text-gray-600">Resource Allocation</span>
-                            <span class="font-semibold">100%</span>
-                        </div>
-                        <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                            <div class="h-full bg-gold rounded-full" style="width: 100%"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Timeline Overview Table -->
-        <section class="glass-card rounded-3xl p-8 animate-fade-in" style="animation-delay: 0.4s;">
-            <h2 class="text-2xl font-bold mb-6 display-font">Phase Overview</h2>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="border-b border-stone">
-                            <th class="pb-3 font-semibold text-gray-600">Phase</th>
-                            <th class="pb-3 font-semibold text-gray-600">Duration</th>
-                            <th class="pb-3 font-semibold text-gray-600">Key Deliverables</th>
-                            <th class="pb-3 font-semibold text-gray-600">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-sm">
-                        <tr class="border-b border-stone/50 hover:bg-white/50 transition-colors">
-                            <td class="py-4">
-                                <div class="flex items-center gap-3">
-                                    <span class="w-3 h-3 rounded-full bg-gray-400"></span>
-                                    <div>
-                                        <p class="font-semibold">Phase 0</p>
-                                        <p class="text-xs text-gray-500">Prompt Platform Refinement</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="py-4 text-gray-600">Jan 28 – Jan 31</td>
-                            <td class="py-4 text-gray-600">Updated prompt gallery, improved usability</td>
-                            <td class="py-4"><span
-                                    class="bg-sage/20 text-sage px-2 py-1 rounded text-xs font-medium">Completed</span>
-                            </td>
-                        </tr>
-                        <tr class="border-b border-stone/50 hover:bg-white/50 transition-colors bg-terracotta/5">
-                            <td class="py-4">
-                                <div class="flex items-center gap-3">
-                                    <span class="w-3 h-3 rounded-full bg-terracotta animate-pulse"></span>
-                                    <div>
-                                        <p class="font-semibold">Phase 1</p>
-                                        <p class="text-xs text-gray-500">Carbon Tracker & Comparisons</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="py-4 text-gray-600">Feb 1 – Feb 5</td>
-                            <td class="py-4 text-gray-600">Carbon footprint tracker, multi-model comparison</td>
-                            <td class="py-4"><span
-                                    class="bg-terracotta text-white px-2 py-1 rounded text-xs font-medium">In
-                                    Progress</span></td>
-                        </tr>
-                        <tr class="border-b border-stone/50 hover:bg-white/50 transition-colors">
-                            <td class="py-4">
-                                <div class="flex items-center gap-3">
-                                    <span class="w-3 h-3 rounded-full bg-[#C17B5F]"></span>
-                                    <div>
-                                        <p class="font-semibold">Phase 2</p>
-                                        <p class="text-xs text-gray-500">AI Tool Benchmarking</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="py-4 text-gray-600">Feb 9 – Feb 15</td>
-                            <td class="py-4 text-gray-600">Student tool selection guide, visual comparison charts</td>
-                            <td class="py-4"><span
-                                    class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs font-medium">Upcoming</span>
-                            </td>
-                        </tr>
-                        <tr class="border-b border-stone/50 hover:bg-white/50 transition-colors">
-                            <td class="py-4">
-                                <div class="flex items-center gap-3">
-                                    <span class="w-3 h-3 rounded-full bg-[#C9A962]"></span>
-                                    <div>
-                                        <p class="font-semibold">Phase 3</p>
-                                        <p class="text-xs text-gray-500">Content Pipeline & Tutorials</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="py-4 text-gray-600">Feb 16 – Feb 28</td>
-                            <td class="py-4 text-gray-600">Onboarding videos, volunteer-driven content library</td>
-                            <td class="py-4"><span
-                                    class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs font-medium">Upcoming</span>
-                            </td>
-                        </tr>
-                        <tr class="border-b border-stone/50 hover:bg-white/50 transition-colors">
-                            <td class="py-4">
-                                <div class="flex items-center gap-3">
-                                    <span class="w-3 h-3 rounded-full bg-[#6B7280]"></span>
-                                    <div>
-                                        <p class="font-semibold">Phase 4</p>
-                                        <p class="text-xs text-gray-500">AI Literacy Program</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="py-4 text-gray-600">Mar 1 – Mar 30</td>
-                            <td class="py-4 text-gray-600">Modular curriculum, specialized tracks for
-                                Students/Faculty/Staff</td>
-                            <td class="py-4"><span
-                                    class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs font-medium">Upcoming</span>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-white/50 transition-colors">
-                            <td class="py-4">
-                                <div class="flex items-center gap-3">
-                                    <span class="w-3 h-3 rounded-full bg-[#4B5563]"></span>
-                                    <div>
-                                        <p class="font-semibold">Phase 5</p>
-                                        <p class="text-xs text-gray-500">Final Integration</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="py-4 text-gray-600">Apr 1 – Apr 15</td>
-                            <td class="py-4 text-gray-600">QA testing, documentation, final delivery</td>
-                            <td class="py-4"><span
-                                    class="bg-gold/20 text-gold px-2 py-1 rounded text-xs font-medium">Milestone</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div id="taskDetailsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Populated by JS -->
             </div>
         </section>
 
@@ -666,117 +327,236 @@
 
     <!-- Footer -->
     <footer class="max-w-7xl mx-auto px-8 py-6 text-center text-sm text-gray-500">
-        <p>TRU AI Platform • Co-op Project Execution Plan • Prepared by Gursahib Singh</p>
-        <p class="mt-1">Final Target: April 15, 2026</p>
+        <p>TRU AI Platform &bull; Co-op Project Execution Plan &bull; Prepared by Gursahib Singh</p>
+        <p class="mt-1">Powered by Local Data</p>
     </footer>
 
+    <!-- Scripts -->
     <script>
-        // Project data structure - starts empty, loads from Firebase
-        const projectData = {
+        // Global State
+        const appState = {
+            phases: [],
             startDate: new Date('2026-01-28'),
-            endDate: new Date('2026-04-15'),
-            phases: [] // Empty by default - populated from Firebase
+            endDate: new Date('2026-04-15')
         };
 
-        // Helper functions
+        // --- LOAD DATA FROM LOCAL JS ---
+
+        function loadData() {
+            try {
+                document.getElementById('statusText').innerText = "Loading...";
+
+                const data = window.projectData;
+                if (!data) throw new Error('Failed to find projectData in data.js');
+
+                if (data.phases && data.phases.length > 0) {
+                    appState.phases = data.phases;
+                    if (data.projectInfo) {
+                        appState.startDate = new Date(data.projectInfo.startDate);
+                        appState.endDate = new Date(data.projectInfo.endDate);
+                    } else {
+                        const dates = data.phases.flatMap(p => [new Date(p.start), new Date(p.end)]);
+                        appState.startDate = new Date(Math.min(...dates));
+                        appState.endDate = new Date(Math.max(...dates));
+                    }
+                } else {
+                    appState.phases = [];
+                }
+
+                updateUI();
+
+                document.getElementById('connectionStatus').className = 'w-3 h-3 rounded-full bg-sage';
+                document.getElementById('statusText').innerText = "Local Data";
+
+            } catch (error) {
+                console.error("Error loading data:", error);
+                document.getElementById('connectionStatus').className = 'w-3 h-3 rounded-full bg-red-500';
+                document.getElementById('statusText').innerText = "Error";
+            }
+        }
+
+        // --- UI RENDER LOGIC ---
+
+        function updateUI() {
+            initHeader();
+            generateStats();
+            generateGantt();
+            generateKanban();
+            generateFocusSection();
+        }
+
+        // Helper: Date Difference
         function getDaysDiff(start, end) {
             const oneDay = 24 * 60 * 60 * 1000;
             return Math.round((end - start) / oneDay) + 1;
         }
 
+        // Helper: Format Date
         function formatDate(date) {
             const options = { month: 'short', day: 'numeric' };
             return date.toLocaleDateString('en-US', options);
         }
 
-        function getTodayPosition() {
-            const today = new Date();
-            const start = projectData.startDate;
-            const totalDays = getDaysDiff(start, projectData.endDate);
-            const daysPassed = getDaysDiff(start, today);
-            return Math.max(0, Math.min(100, (daysPassed / totalDays) * 100));
-        }
-
-        // Initialize header dates
+        // 1. Header Logic
         function initHeader() {
             const today = new Date();
-            const deadline = new Date('2026-04-15');
+            const deadline = appState.endDate;
             const daysLeft = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
 
             document.getElementById('currentDate').textContent = today.toLocaleDateString('en-US', {
                 month: 'long', day: 'numeric', year: 'numeric'
             });
-            document.getElementById('daysRemaining').textContent = daysLeft > 0 ? daysLeft : 'Overdue';
+            document.getElementById('daysRemaining').textContent = daysLeft > 0 ? daysLeft : 'Due';
         }
 
-        // Generate Gantt Chart
+        // 2. Stats Logic
+        function generateStats() {
+            const phases = appState.phases;
+            const stats = {
+                total: phases.length,
+                completed: phases.filter(p => p.status === 'completed' || p.status === 'milestone').length,
+                progress: phases.filter(p => p.status === 'progress').length,
+                upcoming: phases.filter(p => p.status === 'todo').length
+            };
+
+            const pct = stats.total > 0 ? Math.round((stats.completed / stats.total) * 100) : 0;
+
+            const html = `
+                <div class="stat-card rounded-2xl p-6">
+                    <div class="flex items-start justify-between">
+                        <div><p class="text-sm text-gray-500 mb-1">Total Phases</p><p class="text-3xl font-bold text-charcoal">${stats.total}</p></div>
+                        <div class="w-10 h-10 rounded-lg bg-sage/20 flex items-center justify-center"><i class="fas fa-layer-group text-sage"></i></div>
+                    </div>
+                </div>
+                <div class="stat-card rounded-2xl p-6">
+                    <div class="flex items-start justify-between">
+                        <div><p class="text-sm text-gray-500 mb-1">Completed</p><p class="text-3xl font-bold text-sage">${stats.completed}</p></div>
+                        <div class="w-10 h-10 rounded-lg bg-sage/20 flex items-center justify-center"><i class="fas fa-check-circle text-sage"></i></div>
+                    </div>
+                    <div class="mt-3 w-full bg-gray-200 rounded-full h-1.5">
+                        <div class="bg-sage h-1.5 rounded-full transition-all duration-700" style="width: ${pct}%"></div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-1">${pct}% complete</p>
+                </div>
+                <div class="stat-card rounded-2xl p-6">
+                    <div class="flex items-start justify-between">
+                        <div><p class="text-sm text-gray-500 mb-1">In Progress</p><p class="text-3xl font-bold text-terracotta">${stats.progress}</p></div>
+                        <div class="w-10 h-10 rounded-lg bg-terracotta/20 flex items-center justify-center"><i class="fas fa-spinner text-terracotta"></i></div>
+                    </div>
+                </div>
+                <div class="stat-card rounded-2xl p-6">
+                    <div class="flex items-start justify-between">
+                        <div><p class="text-sm text-gray-500 mb-1">Upcoming</p><p class="text-3xl font-bold text-gold">${stats.upcoming}</p></div>
+                        <div class="w-10 h-10 rounded-lg bg-gold/20 flex items-center justify-center"><i class="fas fa-clock text-gold"></i></div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('statsSection').innerHTML = html;
+        }
+
+        // 3. Gantt Chart (with subtasks)
         function generateGantt() {
             const container = document.getElementById('ganttBody');
-            const headerRow = document.querySelector('#ganttHeader .flex-1');
-            const today = new Date();
+            const headerRow = document.getElementById('ganttDateHeader');
 
-            // Calculate total timeline
-            const totalDays = getDaysDiff(projectData.startDate, projectData.endDate);
+            if (appState.phases.length === 0) {
+                container.innerHTML = '<div class="p-4 text-center text-gray-500">No phase data available. Please check data.json.</div>';
+                return;
+            }
 
-            // Generate week markers
-            let currentDate = new Date(projectData.startDate);
+            const totalDays = getDaysDiff(appState.startDate, appState.endDate);
+            if (totalDays <= 0) return;
+
+            // Header
+            let currentDate = new Date(appState.startDate);
             let headerHTML = '';
             let weekCount = 0;
+            const endDatePlus = new Date(appState.endDate);
+            endDatePlus.setDate(endDatePlus.getDate() + 7);
 
-            while (currentDate <= projectData.endDate) {
-                const weekWidth = (7 / totalDays) * 100; const isEven = weekCount % 2 === 0;
-                headerHTML += `<div class="flex-shrink-0 text-xs text-gray-500 text-center py-2 ${isEven ? 'bg-gray-50/50' : ''}"
-        style="width: ${weekWidth}%">${formatDate(currentDate)}</div>`;
+            while (currentDate <= endDatePlus) {
+                const weekWidth = (7 / totalDays) * 100;
+                const isEven = weekCount % 2 === 0;
+                headerHTML += `<div class="flex-shrink-0 text-xs text-gray-500 text-center py-2 ${isEven ? 'bg-gray-50/50' : ''}" style="width: ${weekWidth}%">${formatDate(currentDate)}</div>`;
                 currentDate.setDate(currentDate.getDate() + 7);
                 weekCount++;
             }
             headerRow.innerHTML = headerHTML;
 
-            // Generate phase bars
+            // Bars (phases + subtasks)
             let ganttHTML = '';
-            projectData.phases.forEach((phase, index) => {
+            appState.phases.forEach((phase) => {
                 const phaseStart = new Date(phase.start);
                 const phaseEnd = new Date(phase.end);
-                const startOffset = getDaysDiff(projectData.startDate, phaseStart);
+                const startOffset = getDaysDiff(appState.startDate, phaseStart);
                 const duration = getDaysDiff(phaseStart, phaseEnd);
 
                 const leftPos = (startOffset / totalDays) * 100;
                 const width = (duration / totalDays) * 100;
-
-                const isCompleted = phase.status === 'completed';
+                const isCompleted = phase.status === 'completed' || phase.status === 'milestone';
                 const isActive = phase.status === 'progress';
 
                 ganttHTML += `
-        <div class="flex items-center group">
-            <div class="w-48 flex-shrink-0 pr-4">
-                <p class="text-sm font-semibold text-gray-800">${phase.shortName}</p>
-                <p class="text-xs text-gray-500">${formatDate(phaseStart)} - ${formatDate(phaseEnd)}</p>
-            </div>
-            <div class="flex-1 relative h-12 bg-gray-100/50 rounded-lg overflow-hidden">
-                <div class="gantt-bar absolute h-8 top-2 rounded-lg flex items-center px-3 text-xs font-medium text-white shadow-lg ${isActive ? 'ring-2 ring-terracotta ring-offset-2' : ''}"
-                    style="left: ${leftPos}%; width: ${width}%; background-color: ${phase.color};"
-                    onmouseover="showTooltip(this, '${phase.name}', '${phase.description}')" onmouseout="hideTooltip()">
-                    ${isCompleted ? '<i class="fas fa-check mr-1"></i>' : ''}
-                    ${isActive ? '<i class="fas fa-spinner fa-spin mr-1"></i>' : ''}
-                    ${duration} days
-                </div>
-            </div>
-        </div>
-        `;
-            });
+                    <div class="flex items-center group">
+                        <div class="w-52 flex-shrink-0 pr-4">
+                            <p class="text-sm font-semibold text-gray-800">${phase.shortName}</p>
+                            <p class="text-xs text-gray-500">${formatDate(phaseStart)} – ${formatDate(phaseEnd)}</p>
+                        </div>
+                        <div class="flex-1 relative h-12 bg-gray-100/50 rounded-lg overflow-hidden">
+                            <div class="gantt-bar absolute h-8 top-2 rounded-lg flex items-center px-3 text-xs font-medium text-white shadow-lg ${isActive ? 'ring-2 ring-terracotta ring-offset-2' : ''}"
+                                 style="left: ${leftPos}%; width: max(${width}%, 20px); background-color: ${phase.color};"
+                                 title="${phase.name}: ${phase.description}">
+                                ${isCompleted ? '<i class="fas fa-check mr-1"></i>' : ''}
+                                ${isActive ? '<i class="fas fa-spinner fa-spin mr-1"></i>' : ''}
+                                <span class="truncate">${duration} days</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
 
+                // Render subtasks
+                if (phase.subTasks && phase.subTasks.length > 0) {
+                    phase.subTasks.forEach(sub => {
+                        const subStart = new Date(sub.start);
+                        const subEnd = new Date(sub.end);
+                        const subOffset = getDaysDiff(appState.startDate, subStart);
+                        const subDuration = getDaysDiff(subStart, subEnd);
+                        const subLeft = (subOffset / totalDays) * 100;
+                        const subWidth = (subDuration / totalDays) * 100;
+
+                        ganttHTML += `
+                            <div class="flex items-center group">
+                                <div class="w-52 flex-shrink-0 pr-4 pl-6">
+                                    <p class="text-xs text-gray-500 italic"><i class="fas fa-caret-right mr-1 text-gray-400"></i>${sub.name}</p>
+                                </div>
+                                <div class="flex-1 relative h-6 rounded-lg overflow-hidden">
+                                    <div class="gantt-bar subtask-bar absolute rounded-full"
+                                         style="left: ${subLeft}%; width: max(${subWidth}%, 12px); background-color: ${phase.color}; opacity: 0.55;"
+                                         title="${sub.name}: ${formatDate(subStart)} – ${formatDate(subEnd)}">
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            });
             container.innerHTML = ganttHTML;
 
-            // Position today marker
-            const todayPos = getTodayPosition();
+            // Today Marker
+            const today = new Date();
+            const daysPassed = getDaysDiff(appState.startDate, today);
+            const todayPos = (daysPassed / totalDays) * 100;
             const marker = document.getElementById('todayMarker');
+
             if (todayPos > 0 && todayPos < 100) {
-                marker.style.left = `calc(192px + ((100% - 192px) * ${todayPos / 100}))`;
+                marker.style.left = `calc(208px + ((100% - 208px) * ${todayPos / 100}))`;
                 marker.classList.remove('hidden');
+            } else {
+                marker.classList.add('hidden');
             }
         }
 
-        // Generate Kanban Board
+        // 4. Kanban
         function generateKanban() {
             const columns = {
                 todo: document.getElementById('todo-tasks'),
@@ -785,158 +565,126 @@
                 done: document.getElementById('done-tasks')
             };
 
-            // Clear existing cards
             Object.values(columns).forEach(col => col.innerHTML = '');
-
             const counts = { todo: 0, progress: 0, review: 0, done: 0 };
 
-            projectData.phases.forEach(phase => {
-                // Check if deliverables have individual statuses, if not use phase status
-                const deliverableStatuses = phase.deliverableStatuses || {};
+            appState.phases.forEach(phase => {
+                let status = phase.status;
+                if (status === 'milestone') status = 'done';
+                if (status === 'completed') status = 'done';
+                if (!columns[status]) status = 'todo';
 
-                phase.deliverables.forEach((deliverable, idx) => {
-                    const card = document.createElement('div');
+                const activities = phase.activities || [];
+                const activitiesHTML = activities.length > 0
+                    ? `<div class="flex flex-wrap gap-1 mt-2">${activities.map(a => `<span class="activity-chip">${a}</span>`).join('')}</div>`
+                    : '';
 
-                    // Determine status - check individual status first, then phase status
-                    let status = deliverableStatuses[idx] || 'todo';
-                    if (!deliverableStatuses[idx]) {
-                        if (phase.status === 'completed') status = 'done';
-                        else if (phase.status === 'progress') status = 'progress';
-                        else if (phase.status === 'review') status = 'review';
-                        else if (phase.status === 'milestone') status = 'done';
-                    }
+                const deliverables = phase.deliverables || [];
+                const deliverablesHTML = deliverables.length > 0
+                    ? `<div class="mt-2 space-y-1">${deliverables.map(d => `<div class="flex items-start gap-2 text-xs text-gray-600"><i class="fas fa-check-circle text-sage/60 mt-0.5 flex-shrink-0"></i><span>${d}</span></div>`).join('')}</div>`
+                    : '';
 
-                    // Style card with phase color border
-                    card.className = 'kanban-card bg-white rounded-xl p-4 shadow-sm cursor-grab active:cursor-grabbing transition-all hover:shadow-md';
-                    card.style.borderLeft = `4px solid ${phase.color}`;
-                    card.style.borderTop = `1px solid #E8E2D9`;
-                    card.style.borderRight = `1px solid #E8E2D9`;
-                    card.style.borderBottom = `1px solid #E8E2D9`;
-                    card.draggable = true;
+                const card = document.createElement('div');
+                card.className = 'kanban-card bg-white rounded-xl p-4 shadow-sm border border-stone';
 
-                    // Store data attributes for Firebase sync
-                    card.dataset.phaseId = phase.id;
-                    card.dataset.deliverableIdx = idx;
-                    card.dataset.currentStatus = status;
-
-                    card.innerHTML = `
-                        <div class="flex items-start gap-3">
-                            <div class="w-3 h-3 rounded-full mt-1 flex-shrink-0" style="background-color: ${phase.color}"></div>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium text-gray-800 mb-1">${deliverable}</p>
-                                <div class="flex items-center gap-2 text-xs text-gray-500">
-                                    <i class="fas fa-folder-open"></i>
-                                    <span>${phase.shortName}</span>
-                                </div>
-                            </div>
+                card.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <div class="w-3 h-3 rounded-full mt-1.5 flex-shrink-0" style="background-color: ${phase.color}"></div>
+                        <div class="flex-1">
+                            <p class="text-sm font-semibold text-gray-800 mb-0.5">${phase.shortName}</p>
+                            <p class="text-xs text-gray-500 mb-1">${formatDate(new Date(phase.start))} – ${formatDate(new Date(phase.end))}</p>
+                            <p class="text-xs text-gray-600 leading-relaxed">${phase.description}</p>
+                            ${deliverablesHTML}
+                            ${activitiesHTML}
                         </div>
-                    `;
-
-                    // Add drag events
-                    card.addEventListener('dragstart', (e) => {
-                        e.dataTransfer.setData('text/plain', JSON.stringify({
-                            phaseId: phase.id,
-                            deliverableIdx: idx,
-                            currentStatus: status
-                        }));
-                        card.style.opacity = '0.5';
-                        card.classList.add('dragging');
-                    });
-
-                    card.addEventListener('dragend', () => {
-                        card.style.opacity = '1';
-                        card.classList.remove('dragging');
-                    });
-
-                    columns[status].appendChild(card);
-                    counts[status]++;
-                });
+                    </div>
+                `;
+                columns[status].appendChild(card);
+                counts[status]++;
             });
 
-            // Update counts
             Object.keys(counts).forEach(key => {
                 document.getElementById(`count-${key}`).textContent = counts[key];
             });
         }
 
-        // Drag and drop handlers for columns with Firebase sync
-        document.addEventListener('DOMContentLoaded', () => {
-            const columns = document.querySelectorAll('.kanban-column');
+        // 5. Task Details Section (All Phases)
+        function generateFocusSection() {
+            const container = document.getElementById('taskDetailsGrid');
+            if (!container) return;
 
-            columns.forEach(column => {
-                column.addEventListener('dragover', (e) => {
-                    e.preventDefault();
-                    column.style.background = 'rgba(139, 154, 125, 0.15)';
-                    column.style.transition = 'background 0.2s ease';
-                });
+            let html = '';
+            appState.phases.forEach((phase) => {
+                const pStart = new Date(phase.start);
+                const pEnd = new Date(phase.end);
+                const duration = getDaysDiff(pStart, pEnd);
+                const isCompleted = phase.status === 'completed' || phase.status === 'milestone';
+                const isActive = phase.status === 'progress';
 
-                column.addEventListener('dragleave', (e) => {
-                    // Only remove highlight if leaving the column entirely
-                    if (!column.contains(e.relatedTarget)) {
-                        column.style.background = '';
-                    }
-                });
+                html += `
+                    <div class="glass-card rounded-2xl overflow-hidden border-t-4" style="border-top-color: ${phase.color}">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-8 h-8 rounded-lg flex items-center justify-center text-white" style="background-color: ${phase.color}">
+                                        <i class="fas ${getIconForPhase(phase.id)} text-xs"></i>
+                                    </span>
+                                    <div>
+                                        <h3 class="font-bold text-lg">${phase.name}</h3>
+                                        <p class="text-xs text-gray-500 font-medium uppercase tracking-wider">${formatDate(pStart)} – ${formatDate(pEnd)} &bull; ${duration} days</p>
+                                    </div>
+                                </div>
+                                <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-tight ${isCompleted ? 'bg-sage/20 text-sage' : (isActive ? 'bg-terracotta/20 text-terracotta' : 'bg-gray-100 text-gray-500')}">
+                                    ${phase.status}
+                                </span>
+                            </div>
 
-                column.addEventListener('drop', async (e) => {
-                    e.preventDefault();
-                    column.style.background = '';
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex items-center gap-2 text-charcoal font-bold text-sm mb-1 uppercase tracking-wide">
+                                        <i class="fas fa-bullseye text-xs opacity-60"></i>
+                                        <span>What I am doing</span>
+                                    </div>
+                                    <p class="text-gray-600 text-sm leading-relaxed pl-5 border-l border-stone/50 ml-1.5">${phase.what || phase.description}</p>
+                                </div>
 
-                    try {
-                        const data = JSON.parse(e.dataTransfer.getData('text/plain'));
-                        const newStatus = column.id.replace('-tasks', ''); // Extract status from column id
+                                <div>
+                                    <div class="flex items-center gap-2 text-charcoal font-bold text-sm mb-1 uppercase tracking-wide">
+                                        <i class="fas fa-tools text-xs opacity-60"></i>
+                                        <span>How I am doing it</span>
+                                    </div>
+                                    <p class="text-gray-600 text-sm leading-relaxed pl-5 border-l border-stone/50 ml-1.5">${phase.how || 'Implementing planned activities and subtasks to achieve milestone deliverables.'}</p>
+                                </div>
+                            </div>
 
-                        // Don't update if dropped in same column
-                        if (data.currentStatus === newStatus) return;
-
-                        // Find the phase in local data
-                        const phase = projectData.phases.find(p => p.id === data.phaseId);
-                        if (!phase) return;
-
-                        // Initialize deliverableStatuses if not exists
-                        if (!phase.deliverableStatuses) {
-                            phase.deliverableStatuses = {};
-                        }
-
-                        // Update local status
-                        phase.deliverableStatuses[data.deliverableIdx] = newStatus;
-
-                        // Sync to Firebase
-                        if (window.firebaseReady) {
-                            const docRef = window.firebaseDoc(window.firebaseDB, 'phases', `phase_${data.phaseId}`);
-                            await window.firebaseUpdateDoc(docRef, {
-                                deliverableStatuses: phase.deliverableStatuses
-                            });
-                            showToast(`Moved to ${newStatus.charAt(0).toUpperCase() + newStatus.slice(1)}`, 'success');
-                        }
-
-                        // Regenerate Kanban to reflect changes
-                        generateKanban();
-
-                    } catch (error) {
-                        console.error('Error updating deliverable status:', error);
-                        showToast('Failed to update status', 'error');
-                    }
-                });
+                            <div class="mt-6 pt-4 border-t border-stone/30 flex flex-wrap gap-2">
+                                ${(phase.deliverables || []).map(d => `<span class="activity-chip"><i class="fas fa-check-circle text-sage/70"></i>${d}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
             });
-        });
 
-        // View switching
+            container.innerHTML = html;
+        }
+
+        function getIconForPhase(id) {
+            const icons = ['fa-layer-group', 'fa-leaf', 'fa-users-cog', 'fa-chart-bar', 'fa-graduation-cap', 'fa-rocket'];
+            return icons[id] || 'fa-project-diagram';
+        }
+
+        // View Switcher
         function switchView(view) {
             const ganttBtn = document.getElementById('btn-gantt');
             const kanbanBtn = document.getElementById('btn-kanban');
-            const manageBtn = document.getElementById('btn-manage');
+
             const ganttView = document.getElementById('ganttView');
             const kanbanView = document.getElementById('kanbanView');
-            const manageView = document.getElementById('manageView');
 
-            // Reset all buttons
-            [ganttBtn, kanbanBtn, manageBtn].forEach(btn => {
-                btn.classList.remove('tab-active');
-                btn.classList.add('hover:bg-white/50');
+            [ganttBtn, kanbanBtn].forEach(btn => {
+                btn.className = 'px-6 py-2 rounded-lg text-sm font-medium transition-all hover:bg-white/50';
             });
-
-            // Hide all views
-            [ganttView, kanbanView, manageView].forEach(v => v.classList.add('hidden'));
+            [ganttView, kanbanView].forEach(v => v.classList.add('hidden'));
 
             if (view === 'gantt') {
                 ganttBtn.classList.add('tab-active');
@@ -946,365 +694,12 @@
                 kanbanBtn.classList.add('tab-active');
                 kanbanBtn.classList.remove('hover:bg-white/50');
                 kanbanView.classList.remove('hidden');
-            } else if (view === 'manage') {
-                manageBtn.classList.add('tab-active');
-                manageBtn.classList.remove('hover:bg-white/50');
-                manageView.classList.remove('hidden');
             }
         }
 
-        // Password protection
-        let isAuthenticated = false;
-        const CORRECT_PASSWORD = 'Pass@123';
-
-        function checkPassword() {
-            const input = document.getElementById('passwordInput');
-            const error = document.getElementById('passwordError');
-
-            if (input.value === CORRECT_PASSWORD) {
-                isAuthenticated = true;
-                document.getElementById('passwordGate').classList.add('hidden');
-                document.getElementById('managementPanel').classList.remove('hidden');
-                error.classList.add('hidden');
-                input.value = '';
-                loadPhasesForManagement();
-            } else {
-                error.classList.remove('hidden');
-                input.classList.add('border-red-500');
-                setTimeout(() => input.classList.remove('border-red-500'), 2000);
-            }
-        }
-
-        function lockManagement() {
-            isAuthenticated = false;
-            document.getElementById('passwordGate').classList.remove('hidden');
-            document.getElementById('managementPanel').classList.add('hidden');
-            showToast('Management locked', 'info');
-        }
-
-        // Toast notification
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            const icon = document.getElementById('toastIcon');
-            const msg = document.getElementById('toastMessage');
-
-            msg.textContent = message;
-
-            if (type === 'success') {
-                toast.className = 'fixed bottom-6 right-6 px-6 py-3 rounded-xl shadow-lg transform transition-all duration-300 z-50 bg-sage text-white';
-                icon.className = 'fas fa-check-circle';
-            } else if (type === 'error') {
-                toast.className = 'fixed bottom-6 right-6 px-6 py-3 rounded-xl shadow-lg transform transition-all duration-300 z-50 bg-red-500 text-white';
-                icon.className = 'fas fa-times-circle';
-            } else {
-                toast.className = 'fixed bottom-6 right-6 px-6 py-3 rounded-xl shadow-lg transform transition-all duration-300 z-50 bg-gray-700 text-white';
-                icon.className = 'fas fa-info-circle';
-            }
-
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            setTimeout(() => {
-                toast.classList.add('translate-y-20', 'opacity-0');
-            }, 3000);
-        }
-
-        // Firebase CRUD Operations
-        async function loadPhasesFromFirebase() {
-            if (!window.firebaseReady) return false;
-
-            try {
-                const phasesRef = window.firebaseCollection(window.firebaseDB, 'phases');
-                const snapshot = await window.firebaseGetDocs(phasesRef);
-
-                if (snapshot.empty) return false;
-
-                const phases = [];
-                snapshot.forEach(doc => {
-                    phases.push({ ...doc.data(), docId: doc.id });
-                });
-
-                // Sort by id
-                phases.sort((a, b) => a.id - b.id);
-                projectData.phases = phases;
-
-                // Update dates
-                if (phases.length > 0) {
-                    projectData.startDate = new Date(phases[0].start);
-                    projectData.endDate = new Date(phases[phases.length - 1].end);
-                }
-
-                return true;
-            } catch (error) {
-                console.error('Error loading phases:', error);
-                return false;
-            }
-        }
-
-        async function seedData() {
-            if (!window.firebaseReady) {
-                showToast('Firebase not ready', 'error');
-                return;
-            }
-
-            const btn = document.getElementById('seedBtn');
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Seeding...';
-
-            try {
-                const defaultPhases = [
-                    { id: 0, name: "Phase 0: Prompt Platform Refinement", shortName: "Prompt Refinement", start: "2026-01-28", end: "2026-01-31", color: "#9CA3AF", status: "completed", deliverables: ["Restructured prompt categories", "Refined prompts for academic use", "Improved prompt formatting", "Updated prompt gallery"], deliverableStatuses: { 0: "done", 1: "done", 2: "done", 3: "done" }, description: "Improve quality, usability, and value of existing prompt assets" },
-                    { id: 1, name: "Phase 1: Carbon Tracker & Comparisons", shortName: "Carbon Tracker", start: "2026-02-01", end: "2026-02-05", color: "#8B9A7D", status: "progress", deliverables: ["Carbon impact methodology report", "Student-friendly visualizations", "Carbon footprint tracker", "Multi-model comparison tool"], deliverableStatuses: { 0: "done", 1: "progress", 2: "progress", 3: "todo" }, description: "Sustainability awareness and data-backed carbon estimates" },
-                    { id: 2, name: "Phase 2: AI Tool Benchmarking", shortName: "AI Benchmarking", start: "2026-02-09", end: "2026-02-15", color: "#C17B5F", status: "todo", deliverables: ["Benchmark data across domains", "Plain-language interpretations", "Student benchmark report", "Task-based AI selection webpage"], deliverableStatuses: { 0: "todo", 1: "todo", 2: "todo", 3: "todo" }, description: "Help students make informed AI tool choices" },
-                    { id: 3, name: "Phase 3: Content Pipeline & Tutorials", shortName: "Content Pipeline", start: "2026-02-16", end: "2026-02-28", color: "#C9A962", status: "todo", deliverables: ["Platform overview video", "Prompt library usage video", "Sustainability tools video", "Volunteer content coordination"], deliverableStatuses: { 0: "todo", 1: "todo", 2: "todo", 3: "todo" }, description: "Practical short-form learning resources" },
-                    { id: 4, name: "Phase 4: AI Literacy Program", shortName: "AI Literacy", start: "2026-03-01", end: "2026-03-30", color: "#6B7280", status: "todo", deliverables: ["General AI literacy curriculum", "Student academic track", "Faculty teaching track", "Staff operational track"], deliverableStatuses: { 0: "todo", 1: "todo", 2: "todo", 3: "todo" }, description: "Modular AI literacy curriculum for all audiences" },
-                    { id: 5, name: "Phase 5: Final Integration & Readiness", shortName: "Final Integration", start: "2026-04-01", end: "2026-04-15", color: "#4B5563", status: "milestone", deliverables: ["QA testing completion", "Cross-feature integration", "Documentation finalized", "Stakeholder review ready"], deliverableStatuses: { 0: "todo", 1: "todo", 2: "todo", 3: "todo" }, description: "Platform stabilization and review readiness" }
-                ];
-
-                for (const phase of defaultPhases) {
-                    const docRef = window.firebaseDoc(window.firebaseDB, 'phases', `phase_${phase.id}`);
-                    await window.firebaseSetDoc(docRef, phase);
-                }
-
-                showToast('Data seeded successfully!', 'success');
-                await refreshAllViews();
-            } catch (error) {
-                console.error('Error seeding data:', error);
-                showToast('Failed to seed data: ' + error.message, 'error');
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-database mr-2"></i>Seed Initial Data';
-            }
-        }
-
-        async function updatePhase(phaseId, updatedData) {
-            if (!window.firebaseReady) return;
-
-            try {
-                const docRef = window.firebaseDoc(window.firebaseDB, 'phases', `phase_${phaseId}`);
-                await window.firebaseUpdateDoc(docRef, updatedData);
-                showToast('Phase updated!', 'success');
-                await refreshAllViews();
-            } catch (error) {
-                console.error('Error updating phase:', error);
-                showToast('Failed to update: ' + error.message, 'error');
-            }
-        }
-
-        async function deletePhase(phaseId) {
-            if (!window.firebaseReady) return;
-            if (!confirm('Are you sure you want to delete this phase?')) return;
-
-            try {
-                const docRef = window.firebaseDoc(window.firebaseDB, 'phases', `phase_${phaseId}`);
-                await window.firebaseDeleteDoc(docRef);
-                showToast('Phase deleted!', 'success');
-                await refreshAllViews();
-            } catch (error) {
-                console.error('Error deleting phase:', error);
-                showToast('Failed to delete: ' + error.message, 'error');
-            }
-        }
-
-        async function addNewPhase() {
-            if (!window.firebaseReady) return;
-
-            const newId = projectData.phases.length > 0 ? Math.max(...projectData.phases.map(p => p.id)) + 1 : 0;
-            const today = new Date();
-            const nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
-
-            const newPhase = {
-                id: newId,
-                name: `Phase ${newId}: New Phase`,
-                shortName: "New Phase",
-                start: today.toISOString().split('T')[0],
-                end: nextWeek.toISOString().split('T')[0],
-                color: "#6B7280",
-                status: "todo",
-                deliverables: ["Deliverable 1"],
-                deliverableStatuses: { 0: "todo" },
-                description: "Description here"
-            };
-
-            try {
-                const docRef = window.firebaseDoc(window.firebaseDB, 'phases', `phase_${newId}`);
-                await window.firebaseSetDoc(docRef, newPhase);
-                showToast('New phase added!', 'success');
-                await refreshAllViews();
-            } catch (error) {
-                console.error('Error adding phase:', error);
-                showToast('Failed to add phase: ' + error.message, 'error');
-            }
-        }
-
-        async function refreshAllViews() {
-            await loadPhasesFromFirebase();
-            generateGantt();
-            generateKanban();
-            loadPhasesForManagement();
-            initHeader();
-        }
-
-        function loadPhasesForManagement() {
-            const container = document.getElementById('phaseCardsContainer');
-            const emptyState = document.getElementById('emptyState');
-
-            if (projectData.phases.length === 0) {
-                container.innerHTML = '';
-                emptyState.classList.remove('hidden');
-                return;
-            }
-
-            emptyState.classList.add('hidden');
-
-            container.innerHTML = projectData.phases.map(phase => `
-            <div class="glass-card rounded-2xl p-5" id="card-${phase.id}">
-                <div class="flex items-start justify-between mb-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-4 h-4 rounded" style="background-color: ${phase.color}"></div>
-                        <span class="font-bold">${phase.name}</span>
-                    </div>
-                    <button onclick="deletePhase(${phase.id})" class="text-red-500 hover:text-red-700">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-
-                <div class="space-y-3 text-sm">
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-gray-500 mb-1">Short Name</label>
-                            <input type="text" value="${phase.shortName}"
-                                onchange="updatePhase(${phase.id}, {shortName: this.value})"
-                                class="w-full px-3 py-2 rounded-lg border border-stone focus:outline-none focus:ring-2 focus:ring-sage">
-                        </div>
-                        <div>
-                            <label class="block text-gray-500 mb-1">Status</label>
-                            <select onchange="updatePhase(${phase.id}, {status: this.value})"
-                                class="w-full px-3 py-2 rounded-lg border border-stone focus:outline-none focus:ring-2 focus:ring-sage">
-                                <option value="todo" ${phase.status === 'todo' ? 'selected' : ''}>Upcoming</option>
-                                <option value="progress" ${phase.status === 'progress' ? 'selected' : ''}>In Progress
-                                </option>
-                                <option value="review" ${phase.status === 'review' ? 'selected' : ''}>Review</option>
-                                <option value="completed" ${phase.status === 'completed' ? 'selected' : ''}>Completed
-                                </option>
-                                <option value="milestone" ${phase.status === 'milestone' ? 'selected' : ''}>Milestone
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-gray-500 mb-1">Start</label>
-                            <input type="date" value="${phase.start}"
-                                onchange="updatePhase(${phase.id}, {start: this.value})"
-                                class="w-full px-3 py-2 rounded-lg border border-stone focus:outline-none focus:ring-2 focus:ring-sage">
-                        </div>
-                        <div>
-                            <label class="block text-gray-500 mb-1">End</label>
-                            <input type="date" value="${phase.end}"
-                                onchange="updatePhase(${phase.id}, {end: this.value})"
-                                class="w-full px-3 py-2 rounded-lg border border-stone focus:outline-none focus:ring-2 focus:ring-sage">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-gray-500 mb-1">Color</label>
-                        <input type="color" value="${phase.color}"
-                            onchange="updatePhase(${phase.id}, {color: this.value})"
-                            class="w-full h-10 rounded-lg border border-stone cursor-pointer">
-                    </div>
-
-                    <div>
-                        <label class="block text-gray-500 mb-1">Description</label>
-                        <textarea onchange="updatePhase(${phase.id}, {description: this.value})"
-                            class="w-full px-3 py-2 rounded-lg border border-stone focus:outline-none focus:ring-2 focus:ring-sage resize-none"
-                            rows="2">${phase.description}</textarea>
-                    </div>
-
-                    <div>
-                        <label class="block text-gray-500 mb-1">Deliverables</label>
-                        <div class="space-y-2" id="deliverables-${phase.id}">
-                            ${phase.deliverables.map((d, i) => `
-                            <div class="flex gap-2">
-                                <input type="text" value="${d}"
-                                    onchange="updateDeliverable(${phase.id}, ${i}, this.value)"
-                                    class="flex-1 px-3 py-2 rounded-lg border border-stone focus:outline-none focus:ring-2 focus:ring-sage text-sm">
-                                <button onclick="removeDeliverable(${phase.id}, ${i})"
-                                    class="text-red-500 hover:text-red-700 px-2">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                            `).join('')}
-                        </div>
-                        <button onclick="addDeliverable(${phase.id})"
-                            class="mt-2 text-sm text-sage hover:text-sage-light">
-                            <i class="fas fa-plus mr-1"></i>Add Deliverable
-                        </button>
-                    </div>
-                </div>
-            </div>
-            `).join('');
-        }
-
-        async function updateDeliverable(phaseId, index, value) {
-            const phase = projectData.phases.find(p => p.id === phaseId);
-            if (!phase) return;
-            const deliverables = [...phase.deliverables];
-            deliverables[index] = value;
-            await updatePhase(phaseId, { deliverables });
-        }
-
-        async function removeDeliverable(phaseId, index) {
-            const phase = projectData.phases.find(p => p.id === phaseId);
-            if (!phase) return;
-            const deliverables = phase.deliverables.filter((_, i) => i !== index);
-
-            // Reindex deliverableStatuses after removal
-            const oldStatuses = phase.deliverableStatuses || {};
-            const newStatuses = {};
-            let newIdx = 0;
-            for (let i = 0; i < phase.deliverables.length; i++) {
-                if (i !== index) {
-                    newStatuses[newIdx] = oldStatuses[i] || 'todo';
-                    newIdx++;
-                }
-            }
-
-            await updatePhase(phaseId, { deliverables, deliverableStatuses: newStatuses });
-        }
-
-        async function addDeliverable(phaseId) {
-            const phase = projectData.phases.find(p => p.id === phaseId);
-            if (!phase) return;
-            const deliverables = [...phase.deliverables, 'New deliverable'];
-            const deliverableStatuses = { ...(phase.deliverableStatuses || {}) };
-            deliverableStatuses[deliverables.length - 1] = 'todo'; // New deliverable starts as todo
-            await updatePhase(phaseId, { deliverables, deliverableStatuses });
-        }
-
-        // Tooltip functions
-        function showTooltip(element, title, description) {
-            element.title = `${title}: ${description}`;
-        }
-
-        function hideTooltip() { }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', async () => {
-            initHeader();
-            generateGantt();
-            generateKanban();
-        });
-
-        // Wait for Firebase and load data
-        window.addEventListener('firebaseReady', async () => {
-            console.log('Firebase ready, loading data...');
-            const hasData = await loadPhasesFromFirebase();
-            if (hasData) {
-                console.log('Loaded phases from Firebase');
-                generateGantt();
-                generateKanban();
-                initHeader();
-            }
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
         });
     </script>
 </body>
