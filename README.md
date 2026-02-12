@@ -28,4 +28,4 @@ https://singhgursahib0007.github.io/DayCare/Planning.html
 https://singhgursahib0007.github.io/Coop_Timeline/dashboard.html
 
 ### Quick Tools
-https://https://singhgursahib0007.github.io/QuickTools/colorchange.html
+https://singhgursahib0007.github.io/QuickTools/colorchange.html
