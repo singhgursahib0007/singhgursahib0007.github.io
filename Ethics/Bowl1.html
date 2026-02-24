@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethics Bowl Preparation | Social Ethics in CS</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Sora for headings, Inter for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700;800&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            black: '#0a0a0a',
+                            zinc: '#121212',
+                            amber: '#fbbf24',
+                            'amber-light': '#fcd34d',
+                            'amber-dark': '#d97706',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Sora', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/css">
+        body {
+            background-color: #0a0a0a;
+            color: #e5e5e5;
+            scroll-behavior: smooth;
+        }
+
+        .prose h1,
+        .prose h2,
+        .prose h3 {
+            font-family: 'Sora', sans-serif;
+            color: #ffffff;
+        }
+
+        .prose h2 {
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .prose h2::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
+            width: 3rem;
+            height: 2px;
+            background: #fbbf24;
+        }
+
+        .prose p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            color: #d1d5db;
+        }
+
+        .prose table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-size: 0.9375rem;
+        }
+
+        .prose th,
+        .prose td {
+            border: 1px solid #2d2d2d;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        .prose th {
+            background-color: #1a1a1a;
+            color: #fbbf24;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .prose tr:nth-child(even) {
+            background-color: #111111;
+        }
+
+        .prose ul,
+        .prose ol {
+            margin-bottom: 2rem;
+            padding-left: 1.5rem;
+            color: #d1d5db;
+        }
+
+        .prose li {
+            margin-bottom: 0.75rem;
+            line-height: 1.6;
+        }
+
+        .prose blockquote {
+            border-left: 4px solid #fbbf24;
+            padding-left: 1.5rem;
+            font-style: italic;
+            color: #9ca3af;
+            margin: 2rem 0;
+        }
+
+        .sidebar-active {
+            color: #fbbf24 !important;
+            border-left-color: #fbbf24 !important;
+            background-color: rgba(251, 191, 36, 0.05);
+            font-weight: 600;
+        }
+
+        .tab-btn.active {
+            border-bottom-color: #fbbf24;
+            color: #fbbf24;
+            background-color: rgba(251, 191, 36, 0.05);
+        }
+
+        .time-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.125rem 0.625rem;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            background-color: #fbbf24;
+            color: #000000;
+            margin-left: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased text-zinc-300">
+    <!-- HEADER -->
+    <header class="sticky top-0 z-50 bg-black/90 backdrop-blur-xl border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between py-5 gap-6">
+                <div>
+                    <h1 class="font-display text-xl font-black text-white tracking-tighter uppercase italic">Ethics<span
+                            class="text-brand-amber">Bowl</span> 2026</h1>
+                    <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-[0.2em] mt-1">Social Ethics in
+                        Computer Science • Competition Ref</p>
+                </div>
+                <nav class="flex p-1 bg-zinc-900/50 rounded-lg border border-white/5">
+                    <button onclick="switchTab('case-1')" id="tab-case-1"
+                        class="tab-btn px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-md transition-all duration-300 active">Case
+                        1</button>
+                    <button onclick="switchTab('case-2')" id="tab-case-2"
+                        class="tab-btn px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-md transition-all duration-300">Case
+                        2</button>
+                    <button onclick="switchTab('reference')" id="tab-reference"
+                        class="tab-btn px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white rounded-md transition-all duration-300">Reference</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        <!-- CASE 1 -->
+        <div id="content-case-1" class="tab-content transition-opacity duration-500">
+            <div class="flex flex-col lg:flex-row gap-12">
+                <aside class="lg:w-80 shrink-0">
+                    <div class="sticky top-32 space-y-2">
+                        <p
+                            class="text-[10px] font-black text-zinc-600 uppercase tracking-widest mb-6 border-b border-zinc-800 pb-2">
+                            Case 1 Navigation</p>
+                        <nav id="toc-case-1" class="flex flex-col space-y-1">
+                            <a href="#c1-opening"
+                                class="toc-link block py-3 px-4 text-sm text-zinc-500 border-l-2 border-zinc-800/50 hover:text-white hover:border-zinc-500 transition-all">1.1
+                                Opening Summary</a>
+                            <a href="#c1-analysis"
+                                class="toc-link block py-3 px-4 text-sm text-zinc-500 border-l-2 border-zinc-800/50 hover:text-white hover:border-zinc-500 transition-all">1.2
+                                Ethical Analysis</a>
+                            <a href="#c1-research"
+                                class="toc-link block py-3 px-4 text-sm text-zinc-500 border-l-2 border-zinc-800/50 hover:text-white hover:border-zinc-500 transition-all">1.3
+                                Quick Research</a>
+                            <a href="#c1-prof-qa"
+                                class="toc-link block py-3 px-4 text-sm text-zinc-500 border-l-2 border-zinc-800/50 hover:text-white hover:border-zinc-500 transition-all">1.4
+                                Professor's Q&A</a>
+                            <a href="#c1-interaction"
+                                class="toc-link block py-3 px-4 text-sm text-zinc-500 border-l-2 border-zinc-800/50 hover:text-white hover:border-zinc-500 transition-all">1.5
+                                Interaction</a>
+                            <a href="#c1-criticisms"
+                                class="toc-link block py-2 px-4 ml-4 text-xs text-zinc-600 border-l-2 border-zinc-800/50 italic">Criticisms
+                                Table</a>
+                            <a href="#c1-rebuttal"
+                                class="toc-link block py-3 px-4 text-sm text-zinc-500 border-l-2 border-zinc-800/50 hover:text-white hover:border-zinc-500 transition-all">1.6
+                                Rebuttal Defense</a>
+                        </nav>
+                    </div>
+                </aside>
+
+                <div class="prose max-w-none flex-1">
+                    <div class="mb-16 border-b border-white/5 pb-10">
+                        <h1 class="text-5xl md:text-6xl font-black mb-6 tracking-tight leading-[1.1]">Legal Pluralism
+                            and Indigenous Legal Orders in Canada</h1>
+                        <p class="text-2xl text-zinc-500 font-medium">(Wet'suwet'en / Coastal GasLink Pipeline)</p>
+                    </div>
+
+                    <div id="c1-opening" class="section scroll-mt-32 mb-20 excerpt">
+                        <h2 class="flex items-center">1.1 3-MINUTE OPENING SUMMARY <span class="time-badge">3 MIN</span>
+                        </h2>
+                        <div class="bg-zinc-950/40 p-6 rounded-xl border-l-4 border-brand-amber text-zinc-300 italic">
+                            <p class="mb-4">"Hi everyone. Today we’re talking about how different legal systems can live
+                                together in one country. In Canada, we already do this with English and French laws. But
+                                there’s a third system that often gets ignored: Indigenous Legal Orders."</p>
+                            <p class="mb-4">"Back in 2021, a pipeline was started through Wet'suwet'en land. This land
+                                was never given away in a treaty, so the people there still have their own rights. The
+                                traditional leaders, the Hereditary Chiefs, said 'no' to the pipeline, but the
+                                government moved forward anyway. When people tried to protect the land, the courts used
+                                a standard Canadian order to bring in the police. This created a direct clash between
+                                two different sets of laws."</p>
+                            <p class="mb-4">"Here’s the thing: the Wet'suwet'en have their own way of solving problems.
+                                It’s called the Feasthouse. It’s a formal legal process with ceremony, where everyone
+                                gets a voice and decisions are made together for the good of the land. It’s not just a
+                                meeting; it’s a living legal system with its own rules."</p>
+                            <p class="mb-4">"Canada has promised to follow UNDRIP, which says Indigenous people must
+                                give 'free and clear consent' before projects like this start. That didn't happen here.
+                                Even though British Columbia passed laws to follow these rules, they still used force to
+                                stop the protectors."</p>
+                            <p>"So the real question is: why do we treat one legal system as 'real' law and the other as
+                                something that can just be pushed aside? It’s not about who has the most power; it’s
+                                about being a fair country that actually keeps its own promises."</p>
+                        </div>
+                    </div>
+
+                    <div id="c1-analysis" class="section scroll-mt-32 mb-20">
+                        <h2>1.2 ETHICAL ANALYSIS</h2>
+                        <p>From a <b>Utilitarian</b> view, respecting Indigenous laws is the right choice because it
+                            prevents costly court battles and keeps the peace, creating the most happiness and stability
+                            for everyone in Canada. At the same time, <b>Cultural Relativism</b> reminds us that
+                            Indigenous nations have their own legal traditions that should be judged by their own
+                            standards, not just forced to follow Western rules. By honoring these different ways of
+                            knowing, we build a more fair and respectful country that values all cultures equally.</p>
+                    </div>
+
+                    <div id="c1-research" class="section scroll-mt-32 mb-20 excerpt">
+                        <h2 class="flex items-center">1.3 1-MINUTE QUICK RESEARCH <span class="time-badge">1
+                                MIN</span></h2>
+                        <h3 class="text-brand-amber text-xs font-black uppercase tracking-widest mb-4">The Case Study
+                        </h3>
+                        <p>Coastal GasLink built a long pipeline (670-km) across Wet'suwet'en land. This land was never
+                            given away. The elected band councils (who run the reserves) agreed because of the money and
+                            jobs. But the traditional leaders, called Hereditary Chiefs (who look after the whole
+                            territory), said no. The government chose to listen to the elected councils and used the
+                            police and courts to finish the project by late 2023.</p>
+
+                        <h3 class="text-brand-amber text-xs font-black uppercase tracking-widest mt-8 mb-4">The Possible
+                            Solution</h3>
+                        <p>The best way forward is fixing how decisions are made for the future. The government should
+                            have followed the UN Declaration on the Rights of Indigenous Peoples (UNDRIP) to obtain free
+                            and clear consent before starting:</p>
+                        <ul class="list-disc pl-5 text-zinc-400 space-y-2 text-sm">
+                            <li><strong class="text-white">Legal Recognition:</strong> The government should officially
+                                recognize the authority of Hereditary Chiefs over traditional lands to ensure clear
+                                legal rules for future projects.</li>
+                            <li><strong class="text-white">UNDRIP Consent:</strong> Officials must follow United Nations
+                                rules by obtaining free and clear consent. This ensures that no project starts without a
+                                shared agreement.</li>
+                            <li><strong class="text-white">Joint Management:</strong> The government and Indigenous
+                                nations should share power. This allows the Nation to help design projects and set rules
+                                before construction begins.</li>
+                        </ul>
+                    </div>
+
+                    <div id="c1-prof-qa"
+                        class="section scroll-mt-32 bg-zinc-900/50 p-8 rounded-2xl border border-brand-amber/20 mb-20">
+                        <h2 class="mb-6">1.4 PROFESSOR'S Q&A (1-MINUTE)</h2>
+                        <div class="space-y-8">
+                            <div>
+                                <p class="text-white font-bold text-sm mb-2">Q1: "Moral reasons for including ILOs
+                                    and compatibility with common/civil law?"</p>
+                                <p class="text-zinc-400 text-sm leading-relaxed">It is morally right to include
+                                    Indigenous laws because Canada already accepts two other colonial legal systems;
+                                    it’s only fair to include the third for Indigenous history. They are compatible
+                                    because both aim for justice and order. The Feasthouse is a public, structured
+                                    process just like a courtroom, only it uses consensus and ceremony to reach its
+                                    goals.</p>
+                            </div>
+                            <div class="pt-4 border-t border-white/5">
+                                <p class="text-white font-bold text-sm mb-2">Q2: "What role does upholding ILOs play
+                                    in implementing UNDRIP?"</p>
+                                <p class="text-zinc-400 text-sm leading-relaxed">Upholding Indigenous laws is the
+                                    only way to actually make UNDRIP work. You cannot have "informed consent" if the
+                                    government ignores the legal system the community actually uses to make
+                                    decisions. By recognizing these laws, the government finally gives Indigenous
+                                    people a real seat at the table instead of just forcing rules upon them.</p>
+                            </div>
+                            <div class="pt-4 border-t border-white/5">
+                                <p class="text-white font-bold text-sm mb-2">Q3: "Obligation of non-Indigenous
+                                    Canadians when protectors are stopped by police?"</p>
+                                <p class="text-zinc-400 text-sm leading-relaxed">Our obligation is to hold the
+                                    government to its own promises. If the government passes human rights laws like
+                                    UNDRIP but then uses police force to stop the very rights those laws protect,
+                                    citizens should speak up. We have a duty to support fair negotiation over force
+                                    and ensure our country follows its own words.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="c1-interaction" class="section scroll-mt-32 mb-20">
+                        <h2>1.5 OPPONENT INTERACTION</h2>
+                        <div class="bg-zinc-900/50 p-8 rounded-2xl border border-white/5 mb-10">
+                            <h3 class="text-brand-amber font-display font-bold uppercase tracking-widest text-xs mb-6">
+                                Appreciation Points</h3>
+                            <ul class="list-disc pl-5 text-zinc-400 space-y-4">
+                                <li>"Your team made a strong point about the importance of legal consistency, and that
+                                    is a real concern worth engaging with seriously."</li>
+                                <li>"We appreciate that your team took the complexity of UNDRIP implementation
+                                    seriously. Harmonizing legal systems is genuinely difficult, and acknowledging that
+                                    difficulty is a good starting point."</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-zinc-900/50 p-8 rounded-2xl border border-white/5 mb-10">
+                            <h3 class="text-brand-amber font-display font-bold uppercase tracking-widest text-xs mb-6">
+                                Critical Questions</h3>
+                            <ol class="list-decimal pl-5 text-zinc-400 space-y-6">
+                                <li>"Canada already recognizes two distinct legal traditions under the Constitution.
+                                    What principled argument can be made for stopping at two? What is the actual
+                                    threshold for a legal system to deserve recognition?"</li>
+                                <li>"British Columbia passed legislation to implement UNDRIP in 2021, and a court issued
+                                    an injunction against Wet'suwet'en protectors in the same year. How do you explain
+                                    that contradiction, and who bears responsibility for it?"</li>
+                                <li>"Is there a meaningful difference between a court proceeding and a Feasthouse
+                                    proceeding in terms of their ability to produce a just outcome? If yes, what makes
+                                    one more legitimate than the other, and who gets to decide?"</li>
+                                <li>"UNDRIP requires free, prior, and informed consent. That consent was not obtained
+                                    before this pipeline was approved. Does that mean the approval was ethically valid?"
+                                </li>
+                                <li>"When non-Indigenous Canadians see the state use police force to shut down an
+                                    Indigenous legal process, what obligation do they have to respond?"</li>
+                            </ol>
+                        </div>
+
+                        <h3 id="c1-criticisms"
+                            class="text-brand-amber font-display font-bold uppercase tracking-widest text-xs mb-6 scroll-mt-32">
+                            Anticipated Criticisms & Responses</h3>
+                        <div class="overflow-x-auto rounded-xl border border-white/10">
+                            <table class="m-0">
+                                <thead>
+                                    <tr>
+                                        <th class="w-1/3">Criticism</th>
+                                        <th>Our Response</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="font-bold text-white">"Indigenous Legal Orders are too vague to be
+                                            enforceable in a national system."</td>
+                                        <td>Vagueness is not unique to Indigenous systems. Common law itself evolves
+                                            through precedent because it has to adapt to new situations over time. John
+                                            Borrows documents ILOs as systematic and sophisticated. The vagueness
+                                            concern tends to be applied selectively to Indigenous systems and not to
+                                            others.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold text-white">"Recognizing ILOs would create legal chaos and
+                                            uncertainty."</td>
+                                        <td>New Zealand's experience with Maori legal principles and the Whanganui River
+                                            decision shows that integration is possible and manageable. The realistic
+                                            outcome is a transition framework, not chaos.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold text-white">"The elected band council approved the
+                                            pipeline, so Indigenous consent was given."</td>
+                                        <td>Elected band councils derive their authority from the Indian Act, which is a
+                                            colonial statute. Hereditary Chiefs hold authority under Indigenous Legal
+                                            Orders over unceded territory. Using one structure to override the other
+                                            does not satisfy the requirement of free, prior, and informed consent.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold text-white">"Economic development benefits Indigenous
+                                            communities as well."</td>
+                                        <td>Development imposed without consent is not a benefit. It is extraction.
+                                            Genuine benefit requires consent, and consent requires recognizing who holds
+                                            the legitimate authority to give it.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="c1-rebuttal" class="section scroll-mt-32">
+                        <h2 class="flex items-center">1.6 3-MINUTE REBUTTAL DEFENSE <span class="time-badge">3
+                                MIN</span></h2>
+                        <div class="space-y-4">
+                            <div class="bg-zinc-900 border border-white/5 p-6 rounded-xl flex items-start gap-6">
+                                <span class="bg-brand-amber text-black font-black text-xs px-3 py-1 rounded">15s</span>
+                                <p class="m-0 text-sm"><strong>Acknowledge</strong> the strongest point from opponents,
+                                    likely the rule of law argument.</p>
+                            </div>
+                            <div class="bg-zinc-900 border border-white/5 p-6 rounded-xl flex items-start gap-6">
+                                <span class="bg-brand-amber text-black font-black text-xs px-3 py-1 rounded">45s</span>
+                                <p class="m-0 text-sm"><strong>Reframe</strong> the central issue: this is not a
+                                    question of order versus chaos, it is a question of whose order is treated as
+                                    legitimate.</p>
+                            </div>
+                            <div class="bg-zinc-900 border border-white/5 p-6 rounded-xl flex items-start gap-6">
+                                <span class="bg-brand-amber text-black font-black text-xs px-3 py-1 rounded">45s</span>
+                                <p class="m-0 text-sm"><strong>Use</strong> the New Zealand and Tsilhqot'in cases as
+                                    proof that integration is possible and has already happened elsewhere.</p>
+                            </div>
+                            <div class="bg-zinc-900 border border-white/5 p-6 rounded-xl flex items-start gap-6">
+                                <span class="bg-brand-amber text-black font-black text-xs px-3 py-1 rounded">45s</span>
+                                <p class="m-0 text-sm"><strong>Return to UNDRIP</strong>: Canada made these commitments
+                                    through its own legislation, so this is not an outside demand, it is a self-imposed
+                                    obligation.</p>
+                            </div>
+                            <div class="bg-zinc-900 border border-white/5 p-6 rounded-xl flex items-start gap-6">
+                                <span class="bg-brand-amber text-black font-black text-xs px-3 py-1 rounded">30s</span>
+                                <p class="m-0 text-sm"><strong>Close</strong> with the virtue ethics point: what kind of
+                                    legal system does Canada want to be, and does its current behavior match that
+                                    answer.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CASE 2 -->
+        <div id="content-case-2" class="tab-content transition-opacity duration-500 hidden">
+            <div class="flex flex-col lg:flex-row gap-12">
+                <aside class="lg:w-80 shrink-0">
+                    <div class="sticky top-32 space-y-2">
+                        <p
+                            class="text-[10px] font-black text-zinc-600 uppercase tracking-widest mb-6 border-b border-zinc-800 pb-2">
+                            Case 2 Navigation</p>
+                        <nav id="toc-case-2" class="flex flex-col space-y-1">
+                            <a href="#c2-opening"
+                                class="toc-link block py-3 px-4 text-sm text-zinc-500 border-l-2 border-zinc-800/50 hover:text-white hover:border-zinc-500 transition-all">2.1
+                                Opening Summary</a>
+                            <a href="#c2-analysis"
+                                class="toc-link block py-3 px-4 text-sm text-zinc-500 border-l-2 border-zinc-800/50 hover:text-white hover:border-zinc-500 transition-all">2.2
+                                Ethical Analysis</a>
+                            <a href="#c2-research"
+                                class="toc-link block py-3 px-4 text-sm text-zinc-500 border-l-2 border-zinc-800/50 hover:text-white hover:border-zinc-500 transition-all">2.3
+                                Quick Research</a>
+                            <a href="#c2-prof-qa"
+                                class="toc-link block py-3 px-4 text-sm text-zinc-500 border-l-2 border-zinc-800/50 hover:text-white hover:border-zinc-500 transition-all">2.4
+                                Professor's Q&A</a>
+                            <a href="#c2-interaction"
+                                class="toc-link block py-3 px-4 text-sm text-zinc-500 border-l-2 border-zinc-800/50 hover:text-white hover:border-zinc-500 transition-all">2.5
+                                Interaction</a>
+                            <a href="#c2-criticisms"
+                                class="toc-link block py-2 px-4 ml-4 text-xs text-zinc-600 border-l-2 border-zinc-800/50 italic">Criticisms
+                                Table</a>
+                            <a href="#c2-rebuttal"
+                                class="toc-link block py-3 px-4 text-sm text-zinc-500 border-l-2 border-zinc-800/50 hover:text-white hover:border-zinc-500 transition-all">2.6
+                                Rebuttal Defense</a>
+                        </nav>
+                    </div>
+                </aside>
+
+                <div class="prose max-w-none flex-1">
+                    <div class="mb-16 border-b border-white/5 pb-10">
+                        <h1 class="text-5xl md:text-6xl font-black mb-6 tracking-tight leading-[1.1]">Cell Phone Bans in
+                            Schools</h1>
+                        <p class="text-2xl text-zinc-500 font-medium">(Ring, Ring, Ring, Ban-anaphone!)</p>
+                    </div>
+
+                    <div id="c2-opening" class="section scroll-mt-32 mb-20 excerpt">
+                        <h2 class="flex items-center">2.1 3-MINUTE OPENING SUMMARY <span class="time-badge">3 MIN</span>
+                        </h2>
+                        <div class="bg-zinc-950/40 p-6 rounded-xl border-l-4 border-brand-amber text-zinc-300 italic">
+                            <p class="mb-4">"Hello. We’ve all seen the news lately about schools banning cell phones.
+                                From California to New York, districts are passing new rules to stop students from using
+                                phones during the day. This isn't just a small trend; it's happening everywhere because
+                                people are worried about how technology affects learning."</p>
+                            <p class="mb-4">"The reasons for these bans make sense on the surface. Teachers say phones
+                                are a huge distraction. Studies show that when students put their phones away, they
+                                focus better, get higher grades, and there’s less bullying. Even the U.S. Surgeon
+                                General has warned that social media is hurting the mental health of young people."</p>
+                            <p class="mb-4">"But the science isn't actually settled. Other experts point out that many
+                                of these mental health issues might be from the stress of the pandemic, not just from
+                                phones. Plus, phones are a part of real life now. If we just ban them, are we actually
+                                teaching kids how to use them responsibly?"</p>
+                            <p class="mb-4">"There's also a big fairness issue. For some students, a smartphone is their
+                                only way to get online for homework. Other students need them for medical reasons or to
+                                stay safe. A total ban can hurt the students who are already struggling the most."</p>
+                            <p>"So, the question isn't just 'are phones bad?' The real question is how we make rules
+                                that are fair and based on actual facts. A simple ban might seem like an easy fix, but
+                                it's much more complicated than that."</p>
+                        </div>
+                    </div>
+
+                    <div id="c2-analysis" class="section scroll-mt-32 mb-20">
+                        <h2>2.2 ETHICAL ANALYSIS</h2>
+                        <p><b>Social Contract Theory</b> suggests that we follow school rules like cell phone limits
+                            because we have an agreement to work together for a better learning environment that
+                            benefits everyone. However, <b>Subjective Relativism</b> tells us that morality is personal;
+                            for a student who relies on their phone for safety or learning, a total ban might feel like
+                            a personal harm. A fair policy finds balance by keeping the "contract" of a focused
+                            classroom while respecting the individual needs of every student.</p>
+                    </div>
+
+                    <div id="c2-research" class="section scroll-mt-32 mb-20 excerpt">
+                        <h2 class="flex items-center">2.3 1-MINUTE QUICK RESEARCH <span class="time-badge">1
+                                MIN</span></h2>
+                        <p>Schools use different ways to make sure students follow the rules. Some use "Yondr Pouches,"
+                            which are magnetic bags that lock the phone until the student leaves school. Others use
+                            locked bins or cubbies where phones are kept during class. Some schools simply have an "Off
+                            and Away" rule, where students keep their phones turned off in their own backpacks or
+                            lockers.</p>
+                        <p>Most of these rules have important exceptions to keep students safe. For example, students
+                            with medical conditions like diabetes can keep their phones to check their health. Teachers
+                            can also allow phones for specific lessons. Most importantly, schools must have a way for
+                            parents to reach their children in an emergency, and students with special learning needs
+                            (IEPs) are allowed to use technology that helps them learn.</p>
+                        <p>A big study from Norway in 2024 showed that strict phone rules helped students, especially
+                            girls, get better grades. It also helped reduce bullying for everyone. This is important,
+                            but we have to remember that what works in one country might not work the same way
+                            everywhere else. We should think carefully before making one big rule for every single
+                            school.</p>
+                        <p>Another study from a school in London looked at phone bans and found that they helped
+                            students who were struggling the most. Students who were already doing well didn't see much
+                            change. This suggests that instead of banning phones for the whole day, we could just limit
+                            them during class time to help the students who need it most.</p>
+                        <p>Internal papers from Facebook show that the company knew its apps like Instagram were hurting
+                            teenagers' mental health, but they didn't do anything about it. These apps are designed to
+                            be as addictive as a slot machine to keep people using them. This means the problem isn't
+                            just that students can't stop using their phones; it's that the apps are built to make it
+                            almost impossible to put them down.</p>
+
+                    </div>
+
+                    <div id="c2-prof-qa"
+                        class="section scroll-mt-32 bg-zinc-900/50 p-10 rounded-3xl border border-brand-amber/20 mb-20">
+                        <h2 class="mb-8">2.4 PROFESSOR'S Q&A (1-MINUTE)</h2>
+                        <div class="space-y-8">
+                            <div>
+                                <p class="text-white font-bold text-sm mb-2">Q1: "Does phone use impact academic
+                                    outcomes like learning and cheating?"</p>
+                                <p class="text-zinc-400 text-sm leading-relaxed">Phones cause distraction and make
+                                    cheating easier, which definitely hurts learning. However, they are also tools for
+                                    research. The best answer isn't a total ban, but a clear rule that limits phones
+                                    during class while teaching students how to use them for work when needed.</p>
+                            </div>
+                            <div class="pt-6 border-t border-white/5">
+                                <p class="text-white font-bold text-sm mb-2">Q2: "Does mobile phone use at school impact
+                                    students’ mental health and wellbeing?"</p>
+                                <p class="text-zinc-400 text-sm leading-relaxed">Research shows a link between heavy
+                                    phone use and higher anxiety or lower wellbeing. Apps are designed to keep students
+                                    hooked, which can be bad for their mental health. Schools should create spaces where
+                                    students can unplug and focus on their real-world connections.</p>
+                            </div>
+                            <div class="pt-6 border-t border-white/5">
+                                <p class="text-white font-bold text-sm mb-2">Q3: "Does phone use at school impact rates
+                                    of cyberbullying?"</p>
+                                <p class="text-zinc-400 text-sm leading-relaxed">Yes, having constant access to social
+                                    media at school can make it easier for bullying to continue throughout the day. A
+                                    school policy that restricts phones can give students a break from online drama and
+                                    help reduce the chances of bullying during school hours.</p>
+                            </div>
+                            <div class="pt-6 border-t border-white/5">
+                                <p class="text-white font-bold text-sm mb-2">Q4: "Is it ethical to ban mobile phones in
+                                    schools?"</p>
+                                <p class="text-zinc-400 text-sm leading-relaxed">It is ethical to restrict phones during
+                                    lessons to help everyone focus. But a total, all-day ban is often unethical because
+                                    it ignores students who need phones for health, for safety, or because it's their
+                                    only computer. A fair policy is flexible and protects the rights of those who need
+                                    them most.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="c2-interaction" class="section scroll-mt-32 mb-20">
+                        <h2>2.5 OPPONENT INTERACTION</h2>
+                        <div class="bg-zinc-900/50 p-10 rounded-3xl border border-white/5 mb-10">
+                            <h3
+                                class="text-brand-amber font-display font-bold uppercase tracking-widest text-[10px] mb-8">
+                                Appreciation Points</h3>
+                            <ul class="list-disc pl-6 text-zinc-400 space-y-5">
+                                <li>"Your team correctly identified the real and documented harm that phone distraction
+                                    causes in classrooms. That concern is legitimate and the research behind it deserves
+                                    to be taken seriously."</li>
+                                <li>"We agree that the mental health of students is a pressing concern and that schools
+                                    have a responsibility to address it. The disagreement is about whether a blanket ban
+                                    is the most ethical and effective way to do that."</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-zinc-900/50 p-10 rounded-3xl border border-white/5 mb-10">
+                            <h3
+                                class="text-brand-amber font-display font-bold uppercase tracking-widest text-[10px] mb-8">
+                                Critical Questions</h3>
+                            <ol class="list-decimal pl-6 text-zinc-400 space-y-8">
+                                <li>"If the causal link between phone use and mental health harm is still scientifically
+                                    contested, does that uncertainty justify a blanket ban, or does it call for more
+                                    targeted and evidence-based intervention?"</li>
+                                <li>"For students from lower income families who rely on smartphones as their only
+                                    digital device, how does your proposed policy avoid making their situation worse
+                                    rather than better?"</li>
+                                <li>"Social media platforms are deliberately engineered to be addictive using variable
+                                    reward mechanisms. Should the ethical burden for that harm fall on students and
+                                    schools, or on the companies that designed these products? Why?"</li>
+                                <li>"At what point does student autonomy become relevant in this debate? High school
+                                    students are approaching adulthood and will live in a world where these devices are
+                                    everywhere. Does removing phones from school help them navigate that world or not?"
+                                </li>
+                                <li>"At the start of 2010, ninety one percent of schools had phone bans. By 2016, that
+                                    number dropped to sixty six percent as phones became more integrated into daily
+                                    life. What evidence suggests that reversing this trend will produce lasting results
+                                    rather than another policy pendulum swing?"</li>
+                            </ol>
+                        </div>
+
+                        <h3 id="c2-criticisms"
+                            class="text-brand-amber font-display font-bold uppercase tracking-widest text-[10px] mb-8 scroll-mt-32">
+                            Anticipated Criticisms & Responses</h3>
+                        <div class="overflow-x-auto rounded-2xl border border-white/10">
+                            <table class="m-0">
+                                <thead>
+                                    <tr>
+                                        <th class="w-1/3">Criticism</th>
+                                        <th>Our Response</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="font-bold text-white">"The Norwegian and NYIT studies prove that bans
+                                            work."</td>
+                                        <td>Those studies show correlation in specific contexts and populations. They do
+                                            not establish universal causation. Good policy requires replicable evidence
+                                            across diverse settings before restricting student rights at scale.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold text-white">"Children cannot self-regulate, so schools must
+                                            act."</td>
+                                        <td>This framing puts the burden entirely on students while ignoring the
+                                            structural problem. Students are contending with products designed to
+                                            override self-regulation. The failure is partly a design ethics failure, not
+                                            only an individual one.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold text-white">"Bans are already showing results in California
+                                            and the UK."</td>
+                                        <td>The evidence is still early and limited. Long-term effects, equity impacts,
+                                            and implementation differences have not been fully evaluated. Short-term
+                                            improvements for some students do not prove that blanket bans are the right
+                                            policy for all students.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold text-white">"Paternalism toward minors is clearly
+                                            justified."</td>
+                                        <td>Justified paternalism still requires proportionality. The least restrictive
+                                            means of achieving a legitimate educational goal is more ethical than a
+                                            broad prohibition. A policy that restricts phones during instruction with
+                                            clear accessibility exceptions is proportionate. An all-day ban without
+                                            accommodations is not.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="c2-rebuttal" class="section scroll-mt-32">
+                        <h2 class="flex items-center">2.6 3-MINUTE REBUTTAL DEFENSE <span class="time-badge">3
+                                MIN</span></h2>
+                        <div class="space-y-6">
+                            <div class="bg-zinc-900 border border-white/5 p-8 rounded-2xl flex items-start gap-8">
+                                <span
+                                    class="bg-brand-amber text-black font-black text-[10px] px-4 py-2 rounded-full uppercase tracking-tighter shrink-0">30s</span>
+                                <p class="m-0"><strong>Acknowledge</strong> the real evidence supporting phone
+                                    restrictions and the genuine concern about addictive technology.</p>
+                            </div>
+                            <div class="bg-zinc-900 border border-white/5 p-8 rounded-2xl flex items-start gap-8">
+                                <span
+                                    class="bg-brand-amber text-black font-black text-[10px] px-4 py-2 rounded-full uppercase tracking-tighter shrink-0">45s</span>
+                                <p class="m-0"><strong>Pivot</strong> to the equity argument: bans without accommodation
+                                    disproportionately harm the students who already have the least support.</p>
+                            </div>
+                            <div class="bg-zinc-900 border border-white/5 p-8 rounded-2xl flex items-start gap-8">
+                                <span
+                                    class="bg-brand-amber text-black font-black text-[10px] px-4 py-2 rounded-full uppercase tracking-tighter shrink-0">45s</span>
+                                <p class="m-0"><strong>Challenge causality</strong>: distinguish between correlation and
+                                    evidence strong enough to justify restricting student rights at scale.</p>
+                            </div>
+                            <div class="bg-zinc-900 border border-white/5 p-8 rounded-2xl flex items-start gap-8">
+                                <span
+                                    class="bg-brand-amber text-black font-black text-[10px] px-4 py-2 rounded-full uppercase tracking-tighter shrink-0">30s</span>
+                                <p class="m-0"><strong>Reframe responsibility</strong>: point to the Facebook Papers and
+                                    addictive design as evidence that the ethical burden should fall partly on
+                                    technology companies, not only on students and schools.</p>
+                            </div>
+                            <div class="bg-zinc-900 border border-white/5 p-8 rounded-2xl flex items-start gap-8">
+                                <span
+                                    class="bg-brand-amber text-black font-black text-[10px] px-4 py-2 rounded-full uppercase tracking-tighter shrink-0">30s</span>
+                                <p class="m-0"><strong>Propose</strong> a more proportionate alternative:
+                                    evidence-based, context-sensitive policies with clear equity accommodations and
+                                    teacher-level discretion.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REFERENCE -->
+        <div id="content-reference" class="tab-content transition-opacity duration-500 hidden">
+            <div class="flex flex-col lg:flex-row gap-12">
+                <aside class="lg:w-80 shrink-0">
+                    <div class="sticky top-32 space-y-2">
+                        <p
+                            class="text-[10px] font-black text-zinc-600 uppercase tracking-widest mb-6 border-b border-zinc-800 pb-2">
+                            Reference Navigation</p>
+                        <nav id="toc-reference" class="flex flex-col space-y-1">
+                            <a href="#ref-qa"
+                                class="toc-link block py-3 px-4 text-sm text-zinc-500 border-l-2 border-zinc-800/50 hover:text-white hover:border-zinc-500 transition-all">Judges
+                                Q&A</a>
+                            <a href="#ref-theories"
+                                class="toc-link block py-3 px-4 text-sm text-zinc-500 border-l-2 border-zinc-800/50 hover:text-white hover:border-zinc-500 transition-all">Ethical
+                                Theories</a>
+                            <a href="#ref-frameworks"
+                                class="toc-link block py-3 px-4 text-sm text-zinc-500 border-l-2 border-zinc-800/50 hover:text-white hover:border-zinc-500 transition-all">Ethical
+                                Frameworks</a>
+                            <a href="#ref-studies"
+                                class="toc-link block py-3 px-4 text-sm text-zinc-500 border-l-2 border-zinc-800/50 hover:text-white hover:border-zinc-500 transition-all">Case
+                                Studies</a>
+                        </nav>
+                    </div>
+                </aside>
+
+                <div class="prose max-w-none flex-1">
+                    <div class="mb-16 border-b border-white/5 pb-10">
+                        <h1 class="text-5xl md:text-6xl font-black mb-6 tracking-tight leading-[1.1]">The Vault</h1>
+                        <p class="text-2xl text-zinc-500 font-medium">Judges Q&A, Frameworks, and Case Studies</p>
+                    </div>
+
+                    <div id="ref-qa" class="section scroll-mt-32 mb-20">
+                        <h2>JUDGES Q&A PREPARATION</h2>
+                        <h3 class="text-brand-amber font-display font-bold uppercase tracking-widest text-xs mb-10">11
+                            Strategic Responses</h3>
+                        <div class="space-y-12">
+                            <div
+                                class="bg-zinc-900 border border-white/5 p-10 rounded-2xl relative overflow-hidden group">
+                                <span
+                                    class="absolute top-0 right-0 py-1 px-4 bg-brand-amber text-black text-[10px] font-black italic">Q1</span>
+                                <p class="text-white font-bold text-xl mb-6">"How do you distinguish legitimate legal
+                                    pluralism from legal fragmentation that weakens the rule of law?"</p>
+                                <p class="text-zinc-400">Legal pluralism does not mean that all legal systems apply
+                                    equally in all contexts at all times. It means that more than one system is
+                                    recognized and that they interact through structured frameworks. Canada already
+                                    manages this between common law and civil law by defining which system applies in
+                                    which jurisdiction. The same kind of framework can be built for Indigenous Legal
+                                    Orders. The rule of law is only threatened when legal systems operate without
+                                    accountability or transparency. The Feasthouse is neither of those things. It is a
+                                    public, structured, and procedurally consistent process. Legal fragmentation comes
+                                    from refusing to engage, not from recognizing that more than one tradition exists.
+                                </p>
+                            </div>
+
+                            <div
+                                class="bg-zinc-900 border border-white/5 p-10 rounded-2xl relative overflow-hidden group">
+                                <span
+                                    class="absolute top-0 right-0 py-1 px-4 bg-brand-amber text-black text-[10px] font-black italic">Q2</span>
+                                <p class="text-white font-bold text-xl mb-6">"UNDRIP is not legally binding at the
+                                    international level. Does that weaken the argument for recognizing ILOs?"</p>
+                                <p class="text-zinc-400">The international status of UNDRIP does not determine its
+                                    domestic force. Canada incorporated UNDRIP through the Declaration on the Rights of
+                                    Indigenous Peoples Act in British Columbia in 2021, which makes it a domestic legal
+                                    commitment in that province. Beyond the legal question, moral obligations are not
+                                    contingent on whether a treaty is formally binding. The moral case for free, prior,
+                                    and informed consent stands on its own. If Canada has said it will implement these
+                                    rights, then the failure to do so in the Coastal GasLink case is both a legal and a
+                                    moral inconsistency.</p>
+                            </div>
+
+                            <div
+                                class="bg-zinc-900 border border-white/5 p-10 rounded-2xl relative overflow-hidden group">
+                                <span
+                                    class="absolute top-0 right-0 py-1 px-4 bg-brand-amber text-black text-[10px] font-black italic">Q3</span>
+                                <p class="text-white font-bold text-xl mb-6">"Could recognizing ILOs set a precedent for
+                                    other community-based legal systems to override Canadian law?"</p>
+                                <p class="text-zinc-400">This concern conflates distinct legal categories. Indigenous
+                                    Legal Orders are grounded in constitutionally recognized Aboriginal title and in the
+                                    historical fact of prior sovereignty over specific territories. They are not
+                                    voluntary associations based on shared belief. The legal basis for recognizing ILOs
+                                    is territorial and historical, not cultural preference. A principled distinction can
+                                    be drawn, and it already exists within Aboriginal law. Recognizing ILOs does not
+                                    open the door to every community claiming its own legal jurisdiction.</p>
+                            </div>
+
+                            <div
+                                class="bg-zinc-900 border border-white/5 p-10 rounded-2xl relative overflow-hidden group">
+                                <span
+                                    class="absolute top-0 right-0 py-1 px-4 bg-brand-amber text-black text-[10px] font-black italic">Q4</span>
+                                <p class="text-white font-bold text-xl mb-6">"The elected band council approved the
+                                    pipeline. Does that not constitute Indigenous consent?"</p>
+                                <p class="text-zinc-400">Elected band councils derive their authority from the Indian
+                                    Act, which is a colonial statute designed to replace traditional governance with a
+                                    system more compatible with federal control. Hereditary Chiefs hold authority under
+                                    Indigenous Legal Orders over unceded territory. These are two different governance
+                                    structures with different sources of legitimacy. Using a colonial governance
+                                    structure to authorize activity that traditional authorities oppose does not satisfy
+                                    the standard of free, prior, and informed consent. It is circular reasoning: you
+                                    cannot use the instrument of colonialism to demonstrate that colonial processes have
+                                    been consented to.</p>
+                            </div>
+
+                            <div
+                                class="bg-zinc-900 border border-white/5 p-10 rounded-2xl relative overflow-hidden group">
+                                <span
+                                    class="absolute top-0 right-0 py-1 px-4 bg-brand-amber text-black text-[10px] font-black italic">Q5</span>
+                                <p class="text-white font-bold text-xl mb-6">"Is a blanket phone ban ever ethically
+                                    justified, or are you arguing for no restrictions at all?"</p>
+                                <p class="text-zinc-400">The argument here is not against all restrictions. Restricting
+                                    phone use during instructional time is pedagogically and ethically defensible, and
+                                    the evidence supports it for certain student populations. The argument is against
+                                    blanket, all-day bans that are applied without accessibility accommodations, without
+                                    equity analysis, and without considering the needs of the students who are most at
+                                    risk of harm from over-restriction. The ethical test is whether the policy uses the
+                                    least restrictive means to achieve a legitimate educational goal. During class, the
+                                    answer to that test can support a ban. For the entire school day without exceptions,
+                                    it usually does not.</p>
+                            </div>
+
+                            <div
+                                class="bg-zinc-900 border border-white/5 p-10 rounded-2xl relative overflow-hidden group">
+                                <span
+                                    class="absolute top-0 right-0 py-1 px-4 bg-brand-amber text-black text-[10px] font-black italic">Q6</span>
+                                <p class="text-white font-bold text-xl mb-6">"If social media companies are the real
+                                    problem, why should school policy be the focus?"</p>
+                                <p class="text-zinc-400">Both levers should be used at the same time. Holding technology
+                                    companies accountable through legislation, design standards, and algorithmic
+                                    transparency requirements is an important and underused tool. School policy is not
+                                    an alternative to that. It is an immediate response to a present harm in a specific
+                                    setting. However, schools should not be asked to carry the entire moral weight for a
+                                    problem that was created upstream by design decisions made by technology companies.
+                                    The ACM Code of Ethics says that computing professionals have a duty to avoid harm.
+                                    Social media platforms that use addictive design on adolescents are in violation of
+                                    that principle, and the ethical conversation should include them.</p>
+                            </div>
+
+                            <div
+                                class="bg-zinc-900 border border-white/5 p-10 rounded-2xl relative overflow-hidden group">
+                                <span
+                                    class="absolute top-0 right-0 py-1 px-4 bg-brand-amber text-black text-[10px] font-black italic">Q7</span>
+                                <p class="text-white font-bold text-xl mb-6">"What do you say to teachers who describe
+                                    phone use as a serious obstacle to teaching every day?"</p>
+                                <p class="text-zinc-400">That experience is real and it deserves to be taken seriously.
+                                    A finding that one third of public school teachers describe phone use as a major
+                                    problem is significant data. The response to that problem should be evidence-based,
+                                    graduated, and designed with both teacher autonomy and student equity in mind.
+                                    Teachers should be empowered to set context-specific policies in their own
+                                    classrooms, rather than having broad state-level bans handed down from above. The
+                                    concern is valid. The question is whether a blunt legislative instrument is the most
+                                    ethical and effective way to address it.</p>
+                            </div>
+
+                            <div
+                                class="bg-zinc-900 border border-white/5 p-10 rounded-2xl relative overflow-hidden group">
+                                <span
+                                    class="absolute top-0 right-0 py-1 px-4 bg-brand-amber text-black text-[10px] font-black italic">Q8</span>
+                                <p class="text-white font-bold text-xl mb-6">"How do you weigh the rights of the
+                                    majority of students who are distracted against the minority who rely on phones for
+                                    accessibility?"</p>
+                                <p class="text-zinc-400">Utilitarian majorities do not override fundamental rights.
+                                    Accessibility is protected under disability law in most jurisdictions, and policies
+                                    that remove accommodations without providing alternatives may be legally
+                                    questionable as well as ethically problematic. Beyond formal disability
+                                    accommodations, digital equity is a broader concern. For students in lower income
+                                    households, a smartphone may be their only computing device for homework, research,
+                                    and staying connected. A good policy centers the students with the least
+                                    institutional support, not those with the most. The presence of majority distraction
+                                    does not justify policy that harms students who already face the greatest barriers.
+                                </p>
+                            </div>
+
+                            <div
+                                class="bg-zinc-900 border border-white/5 p-10 rounded-2xl relative overflow-hidden group">
+                                <span
+                                    class="absolute top-0 right-0 py-1 px-4 bg-brand-amber text-black text-[10px] font-black italic">Q9</span>
+                                <p class="text-white font-bold text-xl mb-6">"Does virtue ethics support bans to build
+                                    attentiveness, or inclusion to build digital responsibility?"</p>
+                                <p class="text-zinc-400">Virtue ethics produces a genuine tension here rather than a
+                                    clean answer, and that tension is productive. Both attentiveness and digital
+                                    literacy are real virtues that students need in order to flourish. The question is
+                                    which institutional environment is most likely to cultivate both over the long term.
+                                    A school that simply removes phones may produce students who are focused in class
+                                    but underprepared for a world built around these devices. A school that teaches
+                                    structured and purposeful phone use, knowing when to engage and when to put it away,
+                                    may cultivate a deeper form of practical wisdom. Aristotle called this phronesis. It
+                                    is the capacity to judge what is appropriate in a given situation, and it is the
+                                    capacity we should be building.</p>
+                            </div>
+
+                            <div
+                                class="bg-zinc-900 border border-white/5 p-10 rounded-2xl relative overflow-hidden group">
+                                <span
+                                    class="absolute top-0 right-0 py-1 px-4 bg-brand-amber text-black text-[10px] font-black italic">Q10</span>
+                                <p class="text-white font-bold text-xl mb-6">"Is there a risk that treating Indigenous
+                                    Legal Orders as worthy of recognition obscures their internal diversity or conflicts
+                                    with individual rights?"</p>
+                                <p class="text-zinc-400">Indigenous Legal Orders are not monolithic. They vary across
+                                    nations, they have evolved over time, and they are subject to internal debate, just
+                                    like every other legal system. The argument is not that ILOs are perfect or uniform.
+                                    It is that they deserve recognition and engagement on equal terms with other legal
+                                    traditions. The Feasthouse is notable because it is explicitly inclusive. It invites
+                                    outside voices and dissenting perspectives. Concerns about individual rights within
+                                    ILOs should be addressed through the same respectful and bilateral engagement that
+                                    is being called for here. Those concerns should not be used as a reason to deny
+                                    recognition to an entire category of legal tradition.</p>
+                            </div>
+
+                            <div
+                                class="bg-zinc-900 border border-white/5 p-10 rounded-2xl relative overflow-hidden group">
+                                <span
+                                    class="absolute top-0 right-0 py-1 px-4 bg-brand-amber text-black text-[10px] font-black italic">Q11</span>
+                                <p class="text-white font-bold text-xl mb-6">"How do computing ethics principles apply
+                                    directly to the cell phone case?"</p>
+                                <p class="text-zinc-400">There are three direct applications. First, the ACM Code of
+                                    Ethics states that computing professionals have an obligation to avoid harm, and
+                                    that obligation extends to how systems are designed for vulnerable populations.
+                                    Social media platforms that use variable reward mechanisms to keep adolescents
+                                    engaged are violating that principle at the design level. Second, value-sensitive
+                                    design, which is a framework developed within computing ethics, holds that systems
+                                    should be designed with the values and wellbeing of all affected stakeholders in
+                                    mind. Designing for maximum engagement without regard for the cognitive and
+                                    emotional wellbeing of young users is a design failure, not just a social one.
+                                    Third, digital equity is a core concern in computing ethics, and any policy that
+                                    restricts digital access must include an analysis of who bears the cost of that
+                                    restriction and whether those costs are distributed fairly.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ref-theories" class="section scroll-mt-32 mb-20">
+                        <h2>ETHICAL THEORIES QUICK-REFERENCE</h2>
+                        <div class="space-y-12">
+                            <!-- Relativism -->
+                            <div>
+                                <h3
+                                    class="text-brand-amber text-xs font-black uppercase tracking-widest mb-6 pb-2 border-b border-white/10">
+                                    Relativism Theories</h3>
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5">
+                                        <h4 class="text-white font-bold text-sm mb-2">Subjective Relativism</h4>
+                                        <p class="text-zinc-400 text-xs leading-relaxed">Morality is just based on the
+                                            individual. What is right for you is whatever you personally believe is
+                                            right.</p>
+                                    </div>
+                                    <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5">
+                                        <h4 class="text-white font-bold text-sm mb-2">Cultural Relativism</h4>
+                                        <p class="text-zinc-400 text-xs leading-relaxed">Right and wrong should be
+                                            judged by the standards of the culture they come from, not by outside rules.
+                                        </p>
+                                    </div>
+                                    <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5">
+                                        <h4 class="text-white font-bold text-sm mb-2">Moral Relativism</h4>
+                                        <p class="text-zinc-400 text-xs leading-relaxed">The idea that being "right"
+                                            depends entirely on cultural norms or what a specific person believes.</p>
+                                    </div>
+                                    <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5">
+                                        <h4 class="text-white font-bold text-sm mb-2">Epistemic Relativism</h4>
+                                        <p class="text-zinc-400 text-xs leading-relaxed">The belief that even "truth" or
+                                            "knowledge" depends on your specific perspective or language.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Theological and Self-Interest -->
+                            <div>
+                                <h3
+                                    class="text-brand-amber text-xs font-black uppercase tracking-widest mb-6 pb-2 border-b border-white/10">
+                                    Theological and Self-Interest Theories</h3>
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5">
+                                        <h4 class="text-white font-bold text-sm mb-2">Divine Command Theory</h4>
+                                        <p class="text-zinc-400 text-xs leading-relaxed">Something is right if God
+                                            commands it and wrong if God forbids it. Morality is based on God's will.
+                                        </p>
+                                    </div>
+                                    <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5">
+                                        <h4 class="text-white font-bold text-sm mb-2">Ethical Egoism</h4>
+                                        <p class="text-zinc-400 text-xs leading-relaxed">An action is right if it helps
+                                            the person doing it. Doing what is best for yourself is the priority.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Consequences -->
+                            <div>
+                                <h3
+                                    class="text-brand-amber text-xs font-black uppercase tracking-widest mb-6 pb-2 border-b border-white/10">
+                                    Consequence-Based Theories</h3>
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5">
+                                        <h4 class="text-white font-bold text-sm mb-2">Act Utilitarianism</h4>
+                                        <p class="text-zinc-400 text-xs leading-relaxed">Look at each individual action.
+                                            The right choice is the one that creates the most happiness for everyone
+                                            involved.</p>
+                                    </div>
+                                    <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5">
+                                        <h4 class="text-white font-bold text-sm mb-2">Rule Utilitarianism</h4>
+                                        <p class="text-zinc-400 text-xs leading-relaxed">Follow rules that would create
+                                            the most happiness for the most people if everyone followed them all the
+                                            time.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Duty and Rule-Based -->
+                            <div>
+                                <h3
+                                    class="text-brand-amber text-xs font-black uppercase tracking-widest mb-6 pb-2 border-b border-white/10">
+                                    Duty and Rule-Based Theories</h3>
+                                <div class="grid md:grid-cols-1 gap-4">
+                                    <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5">
+                                        <h4 class="text-white font-bold text-sm mb-2">Kantianism (Deontology)</h4>
+                                        <p class="text-zinc-400 text-xs leading-relaxed">Focus on duty. Actions must
+                                            follow universal laws (rules that should apply to everyone). Never use
+                                            people just as a "means to an end."</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Social and Character -->
+                            <div>
+                                <h3
+                                    class="text-brand-amber text-xs font-black uppercase tracking-widest mb-6 pb-2 border-b border-white/10">
+                                    Social and Character-Based Theories</h3>
+                                <div class="grid md:grid-cols-3 gap-4">
+                                    <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5">
+                                        <h4 class="text-white font-bold text-sm mb-2">Social Contract Theory</h4>
+                                        <p class="text-zinc-400 text-xs leading-relaxed">Morality is an agreement
+                                            between people to follow rules so we can all live together safely and
+                                            happily.</p>
+                                    </div>
+                                    <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5">
+                                        <h4 class="text-white font-bold text-sm mb-2">Virtue Ethics</h4>
+                                        <p class="text-zinc-400 text-xs leading-relaxed">Focus on character. An action
+                                            is right if it's what a good, virtuous person would do in that situation.
+                                        </p>
+                                    </div>
+                                    <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5">
+                                        <h4 class="text-white font-bold text-sm mb-2">Care Ethics</h4>
+                                        <p class="text-zinc-400 text-xs leading-relaxed">Focus on relationships, trust,
+                                            and compassion. It’s about understanding and helping others rather than just
+                                            following rules.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ref-frameworks" class="section scroll-mt-32 mb-20">
+                        <h2>QUICK-REFERENCE ETHICAL FRAMEWORKS TABLE</h2>
+                        <div class="overflow-x-auto rounded-xl border border-white/10">
+                            <table class="m-0">
+                                <thead>
+                                    <tr>
+                                        <th>Framework</th>
+                                        <th>Case 1 Application</th>
+                                        <th>Case 2 Application</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="font-bold text-white">Utilitarianism</td>
+                                        <td>ILO recognition reduces long-term conflict and restores social trust</td>
+                                        <td>Targeted bans benefit vulnerable students but blanket bans may harm others
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold text-white">Deontology</td>
+                                        <td>Indigenous peoples have categorical rights to self-determination</td>
+                                        <td>Students have rights to autonomy; schools have a duty of care</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold text-white">Virtue Ethics</td>
+                                        <td>Justice requires humility and recognition of others' ways of knowing</td>
+                                        <td>Both attentiveness and digital literacy are virtues students need</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold text-white">Computing Ethics (ACM)</td>
+                                        <td>Legal systems should embed diverse values, not just dominant ones</td>
+                                        <td>Addictive design violates the duty to avoid harm; equity demands access</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold text-white">Care Ethics</td>
+                                        <td>Relational decision-making in the Feasthouse centers affected communities
+                                        </td>
+                                        <td>Policy should center the most vulnerable students, not the average ones</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold text-white">Value-Sensitive Design</td>
+                                        <td>Legal pluralism means designing governance for diverse value systems</td>
+                                        <td>Phone policy design must embed accessibility and equity from the start</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="ref-studies" class="section scroll-mt-32 mb-20">
+                        <h2>REAL-WORLD SUPPORTING CASE STUDIES</h2>
+                        <div class="grid gap-8">
+                            <div class="bg-zinc-900 border border-white/5 p-10 rounded-2xl">
+                                <h3 class="mt-0 text-brand-amber text-xl font-black mb-6">Tsilhqot'in Nation v. British
+                                    Columbia (2014)</h3>
+                                <p class="text-zinc-600 font-bold uppercase tracking-widest text-[10px] mb-4">The Land
+                                    Rights Precedent</p>
+                                <div class="space-y-4 text-zinc-400">
+                                    <p><strong>Situation:</strong> The Supreme Court of Canada issued its first ruling
+                                        recognizing Aboriginal title over a specific territory.</p>
+                                    <p><strong>Ethical Dilemma:</strong> Can Indigenous land rights take precedence over
+                                        provincial resource extraction decisions?</p>
+                                    <p><strong>Relevance:</strong> Establishes that Indigenous territorial authority is
+                                        legally recognized at the highest court level in Canada. Strengthens the
+                                        argument that Wet'suwet'en authority over unceded land is grounded in existing
+                                        Canadian jurisprudence.</p>
+                                </div>
+                            </div>
+                            <div class="bg-zinc-900 border border-white/5 p-10 rounded-2xl">
+                                <h3 class="mt-0 text-brand-amber text-xl font-black mb-6">Whanganui River Legal
+                                    Personhood, New Zealand (2017)</h3>
+                                <p class="text-zinc-600 font-bold uppercase tracking-widest text-[10px] mb-4">The
+                                    Integration Model</p>
+                                <div class="space-y-4 text-zinc-400">
+                                    <p><strong>Situation:</strong> The New Zealand Parliament granted the Whanganui
+                                        River legal personhood based on the Maori understanding of the river as an
+                                        ancestor.</p>
+                                    <p><strong>Ethical Dilemma:</strong> Can Indigenous ways of understanding the
+                                        natural world be incorporated into a national legal framework?</p>
+                                    <p><strong>Relevance:</strong> Proof that legal systems can be redesigned to
+                                        accommodate Indigenous worldviews without producing chaos. Directly counters the
+                                        argument that recognizing ILOs is impractical.</p>
+                                </div>
+                            </div>
+                            <div class="bg-zinc-900 border border-white/5 p-10 rounded-2xl">
+                                <h3 class="mt-0 text-brand-amber text-xl font-black mb-6">UK School Phone Ban Study, LSE
+                                    (2023)</h3>
+                                <p class="text-zinc-600 font-bold uppercase tracking-widest text-[10px] mb-4">The Equity
+                                    Impact</p>
+                                <div class="space-y-4 text-zinc-400">
+                                    <p><strong>Situation:</strong> Researchers at the London School of Economics
+                                        evaluated the effects of phone bans across schools in England.</p>
+                                    <p><strong>Ethical Dilemma:</strong> Do bans improve outcomes equitably, or do they
+                                        benefit some students at the expense of others?</p>
+                                    <p><strong>Relevance:</strong> Found the strongest positive effects for the
+                                        lowest-achieving students. Supports the argument for targeted, equity-aware
+                                        restrictions during instruction while raising questions about all-day blanket
+                                        bans.</p>
+                                </div>
+                            </div>
+                            <div class="bg-zinc-900 border border-white/5 p-10 rounded-2xl">
+                                <h3 class="mt-0 text-brand-amber text-xl font-black mb-6">Jonathan Haidt versus Candice
+                                    Odgers (2024)</h3>
+                                <p class="text-zinc-600 font-bold uppercase tracking-widest text-[10px] mb-4">The
+                                    Evidence Debate</p>
+                                <div class="space-y-4 text-zinc-400">
+                                    <p><strong>Situation:</strong> The publication of <em>The Anxious Generation</em>
+                                        sparked a major academic debate about whether phones and social media cause harm
+                                        to adolescent mental health.</p>
+                                    <p><strong>Ethical Dilemma:</strong> Should policy act on contested evidence, or
+                                        wait for stronger certainty before restricting student rights?</p>
+                                    <p><strong>Relevance:</strong> Illustrates the tension between the precautionary
+                                        principle and the standard of evidence-based policy. Both positions are
+                                        ethically serious, and the disagreement is about what level of evidence
+                                        justifies action.</p>
+                                </div>
+                            </div>
+                            <div class="bg-zinc-900 border border-white/5 p-10 rounded-2xl">
+                                <h3 class="mt-0 text-brand-amber text-xl font-black mb-6">The Facebook Papers (2021)
+                                </h3>
+                                <p class="text-zinc-600 font-bold uppercase tracking-widest text-[10px] mb-4">The Design
+                                    Failure</p>
+                                <div class="space-y-4 text-zinc-400">
+                                    <p><strong>Situation:</strong> Leaked internal research from Meta showed that the
+                                        company knew Instagram was causing harm to teenage girls and chose not to act on
+                                        that knowledge for commercial reasons.</p>
+                                    <p><strong>Ethical Dilemma:</strong> Do technology companies have an ethical
+                                        obligation to prioritize user wellbeing over engagement and profit?</p>
+                                    <p><strong>Relevance:</strong> Directly implicates computing ethics. The harm
+                                        associated with phone use in schools is partly the result of deliberate design
+                                        choices made against user wellbeing. This shifts part of the moral
+                                        responsibility from students and schools to the companies that built these
+                                        platforms.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-32 border-t border-white/5 py-20 bg-black">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <p class="text-zinc-600 text-xs font-bold uppercase tracking-widest">Ethics Bowl Preparation • competition
+                reference guide</p>
+            <p class="text-[10px] text-zinc-800 tracking-[0.5em] mt-4">Document prepared February 2026</p>
+        </div>
+    </footer>
+
+    <script>
+        // Tab System
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('tab-' + tabName).classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+                content.classList.remove('opacity-100');
+            });
+            const activeContent = document.getElementById('content-' + tabName);
+            activeContent.classList.remove('hidden');
+            setTimeout(() => activeContent.classList.add('opacity-100'), 50);
+
+            window.scrollTo(0, 0);
+            updateTOC();
+        }
+
+        // Scrollspy
+        function setupScrollspy() {
+            const sections = document.querySelectorAll('.section');
+            const tocLinks = document.querySelectorAll('.toc-link');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (window.scrollY >= (sectionTop - 200)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                tocLinks.forEach(link => {
+                    link.classList.remove('sidebar-active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('sidebar-active');
+                    }
+                });
+            });
+        }
+
+        function updateTOC() {
+            window.dispatchEvent(new Event('scroll'));
+        }
+
+        setupScrollspy();
+        switchTab('case-1');
+    </script>
+</body>
+
+</html>
