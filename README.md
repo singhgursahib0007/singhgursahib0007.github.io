@@ -34,4 +34,4 @@ https://singhgursahib0007.github.io/QuickTools/ppts_to_text.html
 
 ###Ethics Bowl
 
-hhtps://singhgursahib0007.github.io/Ethics/Bowl1.html
+https://singhgursahib0007.github.io/Ethics/Bowl1.html
