@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PPTX Text Extractor</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- JSZip for unzipping PPTX files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .drop-zone {
+            transition: all 0.3s ease;
+            border: 2px dashed #cbd5e1;
+        }
+
+        .drop-zone.drag-over {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+            transform: scale(1.01);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 pb-20">
+
+    <!-- Header -->
+    <header class="bg-white border-b sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="bg-blue-600 p-2 rounded-lg text-white">
+                    <i data-lucide="file-text" class="w-6 h-6"></i>
+                </div>
+                <h1 class="text-xl font-bold tracking-tight text-slate-900">SlideText <span class="text-blue-600">Pro</span></h1>
+            </div>
+            <div class="text-xs text-slate-500 font-medium bg-slate-100 px-3 py-1 rounded-full uppercase tracking-wider">
+                Browser Native • No Uploads
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 mt-8">
+        <!-- Upload Section -->
+        <section id="upload-container" class="mb-8">
+            <div 
+                id="drop-zone" 
+                class="drop-zone bg-white rounded-2xl p-12 text-center cursor-pointer hover:border-blue-400 group"
+            >
+                <input type="file" id="file-input" multiple accept=".pptx" class="hidden">
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="upload-cloud" class="w-8 h-8"></i>
+                    </div>
+                    <h2 class="text-2xl font-semibold mb-2">Drop your PPTX files here</h2>
+                    <p class="text-slate-500 mb-6 max-w-sm mx-auto">Click to browse or drag and drop multiple Powerpoint presentations.</p>
+                    <button onclick="document.getElementById('file-input').click()" class="bg-slate-900 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-slate-800 transition-colors shadow-sm">
+                        Select Files
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Queue & Actions -->
+        <section id="queue-section" class="hidden fade-in mb-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                <h3 class="text-lg font-semibold flex items-center gap-2">
+                    <i data-lucide="list" class="w-5 h-5 text-blue-600"></i>
+                    Files in Queue (<span id="file-count">0</span>)
+                </h3>
+                <div class="flex items-center gap-2">
+                    <button id="clear-btn" class="text-sm font-medium text-slate-500 hover:text-red-500 px-3 py-1.5 transition-colors">
+                        Clear All
+                    </button>
+                    <button id="extract-all-btn" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-lg shadow-blue-100 flex items-center gap-2">
+                        <i data-lucide="zap" class="w-4 h-4"></i>
+                        Extract All Text
+                    </button>
+                </div>
+            </div>
+            
+            <div id="file-list" class="grid gap-3 mb-8">
+                <!-- File items added here dynamically -->
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="results-section" class="hidden fade-in">
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                <h3 class="text-lg font-semibold">Extraction Results</h3>
+                <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                    <button id="copy-all-results-btn" class="flex items-center gap-2 text-xs font-bold px-4 py-2 bg-blue-50 text-blue-700 border border-blue-100 rounded-lg hover:bg-blue-100 transition-colors">
+                        <i data-lucide="copy" class="w-4 h-4"></i> Copy All Extracted Text
+                    </button>
+                    <div class="relative max-w-xs w-full">
+                        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input 
+                            type="text" 
+                            id="search-results" 
+                            placeholder="Search text..." 
+                            class="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        >
+                    </div>
+                </div>
+            </div>
+            
+            <div id="results-list" class="space-y-6">
+                <!-- Extraction results show here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Success/Error Message Toast Container -->
+    <div id="toast-container" class="fixed bottom-8 right-8 z-[100] flex flex-col gap-3"></div>
+
+    <script>
+        // --- State Management ---
+        let filesQueue = [];
+        let extractionResults = [];
+
+        // --- DOM Elements ---
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const queueSection = document.getElementById('queue-section');
+        const fileList = document.getElementById('file-list');
+        const fileCountDisplay = document.getElementById('file-count');
+        const extractAllBtn = document.getElementById('extract-all-btn');
+        const resultsSection = document.getElementById('results-section');
+        const resultsList = document.getElementById('results-list');
+        const clearBtn = document.getElementById('clear-btn');
+        const searchInput = document.getElementById('search-results');
+        const copyAllResultsBtn = document.getElementById('copy-all-results-btn');
+
+        // --- Initialization ---
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Drag and Drop
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('drag-over');
+            });
+
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('drag-over');
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+                handleFiles(e.dataTransfer.files);
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                handleFiles(e.target.files);
+                fileInput.value = ''; // Reset for same file selection
+            });
+
+            extractAllBtn.addEventListener('click', processAllFiles);
+
+            clearBtn.addEventListener('click', () => {
+                filesQueue = [];
+                extractionResults = [];
+                updateQueueUI();
+                resultsSection.classList.add('hidden');
+                resultsList.innerHTML = '';
+            });
+
+            searchInput.addEventListener('input', (e) => {
+                filterResults(e.target.value);
+            });
+
+            copyAllResultsBtn.addEventListener('click', () => {
+                copyAllToClipboard();
+            });
+        }
+
+        // --- Core Logic ---
+
+        function handleFiles(files) {
+            const pptxFiles = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.pptx'));
+            
+            if (pptxFiles.length === 0 && files.length > 0) {
+                showToast("Please upload .pptx files only", "error");
+                return;
+            }
+
+            pptxFiles.forEach(file => {
+                // Check if already in queue
+                if (!filesQueue.some(f => f.name === file.name && f.size === file.size)) {
+                    filesQueue.push({
+                        file: file,
+                        name: file.name,
+                        size: formatBytes(file.size),
+                        status: 'pending', // pending, processing, completed, error
+                        extractedText: null
+                    });
+                }
+            });
+
+            updateQueueUI();
+        }
+
+        function updateQueueUI() {
+            if (filesQueue.length > 0) {
+                queueSection.classList.remove('hidden');
+            } else {
+                queueSection.classList.add('hidden');
+            }
+
+            fileCountDisplay.textContent = filesQueue.length;
+            fileList.innerHTML = filesQueue.map((item, index) => `
+                <div class="bg-white p-4 rounded-xl border border-slate-200 flex items-center justify-between group fade-in">
+                    <div class="flex items-center gap-4 overflow-hidden">
+                        <div class="p-2 bg-orange-50 text-orange-600 rounded-lg">
+                            <i data-lucide="presentation" class="w-5 h-5"></i>
+                        </div>
+                        <div class="overflow-hidden">
+                            <h4 class="font-medium text-slate-900 truncate">${item.name}</h4>
+                            <p class="text-xs text-slate-500">${item.size}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        ${getStatusIcon(item.status)}
+                        <button onclick="removeFile(${index})" class="text-slate-400 hover:text-red-500 p-1.5 transition-colors">
+                            <i data-lucide="x" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            lucide.createIcons();
+        }
+
+        function getStatusIcon(status) {
+            switch(status) {
+                case 'processing': return '<div class="loader"></div>';
+                case 'completed': return '<div class="text-green-500 flex items-center gap-1 text-xs font-bold uppercase tracking-widest"><i data-lucide="check-circle" class="w-4 h-4"></i> Done</div>';
+                case 'error': return '<div class="text-red-500"><i data-lucide="alert-circle" class="w-4 h-4"></i></div>';
+                default: return '<span class="text-xs font-medium text-slate-400 bg-slate-100 px-2 py-0.5 rounded">Ready</span>';
+            }
+        }
+
+        function removeFile(index) {
+            filesQueue.splice(index, 1);
+            updateQueueUI();
+        }
+
+        async function processAllFiles() {
+            if (filesQueue.length === 0) return;
+
+            extractAllBtn.disabled = true;
+            extractAllBtn.innerHTML = `<div class="loader mr-2"></div> Extracting...`;
+            
+            resultsSection.classList.remove('hidden');
+            resultsList.innerHTML = '';
+            extractionResults = [];
+
+            for (let i = 0; i < filesQueue.length; i++) {
+                const item = filesQueue[i];
+                item.status = 'processing';
+                updateQueueUI();
+
+                try {
+                    const result = await extractPptxText(item.file);
+                    item.status = 'completed';
+                    item.extractedText = result;
+                    extractionResults.push({
+                        fileName: item.name,
+                        data: result
+                    });
+                    renderResultCard(item.name, result);
+                } catch (err) {
+                    console.error(err);
+                    item.status = 'error';
+                    showToast(`Error processing ${item.name}`, 'error');
+                }
+                updateQueueUI();
+            }
+
+            extractAllBtn.disabled = false;
+            extractAllBtn.innerHTML = `<i data-lucide="zap" class="w-4 h-4"></i> Extract All Text`;
+            lucide.createIcons();
+            
+            showToast(`Successfully extracted text from ${filesQueue.length} files`, "success");
+        }
+
+        async function extractPptxText(file) {
+            const zip = new JSZip();
+            const content = await zip.loadAsync(file);
+            const slideTexts = [];
+            
+            // 1. Get Slides
+            const slideFiles = Object.keys(content.files)
+                .filter(path => path.startsWith('ppt/slides/slide') && path.endsWith('.xml'))
+                .sort((a, b) => {
+                    const numA = parseInt(a.match(/\d+/)[0]);
+                    const numB = parseInt(b.match(/\d+/)[0]);
+                    return numA - numB;
+                });
+
+            const parser = new DOMParser();
+
+            for (let i = 0; i < slideFiles.length; i++) {
+                const slidePath = slideFiles[i];
+                const slideNum = i + 1;
+                const slideXmlText = await content.file(slidePath).async("string");
+                const slideDoc = parser.parseFromString(slideXmlText, "application/xml");
+                
+                const tTags = slideDoc.getElementsByTagName("a:t");
+                let slideText = "";
+                for (let tag of tTags) {
+                    slideText += tag.textContent + " ";
+                }
+
+                let notesText = "";
+                const notesPath = `ppt/notesSlides/notesSlide${slideNum}.xml`;
+                if (content.file(notesPath)) {
+                    const notesXmlText = await content.file(notesPath).async("string");
+                    const notesDoc = parser.parseFromString(notesXmlText, "application/xml");
+                    const nTags = notesDoc.getElementsByTagName("a:t");
+                    for (let tag of nTags) {
+                        notesText += tag.textContent + " ";
+                    }
+                }
+
+                slideTexts.push({
+                    slideNumber: slideNum,
+                    content: slideText.trim(),
+                    notes: notesText.trim()
+                });
+            }
+
+            return slideTexts;
+        }
+
+        function renderResultCard(fileName, data) {
+            const card = document.createElement('div');
+            card.className = "bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden fade-in result-card";
+            card.dataset.filename = fileName;
+
+            const fullText = formatPptxOutput(fileName, data);
+
+            card.innerHTML = `
+                <div class="border-b bg-slate-50/50 p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">
+                            <i data-lucide="file-check" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-900">${fileName}</h4>
+                            <p class="text-xs text-slate-500">${data.length} slides identified</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="copyToClipboard(this, \`${encodeURIComponent(fullText)}\`)" class="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors">
+                            <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Text
+                        </button>
+                        <button onclick="downloadText(\`${fileName}.txt\`, \`${encodeURIComponent(fullText)}\`)" class="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors">
+                            <i data-lucide="download" class="w-3.5 h-3.5"></i> Download .txt
+                        </button>
+                    </div>
+                </div>
+                <div class="p-6 max-h-[500px] overflow-y-auto custom-scrollbar space-y-6 content-area">
+                    ${data.map(slide => `
+                        <div class="slide-block border-l-2 border-slate-100 pl-4 py-1">
+                            <h5 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Slide ${slide.slideNumber}</h5>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="text-[10px] font-bold text-blue-500 uppercase mb-1">Slide Content</div>
+                                    <p class="text-sm leading-relaxed text-slate-700 whitespace-pre-wrap">${slide.content || '<span class="italic text-slate-300">No text content found</span>'}</p>
+                                </div>
+                                ${slide.notes ? `
+                                <div class="bg-amber-50/50 p-3 rounded-lg border border-amber-100">
+                                    <div class="text-[10px] font-bold text-amber-600 uppercase mb-1">Speaker Notes</div>
+                                    <p class="text-sm leading-relaxed text-slate-700 italic whitespace-pre-wrap">${slide.notes}</p>
+                                </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            resultsList.appendChild(card);
+            lucide.createIcons();
+        }
+
+        // --- Helpers ---
+
+        function formatPptxOutput(fileName, data) {
+            let output = `FILENAME: ${fileName}\n`;
+            output += `TOTAL SLIDES: ${data.length}\n`;
+            output += `=".=".=".=".=".=".=".=".=".=".=".=".=".=".=".=".=".="\n\n`;
+            
+            data.forEach(s => {
+                output += `--- SLIDE ${s.slideNumber} ---\n`;
+                output += `CONTENT:\n${s.content || '[No text content]'}\n\n`;
+                if (s.notes) {
+                    output += `SPEAKER NOTES:\n${s.notes}\n\n`;
+                }
+                output += `\n`;
+            });
+            
+            return output;
+        }
+
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+
+        function filterResults(query) {
+            const cards = document.querySelectorAll('.result-card');
+            const q = query.toLowerCase();
+            
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(q)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        function copyAllToClipboard() {
+            if (extractionResults.length === 0) return;
+
+            let allText = `EXTRACTED TEXT FROM ${extractionResults.length} PRESENTATIONS\n`;
+            allText += `DATE: ${new Date().toLocaleString()}\n`;
+            allText += `========================================================\n\n`;
+
+            extractionResults.forEach(res => {
+                allText += formatPptxOutput(res.fileName, res.data);
+                allText += `\n\n========================================================\n\n`;
+            });
+
+            const el = document.createElement('textarea');
+            el.value = allText;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+
+            const originalHtml = copyAllResultsBtn.innerHTML;
+            copyAllResultsBtn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i> All Text Copied!`;
+            copyAllResultsBtn.classList.add('bg-green-50', 'text-green-700', 'border-green-200');
+            lucide.createIcons();
+            
+            setTimeout(() => {
+                copyAllResultsBtn.innerHTML = originalHtml;
+                copyAllResultsBtn.classList.remove('bg-green-50', 'text-green-700', 'border-green-200');
+                lucide.createIcons();
+            }, 3000);
+
+            showToast("Copied text from all presentations to clipboard.");
+        }
+
+        window.copyToClipboard = (btn, encodedText) => {
+            const text = decodeURIComponent(encodedText);
+            const el = document.createElement('textarea');
+            el.value = text;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i> Copied!`;
+            btn.classList.add('text-green-600', 'border-green-200', 'bg-green-50');
+            lucide.createIcons();
+            
+            setTimeout(() => {
+                btn.innerHTML = originalHtml;
+                btn.classList.remove('text-green-600', 'border-green-200', 'bg-green-50');
+                lucide.createIcons();
+            }, 2000);
+        };
+
+        window.downloadText = (filename, encodedText) => {
+            const text = decodeURIComponent(encodedText);
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        };
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-slate-900' : 'bg-red-600';
+            const icon = type === 'success' ? 'check' : 'alert-triangle';
+            
+            toast.className = `${bgColor} text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 fade-in`;
+            toast.innerHTML = `
+                <i data-lucide="${icon}" class="w-5 h-5"></i>
+                <span class="text-sm font-medium">${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            lucide.createIcons();
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(10px)';
+                toast.style.transition = 'all 0.4s ease';
+                setTimeout(() => toast.remove(), 400);
+            }, 4000);
+        }
+
+    </script>
+</body>
+</html>
