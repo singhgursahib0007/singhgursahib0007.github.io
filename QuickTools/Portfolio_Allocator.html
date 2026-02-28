@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Allocator · $100,000</title>
+    <meta name="description"
+        content="Interactive pie chart portfolio allocator with real-time stock prices and percentage sliders.">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <!-- Fonts: Syne (display) + DM Mono (numbers) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ═══════════════ DESIGN TOKENS ═══════════════ */
+        :root {
+            --bg: #08090d;
+            --panel: #0e1118;
+            --surface: #141820;
+            --border: rgba(255, 255, 255, 0.07);
+            --border-hi: rgba(255, 255, 255, 0.15);
+            --text: #e8eaf0;
+            --muted: #5a6070;
+            --accent: #c8f53a;
+            /* acid lime */
+            --accent2: #38bdf8;
+            /* sky blue for secondary */
+            --danger: #ff4d6d;
+            --font-d: 'Syne', sans-serif;
+            --font-m: 'DM Mono', monospace;
+            --r: 14px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Grain overlay */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.028;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-d);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--surface);
+            border-radius: 3px;
+        }
+
+        /* ═══════════════ LAYOUT ═══════════════ */
+        .app {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 1.5rem 2.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--panel);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: var(--font-d);
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            text-transform: uppercase;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .header-meta {
+            font-family: var(--font-m);
+            font-size: 0.75rem;
+            color: var(--muted);
+            display: flex;
+            gap: 2rem;
+        }
+
+        .header-meta strong {
+            font-family: var(--font-m);
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .price-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-m);
+            font-size: 0.75rem;
+        }
+
+        .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: breathe 2.5s ease-in-out infinite;
+        }
+
+        .dot.loading {
+            background: #f59e0b;
+        }
+
+        .dot.error {
+            background: var(--danger);
+            animation: none;
+        }
+
+        @keyframes breathe {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.4;
+                transform: scale(1.3);
+            }
+        }
+
+        .main {
+            display: grid;
+            grid-template-columns: 440px 1fr;
+            height: calc(100vh - 62px);
+            overflow: hidden;
+        }
+
+        /* ═══════════════ LEFT PANEL — STOCKS ═══════════════ */
+        .stocks-panel {
+            background: var(--panel);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 1.5rem 1.5rem 1rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-title {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--muted);
+            font-family: var(--font-m);
+        }
+
+        .allocation-summary {
+            font-family: var(--font-m);
+            font-size: 0.8rem;
+        }
+
+        .alloc-pct {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .alloc-pct.over {
+            color: var(--danger);
+        }
+
+        .stocks-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+
+        /* ═══════════════ STOCK CARD ═══════════════ */
+        .stock-card {
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            margin-bottom: 0.5rem;
+            overflow: hidden;
+            transition: border-color var(--transition), opacity var(--transition);
+            background: var(--surface);
+        }
+
+        .stock-card:hover {
+            border-color: var(--border-hi);
+        }
+
+        .stock-card.disabled {
+            opacity: 0.35;
+        }
+
+        .card-top {
+            display: grid;
+            grid-template-columns: 16px 1fr auto auto;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.85rem 1rem;
+            cursor: pointer;
+        }
+
+        .color-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .stock-info {
+            min-width: 0;
+        }
+
+        .stock-ticker {
+            font-family: var(--font-d);
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: -0.01em;
+        }
+
+        .stock-name {
+            font-family: var(--font-m);
+            font-size: 0.7rem;
+            color: var(--muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .stock-price {
+            font-family: var(--font-m);
+            font-size: 0.82rem;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .price-val {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .price-loading {
+            color: var(--muted);
+            font-style: italic;
+        }
+
+        .price-error {
+            color: var(--danger);
+            font-size: 0.68rem;
+        }
+
+        .toggle-btn {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--muted);
+            font-size: 0.65rem;
+            font-family: var(--font-m);
+            padding: 0.25rem 0.5rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
+
+        .toggle-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .stock-card.disabled .toggle-btn {
+            border-color: var(--border);
+            color: var(--accent2);
+        }
+
+        .stock-card.disabled .toggle-btn:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .card-body {
+            padding: 0 1rem 1rem;
+        }
+
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .pct-input {
+            width: 56px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--accent);
+            font-family: var(--font-m);
+            font-size: 0.82rem;
+            padding: 0.3rem 0.4rem;
+            text-align: right;
+            outline: none;
+            transition: border-color var(--transition);
+        }
+
+        .pct-input:focus {
+            border-color: var(--accent);
+        }
+
+        .pct-input::-webkit-inner-spin-button {
+            display: none;
+        }
+
+        /* Custom range slider */
+        input[type=range] {
+            flex: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--bg);
+            outline: none;
+            cursor: pointer;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 0 0 0 rgba(200, 245, 58, 0);
+        }
+
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 0 6px rgba(200, 245, 58, 0.12);
+        }
+
+        input[type=range]:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .card-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .stat-box {
+            background: var(--bg);
+            border-radius: 8px;
+            padding: 0.5rem 0.75rem;
+        }
+
+        .stat-label {
+            font-family: var(--font-m);
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+            margin-bottom: 0.15rem;
+        }
+
+        .stat-val {
+            font-family: var(--font-m);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        /* ═══════════════ RIGHT PANEL — CHART ═══════════════ */
+        .chart-panel {
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .chart-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2.5rem 2rem 1.5rem;
+            flex: 0 0 auto;
+        }
+
+        .chart-title {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--muted);
+            font-family: var(--font-m);
+            margin-bottom: 1.5rem;
+            align-self: flex-start;
+        }
+
+        .donut-container {
+            position: relative;
+            width: min(340px, 90%);
+            height: min(340px, 90vw);
+        }
+
+        .donut-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .center-label {
+            font-family: var(--font-m);
+            font-size: 0.65rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .center-amount {
+            font-family: var(--font-d);
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            color: var(--text);
+            line-height: 1;
+            margin: 0.2rem 0;
+        }
+
+        .center-invested {
+            font-family: var(--font-m);
+            font-size: 0.72rem;
+            color: var(--accent);
+        }
+
+        .warn-msg {
+            font-family: var(--font-m);
+            font-size: 0.72rem;
+            color: var(--danger);
+            margin-top: 0.5rem;
+        }
+
+        /* Summary Table */
+        .summary-section {
+            padding: 0 2rem 2rem;
+        }
+
+        .table-header {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--muted);
+            font-family: var(--font-m);
+            margin-bottom: 1rem;
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+        }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .summary-table th {
+            font-family: var(--font-m);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+            text-align: left;
+            padding: 0.4rem 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .summary-table th:not(:first-child) {
+            text-align: right;
+        }
+
+        .summary-table td {
+            font-family: var(--font-m);
+            font-size: 0.82rem;
+            padding: 0.65rem 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            vertical-align: middle;
+        }
+
+        .summary-table td:not(:first-child) {
+            text-align: right;
+        }
+
+        .summary-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .summary-table tr.row-disabled td {
+            opacity: 0.35;
+        }
+
+        .td-ticker {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .td-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .td-pct {
+            color: var(--accent);
+        }
+
+        .td-amount {
+            color: var(--text);
+        }
+
+        .td-shares {
+            color: var(--accent2);
+        }
+
+        .table-total td {
+            font-weight: 700;
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+            padding-top: 0.8rem;
+            color: var(--accent);
+        }
+
+        /* ═══════════════ RESPONSIVE ═══════════════ */
+        @media (max-width: 900px) {
+            .main {
+                grid-template-columns: 1fr;
+                height: auto;
+                overflow: unset;
+            }
+
+            .stocks-panel {
+                height: auto;
+                overflow: unset;
+            }
+
+            .stocks-list {
+                overflow: unset;
+            }
+
+            header {
+                padding: 1rem 1.5rem;
+            }
+
+            .header-meta {
+                display: none;
+            }
+
+            .chart-wrap {
+                padding: 2rem 1rem 1rem;
+            }
+
+            .summary-section {
+                padding: 0 1rem 2rem;
+            }
+        }
+
+        /* Tooltip override */
+        .chartjs-tooltip {
+            font-family: var(--font-m) !important;
+        }
+
+        /* ══════════ REMOVE BUTTON ══════════ */
+        .remove-btn {
+            background: none;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 1;
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition);
+            flex-shrink: 0;
+        }
+
+        .remove-btn:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+            background: rgba(255, 77, 109, 0.1);
+        }
+
+        /* ══════════ ADD STOCK BUTTON ══════════ */
+        .add-stock-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(200, 245, 58, 0.08);
+            border: 1px solid rgba(200, 245, 58, 0.25);
+            border-radius: 8px;
+            color: var(--accent);
+            font-family: var(--font-m);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            padding: 0.35rem 0.8rem;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .add-stock-btn:hover {
+            background: rgba(200, 245, 58, 0.15);
+            border-color: var(--accent);
+            box-shadow: 0 0 12px rgba(200, 245, 58, 0.15);
+        }
+
+        .add-stock-btn svg {
+            width: 13px;
+            height: 13px;
+            stroke: currentColor;
+        }
+
+        /* ══════════ MODAL ══════════ */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(3, 0, 12, 0.85);
+            backdrop-filter: blur(6px);
+            z-index: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-backdrop.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal {
+            background: var(--panel);
+            border: 1px solid var(--border-hi);
+            border-radius: 20px;
+            padding: 2.5rem;
+            width: min(480px, 92vw);
+            position: relative;
+            transform: translateY(30px) scale(0.97);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .modal-backdrop.open .modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.2rem;
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--muted);
+            font-size: 1.1rem;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .modal-close:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .modal-eyebrow {
+            font-family: var(--font-m);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--accent);
+            margin-bottom: 0.6rem;
+        }
+
+        .modal h2 {
+            font-family: var(--font-d);
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-sub {
+            font-family: var(--font-m);
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-bottom: 2rem;
+        }
+
+        .modal-field {
+            margin-bottom: 1rem;
+        }
+
+        .modal-label {
+            display: block;
+            font-family: var(--font-m);
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--muted);
+            margin-bottom: 0.4rem;
+        }
+
+        .modal-input {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-family: var(--font-m);
+            font-size: 1rem;
+            padding: 0.75rem 1rem;
+            outline: none;
+            transition: border-color var(--transition);
+        }
+
+        .modal-input:focus {
+            border-color: var(--accent);
+        }
+
+        .modal-input::placeholder {
+            color: var(--muted);
+        }
+
+        .modal-input.error {
+            border-color: var(--danger);
+        }
+
+        .modal-error {
+            font-family: var(--font-m);
+            font-size: 0.75rem;
+            color: var(--danger);
+            margin-top: 0.5rem;
+            min-height: 1.1em;
+        }
+
+        .modal-preview {
+            background: var(--surface);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            margin-top: 0.75rem;
+            margin-bottom: 1.5rem;
+            display: none;
+            font-family: var(--font-m);
+            font-size: 0.85rem;
+        }
+
+        .modal-preview.visible {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preview-ticker {
+            font-weight: 700;
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        .preview-price {
+            color: var(--accent);
+            font-size: 1rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-modal-cancel {
+            flex: 1;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--muted);
+            font-family: var(--font-m);
+            font-size: 0.82rem;
+            padding: 0.75rem;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .btn-modal-cancel:hover {
+            border-color: var(--border-hi);
+            color: var(--text);
+        }
+
+        .btn-modal-add {
+            flex: 2;
+            background: var(--accent);
+            border: none;
+            border-radius: 10px;
+            color: var(--bg);
+            font-family: var(--font-d);
+            font-size: 0.9rem;
+            font-weight: 800;
+            padding: 0.75rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            letter-spacing: -0.02em;
+        }
+
+        .btn-modal-add:hover {
+            opacity: 0.85;
+            transform: translateY(-2px);
+        }
+
+        .btn-modal-add:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app">
+        <!-- ── HEADER ── -->
+        <header>
+            <div class="logo">Portfolio<span>·</span>Allocator</div>
+            <div class="header-meta">
+                <span>TOTAL CAPITAL <strong>$100,000</strong></span>
+                <span>POSITIONS <strong id="positionCount">13</strong></span>
+            </div>
+            <div class="price-status">
+                <div class="dot loading" id="statusDot"></div>
+                <span id="statusText"
+                    style="font-family: var(--font-m); font-size:0.75rem; color:var(--muted);">Fetching prices…</span>
+            </div>
+        </header>
+
+        <div class="main">
+            <!-- ── LEFT PANEL ── -->
+            <aside class="stocks-panel">
+                <div class="panel-header">
+                    <span class="panel-title">Stock Allocations</span>
+                    <div style="display:flex;align-items:center;gap:0.75rem;">
+                        <span class="allocation-summary">
+                            Allocated: <span class="alloc-pct" id="allocPct">0%</span>
+                            &nbsp;|&nbsp;
+                            Free: <span id="freePct" style="font-family:var(--font-m);font-size:0.8rem;">100%</span>
+                        </span>
+                        <button class="add-stock-btn" onclick="openAddModal()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round">
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
+                            ADD STOCK
+                        </button>
+                    </div>
+                </div>
+                <div class="stocks-list" id="stocksList"></div>
+            </aside>
+
+            <!-- ── RIGHT PANEL ── -->
+            <section class="chart-panel">
+                <div class="chart-wrap">
+                    <div class="chart-title">Portfolio Distribution</div>
+                    <div class="donut-container">
+                        <canvas id="donutChart"></canvas>
+                        <div class="donut-center">
+                            <div class="center-label">Invested</div>
+                            <div class="center-amount" id="centerAmount">$0</div>
+                            <div class="center-invested" id="centerPct">0% allocated</div>
+                            <div class="warn-msg" id="warnMsg" style="display:none;">&#9888; Over 100%!</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="summary-section">
+                    <div class="table-header">Holdings Summary</div>
+                    <table class="summary-table">
+                        <thead>
+                            <tr>
+                                <th>Ticker</th>
+                                <th>Alloc%</th>
+                                <th>Price</th>
+                                <th>Invested</th>
+                                <th>Shares</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summaryBody"></tbody>
+                        <tfoot>
+                            <tr class="table-total">
+                                <td colspan="3">TOTAL</td>
+                                <td id="totalInvested">$0.00</td>
+                                <td id="totalShares">—</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- ── ADD STOCK MODAL ── -->
+    <div class="modal-backdrop" id="addModalBackdrop" onclick="backdropClose(event)">
+        <div class="modal">
+            <button class="modal-close" onclick="closeAddModal()">&#x2715;</button>
+            <div class="modal-eyebrow">Portfolio</div>
+            <h2>Add a Stock</h2>
+            <p class="modal-sub">Enter any ticker symbol. We'll fetch the live price automatically.</p>
+            <div class="modal-field">
+                <label class="modal-label" for="modalTicker">Ticker Symbol</label>
+                <input class="modal-input" id="modalTicker" type="text" placeholder="e.g. AAPL, AMD, BTC-USD"
+                    oninput="clearModalError()" onkeydown="if(event.key==='Enter') lookupTicker()">
+                <div class="modal-error" id="modalError"></div>
+            </div>
+            <div class="modal-field">
+                <label class="modal-label" for="modalName">Display Name <span
+                        style="color:var(--muted);">(optional)</span></label>
+                <input class="modal-input" id="modalName" type="text" placeholder="e.g. Apple Inc.">
+            </div>
+            <div class="modal-preview" id="modalPreview">
+                <div>
+                    <div class="preview-ticker" id="previewTicker">—</div>
+                    <div style="font-family:var(--font-m);font-size:0.7rem;color:var(--muted);margin-top:0.15rem;">LIVE
+                        PRICE</div>
+                </div>
+                <div class="preview-price" id="previewPrice">—</div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-modal-cancel" onclick="closeAddModal()">Cancel</button>
+                <button class="btn-modal-add" id="btnAddConfirm" onclick="confirmAddStock()" disabled>Fetch &amp;
+                    Add</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════
+        //  CONFIG
+        // ═══════════════════════════════════════════════════════
+        const TOTAL = 100000;
+
+        const STOCKS = [
+            { id: 'SNDK', ticker: 'SNDK', name: 'SanDisk Corporation', pct: 18, enabled: true },
+            { id: 'MU', ticker: 'MU', name: 'Micron Technology', pct: 0, enabled: true },
+            { id: 'SLV', ticker: 'SLV', name: 'Silver ETF', pct: 12, enabled: true },
+            { id: 'ASML', ticker: 'ASML', name: 'ASML Holding', pct: 4, enabled: true },
+            { id: 'GOOGL', ticker: 'GOOGL', name: 'Alphabet (Google)', pct: 10, enabled: true },
+            { id: 'TSM', ticker: 'TSM', name: 'Taiwan Semiconductor', pct: 15, enabled: true },
+            { id: 'IAUM', ticker: 'IAUM', name: 'iShares Gold ETF', pct: 15, enabled: true },
+            { id: 'SMH', ticker: 'SMH', name: 'VanEck Semi ETF', pct: 0, enabled: true },
+            { id: 'TSLA', ticker: 'TSLA', name: 'Tesla', pct: 0, enabled: true },
+            { id: 'VOO', ticker: 'VOO', name: 'Vanguard S&P 500', pct: 0, enabled: true },
+            { id: 'NVDA', ticker: 'NVDA', name: 'NVIDIA', pct: 6, enabled: true },
+            { id: 'META', ticker: 'META', name: 'Meta Platforms', pct: 0, enabled: true },
+            { id: 'MRF', ticker: 'MRF.NS', name: 'MRF Ltd (NSE)', pct: 0, enabled: true },
+            { id: 'ASMVF', ticker: 'ASMVF', name: 'ASM International', pct: 0, enabled: true },
+        ];
+
+        // Palette — one per stock, distinct vivid hues
+        const PALETTE = [
+            '#c8f53a', '#38bdf8', '#e879f9', '#f59e0b', '#4ade80',
+            '#fb923c', '#60a5fa', '#f43f5e', '#34d399', '#a78bfa',
+            '#fbbf24', '#2dd4bf', '#8b5cf6'
+        ];
+
+        // ═══════════════════════════════════════════════════════
+        //  STATE
+        // ═══════════════════════════════════════════════════════
+        const prices = {};   // { id: number|null }
+        const priceSource = {};  // 'live' | 'seed' | 'manual'
+
+        // ═══════════════════════════════════════════════════════
+        //  SEED PRICES — realistic fallback (as of early 2025)
+        // ═══════════════════════════════════════════════════════
+        const SEED_PRICES = {
+            SNDK: 635.36,
+            MU: 412.37,
+            SLV: 28.15,
+            ASML: 710.50,
+            GOOGL: 175.40,
+            TSM: 165.20,
+            IAUM: 19.85,
+            SMH: 230.60,
+            TSLA: 185.50,
+            VOO: 495.30,
+            NVDA: 875.40,
+            META: 545.20,
+            MRF: 135800.00,
+            ASMVF: 545.00,
+        };
+
+        // ═══════════════════════════════════════════════════════
+        //  LOCAL STORAGE — save/load portfolio state
+        // ═══════════════════════════════════════════════════════
+        function savePortfolioToStorage() {
+            const state = STOCKS.map(s => ({ id: s.id, pct: s.pct, enabled: s.enabled }));
+            localStorage.setItem('portfolio_state', JSON.stringify(state));
+        }
+
+        function loadPortfolioFromStorage() {
+            const saved = localStorage.getItem('portfolio_state');
+            if (saved) {
+                try {
+                    const state = JSON.parse(saved);
+                    state.forEach(item => {
+                        const stock = STOCKS.find(s => s.id === item.id);
+                        if (stock) {
+                            stock.pct = item.pct;
+                            stock.enabled = item.enabled;
+                        }
+                    });
+                } catch (e) {
+                    console.error('Error loading portfolio from storage:', e);
+                }
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  PRICE FETCHING — multi-strategy with seed fallback
+        // ═══════════════════════════════════════════════════════
+        async function fetchYahoo_proxy1(ticker) {
+            const url = `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=1d&range=1d`;
+            const r = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`, { signal: AbortSignal.timeout(6000) });
+            const d = await r.json();
+            const p = d?.chart?.result?.[0]?.meta?.regularMarketPrice;
+            if (!p) throw new Error('no data');
+            return p;
+        }
+
+        async function fetchYahoo_proxy2(ticker) {
+            const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${ticker}&fields=regularMarketPrice`;
+            const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`, { signal: AbortSignal.timeout(6000) });
+            const j = await r.json();
+            const d = JSON.parse(j.contents);
+            const p = d?.quoteResponse?.result?.[0]?.regularMarketPrice;
+            if (!p) throw new Error('no data');
+            return p;
+        }
+
+        async function fetchPrice(stock) {
+            const t = stock.ticker;
+            // Try corsproxy.io first
+            try { return { price: await fetchYahoo_proxy1(t), source: 'live' }; } catch (e) { }
+            // Try allorigins fallback
+            try { return { price: await fetchYahoo_proxy2(t), source: 'live' }; } catch (e) { }
+            // Fall back to seed price
+            const seed = SEED_PRICES[stock.id];
+            if (seed) return { price: seed, source: 'seed' };
+            return { price: null, source: 'none' };
+        }
+
+        function setPriceEl(id, price, source) {
+            const el = document.getElementById(`price-${id}`);
+            if (!el) return;
+            if (price === null) {
+                el.innerHTML = `<span class="price-error" title="Click to set manually" style="cursor:pointer" onclick="manualPrice('${id}')">N/A ✎</span>`;
+            } else {
+                const badge = source === 'live'
+                    ? `<span style="font-size:0.6rem;color:var(--accent);margin-left:4px;">●</span>`
+                    : (source === 'seed'
+                        ? `<span style="font-size:0.6rem;color:#f59e0b;margin-left:4px;" title="Estimated price">~</span>`
+                        : `<span style="font-size:0.6rem;color:var(--accent2);margin-left:4px;" title="Manually set">✎</span>`);
+                el.innerHTML = `<span class="price-val" style="cursor:pointer" title="Click to edit" onclick="manualPrice('${id}')">
+                    $${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}${badge}
+                </span>`;
+            }
+        }
+
+        function manualPrice(id) {
+            const s = STOCKS.find(x => x.id === id);
+            const cur = prices[id];
+            const val = prompt(`Enter price for ${s.ticker} (USD):`, cur != null ? cur.toFixed(2) : '');
+            if (val === null) return; // cancelled
+            const p = parseFloat(val);
+            if (isNaN(p) || p <= 0) { alert('Invalid price.'); return; }
+            prices[id] = p;
+            priceSource[id] = 'manual';
+            setPriceEl(id, p, 'manual');
+            updateAll();
+        }
+
+        async function loadAllPrices() {
+            const dot = document.getElementById('statusDot');
+            const txt = document.getElementById('statusText');
+            dot.className = 'dot loading';
+            txt.textContent = 'Fetching prices…';
+
+            // Apply seed prices immediately so UI isn't broken
+            STOCKS.forEach(s => {
+                const seed = SEED_PRICES[s.id];
+                if (seed && prices[s.id] === undefined) {
+                    prices[s.id] = seed;
+                    priceSource[s.id] = 'seed';
+                    setPriceEl(s.id, seed, 'seed');
+                }
+            });
+            updateAll(); // render with seed prices right away
+
+            // Then attempt live fetch
+            let liveCount = 0;
+            await Promise.allSettled(
+                STOCKS.map(async (s) => {
+                    const { price, source } = await fetchPrice(s);
+                    prices[s.id] = price;
+                    priceSource[s.id] = source;
+                    if (source === 'live') liveCount++;
+                    setPriceEl(s.id, price, source);
+                })
+            );
+
+            if (liveCount === STOCKS.length) {
+                dot.className = 'dot';
+                txt.textContent = `Live · ${new Date().toLocaleTimeString()}`;
+            } else if (liveCount > 0) {
+                dot.className = 'dot';
+                txt.textContent = `${liveCount} live · ${STOCKS.length - liveCount} estimated`;
+            } else {
+                dot.className = 'dot loading';
+                txt.textContent = `Estimated prices — click any price to edit`;
+            }
+
+            updateAll();
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  CHART SETUP
+        // ═══════════════════════════════════════════════════════
+        let chart;
+        function initChart() {
+            const ctx = document.getElementById('donutChart').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        data: [],
+                        backgroundColor: [],
+                        borderColor: '#08090d',
+                        borderWidth: 3,
+                        hoverBorderWidth: 3,
+                        hoverOffset: 10,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    cutout: '72%',
+                    animation: { duration: 400, easing: 'easeInOutQuart' },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label(ctx) {
+                                    const pct = ctx.parsed;
+                                    const dollarsInvested = (pct / 100) * TOTAL;
+                                    return ` ${pct.toFixed(1)}%  ·  $${dollarsInvested.toLocaleString('en-US', { minimumFractionDigits: 0 })}`;
+                                }
+                            },
+                            backgroundColor: '#141820',
+                            borderColor: 'rgba(255,255,255,0.1)',
+                            borderWidth: 1,
+                            titleFont: { family: "'DM Mono', monospace", size: 12, weight: '500' },
+                            bodyFont: { family: "'DM Mono', monospace", size: 11 },
+                            titleColor: '#e8eaf0',
+                            bodyColor: '#c8f53a',
+                            padding: 12,
+                            cornerRadius: 8,
+                        }
+                    }
+                }
+            });
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  RENDER STOCK CARDS
+        // ═══════════════════════════════════════════════════════
+        function renderCards() {
+            const list = document.getElementById('stocksList');
+            list.innerHTML = '';
+            STOCKS.forEach((s, i) => {
+                const color = PALETTE[i % PALETTE.length];
+                const card = document.createElement('div');
+                card.className = `stock-card${s.enabled ? '' : ' disabled'}`;
+                card.id = `card-${s.id}`;
+                card.innerHTML = `
+      <div class="card-top">
+        <div class="color-dot" style="background:${color}"></div>
+        <div class="stock-info">
+          <div class="stock-ticker">${s.displayTicker || s.ticker}</div>
+          <div class="stock-name">${s.name}</div>
+        </div>
+        <div class="stock-price" id="price-${s.id}">
+          <span class="price-loading">…</span>
+        </div>
+        <button class="toggle-btn" id="toggle-${s.id}" onclick="toggleStock('${s.id}')">
+          ${s.enabled ? 'HIDE' : 'SHOW'}
+        </button>
+        <button class="remove-btn" title="Remove stock" onclick="removeStock('${s.id}', event)">&#x2715;</button>
+      </div>
+      <div class="card-body">
+        <div class="slider-row">
+          <input type="range" min="0" max="100" step="0.5"
+            value="${s.pct}" id="slider-${s.id}"
+            ${!s.enabled ? 'disabled' : ''}
+            oninput="onSlider('${s.id}', this.value)">
+          <input type="number" class="pct-input" min="0" max="100" step="0.5"
+            value="${s.pct.toFixed(1)}" id="pctInput-${s.id}"
+            ${!s.enabled ? 'disabled' : ''}
+            oninput="onInput('${s.id}', this.value)">
+        </div>
+        <div class="card-stats">
+          <div class="stat-box">
+            <div class="stat-label">Invested</div>
+            <div class="stat-val" id="stat-amount-${s.id}">$0.00</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Shares</div>
+            <div class="stat-val" id="stat-shares-${s.id}">—</div>
+          </div>
+        </div>
+      </div>
+    `;
+                list.appendChild(card);
+            });
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  UPDATE LOGIC
+        // ═══════════════════════════════════════════════════════
+        function onSlider(id, val) {
+            const s = STOCKS.find(x => x.id === id);
+            s.pct = parseFloat(val);
+            document.getElementById(`pctInput-${id}`).value = s.pct.toFixed(1);
+            updateAll();
+            savePortfolioToStorage();
+        }
+
+        function onInput(id, val) {
+            const s = STOCKS.find(x => x.id === id);
+            const v = Math.max(0, Math.min(100, parseFloat(val) || 0));
+            s.pct = v;
+            document.getElementById(`slider-${id}`).value = v;
+            updateAll();
+            savePortfolioToStorage();
+        }
+
+        function toggleStock(id) {
+            const s = STOCKS.find(x => x.id === id);
+            s.enabled = !s.enabled;
+            const card = document.getElementById(`card-${id}`);
+            const btn = document.getElementById(`toggle-${id}`);
+            const slider = document.getElementById(`slider-${id}`);
+            const inp = document.getElementById(`pctInput-${id}`);
+            card.classList.toggle('disabled', !s.enabled);
+            btn.textContent = s.enabled ? 'HIDE' : 'SHOW';
+            slider.disabled = !s.enabled;
+            inp.disabled = !s.enabled;
+            if (!s.enabled) s.pct = 0;
+            document.getElementById(`slider-${id}`).value = s.pct;
+            document.getElementById(`pctInput-${id}`).value = s.pct.toFixed(1);
+            updateAll();
+            savePortfolioToStorage();
+        }
+
+        function fmt$(n) {
+            return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function fmtShares(n) {
+            if (n === null || isNaN(n)) return '—';
+            return n >= 1000
+                ? n.toLocaleString('en-US', { maximumFractionDigits: 2 })
+                : n.toFixed(4);
+        }
+
+        function updateAll() {
+            const active = STOCKS.filter(s => s.enabled);
+            const totalPct = active.reduce((sum, s) => sum + s.pct, 0);
+            const invested = (totalPct / 100) * TOTAL;
+            const freePct = Math.max(0, 100 - totalPct);
+            const isOver = totalPct > 100.01;
+
+            // Header counters
+            const allPctEl = document.getElementById('allocPct');
+            allPctEl.textContent = totalPct.toFixed(1) + '%';
+            allPctEl.className = `alloc-pct${isOver ? ' over' : ''}`;
+            document.getElementById('freePct').textContent = freePct.toFixed(1) + '%';
+
+            // Donut center
+            document.getElementById('centerAmount').textContent = fmt$(invested);
+            document.getElementById('centerPct').textContent = totalPct.toFixed(1) + '% allocated';
+            document.getElementById('warnMsg').style.display = isOver ? 'block' : 'none';
+
+            // Slider tracks: update track fill color
+            STOCKS.forEach((s, i) => {
+                const color = PALETTE[i % PALETTE.length];
+                const slider = document.getElementById(`slider-${s.id}`);
+                if (slider) {
+                    const pct = s.pct;
+                    slider.style.background = `linear-gradient(to right, ${color} 0%, ${color} ${pct}%, #08090d ${pct}%)`;
+                }
+
+                const invested_s = (s.pct / 100) * TOTAL;
+                const price = prices[s.id];
+                const shares = price != null ? invested_s / price : null;
+
+                document.getElementById(`stat-amount-${s.id}`).textContent = fmt$(invested_s);
+                document.getElementById(`stat-shares-${s.id}`).textContent = fmtShares(shares);
+            });
+
+            // Chart data
+            const chartLabels = [];
+            const chartData = [];
+            const chartColors = [];
+            STOCKS.forEach((s, i) => {
+                if (s.enabled && s.pct > 0) {
+                    chartLabels.push(s.ticker === 'MRF.NS' ? 'MRF' : s.ticker);
+                    chartData.push(s.pct);
+                    chartColors.push(PALETTE[i % PALETTE.length]);
+                }
+            });
+            // Unallocated slice
+            if (freePct > 0.01 && !isOver) {
+                chartLabels.push('Unallocated');
+                chartData.push(freePct);
+                chartColors.push('#1e2130');
+            }
+            chart.data.labels = chartLabels;
+            chart.data.datasets[0].data = chartData;
+            chart.data.datasets[0].backgroundColor = chartColors;
+            chart.update('active');
+
+            // Summary table
+            const tbody = document.getElementById('summaryBody');
+            tbody.innerHTML = '';
+            let totalInv = 0;
+            STOCKS.forEach((s, i) => {
+                const color = PALETTE[i % PALETTE.length];
+                const inv_s = (s.pct / 100) * TOTAL;
+                const price = prices[s.id];
+                const shares_s = price != null ? inv_s / price : null;
+                if (s.enabled && s.pct > 0) totalInv += inv_s;
+                const row = `
+      <tr class="${!s.enabled ? 'row-disabled' : ''}">
+        <td><div class="td-ticker"><div class="td-dot" style="background:${color}"></div>${s.ticker === 'MRF.NS' ? 'MRF' : s.ticker}</div></td>
+        <td class="td-pct">${s.enabled ? s.pct.toFixed(1) + '%' : '—'}</td>
+        <td>${price != null ? fmt$(price) : '<span style="color:var(--muted)">N/A</span>'}</td>
+        <td class="td-amount">${s.enabled && s.pct > 0 ? fmt$(inv_s) : '—'}</td>
+        <td class="td-shares">${s.enabled && s.pct > 0 ? fmtShares(shares_s) : '—'}</td>
+      </tr>
+    `;
+                tbody.insertAdjacentHTML('beforeend', row);
+            });
+            document.getElementById('totalInvested').textContent = fmt$(totalInv);
+            document.getElementById('totalShares').textContent = '—';
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  REMOVE STOCK
+        // ═══════════════════════════════════════════════════════
+        function removeStock(id, event) {
+            event && event.stopPropagation();
+            const s = STOCKS.find(x => x.id === id);
+            if (!s) return;
+            const confirmed = confirm(`Remove ${s.displayTicker || s.ticker} from the portfolio?`);
+            if (!confirmed) return;
+            const idx = STOCKS.findIndex(x => x.id === id);
+            STOCKS.splice(idx, 1);
+            delete prices[id];
+            delete priceSource[id];
+            renderCards();
+            // Re-apply known prices to re-rendered elements
+            STOCKS.forEach(st => {
+                if (prices[st.id] != null) setPriceEl(st.id, prices[st.id], priceSource[st.id]);
+            });
+            updateAll();
+            document.getElementById('positionCount').textContent = STOCKS.length;
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  ADD STOCK MODAL
+        // ═══════════════════════════════════════════════════════
+        let _pendingPrice = null;
+        let _pendingSource = null;
+
+        function openAddModal() {
+            document.getElementById('addModalBackdrop').classList.add('open');
+            document.getElementById('modalTicker').value = '';
+            document.getElementById('modalName').value = '';
+            document.getElementById('modalError').textContent = '';
+            document.getElementById('modalPreview').classList.remove('visible');
+            document.getElementById('btnAddConfirm').disabled = true;
+            document.getElementById('btnAddConfirm').textContent = 'Fetch & Add';
+            document.getElementById('modalTicker').classList.remove('error');
+            _pendingPrice = null;
+            _pendingSource = null;
+            setTimeout(() => document.getElementById('modalTicker').focus(), 100);
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModalBackdrop').classList.remove('open');
+        }
+
+        function backdropClose(e) {
+            if (e.target === document.getElementById('addModalBackdrop')) closeAddModal();
+        }
+
+        function clearModalError() {
+            document.getElementById('modalError').textContent = '';
+            document.getElementById('modalTicker').classList.remove('error');
+            // Reset preview when ticker changes
+            document.getElementById('modalPreview').classList.remove('visible');
+            document.getElementById('btnAddConfirm').disabled = true;
+            document.getElementById('btnAddConfirm').textContent = 'Fetch & Add';
+            _pendingPrice = null;
+        }
+
+        async function lookupTicker() {
+            const rawTicker = document.getElementById('modalTicker').value.trim().toUpperCase();
+            if (!rawTicker) {
+                showModalError('Please enter a ticker symbol.');
+                return;
+            }
+            const btn = document.getElementById('btnAddConfirm');
+            btn.textContent = 'Fetching…';
+            btn.disabled = true;
+            document.getElementById('modalError').textContent = '';
+
+            const mockStock = { id: rawTicker, ticker: rawTicker, displayTicker: rawTicker };
+            const { price, source } = await fetchPrice(mockStock);
+
+            if (price == null) {
+                btn.textContent = 'Fetch & Add';
+                showModalError(`Could not find price for "${rawTicker}". Check the ticker and try again.`);
+                document.getElementById('modalTicker').classList.add('error');
+                return;
+            }
+
+            _pendingPrice = price;
+            _pendingSource = source;
+            document.getElementById('previewTicker').textContent = rawTicker;
+            document.getElementById('previewPrice').textContent =
+                '$' + price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) +
+                (source === 'seed' ? '  ~est.' : '  ●live');
+            document.getElementById('modalPreview').classList.add('visible');
+            btn.textContent = '+ Add to Portfolio';
+            btn.disabled = false;
+        }
+
+        function showModalError(msg) {
+            document.getElementById('modalError').textContent = msg;
+        }
+
+        function confirmAddStock() {
+            const rawTicker = document.getElementById('modalTicker').value.trim().toUpperCase();
+            if (!rawTicker) { showModalError('Please enter a ticker.'); return; }
+
+            // auto-lookup if price not yet fetched
+            if (_pendingPrice == null) {
+                lookupTicker();
+                return;
+            }
+
+            const name = document.getElementById('modalName').value.trim() || rawTicker;
+            const id = rawTicker + '_' + Date.now(); // unique id
+
+            // Check for duplicates by displayTicker
+            if (STOCKS.find(s => (s.displayTicker || s.ticker) === rawTicker)) {
+                showModalError(`${rawTicker} is already in your portfolio.`);
+                return;
+            }
+
+            const newStock = {
+                id,
+                ticker: rawTicker,
+                displayTicker: rawTicker,
+                name,
+                pct: 0,
+                enabled: true,
+            };
+
+            STOCKS.push(newStock);
+            prices[id] = _pendingPrice;
+            priceSource[id] = _pendingSource;
+
+            closeAddModal();
+            renderCards();
+
+            // Re-apply ALL prices to freshly rendered cards
+            STOCKS.forEach(s => {
+                if (prices[s.id] != null) setPriceEl(s.id, prices[s.id], priceSource[s.id]);
+            });
+
+            updateAll();
+            document.getElementById('positionCount').textContent = STOCKS.length;
+
+            // Scroll to new card
+            setTimeout(() => {
+                const newCard = document.getElementById(`card-${id}`);
+                if (newCard) newCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+        }
+
+        // Keyboard shortcut: ESC to close modal
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAddModal(); });
+
+        // Fetch button on modal — triggered by Enter in ticker input
+        document.getElementById('modalTicker').addEventListener('blur', () => {
+            const t = document.getElementById('modalTicker').value.trim();
+            if (t && _pendingPrice == null) lookupTicker();
+        });
+
+        // ═══════════════════════════════════════════════════════
+        //  BOOT
+        // ═══════════════════════════════════════════════════════
+        loadPortfolioFromStorage(); // Load saved state first
+        renderCards();
+        initChart();
+        updateAll();           // Render with $0 prices initially
+        loadAllPrices();       // Then fetch real prices
+    </script>
+</body>
+
+</html>
