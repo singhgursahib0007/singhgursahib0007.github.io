@@ -30,6 +30,8 @@ https://singhgursahib0007.github.io/Coop_Timeline/dashboard.html
 ### Quick Tools
 https://singhgursahib0007.github.io/QuickTools/colorchange.html
 
+https://singhgursahib0007.github.io/QuickTools/Portfolio_Allocator.html
+
 https://singhgursahib0007.github.io/QuickTools/ppts_to_text.html
 
 ### Ethics Bowl
