@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickQR - Real-time QR Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- QRCode.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+        }
+        .teal-gradient {
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+        }
+        #qrcode img {
+            margin: 0 auto;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+        .custom-shadow {
+            box-shadow: 0 10px 25px -5px rgba(13, 148, 136, 0.1), 0 8px 10px -6px rgba(13, 148, 136, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Header -->
+    <header class="text-center mb-10">
+        <div class="flex items-center justify-center mb-3">
+            <div class="teal-gradient p-3 rounded-2xl shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                </svg>
+            </div>
+        </div>
+        <h1 class="text-4xl font-bold text-teal-900 tracking-tight">QuickQR</h1>
+        <p class="text-teal-600 mt-2 font-medium">Instant QR generation for any content.</p>
+    </header>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-md bg-white border border-teal-50 rounded-3xl p-8 custom-shadow">
+        
+        <!-- Input Section -->
+        <div class="mb-8">
+            <label for="qr-input" class="block text-sm font-semibold text-teal-700 mb-2 px-1">Content (URL or Text)</label>
+            <textarea 
+                id="qr-input" 
+                rows="3" 
+                class="w-full px-4 py-3 rounded-xl border border-teal-100 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all resize-none text-teal-900 placeholder-teal-300"
+                placeholder="Paste link or type text here..."
+            ></textarea>
+        </div>
+
+        <!-- Result Section -->
+        <div id="qr-container" class="flex flex-col items-center justify-center min-h-[250px] border-2 border-dashed border-teal-50 rounded-2xl bg-teal-50/30 p-6 transition-all">
+            <div id="qrcode"></div>
+            
+            <!-- Placeholder -->
+            <div id="placeholder-msg" class="text-center text-teal-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-2 opacity-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <p class="text-sm font-medium">QR code will appear here</p>
+            </div>
+
+            <button 
+                id="download-btn" 
+                class="hidden mt-6 flex items-center gap-2 px-6 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-full font-semibold transition-colors shadow-md"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Download PNG
+            </button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-12 text-teal-400 text-sm font-medium">
+        &copy; 2024 QuickQR Tool • Free & Privacy-focused
+    </footer>
+
+    <script>
+        const input = document.getElementById('qr-input');
+        const qrcodeDiv = document.getElementById('qrcode');
+        const placeholder = document.getElementById('placeholder-msg');
+        const downloadBtn = document.getElementById('download-btn');
+        
+        let qrcode = null;
+
+        function generateQR() {
+            const value = input.value.trim();
+            
+            // Clear existing QR
+            qrcodeDiv.innerHTML = "";
+            
+            if (value === "") {
+                placeholder.classList.remove('hidden');
+                downloadBtn.classList.add('hidden');
+                return;
+            }
+
+            // Hide placeholder
+            placeholder.classList.add('hidden');
+            downloadBtn.classList.remove('hidden');
+
+            // Generate new QR
+            qrcode = new QRCode(qrcodeDiv, {
+                text: value,
+                width: 200,
+                height: 200,
+                colorDark: "#0f766e",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+
+        // Event listener for real-time generation
+        input.addEventListener('input', generateQR);
+
+        // Download functionality
+        downloadBtn.addEventListener('click', () => {
+            const img = qrcodeDiv.querySelector('img');
+            if (img) {
+                const link = document.createElement('a');
+                link.download = 'qrcode-quickqr.png';
+                link.href = img.src;
+                link.click();
+            } else {
+                // Handle canvas fallback if img is not ready
+                const canvas = qrcodeDiv.querySelector('canvas');
+                if (canvas) {
+                    const link = document.createElement('a');
+                    link.download = 'qrcode-quickqr.png';
+                    link.href = canvas.toDataURL("image/png");
+                    link.click();
+                }
+            }
+        });
+
+        // Focus input on load
+        window.onload = () => input.focus();
+    </script>
+</body>
+</html>
