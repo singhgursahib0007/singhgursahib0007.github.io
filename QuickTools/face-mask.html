@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FaceBlur — Privacy Video Tool</title>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --surface2: #1a1a26;
+      --border: #2a2a3d;
+      --accent: #7c6af7;
+      --accent2: #5b4fcf;
+      --accent-glow: rgba(124, 106, 247, 0.25);
+      --text: #e8e8f0;
+      --muted: #6b6b8a;
+      --success: #4ade80;
+      --warn: #fb923c;
+      --danger: #f87171;
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ── */
+    header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 32px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .logo-icon {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    header h1 { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.3px; }
+    header h1 span { color: var(--accent); }
+    .badge {
+      margin-left: auto;
+      background: var(--accent-glow);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 99px;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── Main layout ── */
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 0;
+      height: calc(100vh - 73px);
+    }
+
+    /* ── Video panel ── */
+    .video-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px;
+      gap: 16px;
+      overflow-y: auto;
+    }
+    .video-panel > *:not(.canvas-wrap) { width: 100%; }
+
+    .drop-zone {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-height: 200px;
+      padding: 40px;
+      text-align: center;
+    }
+    .drop-zone:hover, .drop-zone.drag-over {
+      border-color: var(--accent);
+      background: rgba(124,106,247,0.06);
+    }
+    .drop-zone .drop-icon { font-size: 3rem; }
+    .drop-zone h2 { font-size: 1.1rem; font-weight: 600; }
+    .drop-zone p { color: var(--muted); font-size: 0.85rem; }
+    .drop-zone .btn-browse {
+      margin-top: 4px;
+      padding: 8px 22px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+    }
+    .drop-zone .btn-browse:hover { background: var(--accent2); }
+
+    .canvas-wrap {
+      position: relative;
+      background: #000;
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: none;
+      /* size is set dynamically via JS based on actual video dimensions */
+      max-width: 100%;
+      max-height: calc(100vh - 260px);
+      align-self: center;
+    }
+    .canvas-wrap.visible { display: flex; }
+    #outputCanvas {
+      display: block;
+      max-width: 100%;
+      max-height: calc(100vh - 260px);
+      object-fit: contain;
+    }
+    #hiddenVideo { display: none; }
+
+    /* ── Progress bar ── */
+    .progress-wrap {
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .progress-wrap.visible { display: flex; }
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .progress-header strong { color: var(--text); }
+    .progress-bar-bg {
+      height: 6px;
+      background: var(--surface2);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #a78bfa);
+      border-radius: 99px;
+      width: 0%;
+      transition: width 0.15s;
+    }
+
+    /* ── Action row ── */
+    .action-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn {
+      padding: 10px 22px;
+      border-radius: var(--radius-sm);
+      border: none;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 28px var(--accent-glow);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+    .btn-success {
+      background: linear-gradient(135deg, #16a34a, #15803d);
+      color: #fff;
+    }
+    .btn-danger {
+      background: transparent;
+      color: var(--danger);
+      border: 1px solid var(--border);
+      font-size: 0.8rem;
+    }
+    .btn-danger:hover:not(:disabled) { border-color: var(--danger); }
+
+    /* ── Status chip ── */
+    .status-chip {
+      margin-left: auto;
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.8rem; color: var(--muted);
+    }
+    .status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--muted);
+      transition: background 0.3s;
+    }
+    .status-dot.ready { background: var(--success); box-shadow: 0 0 8px var(--success); }
+    .status-dot.processing { background: var(--warn); animation: pulse 1s infinite; }
+    .status-dot.error { background: var(--danger); }
+
+    @keyframes pulse {
+      0%,100% { opacity:1; } 50% { opacity:0.4; }
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .sidebar-section h3 {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    /* ── Controls ── */
+    .control { margin-bottom: 16px; }
+    .control-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 7px;
+      font-size: 0.84rem;
+      font-weight: 500;
+    }
+    .control-label .val {
+      font-size: 0.78rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 2px 8px;
+      color: var(--accent);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    .control-desc {
+      font-size: 0.73rem;
+      color: var(--muted);
+      margin-top: 5px;
+      line-height: 1.5;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 4px;
+      background: var(--surface2);
+      border-radius: 99px;
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      box-shadow: 0 0 8px var(--accent-glow);
+      transition: transform 0.15s;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.25); }
+
+    /* Select */
+    .control select {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      font-size: 0.84rem;
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .control select:focus { border-color: var(--accent); }
+
+    /* Toggle */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .toggle-row:last-child { border-bottom: none; }
+    .toggle-info { display: flex; flex-direction: column; gap: 2px; }
+    .toggle-info span { font-size: 0.84rem; font-weight: 500; }
+    .toggle-info small { font-size: 0.72rem; color: var(--muted); }
+    .toggle {
+      width: 40px; height: 22px;
+      background: var(--surface2);
+      border-radius: 99px;
+      position: relative;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .toggle.on { background: var(--accent); border-color: var(--accent); }
+    .toggle::after {
+      content: '';
+      position: absolute;
+      top: 2px; left: 2px;
+      width: 16px; height: 16px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+    .toggle.on::after { transform: translateX(18px); }
+
+    /* ── Info card ── */
+    .info-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .info-card strong { color: var(--text); }
+
+    /* ── Stats ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .stat-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      text-align: center;
+    }
+    .stat-card .stat-val {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--accent);
+      font-variant-numeric: tabular-nums;
+    }
+    .stat-card .stat-label { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+
+    /* ── Download area ── */
+    .download-area {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .download-area.visible { display: flex; }
+    .download-file-info {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.83rem;
+    }
+    .download-file-info .file-icon { font-size: 1.5rem; }
+    .download-file-info .file-details { flex:1; }
+    .download-file-info .file-name { font-weight: 600; word-break: break-all; }
+    .download-file-info .file-size { color: var(--muted); font-size: 0.75rem; margin-top: 2px; }
+
+    /* ── Model loader ── */
+    .model-loader {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      font-size: 0.82rem;
+    }
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      flex-shrink: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Emoji picker ── */
+    .emoji-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+    }
+    .emoji-btn {
+      font-size: 1.4rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 5px 2px;
+      cursor: pointer;
+      transition: all 0.15s;
+      line-height: 1;
+    }
+    .emoji-btn:hover { border-color: var(--accent); transform: scale(1.15); }
+    .emoji-btn.active { border-color: var(--accent); background: var(--accent-glow); box-shadow: 0 0 8px var(--accent-glow); }
+    #customEmoji:focus { border-color: var(--accent); }
+
+    /* ── Shape picker ── */
+    .shape-picker {
+      display: flex;
+      gap: 8px;
+    }
+    .shape-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 4px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+      font-size: 0.7rem;
+      font-weight: 500;
+    }
+    .shape-btn svg { width: 28px; height: 28px; }
+    .shape-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .shape-btn.active {
+      border-color: var(--accent);
+      background: var(--accent-glow);
+      color: var(--accent);
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      main { grid-template-columns: 1fr; height: auto; }
+      .sidebar { border-left: none; border-top: 1px solid var(--border); }
+    }
+
+    .hidden { display: none !important; }
+
+    /* face box overlay for preview */
+    .face-overlay-canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-icon">🎭</div>
+  <h1>Face<span>Blur</span></h1>
+  <div class="badge">MediaPipe Powered</div>
+</header>
+
+<main>
+  <!-- ── Video Panel ── -->
+  <div class="video-panel">
+
+    <!-- Drop zone -->
+    <div class="drop-zone" id="dropZone">
+      <div class="drop-icon">🎬</div>
+      <h2>Drop your video here</h2>
+      <p>Supports MP4, WebM, MOV · Up to ~500MB<br>Processing happens entirely in your browser</p>
+      <button class="btn-browse" onclick="document.getElementById('fileInput').click()">Browse Files</button>
+      <input type="file" id="fileInput" accept="video/*" hidden />
+    </div>
+
+    <!-- Canvas output -->
+    <div class="canvas-wrap" id="canvasWrap">
+      <canvas id="outputCanvas"></canvas>
+      <canvas id="faceOverlay" class="face-overlay-canvas"></canvas>
+      <video id="hiddenVideo" playsinline muted></video>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-header">
+        <div><strong id="progressLabel">Processing…</strong></div>
+        <div id="progressPct">0%</div>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressFill"></div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="action-row">
+      <button class="btn btn-primary" id="btnProcess" disabled>
+        <span>▶</span> Process Video
+      </button>
+      <button class="btn btn-outline hidden" id="btnCancel">✕ Cancel</button>
+      <button class="btn btn-outline" id="btnReset" disabled>↺ Reset</button>
+      <div class="status-chip">
+        <div class="status-dot" id="statusDot"></div>
+        <span id="statusText">Loading model…</span>
+      </div>
+    </div>
+
+    <!-- Download -->
+    <div class="download-area" id="downloadArea">
+      <div class="download-file-info">
+        <div class="file-icon">📦</div>
+        <div class="file-details">
+          <div class="file-name" id="dlFileName">output.webm</div>
+          <div class="file-size" id="dlFileSize">—</div>
+        </div>
+      </div>
+      <div style="display:flex; gap:10px">
+        <button class="btn btn-success" id="btnDownload" style="flex:1">
+          ⬇ Download Blurred Video
+        </button>
+        <button class="btn btn-danger" id="btnClearDl">✕</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Sidebar ── -->
+  <div class="sidebar">
+
+    <!-- Model status -->
+    <div class="sidebar-section">
+      <h3>Model Status</h3>
+      <div class="model-loader" id="modelLoader">
+        <div class="spinner" id="modelSpinner"></div>
+        <span id="modelStatus">Downloading MediaPipe model…</span>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="sidebar-section">
+      <h3>Session Stats</h3>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-val" id="statFaces">0</div>
+          <div class="stat-label">Faces Found</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="statFrames">0</div>
+          <div class="stat-label">Frames Processed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="statFPS">—</div>
+          <div class="stat-label">Avg FPS</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="statDuration">—</div>
+          <div class="stat-label">Duration</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blur settings -->
+    <div class="sidebar-section">
+      <h3>Blur Settings</h3>
+
+      <div class="control">
+        <div class="control-label">
+          <span>Blur Strength</span>
+          <span class="val" id="valBlur">40</span>
+        </div>
+        <input type="range" id="slBlur" min="4" max="60" step="2" value="40" />
+        <div class="control-desc">Higher values create a stronger gaussian blur over each detected face.</div>
+      </div>
+
+      <div class="control">
+        <div class="control-label">
+          <span>Detection Confidence</span>
+          <span class="val" id="valConf">55%</span>
+        </div>
+        <input type="range" id="slConf" min="20" max="95" step="5" value="55" />
+        <div class="control-desc">Minimum confidence to accept a face detection. Lower = more sensitive, higher = fewer false positives.</div>
+      </div>
+
+      <div class="control">
+        <div class="control-label">
+          <span>Padding</span>
+          <span class="val" id="valPad">20%</span>
+        </div>
+        <input type="range" id="slPad" min="0" max="60" step="5" value="20" />
+        <div class="control-desc">Extra padding around the detected bounding box so ears/hair are included.</div>
+      </div>
+
+      <div class="control">
+        <div class="control-label">
+          <span>Blur Style</span>
+        </div>
+        <div class="control">
+          <select id="selStyle">
+            <option value="gaussian">Gaussian Blur</option>
+            <option value="pixelate">Pixelate</option>
+            <option value="solid">Solid Fill</option>
+            <option value="emoji">Emoji Overlay 😶</option>
+          </select>
+        </div>
+        <div class="control-desc">Choose how faces are obscured in the output video.</div>
+      </div>
+
+      <div class="control hidden" id="solidColorRow">
+        <div class="control-label"><span>Fill Color</span></div>
+        <input type="color" id="solidColor" value="#000000" style="width:100%;height:36px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);cursor:pointer;" />
+      </div>
+
+      <div class="control hidden" id="emojiPickerRow">
+        <div class="control-label"><span>Choose Emoji</span></div>
+        <div class="emoji-grid" id="emojiGrid">
+          <button class="emoji-btn active" data-emoji="😶">😶</button>
+          <button class="emoji-btn" data-emoji="🙈">🙈</button>
+          <button class="emoji-btn" data-emoji="😎">😎</button>
+          <button class="emoji-btn" data-emoji="🤩">🤩</button>
+          <button class="emoji-btn" data-emoji="🥸">🥸</button>
+          <button class="emoji-btn" data-emoji="👺">👺</button>
+          <button class="emoji-btn" data-emoji="🤖">🤖</button>
+          <button class="emoji-btn" data-emoji="👻">👻</button>
+          <button class="emoji-btn" data-emoji="💀">💀</button>
+          <button class="emoji-btn" data-emoji="🎭">🎭</button>
+          <button class="emoji-btn" data-emoji="🎃">🎃</button>
+          <button class="emoji-btn" data-emoji="🫥">🫥</button>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px;align-items:center;">
+          <span style="font-size:0.78rem;color:var(--muted);white-space:nowrap;">Custom:</span>
+          <input type="text" id="customEmoji" maxlength="2" placeholder="✍️" style="width:52px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:1.3rem;text-align:center;padding:4px;outline:none;cursor:text;" />
+          <span style="font-size:0.72rem;color:var(--muted);">Paste any emoji</span>
+        </div>
+      </div>
+
+      <div class="control">
+        <div class="control-label"><span>Mask Shape</span></div>
+        <div class="shape-picker" id="shapePicker">
+          <button class="shape-btn" data-shape="rectangle" title="Rectangle">
+            <svg viewBox="0 0 28 28" fill="none"><rect x="3" y="7" width="22" height="14" rx="1" stroke="currentColor" stroke-width="2"/></svg>
+            <span>Rect</span>
+          </button>
+          <button class="shape-btn" data-shape="oval" title="Oval">
+            <svg viewBox="0 0 28 28" fill="none"><ellipse cx="14" cy="14" rx="11" ry="8" stroke="currentColor" stroke-width="2"/></svg>
+            <span>Oval</span>
+          </button>
+          <button class="shape-btn active" data-shape="circle" title="Circle">
+            <svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="10" stroke="currentColor" stroke-width="2"/></svg>
+            <span>Circle</span>
+          </button>
+        </div>
+        <div class="control-desc">Shape of the blur mask applied over each face.</div>
+      </div>
+
+    </div>
+
+    <!-- Toggles -->
+    <div class="sidebar-section">
+      <h3>Options</h3>
+
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <span>Show Face Boxes</span>
+          <small>Draw detection bounding boxes during preview</small>
+        </div>
+        <div class="toggle on" id="togBoxes" onclick="toggleOption('togBoxes','showBoxes')"></div>
+      </div>
+
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <span>Smooth Tracking</span>
+          <small>Temporally smooth bounding boxes to reduce flicker</small>
+        </div>
+        <div class="toggle on" id="togSmooth" onclick="toggleOption('togSmooth','smoothing')"></div>
+      </div>
+
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <span>High Quality Export</span>
+          <small>Use higher bitrate for output (larger file size)</small>
+        </div>
+        <div class="toggle on" id="togHQ" onclick="toggleOption('togHQ','highQuality')"></div>
+      </div>
+
+    </div>
+
+    <!-- Info -->
+    <div class="sidebar-section">
+      <h3>About</h3>
+      <div class="info-card">
+        <strong>100% Private.</strong> All processing runs in your browser using WebAssembly. Your video never leaves your device.<br><br>
+        Powered by <strong>MediaPipe BlazeFace</strong> — a fast, accurate real-time face detector.
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- MediaPipe Tasks Vision -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.15/vision_bundle.mjs" crossorigin="anonymous" type="module" id="mpScript"></script>
+
+<script type="module">
+// ─── Wait for MediaPipe to load ───────────────────────────────────────────────
+const { FaceDetector, FilesetResolver } = await import(
+  'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.15/vision_bundle.mjs'
+);
+
+// ─── State ────────────────────────────────────────────────────────────────────
+const state = {
+  file: null,
+  faceDetector: null,
+  modelReady: false,
+  processing: false,
+  cancelled: false,
+  outputBlob: null,
+  showBoxes: true,
+  smoothing: true,
+  highQuality: true,
+  // smoothed bboxes per face slot
+  smoothedBoxes: [],
+  totalFacesDetected: 0,
+  framesProcessed: 0,
+};
+
+// ─── DOM refs ─────────────────────────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+const dropZone      = $('dropZone');
+const fileInput     = $('fileInput');
+const canvasWrap    = $('canvasWrap');
+const outputCanvas  = $('outputCanvas');
+const faceOverlay   = $('faceOverlay');
+const hiddenVideo   = $('hiddenVideo');
+const progressWrap  = $('progressWrap');
+const progressFill  = $('progressFill');
+const progressPct   = $('progressPct');
+const progressLabel = $('progressLabel');
+const btnProcess    = $('btnProcess');
+const btnCancel     = $('btnCancel');
+const btnReset      = $('btnReset');
+const btnDownload   = $('btnDownload');
+const btnClearDl    = $('btnClearDl');
+const downloadArea  = $('downloadArea');
+const dlFileName    = $('dlFileName');
+const dlFileSize    = $('dlFileSize');
+const statusDot     = $('statusDot');
+const statusText    = $('statusText');
+const modelLoader   = $('modelLoader');
+const modelSpinner  = $('modelSpinner');
+const modelStatus   = $('modelStatus');
+
+// controls
+const slBlur   = $('slBlur');
+const slConf   = $('slConf');
+const slPad    = $('slPad');
+const selStyle   = $('selStyle');
+const solidColor = $('solidColor');
+const shapePicker = $('shapePicker');
+let maskShape = 'circle';
+let selectedEmoji = '😶';
+
+// ─── Init MediaPipe ───────────────────────────────────────────────────────────
+async function initModel() {
+  try {
+    const vision = await FilesetResolver.forVisionTasks(
+      'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.15/wasm'
+    );
+    state.faceDetector = await FaceDetector.createFromOptions(vision, {
+      baseOptions: {
+        modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite',
+        delegate: 'GPU',
+      },
+      runningMode: 'IMAGE',
+      minDetectionConfidence: parseFloat(slConf.value) / 100,
+    });
+    state.modelReady = true;
+    modelSpinner.style.display = 'none';
+    modelStatus.textContent = '✓ Model ready';
+    modelLoader.style.borderColor = 'var(--success)';
+    modelLoader.style.color = 'var(--success)';
+    setStatus('ready', 'Model ready');
+    if (state.file) btnProcess.disabled = false;
+  } catch (e) {
+    modelStatus.textContent = '✗ Failed to load model';
+    modelLoader.style.borderColor = 'var(--danger)';
+    setStatus('error', 'Model load failed');
+    console.error(e);
+  }
+}
+
+// ─── Status helpers ───────────────────────────────────────────────────────────
+function setStatus(type, text) {
+  statusDot.className = 'status-dot ' + type;
+  statusText.textContent = text;
+}
+
+// ─── Range label sync ─────────────────────────────────────────────────────────
+slBlur.addEventListener('input', () => $('valBlur').textContent = slBlur.value);
+slConf.addEventListener('input', () => $('valConf').textContent = slConf.value + '%');
+slPad.addEventListener('input',  () => $('valPad').textContent  = slPad.value  + '%');
+selStyle.addEventListener('change', () => {
+  $('solidColorRow').classList.toggle('hidden', selStyle.value !== 'solid');
+  $('emojiPickerRow').classList.toggle('hidden', selStyle.value !== 'emoji');
+});
+
+$('emojiGrid').addEventListener('click', e => {
+  const btn = e.target.closest('.emoji-btn');
+  if (!btn) return;
+  $('emojiGrid').querySelectorAll('.emoji-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedEmoji = btn.dataset.emoji;
+  $('customEmoji').value = '';
+});
+
+$('customEmoji').addEventListener('input', e => {
+  const val = [...e.target.value].slice(0, 2).join(''); // grab up to 1-2 chars (emoji can be multi-codepoint)
+  if (val) {
+    selectedEmoji = val;
+    $('emojiGrid').querySelectorAll('.emoji-btn').forEach(b => b.classList.remove('active'));
+  }
+});
+
+shapePicker.addEventListener('click', e => {
+  const btn = e.target.closest('.shape-btn');
+  if (!btn) return;
+  shapePicker.querySelectorAll('.shape-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  maskShape = btn.dataset.shape;
+});
+
+// ─── Toggle option ────────────────────────────────────────────────────────────
+window.toggleOption = function(togId, key) {
+  state[key] = !state[key];
+  $(togId).classList.toggle('on', state[key]);
+};
+
+// ─── File handling ────────────────────────────────────────────────────────────
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault(); dropZone.classList.remove('drag-over');
+  const f = e.dataTransfer.files[0];
+  if (f && f.type.startsWith('video/')) loadFile(f);
+});
+fileInput.addEventListener('change', () => { if (fileInput.files[0]) loadFile(fileInput.files[0]); });
+
+function loadFile(file) {
+  state.file = file;
+  const url = URL.createObjectURL(file);
+  hiddenVideo.src = url;
+  hiddenVideo.load();
+  hiddenVideo.addEventListener('loadedmetadata', () => {
+    const w = hiddenVideo.videoWidth;
+    const h = hiddenVideo.videoHeight;
+    outputCanvas.width  = w; outputCanvas.height  = h;
+    faceOverlay.width   = w; faceOverlay.height   = h;
+    // Size the wrapper to match the video's natural aspect ratio
+    outputCanvas.style.width  = '';
+    outputCanvas.style.height = '';
+    dropZone.style.display = 'none';
+    canvasWrap.classList.add('visible');
+    // Draw first frame
+    hiddenVideo.currentTime = 0;
+    hiddenVideo.addEventListener('seeked', () => {
+      const ctx = outputCanvas.getContext('2d');
+      ctx.drawImage(hiddenVideo, 0, 0);
+    }, { once: true });
+    $('statDuration').textContent = fmtTime(hiddenVideo.duration);
+    if (state.modelReady) { btnProcess.disabled = false; setStatus('ready', 'Ready to process'); }
+    btnReset.disabled = false;
+  }, { once: true });
+}
+
+function fmtTime(s) {
+  const m = Math.floor(s/60), sec = Math.floor(s%60);
+  return `${m}:${sec.toString().padStart(2,'0')}`;
+}
+
+function fmtBytes(b) {
+  if (b < 1024*1024) return (b/1024).toFixed(1)+' KB';
+  return (b/(1024*1024)).toFixed(1)+' MB';
+}
+
+// ─── Gaussian blur helper ─────────────────────────────────────────────────────
+function applyBlur(ctx, x, y, w, h, radius) {
+  // Stack-based box blur approximation using canvas filter
+  const r = Math.max(1, Math.floor(radius));
+  ctx.save();
+  ctx.filter = `blur(${r}px)`;
+  // Draw the region scaled down and back up to amplify blur
+  const tmp = document.createElement('canvas');
+  tmp.width = w; tmp.height = h;
+  const tc = tmp.getContext('2d');
+  tc.drawImage(ctx.canvas, x, y, w, h, 0, 0, w, h);
+  // Apply multiple passes for stronger effect
+  for (let i = 0; i < 3; i++) {
+    tc.filter = `blur(${r}px)`;
+    tc.drawImage(tmp, 0, 0);
+  }
+  tc.filter = 'none';
+  ctx.filter = 'none';
+  ctx.drawImage(tmp, 0, 0, w, h, x, y, w, h);
+  ctx.restore();
+}
+
+// ─── Pixelate helper ──────────────────────────────────────────────────────────
+function applyPixelate(ctx, x, y, w, h, blockSize) {
+  const bs = Math.max(4, blockSize);
+  const tmp = document.createElement('canvas');
+  tmp.width = w; tmp.height = h;
+  const tc = tmp.getContext('2d');
+  // Draw small
+  const sw = Math.max(1, Math.floor(w / bs));
+  const sh = Math.max(1, Math.floor(h / bs));
+  tc.imageSmoothingEnabled = false;
+  tc.drawImage(ctx.canvas, x, y, w, h, 0, 0, sw, sh);
+  tc.drawImage(tmp, 0, 0, sw, sh, 0, 0, w, h);
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(tmp, 0, 0, w, h, x, y, w, h);
+  ctx.imageSmoothingEnabled = true;
+}
+
+// ─── Apply effect on bounding box ─────────────────────────────────────────────
+// MediaPipe Tasks Vision BoundingBox values are in PIXEL coords, not normalized.
+// Build a clip path for the chosen mask shape
+function clipMaskShape(ctx, x, y, w, h) {
+  ctx.beginPath();
+  if (maskShape === 'oval') {
+    ctx.ellipse(x + w / 2, y + h / 2, w / 2, h / 2, 0, 0, Math.PI * 2);
+  } else if (maskShape === 'circle') {
+    const r = Math.min(w, h) / 2;
+    ctx.arc(x + w / 2, y + h / 2, r, 0, Math.PI * 2);
+  } else {
+    // rectangle
+    ctx.rect(x, y, w, h);
+  }
+  ctx.clip();
+}
+
+function applyEffect(ctx, box, cw, ch) {
+  const pad       = parseFloat(slPad.value) / 100;
+  const bstrength = parseInt(slBlur.value);
+  const style     = selStyle.value;
+
+  const pw = box.width  * pad;
+  const ph = box.height * pad;
+  const x = Math.max(0, Math.round(box.originX - pw));
+  const y = Math.max(0, Math.round(box.originY - ph));
+  const w = Math.min(cw - x, Math.round(box.width  + pw * 2));
+  const h = Math.min(ch - y, Math.round(box.height + ph * 2));
+  if (w <= 0 || h <= 0) return;
+
+  console.log(`[FaceBlur] Blurring face at pixel (${x},${y}) size ${w}×${h} — style: ${style}, shape: ${maskShape}, strength: ${bstrength}`);
+
+  if (style === 'emoji') {
+    ctx.save();
+    // Clip to shape so emoji stays within the mask boundary
+    clipMaskShape(ctx, x, y, w, h);
+    const fontSize = Math.min(w, h) * 0.9;
+    ctx.font = `${fontSize}px serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(selectedEmoji, x + w / 2, y + h / 2);
+    ctx.restore();
+    return;
+  }
+
+  ctx.save();
+  clipMaskShape(ctx, x, y, w, h);
+
+  if (style === 'gaussian') {
+    applyBlur(ctx, x, y, w, h, bstrength);
+  } else if (style === 'pixelate') {
+    applyPixelate(ctx, x, y, w, h, bstrength);
+  } else if (style === 'solid') {
+    ctx.fillStyle = solidColor.value;
+    ctx.fillRect(x, y, w, h);
+  }
+
+  ctx.restore();
+}
+
+// ─── Smooth boxes ─────────────────────────────────────────────────────────────
+function smoothBoxes(detections) {
+  const alpha = 0.35; // smoothing factor
+  while (state.smoothedBoxes.length < detections.length)
+    state.smoothedBoxes.push(null);
+  return detections.map((det, i) => {
+    const b = det.boundingBox;
+    if (!state.smoothedBoxes[i] || !state.smoothing) {
+      state.smoothedBoxes[i] = { ...b };
+    } else {
+      const s = state.smoothedBoxes[i];
+      s.originX = s.originX + alpha * (b.originX - s.originX);
+      s.originY = s.originY + alpha * (b.originY - s.originY);
+      s.width   = s.width   + alpha * (b.width   - s.width);
+      s.height  = s.height  + alpha * (b.height  - s.height);
+    }
+    return state.smoothedBoxes[i];
+  });
+}
+
+// ─── Main processing ──────────────────────────────────────────────────────────
+btnProcess.addEventListener('click', processVideo);
+btnCancel.addEventListener('click', () => { state.cancelled = true; });
+btnReset.addEventListener('click', resetAll);
+btnClearDl.addEventListener('click', () => { downloadArea.classList.remove('visible'); });
+btnDownload.addEventListener('click', () => {
+  if (!state.outputBlob) return;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(state.outputBlob);
+  const ext = state.outputBlob.type.includes('webm') ? 'webm' : 'mp4';
+  a.download = (state.file?.name?.replace(/\.[^.]+$/, '') || 'output') + '_blurred.' + ext;
+  a.click();
+});
+
+async function processVideo() {
+  if (!state.file || !state.faceDetector || state.processing) return;
+  state.processing = true;
+  state.cancelled  = false;
+  state.smoothedBoxes = [];
+  state.totalFacesDetected = 0;
+  state.framesProcessed = 0;
+
+  btnProcess.disabled = true;
+  btnReset.disabled   = true;
+  btnCancel.classList.remove('hidden');
+  progressWrap.classList.add('visible');
+  downloadArea.classList.remove('visible');
+  setStatus('processing', 'Processing…');
+
+  // Re-init detector with current confidence setting
+  try {
+    await state.faceDetector.setOptions({
+      minDetectionConfidence: parseFloat(slConf.value) / 100,
+    });
+  } catch(e) { /* ignore */ }
+
+  const video    = hiddenVideo;
+  const ctx      = outputCanvas.getContext('2d', { willReadFrequently: true });
+  const overlayCtx = faceOverlay.getContext('2d');
+  const duration = video.duration;
+  const cw = outputCanvas.width;
+  const ch = outputCanvas.height;
+
+  // Pick best supported mime type
+  const mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
+    ? 'video/webm;codecs=vp9'
+    : MediaRecorder.isTypeSupported('video/webm;codecs=vp8')
+    ? 'video/webm;codecs=vp8'
+    : 'video/webm';
+
+  const bitsPerSecond = state.highQuality ? 8_000_000 : 3_000_000;
+  const stream   = outputCanvas.captureStream(0); // manual tick
+  const recorder = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: bitsPerSecond });
+  const chunks   = [];
+  recorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+  recorder.start();
+
+  // Determine target FPS for seek-based approach
+  const TARGET_FPS = 24;
+  const frameInterval = 1 / TARGET_FPS;
+  const totalFrames   = Math.ceil(duration * TARGET_FPS);
+  let frameIdx  = 0;
+  let startTime = performance.now();
+  let maxFaces  = 0;
+
+  function updateProgress(idx) {
+    const pct = Math.min(100, Math.round((idx / totalFrames) * 100));
+    progressFill.style.width = pct + '%';
+    progressPct.textContent  = pct + '%';
+    progressLabel.textContent = `Processing frame ${idx} / ${totalFrames}`;
+  }
+
+  // Seek-and-render loop
+  async function processFrame(time) {
+    return new Promise(resolve => {
+      video.currentTime = time;
+      video.addEventListener('seeked', async () => {
+        // Draw base frame
+        ctx.drawImage(video, 0, 0, cw, ch);
+
+        // Detect faces
+        let detections = [];
+        try {
+          const res = state.faceDetector.detect(video);
+          detections = res.detections || [];
+          if (detections.length > 0) {
+            console.log(`[FaceBlur] Frame ${frameIdx} @ ${t.toFixed(2)}s — ${detections.length} face(s) detected:`);
+            detections.forEach((d, i) => {
+              const b = d.boundingBox;
+              const conf = d.categories?.[0]?.score ?? 0;
+              console.log(`  Face ${i+1}: origin=(${b.originX.toFixed(1)}, ${b.originY.toFixed(1)}) size=${b.width.toFixed(1)}×${b.height.toFixed(1)}px confidence=${(conf*100).toFixed(1)}%`);
+            });
+          } else {
+            console.log(`[FaceBlur] Frame ${frameIdx} @ ${t.toFixed(2)}s — no faces detected`);
+          }
+        } catch(e) {
+          console.error(`[FaceBlur] Frame ${frameIdx} detection error:`, e);
+        }
+
+        const faces = smoothBoxes(detections);
+        state.totalFacesDetected += faces.length;
+        if (faces.length > maxFaces) maxFaces = faces.length;
+
+        // Apply effect to each face
+        faces.forEach(box => applyEffect(ctx, box, cw, ch));
+        const totalPixels = detections.reduce((sum, d) => sum + Math.round(d.boundingBox.width) * Math.round(d.boundingBox.height), 0);
+        if (detections.length > 0) console.log(`[FaceBlur] Frame ${frameIdx} — total blurred area: ${totalPixels.toLocaleString()} px²`);
+
+        // Draw overlay boxes (debug)
+        overlayCtx.clearRect(0, 0, cw, ch);
+        if (state.showBoxes) {
+          overlayCtx.strokeStyle = '#7c6af7';
+          overlayCtx.lineWidth   = 2;
+          overlayCtx.fillStyle   = 'rgba(124,106,247,0.08)';
+          detections.forEach(det => {
+            const b  = det.boundingBox;
+            const px = Math.round(b.originX);
+            const py = Math.round(b.originY);
+            const pw = Math.round(b.width);
+            const ph = Math.round(b.height);
+            overlayCtx.strokeRect(px, py, pw, ph);
+            overlayCtx.fillRect(px, py, pw, ph);
+            // confidence label
+            overlayCtx.fillStyle = '#7c6af7';
+            overlayCtx.font = 'bold 13px system-ui';
+            overlayCtx.fillText(
+              `${Math.round((det.categories?.[0]?.score || 0) * 100)}%`,
+              px + 4, py - 6
+            );
+            overlayCtx.fillStyle = 'rgba(124,106,247,0.08)';
+          });
+        }
+
+        // Capture frame into recorder
+        stream.getTracks()[0].requestFrame();
+        state.framesProcessed++;
+
+        // Update stats
+        $('statFaces').textContent  = maxFaces;
+        $('statFrames').textContent = state.framesProcessed;
+        const elapsed = (performance.now() - startTime) / 1000;
+        $('statFPS').textContent    = (state.framesProcessed / elapsed).toFixed(1);
+
+        resolve();
+      }, { once: true });
+    });
+  }
+
+  // Frame loop with yield to avoid blocking UI
+  const processNextChunk = () => new Promise(resolve => setTimeout(resolve, 0));
+
+  while (frameIdx < totalFrames && !state.cancelled) {
+    const t = frameIdx * frameInterval;
+    if (t >= duration) break;
+    await processFrame(t);
+    updateProgress(++frameIdx);
+    if (frameIdx % 10 === 0) await processNextChunk();
+  }
+
+  // Stop recording
+  recorder.stop();
+  await new Promise(r => recorder.onstop = r);
+
+  if (state.cancelled) {
+    progressLabel.textContent = 'Cancelled.';
+    progressFill.style.background = 'var(--danger)';
+    setStatus('ready', 'Cancelled');
+  } else {
+    const blob = new Blob(chunks, { type: mimeType });
+    state.outputBlob = blob;
+    progressFill.style.width = '100%';
+    progressPct.textContent  = '100%';
+    progressLabel.textContent = '✓ Processing complete!';
+    progressFill.style.background = 'linear-gradient(90deg, var(--success), #86efac)';
+    setStatus('ready', 'Done!');
+
+    const ext = mimeType.includes('webm') ? 'webm' : 'mp4';
+    dlFileName.textContent = (state.file.name.replace(/\.[^.]+$/, '') || 'output') + '_blurred.' + ext;
+    dlFileSize.textContent = fmtBytes(blob.size) + ' · ' + mimeType.split(';')[0];
+    downloadArea.classList.add('visible');
+  }
+
+  state.processing = false;
+  btnProcess.disabled = false;
+  btnReset.disabled   = false;
+  btnCancel.classList.add('hidden');
+}
+
+// ─── Reset ────────────────────────────────────────────────────────────────────
+function resetAll() {
+  state.file = null;
+  state.outputBlob = null;
+  state.cancelled  = false;
+  state.processing = false;
+  state.smoothedBoxes = [];
+  state.totalFacesDetected = 0;
+  state.framesProcessed = 0;
+
+  hiddenVideo.src = '';
+  outputCanvas.getContext('2d').clearRect(0,0,outputCanvas.width,outputCanvas.height);
+  faceOverlay.getContext('2d').clearRect(0,0,faceOverlay.width,faceOverlay.height);
+  canvasWrap.classList.remove('visible');
+  dropZone.style.display = '';
+  progressWrap.classList.remove('visible');
+  progressFill.style.width = '0%';
+  progressFill.style.background = 'linear-gradient(90deg, var(--accent), #a78bfa)';
+  downloadArea.classList.remove('visible');
+  btnProcess.disabled = true;
+  btnReset.disabled   = true;
+  btnCancel.classList.add('hidden');
+  fileInput.value = '';
+
+  $('statFaces').textContent   = '0';
+  $('statFrames').textContent  = '0';
+  $('statFPS').textContent     = '—';
+  $('statDuration').textContent = '—';
+
+  if (state.modelReady) setStatus('ready', 'Ready');
+}
+
+// ─── Boot ─────────────────────────────────────────────────────────────────────
+initModel();
+</script>
+</body>
+</html>
