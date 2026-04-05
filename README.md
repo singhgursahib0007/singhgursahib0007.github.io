@@ -36,6 +36,8 @@ https://singhgursahib0007.github.io/QuickTools/ppts_to_text.html
 
 https://singhgursahib0007.github.io/QuickTools/QRCodeGen.html
 
+https://singhgursahib0007.github.io/QuickTools/face-mask.html
+
 ### Ethics Bowl
 
 https://singhgursahib0007.github.io/Ethics/Bowl1.html
