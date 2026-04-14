@@ -1,0 +1,14 @@
+{
+  "projects": [
+    {
+      "name": "five-dollar-lie",
+      "title": "The $5 Lie: Why Small Purchases Destroy You",
+      "prompts_url": "https://raw.githubusercontent.com/singhgursahib0007/singhgursahib0007.github.io/main/Pipeline/five-dollar-lie/prompts.json"
+    },
+    {
+      "name": "always-broke",
+      "title": "Why You're Always Broke (It's Not Your Income)",
+      "prompts_url": "https://raw.githubusercontent.com/singhgursahib0007/singhgursahib0007.github.io/main/Pipeline/always-broke/prompts.json"
+    }
+  ]
+}
