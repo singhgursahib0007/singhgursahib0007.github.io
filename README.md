@@ -42,5 +42,8 @@ https://singhgursahib0007.github.io/QuickTools/face-mask.html
 
 https://singhgursahib0007.github.io/Ethics/Bowl1.html
 
+https://singhgursahib0007.github.io/EthicsCourse.md
+
+
 ### Portfolio Web
 https://singhgursahib0007.github.io/Potfolio/index3.html
