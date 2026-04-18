@@ -1,0 +1,17 @@
+{
+  "scene": "Closing",
+  "prompts": [
+    {
+      "image_number": 1,
+      "scene": "Closing",
+      "narration_snippet": "The software runs.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. A wide, cinematic final shot shows gentle streams of luminous code cascading across a deep indigo sky like northern lights, ribbons of teal, lavender, and soft gold drifting in elegant arcs. Standing small in the lower center of the frame is a small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows. Its massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a calm, contemplative expression. Slung over its shoulder is a teal plush backpack, complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The character gazes upward at the vast display of streaming code-light above, silhouetted softly against the glowing aurora. The atmosphere is serene and expansive, evoking quiet wonder. no text"
+    },
+    {
+      "image_number": 2,
+      "scene": "Closing",
+      "narration_snippet": "But you are not the software.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. A powerful close-up foreground shot shows a small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows, standing tall and upright with shoulders back in quiet confidence. Its massive, teal-green crystalline eyes sparkle with a starry, magical gradient, gazing directly at the camera with warmth and steady self-assurance, framed by delicate purple eyebrows and a gentle, knowing smile. Slung over its shoulder is a teal plush backpack, complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. In one small hand it holds a single glowing golden thread. Behind and around the character, translucent streams of luminous code drift past like soft aurora currents, flowing through the space but passing around the character without touching it, emphasizing that the code does not define this being. no text"
+    }
+  ]
+}

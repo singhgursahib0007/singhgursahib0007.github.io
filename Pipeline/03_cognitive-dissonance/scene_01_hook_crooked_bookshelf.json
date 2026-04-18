@@ -1,0 +1,114 @@
+{
+  "video_title": "The Reason Smart People Believe Dumb Things About Themselves",
+  "scene": "Hook — The Crooked Bookshelf",
+  "prompts": [
+    {
+      "image_number": 1,
+      "scene": "Hook — The Crooked Bookshelf",
+      "narration_snippet": "Imagine you just spent two hours",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. A small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows, massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a tired, relieved expression, wearing a teal plush backpack complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The character is wiping sweat from its forehead with the back of one stubby hand, surrounded by scattered wooden planks, bolts, nuts, instruction papers, and hand tools spread across a warm hardwood floor. Sawdust floats gently in the air under soft indoor lighting, conveying the aftermath of a long, exhausting DIY effort. no text"
+    },
+    {
+      "image_number": 2,
+      "scene": "Hook — The Crooked Bookshelf",
+      "narration_snippet": "assembling a crooked bookshelf",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Wide shot of a small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows, massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a beaming, proud expression, wearing a teal plush backpack complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The character stands with hands on hips beside a tall, visibly tilted and wobbly wooden bookshelf that leans at an absurd angle, with uneven shelves jutting at different heights. A few books are already slumping sideways on the lopsided structure. The background is a cozy living room with warm amber lighting. no text"
+    },
+    {
+      "image_number": 3,
+      "scene": "Hook — The Crooked Bookshelf",
+      "narration_snippet": "The screws don't line up",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. An extreme close-up of a wooden bookshelf panel showing multiple misaligned screws poking out at wild, crooked angles from the wood grain surface. Some screws are only halfway in, others are cross-threaded, and one is bent entirely sideways. The wood around the screw holes is slightly splintered and dented. Dramatic comic-book lighting casts sharp shadows across the surface, emphasizing every imperfection. The cel-shaded texture of the wood is richly detailed with bold ink outlines accentuating each flaw. no text"
+    },
+    {
+      "image_number": 4,
+      "scene": "Hook — The Crooked Bookshelf",
+      "narration_snippet": "One shelf is visibly tilted",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. A small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows, massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a wide-eyed, slightly worried expression, wearing a teal plush backpack complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The character watches helplessly as a fat hardcover book slowly slides off a dramatically slanted shelf, teetering at the edge mid-fall. The shelf tilts at an exaggerated downward angle, with other books leaning precariously. Motion lines emphasize the book's slow inevitable slide. no text"
+    },
+    {
+      "image_number": 5,
+      "scene": "Hook — The Crooked Bookshelf",
+      "narration_snippet": "Your friend walks in",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. A chibi-style anthropomorphic fox companion stands in a doorway, rendered with bold ink outlines and cel-shaded warm orange and white fur. The fox's eyes are wide open in visible shock, one paw raised and pointing directly at the crooked bookshelf in the background. Its fluffy tail is puffed up in surprise. The doorway frames the fox with a soft backlit glow from the hallway behind. The composition shows the fox in the foreground with the wobbly bookshelf visible over its shoulder in the cozy living room beyond. no text"
+    },
+    {
+      "image_number": 6,
+      "scene": "Hook — The Crooked Bookshelf",
+      "narration_snippet": "and says, 'That looks terrible.'",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. A close-up portrait of a chibi-style anthropomorphic fox companion with bold ink outlines and cel-shaded warm orange and white fur. The fox wears a deeply cringing, grimacing expression — eyes squeezed half shut, brow furrowed, snout wrinkled in secondhand embarrassment. Both paws are raised in front of its chest, palms out, as if bracing against the sight. The expression conveys polite horror mixed with genuine concern. Warm ambient indoor lighting illuminates the fox's expressive face from slightly above. no text"
+    },
+    {
+      "image_number": 7,
+      "scene": "Hook — The Crooked Bookshelf",
+      "narration_snippet": "And without hesitation, you say:",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. A small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows, massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a determined, slightly smug expression with narrowed eyes and a puffed-up chest, wearing a teal plush backpack complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The character stands tall with arms crossed and chin lifted, radiating defensive confidence. A subtle glow emanates from its chest, symbolizing an inner surge of resolve. The background is a warm living room interior slightly out of focus. no text"
+    },
+    {
+      "image_number": 8,
+      "scene": "Hook — The Crooked Bookshelf",
+      "narration_snippet": "'Actually, I think it adds character.'",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. A small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows, massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a grand, showman-like grin, wearing a teal plush backpack complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The character gestures dramatically with both arms outstretched toward the crooked bookshelf, presenting it like a curator at a prestigious art gallery. A dramatic spotlight shines on the wonky shelf. The character's pose is theatrical and unapologetically proud. no text"
+    },
+    {
+      "image_number": 9,
+      "scene": "Hook — The Crooked Bookshelf",
+      "narration_snippet": "You don't really believe that",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. A vertically split composition: on the left, a small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows, massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a bold confident smirk, wearing a teal plush backpack complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. On the right, a shadowy silhouette version of the same character drenched in sweat with trembling knees and a panicked expression, surrounded by dark purple shadow hues. A jagged lightning-bolt line divides the two halves. no text"
+    },
+    {
+      "image_number": 10,
+      "scene": "Hook — The Crooked Bookshelf",
+      "narration_snippet": "But also — you kind of do",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. The two previously split halves of a small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows, massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a genuinely baffled, cross-eyed expression, wearing a teal plush backpack complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The two halves are merging back into one figure in the center of the frame, with swirling blend lines of light and shadow wrapping around the body. The character stares down at itself in total bewildered confusion. no text"
+    },
+    {
+      "image_number": 11,
+      "scene": "Hook — The Crooked Bookshelf",
+      "narration_snippet": "Something inside you just decided",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. A fantastical interior-of-the-mind scene: a tiny glowing chibi version of the character — small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen, massive, teal-green crystalline eyes sparkling with a starry gradient, purple eyebrows, and a focused determined expression — stands inside a cavernous brain-shaped control room. The tiny character flips glowing switches and pushes luminous buttons on a large fantastical control panel covered in dials and levers. Soft bioluminescent light fills the rounded organic chamber walls. no text"
+    },
+    {
+      "image_number": 12,
+      "scene": "Hook — The Crooked Bookshelf",
+      "narration_snippet": "that this wobbly disaster is actually fine",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. A small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows, massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a stubborn, protective scowl, wearing a teal plush backpack complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The character wraps both stubby arms around the crooked wobbly bookshelf in a fierce bear hug, pressing its cheek against the wood. Meanwhile, several books tumble off the shelves around it, with comic-book motion arcs showing their fall. no text"
+    },
+    {
+      "image_number": 13,
+      "scene": "Hook — The Crooked Bookshelf",
+      "narration_snippet": "maybe even good, because you built it",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. A small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows, massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a deeply satisfied, regal smile, wearing a teal plush backpack complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The character stands on tiptoe, delicately placing a glittering tiny golden crown on the very top of the crooked bookshelf with both hands raised. Sparkles and small stars radiate outward from the crown in all directions. Warm golden light bathes the scene. no text"
+    },
+    {
+      "image_number": 14,
+      "scene": "Hook — The Crooked Bookshelf",
+      "narration_snippet": "And now you'll defend it",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. A small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows, massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a fierce battle-ready glare, wearing a teal plush backpack complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The character is dressed in a comically small suit of shining knight armor over its body, holding a tiny round shield in one hand and a stubby sword in the other, standing in a wide protective stance directly in front of the crooked bookshelf. Dramatic action-lines radiate outward behind the character. no text"
+    },
+    {
+      "image_number": 15,
+      "scene": "Hook — The Crooked Bookshelf",
+      "narration_snippet": "like it's a family heirloom",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. The crooked bookshelf now sits atop an ornate velvet-draped pedestal in a darkened gallery-style room, bathed in a single dramatic golden spotlight from above, as if it were a priceless artifact in a museum. A small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows, massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a reverent, glowing expression of adoration, wearing a teal plush backpack complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm, stands nearby gazing up at the shelf with clasped hands and teary star-filled eyes. no text"
+    },
+    {
+      "image_number": 16,
+      "scene": "Hook — The Crooked Bookshelf",
+      "narration_snippet": "Congratulations. Your brain just lied to you",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. A small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows, massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a blank, neutral expression, wearing a teal plush backpack complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The top of the character's head has opened like a hinged hatch, revealing a tiny plump spin-doctor creature inside — wearing a miniature suit and bow-tie — giving an enthusiastic double thumbs-up from within the glowing brain-chamber. Comic sparkle lines surround the tiny creature's grin. no text"
+    },
+    {
+      "image_number": 17,
+      "scene": "Hook — The Crooked Bookshelf",
+      "narration_snippet": "And the worst part?",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. A small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows, massive, teal-green crystalline eyes sparkle with a starry, magical gradient and are wide open in sudden alarmed realization, framed by delicate purple eyebrows raised high in shock, wearing a teal plush backpack complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The camera dramatically zooms into the character's enormous teal-green eyes, filling the frame with their shimmering, glassy surface. The reflection inside the eyes shows a swirling vortex of question marks and spinning gears rendered in cel-shaded style. no text"
+    },
+    {
+      "image_number": 18,
+      "scene": "Hook — The Crooked Bookshelf",
+      "narration_snippet": "It does this all the time",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. A small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows, massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a bewildered, overwhelmed expression, wearing a teal plush backpack complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The character stands in the center of the frame while dozens of tiny plump spin-doctor creatures — each wearing miniature suits and bow-ties — pop up suddenly all around it from behind furniture, out of pockets, from under the floor, and overhead, like a chaotic game of whack-a-mole. Every tiny creature grins and gives a thumbs-up. Comic action-burst shapes punctuate each pop-up. no text"
+    }
+  ]
+}

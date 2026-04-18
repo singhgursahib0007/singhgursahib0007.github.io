@@ -1,0 +1,299 @@
+{
+  "scene": "The Experiment That Changed Everything",
+  "prompts": [
+    {
+      "image_number": 1,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "In the late 1960s, a psychologist named Mary Ainsworth",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Wide shot of a warm vintage 1960s laboratory room with wooden furniture, retro equipment, and soft amber lighting. Standing by the open door is a small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows. Its massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a curious, scholarly expression. Slung over its shoulder is a teal plush backpack, complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The character wears a tiny white lab coat over its body and holds a small clipboard in one hand. Vintage scientific posters and warm wooden shelves line the walls behind it. no text"
+    },
+    {
+      "image_number": 2,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "wanted to see something invisible —",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Medium shot of a small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows. Its massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a squinting, investigative expression. Slung over its shoulder is a teal plush backpack, complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The character holds up an oversized magnifying glass, peering through it at a shimmering, barely visible golden thread that stretches between two translucent silhouette figures in the background. Sparkles and faint light particles float along the invisible thread. The vintage lab room is softly blurred behind. no text"
+    },
+    {
+      "image_number": 3,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "the bond between a mother and her baby.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Medium shot showing a soft, luminous golden tether glowing warmly as it connects a gentle mother silhouette on the left to a small baby silhouette on the right. The tether pulses with gentle light and tiny heart-shaped sparkles. Off to the side, a small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows watches with wonder. Its massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a tender, awestruck expression. Slung over its shoulder is a teal plush backpack, complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The background is a soft warm gradient. no text"
+    },
+    {
+      "image_number": 4,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "So she designed a beautifully simple experiment",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. A small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows stands before a large dark green chalkboard, sketching with white chalk. Its massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a focused, determined expression. Slung over its shoulder is a teal plush backpack, complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. On the chalkboard is a simple diagram showing a rectangular room outline, two small stick figures inside, and curved arrows showing movement patterns in and out of a door. Chalk dust floats in the warm lamplight of the vintage lab. no text"
+    },
+    {
+      "image_number": 5,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "called the Strange Situation.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Close-up of the dark green chalkboard showing the simple white chalk diagram of a room with stick figures and directional arrows. A small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows stands beside it, tapping the diagram proudly with a long wooden pointer. Its massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a proud, confident smile. Slung over its shoulder is a teal plush backpack, complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. A warm spotlight illuminates the chalkboard, and small sparkle effects radiate from where the pointer touches the diagram. no text"
+    },
+    {
+      "image_number": 6,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "She put mothers and their infants in an unfamiliar room.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Wide shot of a sparse, clean observation room with plain walls, a few simple toys on the floor, and neutral lighting. Inside the room, a mother silhouette sits on a chair with a baby silhouette on her lap. On the other side of a large one-way mirror, a small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows peers through, taking notes on a clipboard. Its massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and an attentive, observing expression. Slung over its shoulder is a teal plush backpack, complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The mirror has a faint reflective sheen. no text"
+    },
+    {
+      "image_number": 7,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "Then she had the mother leave briefly",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Wide shot of the sparse observation room. The mother silhouette stands and walks toward the door on the right side of the frame, her form partially transparent as she moves away. The baby silhouette remains on the floor, head turned to watch the mother leaving, with wide eyes and a slightly worried posture. Simple toys are scattered on the floor around the baby. The room has plain walls and neutral soft lighting. A faint golden tether between mother and baby stretches and thins as distance grows. The doorway glows with warm light from the hallway beyond. The composition emphasizes the growing gap between the two silhouette figures as separation begins. no text"
+    },
+    {
+      "image_number": 8,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "and come back. That's it.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. The mother silhouette returns through the doorway, warm light spilling around her form as she steps back into the sparse observation room. The baby silhouette on the floor looks up toward her. Off to the side behind the one-way mirror, a small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows makes a simple checkmark gesture in the air with one finger. Its massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a satisfied, matter-of-fact expression. Slung over its shoulder is a teal plush backpack, complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. A glowing checkmark floats beside the character. no text"
+    },
+    {
+      "image_number": 9,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "What she watched was what happened at the moment of reunion.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Dramatic slow-motion close-up of the observation room door swinging open. Warm, golden light spills through the widening gap, casting long rays across the floor. The baby silhouette sits on the floor in the foreground, turning its head toward the opening door with wide eyes. Dust particles and sparkles float in the warm light beams. The mother silhouette is barely visible as a glowing form in the doorway. The entire composition focuses on this pivotal moment of reunion, with radial light lines emanating from the doorway. The floor reflects the golden light softly. Motion blur lines suggest the slow, dramatic quality of the moment unfolding. no text"
+    },
+    {
+      "image_number": 10,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "And what she found split the world of children",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. A small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows stands before a large crystalline prism in the center of the frame. Its massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and an amazed, wide-eyed expression. Slung over its shoulder is a teal plush backpack, complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. A single beam of bright white light enters the prism from the left and splits into four distinct colored beams — gold, blue, red, and grey — fanning out to the right. Rainbow sparkles scatter where light meets crystal. The background is dark to emphasize the light effect. no text"
+    },
+    {
+      "image_number": 11,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "into distinct categories.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Wide shot showing four separate elevated platforms arranged in a row, each glowing with a distinct color. The first and largest platform glows warm gold, the second glows cool blue, the third pulses with vibrant red, and the fourth flickers with muted grey. Four colored light beams from above land precisely on each platform, illuminating them like spotlights. Each platform has a unique subtle texture — the gold one is smooth and warm, the blue one has frost patterns, the red one has crackling energy lines, and the grey one has visible cracks. The dark background makes the four colored platforms stand out dramatically. Sparkle effects surround each glowing platform. no text"
+    },
+    {
+      "image_number": 12,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "About 65% of the babies did what you'd expect.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Wide shot of the large gold-glowing platform, which is noticeably the biggest of the four platforms visible in the background. On the gold platform stands a large crowd of small baby silhouettes, the most numerous group by far, bathed in warm golden light. The baby silhouettes are various sizes but all small and cute, standing and sitting in relaxed poses. The golden glow radiates upward around them like a warm aura. The blue, red, and grey platforms are visible in the distance behind, each with visibly smaller groups. The composition emphasizes the overwhelming size of this majority group compared to the others. Warm sparkles and soft light particles float around the gold platform. no text"
+    },
+    {
+      "image_number": 13,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "They got upset when mom left,",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Close-up on the gold platform showing a single baby silhouette sitting and crying, with large cartoon tears streaming down its round face. The baby's mouth is wide open in a wail, and small tear droplets fly outward. Despite the sadness, the warm golden glow still surrounds the baby, suggesting this distress is normal and healthy. Wavy emotion lines radiate from the crying baby. The gold platform surface gleams beneath the baby. In the soft-focus background, other baby silhouettes on the platform show similar upset expressions. The overall tone remains warm despite the crying, with amber and gold tones dominating the color palette. Small sparkle effects mix with the falling tears. no text"
+    },
+    {
+      "image_number": 14,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "and when she came back they reached for her,",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. On the gold platform, the baby silhouette stretches both small arms upward eagerly toward the returning mother silhouette who leans down from above. The baby's whole body language conveys desperate wanting and joy — feet kicking, fingers spread wide, face tilted up with hope. The mother silhouette bends down with open arms, ready to scoop the baby up. A warm golden tether between them glows brilliantly as they reconnect. Golden sparkles burst around the point where their hands are about to meet. The gold platform radiates warm light beneath them. The background is a soft warm gradient of amber and cream tones. Motion lines show the baby's enthusiastic reaching movement upward. no text"
+    },
+    {
+      "image_number": 15,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "calmed down, and went back to playing.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. On the gold platform, the baby silhouette now sits contentedly on the warm glowing surface, smiling peacefully while stacking colorful building blocks — red, blue, yellow, and green. The mother silhouette sits nearby in a relaxed pose, a gentle golden aura connecting them softly. The baby's expression is calm, happy, and focused on play. A warm golden glow surrounds the entire scene like a comforting blanket of light. Small sparkles and tiny stars float gently in the air around them. The building blocks cast soft shadows on the golden platform. The overall mood is serene, safe, and content. Other baby silhouettes play happily in the soft background. The composition radiates peace and security. no text"
+    },
+    {
+      "image_number": 16,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "Ainsworth called this secure attachment.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Medium shot of a small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows, holding up a luminous gold thread between both hands. Its massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a warm, reassuring smile. Slung over its shoulder is a teal plush backpack, complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The gold thread is thick, strong, and radiates warm light, with tiny sparkles dancing along its length. The thread glows so brightly it illuminates the character's face with golden warmth. The background is a soft bokeh of warm amber tones. The thread appears unbreakable and beautiful. no text"
+    },
+    {
+      "image_number": 17,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "These babies had learned a simple, powerful rule:",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Extreme close-up of the massive, teal-green crystalline eyes of a small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows. Its eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a knowing, gentle expression. Reflected in the surface of each crystalline eye is a single golden rule symbol — a glowing golden emblem etched in pure light, shimmering and pulsing. Slung over its shoulder is a teal plush backpack, complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The golden reflection fills the eyes with warmth. Tiny star-shaped sparkles float around the eyes. The background is softly blurred. no text"
+    },
+    {
+      "image_number": 18,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "when I need someone, someone comes.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. A powerful symbolic image showing a large, gentle hand reaching down from the top of the frame, fingers open and welcoming. From the bottom of the frame, a tiny baby hand reaches upward with hope and trust. The two hands clasp together in the center of the composition, and from the point of connection, a brilliant burst of golden light explodes outward in all directions. Golden rays, sparkles, and tiny stars radiate from the joined hands. The background transitions from warm amber at the center to soft cream at the edges. The golden light illuminates everything with safety and warmth. The large hand is soft and nurturing, the small hand is delicate and trusting. The connection point is the brightest element in the entire frame. no text"
+    },
+    {
+      "image_number": 19,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "But about 20% of the babies did something strange.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Cut to the blue platform, which is noticeably smaller than the gold platform visible in the far background. On the cool blue-glowing platform sits a smaller cluster of baby silhouettes, but unlike the gold group, these babies sit apart from each other with their backs turned. Each baby silhouette faces outward, away from the center, in isolated poses. The blue light is cool, pale, and slightly frosty, casting long cold shadows. The baby silhouettes have closed-off body language — arms crossed, heads down, shoulders hunched. Ice crystal patterns shimmer faintly on the blue platform surface. The contrast between this cold scene and the warm gold platform in the background is stark and striking. Frost particles drift in the cool air. no text"
+    },
+    {
+      "image_number": 20,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "When mom left, they barely reacted.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. On the blue platform, a single baby silhouette sits perfectly motionless in the center of the frame with a completely blank, expressionless face. The mother silhouette exits through a door to the right, her form fading as she leaves. The baby shows zero reaction — no turning of the head, no reaching out, no change in posture whatsoever. The baby simply continues sitting in the same position, staring straight ahead with empty eyes. Cool blue light bathes the entire scene in a detached, emotionless atmosphere. The contrast between the dramatic exit of the mother and the baby's total stillness is haunting. Faint frost patterns creep along the platform edges. The blue tones are pale, clinical, and cold throughout the composition. no text"
+    },
+    {
+      "image_number": 21,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "When she returned, they ignored her.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. On the blue platform, the mother silhouette re-enters from the right side of the frame, stepping back into the room with open arms. But the baby silhouette deliberately looks away to the left, turning its entire body in the opposite direction. The baby's posture is rigid and intentional — chin up, eyes averted, small arms folded. The mother silhouette reaches toward the baby but the baby refuses to acknowledge her presence. A faint blue thread between them hangs limp and cold, with tiny ice crystals forming along its length. The cool blue lighting emphasizes the emotional distance. The mother's welcoming gesture contrasts sharply with the baby's complete rejection. Frost particles drift between the two figures in the cold blue atmosphere. no text"
+    },
+    {
+      "image_number": 22,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "Turned away. Kept playing as though nothing happened.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Close-up on the blue platform showing the baby silhouette mechanically stacking building blocks with precise, robotic movements. The baby's eyes are deliberately averted to the side, refusing to look toward where the mother silhouette stands in the soft-focus background. The baby's expression is blank and controlled, showing no emotion whatsoever — no joy in playing, no acknowledgment of the mother's return. Cool blue light casts sharp, cold shadows across the scene. The building blocks themselves appear slightly blue-tinted and frosty. The mechanical nature of the play contrasts with the warm, joyful block-stacking of the secure baby earlier. Ice crystal patterns edge the frame. The overall atmosphere is one of deliberate emotional shutdown and forced independence. no text"
+    },
+    {
+      "image_number": 23,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "Ainsworth called this avoidant attachment.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Medium shot of a small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows, holding up a blue thread between both hands. Its massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a somber, understanding expression. Slung over its shoulder is a teal plush backpack, complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The blue thread is taut and rigid, almost stiff like wire, with a slight frost coating along its length. Tiny ice crystals cling to the thread, and it emits a cold pale blue glow. The thread looks strong but frozen, unable to flex or bend. The background is a gradient of cool blue tones. no text"
+    },
+    {
+      "image_number": 24,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "These babies had learned a different rule:",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Extreme close-up of the face of a small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows. Its massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a solemn, heavy-hearted expression. Slung over its shoulder is a teal plush backpack, complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. Reflected in the crystalline eyes is a blue-tinted symbol, cold and sharp, glowing with icy light. The character's expression conveys deep understanding and sadness about what this rule means. Blue-tinted light washes across the face from below. The background is a deep, cold blue gradient with faint frost patterns at the edges. no text"
+    },
+    {
+      "image_number": 25,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "when I need someone, no one comes.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. A deeply emotional symbolic image showing a tiny baby hand reaching upward from the bottom of the frame, fingers spread open with need and longing. Above the reaching hand is only vast, cold, empty blue space — no hand reaches back. The emptiness above is stark and devastating. The baby hand trembles slightly, indicated by small motion lines. Cold blue light illuminates the small hand from the side, casting a lonely shadow. Ice particles drift down from the empty space above like frozen tears. The frame feels immense and hollow, the tiny hand impossibly small against the vast empty blue void. The entire color palette is cold blues, pale whites, and steel greys. The absence of a responding hand is the most powerful element in the composition. no text"
+    },
+    {
+      "image_number": 26,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "So I'd better stop needing.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Continuation of the previous image — the tiny baby hand that was reaching upward now slowly lowers, fingers curling inward as it withdraws. The hand descends and folds gently into the baby silhouette's lap, closing into itself. The gesture is one of resignation and self-protection. The blue light around the baby silhouette dims further, becoming pale and muted. The baby silhouette's posture contracts, shoulders rounding inward, making itself smaller. Frost creeps across the platform surface beneath the baby. The vast empty space above where no hand appeared remains cold and void. The overall mood is one of quiet, dignified surrender — a tiny being deciding it will no longer ask for what it cannot have. Pale blue shadows deepen around the figure. no text"
+    },
+    {
+      "image_number": 27,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "And then there was a third group — about 15% —",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Cut to the red platform, which is smaller than the gold platform but similar in size to the blue one. On the vibrant red-glowing platform, a cluster of baby silhouettes huddle together in agitated, restless poses. Unlike the still blue babies or the calm gold babies, these red platform babies are animated and anxious — some clutch themselves, some rock back and forth, some reach outward frantically. The red light pulses and flickers with nervous energy, casting jittery shadows. Small red sparks and anxiety swirls orbit around the group like agitated fireflies. The platform surface crackles with red energy lines. The gold and blue platforms are visible in the background for scale comparison. The atmosphere vibrates with tension and unease. no text"
+    },
+    {
+      "image_number": 28,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "who became intensely distressed when mom left,",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. On the red platform, a single baby silhouette wails dramatically with its mouth stretched wide open in extreme distress. Both arms flail wildly in the air, and the whole body shakes with the intensity of the crying. Red sparks of anxiety swirl around the baby in chaotic spirals, like miniature fireworks of distress. Large cartoon tears fly outward in all directions. The baby's entire body language is one of overwhelming panic and desperation. Red shockwave lines pulse outward from the screaming baby. The red platform beneath trembles and cracks with the intensity of the emotion. The mother silhouette is visible exiting through the door in the background. The red light flares brighter with each wail, creating a strobe-like pulsing effect throughout the scene. no text"
+    },
+    {
+      "image_number": 29,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "and when she came back, they clung to her desperately",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. On the red platform, the baby silhouette latches onto the returning mother silhouette's leg with both arms wrapped tightly around it. The grip is desperate and fierce — the baby's entire body clings like it will never let go. The baby silhouette presses its face against the mother's leg, eyes squeezed shut with intensity. Red energy tendrils wrap around both figures, binding them together with anxious force. The mother silhouette stands looking down at the clinging baby. The red thread between them is pulled extremely tight, vibrating with tension. The red platform glows intensely beneath them. Small red sparks still orbit the baby despite the mother's return. The overall feeling is one of desperate, overwhelming need and fear of another separation. no text"
+    },
+    {
+      "image_number": 30,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "but also pushed her away.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. On the red platform, the same baby silhouette displays a contradictory posture — one arm grips the mother silhouette's leg tightly while the other arm shoves against her with an open palm, pushing her away. The baby's expression is conflicted and anguished, caught between desperate need and angry rejection. Red energy sparks fly from the point of the push. The mother silhouette leans slightly from the force of being simultaneously pulled and pushed. Jagged red lightning bolts crackle between the two figures, representing the emotional conflict. The red platform pulses erratically beneath them. The composition captures the impossible contradiction — wanting closeness and fighting it at the same time. Chaotic red swirls orbit the struggling pair. no text"
+    },
+    {
+      "image_number": 31,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "They couldn't be soothed.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. On the red platform, the mother silhouette kneels down and wraps her arms around the baby silhouette in a comforting embrace, trying to soothe it. But despite the embrace, red agitation lines continue to pulse and radiate outward from the baby in sharp, jagged waves. The baby silhouette remains rigid and distressed inside the mother's arms, unable to relax or accept comfort. Red sparks still crackle around the baby's form like an electric field that cannot be calmed. The mother's gentle posture contrasts with the baby's continued state of high alarm. The red glow refuses to dim or soften despite the embrace. Small lightning bolts of anxiety still zigzag around the pair. The platform continues to pulse with restless red energy. The scene conveys the heartbreaking inability to find peace even in the arms of comfort. no text"
+    },
+    {
+      "image_number": 32,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "Ainsworth called this anxious attachment.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Medium shot of a small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows, holding up a red thread between both hands. Its massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a worried, empathetic expression. Slung over its shoulder is a teal plush backpack, complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The red thread vibrates and pulses erratically between the character's hands, jittering with unstable energy. It glows bright then dim in rapid alternation, impossible to hold steady. Red sparks fly off the thread unpredictably. The background is a deep red gradient with flickering highlights. The thread appears alive with anxious, restless energy. no text"
+    },
+    {
+      "image_number": 33,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "Their rule was the cruelest one:",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Extreme close-up of the face of a small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows, wincing with visible pain and empathy. Its massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a pained, wincing expression with eyes slightly squeezed. Slung over its shoulder is a teal plush backpack, complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. Reflected in the crystalline teal eyes is flickering red light that pulses irregularly, casting alternating warm and harsh shadows across the character's face. The background shifts between deep red and black. The character's brow furrows with deep compassion and sorrow. A single tiny tear forms at the corner of one eye. no text"
+    },
+    {
+      "image_number": 34,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "sometimes someone comes, sometimes they don't.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Split frame divided vertically down the center. On the left half, a warm-toned scene shows a large nurturing hand reaching down from above toward a tiny baby hand below, warm golden-red light glowing at their near connection. On the right half, the same composition but the space above the reaching baby hand is completely empty — no hand appears, only cold dark red void. The two halves flicker and alternate, with visual static lines running down the dividing line between them. The left side radiates warmth and hope while the right side emanates cold absence. The baby hand on the right still reaches upward desperately. The flickering effect creates visual instability, as if the image cannot decide which reality to show. Red energy crackles along the split line. no text"
+    },
+    {
+      "image_number": 35,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "I can never be sure.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. On the red platform, a baby silhouette looks back and forth frantically between the two flickering halves of the split reality still visible behind it. The baby's head is turned to one side with motion blur lines showing rapid back-and-forth movement. The baby's eyes are wide with confusion and hypervigilance, scanning desperately for certainty that will never come. Red anxiety spirals orbit around the baby's head. The flickering alternation between the reaching hand and the empty space continues in the background, casting alternating warm and cold light across the baby's form. The baby's body is tense and coiled, ready to react but unsure which direction to go. The red platform crackles with unstable energy beneath the baby's feet. The overall atmosphere conveys exhausting, never-ending uncertainty. no text"
+    },
+    {
+      "image_number": 36,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "So I'd better never stop reaching.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. On the red platform, the baby silhouette reaches both arms upward endlessly into the vast space above. The arms are stretched to their maximum extension, fingers spread wide, the entire body straining upward on tiptoes. The reaching posture conveys exhausting, unending effort — arms that will never lower, need that will never rest. A red glow intensifies around the baby, growing brighter and more saturated with each passing moment. Red energy trails stream upward from the outstretched fingertips like flames of desperate longing. The vast space above remains uncertain — sometimes a faint shadow of a hand appears, sometimes nothing. The baby's expression is one of permanent, tireless yearning. The red platform blazes beneath the figure. The composition emphasizes the vertical reach against the infinite empty space above. no text"
+    },
+    {
+      "image_number": 37,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "Years later, researchers identified a fourth pattern,",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Cut to the grey platform, which is visibly dim and cracked compared to the other three platforms visible in the distant background. A small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows approaches the grey platform cautiously, taking tentative steps forward. Its massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a cautious, apprehensive expression. Slung over its shoulder is a teal plush backpack, complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The grey platform surface is fractured with deep cracks, its light flickering and unstable. Grey mist swirls around the edges. The character reaches one hand forward hesitantly. The atmosphere is heavy and uncertain. no text"
+    },
+    {
+      "image_number": 38,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "found in about 5 to 10% of children,",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Wide shot of the fractured grey platform showing a very small cluster of baby silhouettes huddled together, clearly the smallest group of all four platforms. The babies are pressed close together in a tight, protective cluster at the center of the cracked grey surface. Compared to the large gold group, the moderate blue and red groups visible on their platforms in the background, this grey group is tiny and vulnerable. The grey light around them flickers unpredictably — sometimes dimming almost to darkness, sometimes flashing with harsh static. Cracks radiate outward through the platform surface from beneath the huddled group. Grey mist coils around the edges of the platform. The baby silhouettes appear small, fragile, and uncertain even of each other. The atmosphere is heavy with instability. no text"
+    },
+    {
+      "image_number": 39,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "almost always linked to trauma, abuse,",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Above the grey platform, dark, heavy storm clouds gather in a roiling mass of charcoal and slate grey. The clouds churn with menacing energy, pressing downward toward the small huddled baby silhouettes below. Jagged bolts of grey and white lightning crack through the background sky, illuminating the scene in harsh flashes. The lightning casts sharp, frightening shadows across the fractured platform surface. Rain-like grey particles fall from the storm clouds. The baby silhouettes huddle closer together beneath the threatening sky, trying to shield each other. The platform cracks widen as thunder energy pulses through them. The entire scene is rendered in dark greys, slate blues, and harsh white lightning contrasts. The atmosphere is one of overwhelming threat and powerlessness against forces beyond any child's control. no text"
+    },
+    {
+      "image_number": 40,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "or a caregiver who was simultaneously the source of comfort and terror.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. A haunting symbolic image showing a single tall adult silhouette standing in the center of the frame. The figure rapidly flickers and alternates between two states — on one flash, the silhouette radiates a warm, nurturing golden glow with soft edges and open, welcoming arms. On the next flash, the same silhouette becomes a dark, menacing shadow with sharp edges, looming posture, and threatening darkness emanating from it. The alternation is rapid and disorienting, with visual glitch effects and static lines appearing during each transition. A tiny baby silhouette at the bottom of the frame looks up at this flickering figure with wide, confused eyes. The background alternates between warm gold and cold dark grey with each flash. The overall effect is deeply unsettling and contradictory. no text"
+    },
+    {
+      "image_number": 41,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "It's called disorganized attachment,",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Medium shot of a small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows, holding up a grey thread between both hands. Its massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a deeply troubled, sorrowful expression. Slung over its shoulder is a teal plush backpack, complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The grey thread is a tangled mess — knotted in multiple places, fraying apart in several directions at once, with loose strands splitting off chaotically. It has no clear direction or structure. The thread flickers between visible and almost invisible. Grey static particles drift off the tangled thread. The background is a muted gradient of ash and charcoal. no text"
+    },
+    {
+      "image_number": 42,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "and these children didn't have a coherent strategy at all.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. On the grey fractured platform, a single baby silhouette demonstrates complete confusion of movement. The baby starts walking in one direction to the right, then a ghost afterimage shows it stopping, another afterimage shows it turning back to the left, and another shows it frozen mid-step, unable to commit to any direction. Multiple translucent versions of the baby are visible simultaneously, each facing a different direction, creating a visual representation of total strategic collapse. Directional arrows around the baby point in conflicting directions and then dissolve. Grey static and glitch effects surround the multiple overlapping baby images. The cracked platform beneath reflects the chaos. The overall effect conveys someone whose internal compass is completely broken, spinning without finding north. no text"
+    },
+    {
+      "image_number": 43,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "They'd approach their mother and then freeze.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. On the grey platform, a baby silhouette walks hesitantly toward the mother silhouette on the left side of the frame. Midway between them, the baby suddenly locks up entirely — arms stiff at its sides, legs frozen mid-stride, body completely rigid. The freeze is total and sudden, indicated by sharp geometric lock-up lines radiating from the baby's body. The baby's eyes are wide open but unseeing, trapped between the impulse to approach and the terror of getting closer. The mother silhouette stands with open arms just a few steps ahead, unreachable despite the short distance. Grey static crackles around the frozen baby. A visible line on the floor marks where the baby stopped, unable to cross. The cracked grey platform surface reflects the paralysis. The atmosphere is tense and heartbreaking. no text"
+    },
+    {
+      "image_number": 44,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "Walk toward her and then fall to the floor.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. On the grey platform, the baby silhouette takes a single step forward toward the mother silhouette, then collapses completely to the floor. The baby lies crumpled on the fractured grey surface, body gone limp, as if all energy and willpower have been drained away. Grey static flickers and buzzes around the fallen form like television interference. The mother silhouette remains standing ahead, a figure the baby cannot reach. Motion lines trace the baby's path — a step forward, then a sudden downward plunge. The cracked platform surface seems to cradle the collapsed baby in its fractures. Grey mist rolls across the floor level. The overhead lighting casts a harsh, clinical light downward on the small fallen figure. The scene conveys the total collapse of a system that cannot find a way forward. no text"
+    },
+    {
+      "image_number": 45,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "Their rule was the most devastating:",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Extreme close-up of the face of a small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows. Its massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a wide-eyed, deeply empathetic expression filled with sorrow and compassion. Slung over its shoulder is a teal plush backpack, complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The character's eyes are wide with the weight of understanding, reflecting grey flickering light that shifts between warm and cold. Moisture gathers at the corners of the large teal eyes. The background is a heavy, muted grey that presses inward. Grey light washes across the character's face unevenly, creating unsettling shadow patterns. no text"
+    },
+    {
+      "image_number": 46,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "the person I need is the person I'm afraid of.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. A powerful symbolic image showing a single tall silhouette standing in the center of the frame. From the silhouette's right hand, warm golden light radiates outward with soft, comforting rays — the hand of nurture and care. From the silhouette's left side, a dark, menacing shadow extends outward with sharp, jagged edges — the source of fear and pain. Caught directly between these two emanations, a tiny baby silhouette cowers, pulled in both directions simultaneously. The baby reaches one hand toward the warm golden side while shielding its face with the other hand from the dark shadow side. The floor beneath reflects both the golden warmth and the dark threat in swirling, conflicted patterns. The grey platform cracks radiate outward from where the baby stands, trapped in an impossible paradox. no text"
+    },
+    {
+      "image_number": 47,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "Four patterns. Written early.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Wide overhead bird's-eye-view shot looking straight down at four glowing platforms arranged in a diamond formation. The largest gold platform glows warmly at the top, the blue platform gleams with cool frost on the left, the red platform pulses with anxious energy on the right, and the cracked grey platform flickers at the bottom. At the exact center point where all four platforms meet stands a small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows. Its massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a contemplative, solemn expression. Slung over its shoulder is a teal plush backpack, complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. Each platform casts its colored light toward the center. no text"
+    },
+    {
+      "image_number": 48,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "And here's what nobody expected —",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Medium shot of a small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows, looking upward with sudden surprise and wide eyes. Its massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a shocked, amazed expression with eyebrows raised high. Slung over its shoulder is a teal plush backpack, complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. In the character's hand, it holds all four colored threads — gold, blue, red, and grey — and each thread begins stretching forward and outward into the far distance ahead, pulling taut and extending beyond the frame. The threads glow with their respective colors as they reach toward an unseen horizon. The character watches in astonishment as the threads extend endlessly forward. no text"
+    },
+    {
+      "image_number": 49,
+      "scene": "The Experiment That Changed Everything",
+      "narration_snippet": "they don't go away.",
+      "prompt": "The scene is rendered in a vibrant, high-quality comic book style characterized by bold, clean ink outlines and a rich, cel-shaded color palette like CHIBI style that brings the whimsical world to life. Wide panoramic shot showing the four colored threads — gold, blue, red, and grey — extending from the foreground where a small, pudgy, bipedal humanoid with smooth, pale white skin—tinted with a pearlescent lavender sheen in the shadows stands watching them recede. Its massive, teal-green crystalline eyes sparkle with a starry, magical gradient, framed by delicate purple eyebrows and a serious, knowing expression. Slung over its shoulder is a teal plush backpack, complete with silver moon-and-star embroidery, shimmering silver buckles, and a tiny jewel charm. The four threads stretch into an infinite horizon where adult silhouettes stand far in the distance, each connected to their respective colored thread. The horizon glows with a gradient of all four colors merging in the sky. The threads never break, carrying their patterns from infancy into the distant future of adulthood. no text"
+    }
+  ]
+}
