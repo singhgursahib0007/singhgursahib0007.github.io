@@ -1,16 +1,45 @@
 {
   "projects": [
     {
-      "name": "false-memories",
-      "prompts_url": "https://raw.githubusercontent.com/singhgursahib0007/singhgursahib0007.github.io/main/Pipeline/false-memories/prompts.json"
+      "name": "brain-thinks-99-cheaper",
+      "prompts_url": "https://raw.githubusercontent.com/singhgursahib0007/singhgursahib0007.github.io/main/Pipeline/brain-thinks-99-cheaper/prompts.json"
     },
     {
-      "name": "intrinsic-vs-extrinsic-motivation",
-      "prompts_url": "https://raw.githubusercontent.com/singhgursahib0007/singhgursahib0007.github.io/main/Pipeline/intrinsic-vs-extrinsic-motivation/prompts.json"
+      "name": "brain-waste-money",
+      "prompts_url": "https://raw.githubusercontent.com/singhgursahib0007/singhgursahib0007.github.io/main/Pipeline/brain-waste-money/prompts.json"
     },
     {
-      "name": "the-sunk-cost-fallacy",
-      "prompts_url": "https://raw.githubusercontent.com/singhgursahib0007/singhgursahib0007.github.io/main/Pipeline/the-sunk-cost-fallacy/prompts.json"
+      "name": "credit-cards-spending-psychology",
+      "prompts_url": "https://raw.githubusercontent.com/singhgursahib0007/singhgursahib0007.github.io/main/Pipeline/credit-cards-spending-psychology/prompts.json"
+    },
+    {
+      "name": "ikea-effect",
+      "prompts_url": "https://raw.githubusercontent.com/singhgursahib0007/singhgursahib0007.github.io/main/Pipeline/ikea-effect/prompts.json"
+    },
+    {
+      "name": "learned-helplessness",
+      "prompts_url": "https://raw.githubusercontent.com/singhgursahib0007/singhgursahib0007.github.io/main/Pipeline/learned-helplessness/prompts.json"
+    },
+    {
+      "name": "loss-aversion-wins-losses",
+      "prompts_url": "https://raw.githubusercontent.com/singhgursahib0007/singhgursahib0007.github.io/main/Pipeline/loss-aversion-wins-losses/prompts.json"
+    },
+    {
+      "name": "terror-management-theory",
+      "prompts_url": "https://raw.githubusercontent.com/singhgursahib0007/singhgursahib0007.github.io/main/Pipeline/terror-management-theory/prompts.json"
+    },
+    {
+      "name": "the-rubber-band-effect",
+      "prompts_url": "https://raw.githubusercontent.com/singhgursahib0007/singhgursahib0007.github.io/main/Pipeline/the-rubber-band-effect/prompts.json"
+    },
+    {
+      "name": "why-saving-feels-impossible",
+      "prompts_url": "https://raw.githubusercontent.com/singhgursahib0007/singhgursahib0007.github.io/main/Pipeline/why-saving-feels-impossible/prompts.json"
+    },
+    {
+      "name": "why-you-buy-things-you-dont-need",
+      "prompts_url": "https://raw.githubusercontent.com/singhgursahib0007/singhgursahib0007.github.io/main/Pipeline/why-you-buy-things-you-dont-need/prompts.json"
     }
   ]
 }
+

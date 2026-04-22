@@ -1,0 +1,852 @@
+{
+  "video_title": "Why Saving Money Feels Impossible (And How to Fix It)",
+  "total_images": 141,
+  "prompts": [
+    {
+      "image_number": 1,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "Imagine your future self as a stranger.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A wide establishing shot shows the chibi character with fluffy, voluminous white hair and a single small cowlick, large dark gray circular eyes, and prominent pink blush marks. The character stands alone in a vast, infinite white void, gazing intently toward the horizon. Far in the distance, a faint, hazy silhouette of an older figure is barely visible through a soft white mist. The character wearing an oversized white puffy hoodie and dark joggers looks contemplative. Subsurface scattering on skin, matte cloth shading on the hoodie. no text"
+    },
+    {
+      "image_number": 2,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "Not metaphorically -",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An extreme close-up focuses on the chibi character's expressive face. The large dark eyes narrow slightly with a flicker of genuine confusion, and the brow is subtly furrowed. The fluffy white hair with its single cowlick is soft and textured. The prominent pink blush marks on the cheeks glow softly. The background is a clean, blurred white, putting all focus on the character's questioning expression. Physically accurate light reflections in the dark irises. no text"
+    },
+    {
+      "image_number": 3,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "your brain literally processes 'Future You'",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract macro shot of a stylized, translucent brain shape made of glowing glass-like material. Inside the center of the brain, a warm-toned amber orb pulses softly with a gentle inner light. Tiny golden sparks and neural pathways glimmer within the translucent structure. The lighting is ethereal and soft, creating a sense of internal biological wonder. The background is a\u6df1 dark gradient to make the glowing brain pop. no text"
+    },
+    {
+      "image_number": 4,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "the same way it processes a random person on the street.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character with white fluffy hair and pink cheeks stands on a minimalist, stylized street corner with clean white pavement. A blurred, faceless gray silhouette of a generic person walks past them. The character watches the silhouette go with a neutral, unrecognized gaze, showing no sign of connection. The environment is bright and clean with soft shadows. The character's oversized white hoodie looks soft and puffy. no text"
+    },
+    {
+      "image_number": 5,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "Someone you've never met.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up shot of the chibi character's small hand reaching out toward the blurred gray silhouette's shoulder. The character's fingertips stop just short of touching, leaving a visible hair's-width gap. The focus is sharp on the character's hand and the textured fabric of their white hoodie sleeve. The silhouette remains hazy and indistinct in the background. The lighting is soft and neutral, highlighting the separation. no text"
+    },
+    {
+      "image_number": 6,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "Someone you don't particularly care about.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character glances away from the receding gray silhouette, tucking their tiny hands deep into the pockets of their white puffy hoodie. Their expression is indifferent and detached, eyes looking slightly downward. The character's white fluffy hair catches the light softly. The setting is a clean, minimalist urban space with a soft gray and white color palette. no text"
+    },
+    {
+      "image_number": 7,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "And that's exactly why your savings account is empty.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A wide pull-back shot showing the chibi character peering over the rim of a gigantic empty glass jar. The character is small compared to the jar, looking down into its hollow, reflective interior with a falling, disappointed expression. The jar is perfectly clear with soft highlights on its glass edges. The background is a simple, clean studio environment. no text"
+    },
+    {
+      "image_number": 8,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "That's not a moral failing. It's not laziness.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up on the chibi character's face, now wearing a gentle, reassuring expression. Their dark eyes are soft and kind, and they hum a small exhale of breath. The pink blush marks on their cheeks are warm and prominent. The lighting is warm and comforting, casting soft shadows under the character's fluffy white cowlick. The character looks directly at the camera with an open, honest gaze. no text"
+    },
+    {
+      "image_number": 9,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "It's a quirk buried so deep in your neurobiology",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract, surreal shot where the chibi character has shrunk down and is floating inside a massive, luminous cross-section of a human brain. The environment is filled with flowing paths of golden light and pulsing synaptic sparks. The character looks around in wonder, their white hoodie and fluffy hair illuminated by the internal bioluminescence of the brain. The atmosphere is deep and complex but beautiful. no text"
+    },
+    {
+      "image_number": 10,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "that researchers had to stick people in fMRI scanners to find it.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character lies flat on a sleek, futuristic white scanning pod with clinical precision. Their arms are folded neatly over their chest, and their large dark eyes are wide open, looking up at a glowing, circular medical ring that hovers and pulses above them. The room is clean and tech-focused with soft blue ambient lighting. Matte textures on the scanner and characters clothing. no text"
+    },
+    {
+      "image_number": 11,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "When neuroscientist Hal Hershfield at UCLA asked participants to think about themselves ten years in the future,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character sits cross-legged in a meditative pose on a soft white surface, eyes gently closed. A soft, ethereal golden glow forms around their head as if visualizing a deep thought. Above them, a ghostly, indistinct silhouette of a future version of themselves floats in the air, hazy and shimmering with a faint light. The atmosphere is quiet and thoughtful. no text"
+    },
+    {
+      "image_number": 12,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "a specific region of the brain - the medial prefrontal cortex, your brain's 'self-recognition' center - went quiet.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract diagram of a stylized brain glows with internal light. One specific region at the front is shown dimming down to a cold, dark gray, representing it 'going quiet.' The surrounding brain regions remain lit with a soft blue pulse. The contrast between the active and inactive areas is clear and visually striking. The background is a clean dark navy. no text"
+    },
+    {
+      "image_number": 13,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "And what lit up instead looked almost identical to what activates when people think about a stranger.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The same abstract brain diagram as before, but now a completely different region at the back and sides flares into a bright, energetic light-blue. The 'self-recognition' zone at the front remains dark and dormant. The scene conveys a shift in activity, with flowing light particles moving toward the newly activated zone. Soft cinematic bloom on the glowing lights. no text"
+    },
+    {
+      "image_number": 14,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "Someone else's problem.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character with white fluffy hair is seen in a medium shot, pushing a neatly wrapped package labeled with a simple red 'X' away from themselves across a white table. Their expression is dismissive and disinterested. The lighting is crisp and even. The character's puffy white sleeve is prominent in the foreground. no text"
+    },
+    {
+      "image_number": 15,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "Someone else's retirement.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character stands in a wide shot, shrugging with open palms toward a distant, glowing clock tower that symbolizes the future. The character looks unconcerned and detached. The clock tower has no numbers, just a soft internal light. The ground is a clean white plane. Soft ambient occlusion under the character's sneakers. no text"
+    },
+    {
+      "image_number": 16,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "Someone else's future.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character is shown with their back turned to the camera, looking away from a faint, shimmering silhouette of their future self in the far distance. The character is walking in the opposite direction, toward the foreground. The composition emphasizes the growing separation and lack of connection. Soft lighting highlights the texture of the character's white hoodie. no text"
+    },
+    {
+      "image_number": 17,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "The kicker?",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An extreme close-up focuses on one of the chibi character's large dark gray eyes. The iris is widened in shock, and a single bright point of light is reflected perfectly on the glassy surface of the eye. The white fluffy hair with cowlick is visible at the edge of the frame. The mood is one of sudden, startling realization. no text"
+    },
+    {
+      "image_number": 18,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "The bigger that gap - the more your future self felt like a stranger -",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A wide shot shows the chibi character and the future silhouette standing on opposite ends of a very long, narrow white bridge. The bridge is visibly stretching and elongating, physically widening the gap between them. The character looks small and isolated. The silhouette is hazy and unreachable. The background is a neutral gray-white gradient. no text"
+    },
+    {
+      "image_number": 19,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "the worse people were at financial patience.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up of the chibi character's tiny hand as they accidentally let a large, shiny gold coin slip through their fingers. The coin is captured in mid-fall, tumbling downward out of the frame. The character's pose suggests a loss of control or a lack of care. The lighting is soft, making the gold coin glint. no text"
+    },
+    {
+      "image_number": 20,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "They took the small reward now.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up of the chibi character snatching a single, small copper coin off a gleaming white platform. They are clutching it tightly to their chest with both hands, eyes wide with a sense of immediate, short-sighted greed. The lighting is focused on the character and the small coin. no text"
+    },
+    {
+      "image_number": 21,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "They left the large reward on the table.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A wide shot shows a towering, magnificent pile of gold coins sitting untouched on a stone platform in the background. In the foreground, the chibi character is walking away in the opposite direction, carrying their single small copper coin. The contrast between the minor gain and the massive missed opportunity is Stark. no text"
+    },
+    {
+      "image_number": 22,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "Every single time.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up on the chibi character's face as they perform a slow, resigned blink. Their dark eyes show a touch of soft sadness and regret. The pink blush marks are subtle. The lighting is somber and quiet. The focus is purely on the character's emotional reaction to the pattern of bad choices. no text"
+    },
+    {
+      "image_number": 23,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "So before we talk about budgeting apps and savings hacks,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character stands in front of a cluttered wall filled with floating, semi-transparent icons - glowing gears, tiny bar charts, and smartphone outlines. With one hand, the character gently waves the icons away, clearing the air. Their expression is focused on the next step. Soft prismatic light on the floating icons. no text"
+    },
+    {
+      "image_number": 24,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "let's understand what we're actually dealing with:",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character turns to face the viewer directly, crouching slightly to be at eye-level. Their expression is earnest and open, inviting the viewer into the explanation. Their white fluffy cowlick and pink cheeks are lit with a warm, inviting light. The background is a clean, out-of-focus white. no text"
+    },
+    {
+      "image_number": 25,
+      "scene": "Scene 1: Hook - Your Brain Sees a Stranger",
+      "narration_snippet": "a brain that was never built for this.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract wide shot shows the chibi character standing inside a giant, transparent skull-shaped dome. Around the perimeter of the dome are ancient, primitive cave-like rock walls with rough textures. The character looks modern and out of place in this prehistoric-feeling environment. The lighting is atmospheric and deep. no text"
+    },
+    {
+      "image_number": 26,
+      "scene": "Scene 2: The Stranger in the Mirror",
+      "narration_snippet": "Here's a question.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up shot of the chibi character with fluffy white hair and its single cowlick. The character tilts their head slightly to the side, one tiny finger raised as if about to make a significant point. Their expression is curious and engaging, with prominent round pink blush marks on both cheeks glowing warmly. Large, circular dark gray eyes with a reflective sheen look directly at the viewer. Minimalist, soft white background. no text"
+    },
+    {
+      "image_number": 27,
+      "scene": "Scene 2: The Stranger in the Mirror",
+      "narration_snippet": "If a friend asked you to give two hundred dollars to a random person on the street -",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A medium shot shows the chibi character holding out a folded stack of bills toward a blurred, faceless gray silhouette standing at arm's length on a stylized clean street. The character's puffy white hoodie and dark joggers are rendered with detailed matte cloth shading. The atmosphere is neutral and observational. The street is a simple, clean white plane with soft shadows. no text"
+    },
+    {
+      "image_number": 28,
+      "scene": "Scene 2: The Stranger in the Mirror",
+      "narration_snippet": "someone you've never met, no context, no guarantee you'd ever see that money again -",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up focus on the chibi character's tiny hands as their grip on the stack of bills tightens. The blurred gray silhouette in front of them remains a featureless, empty form, emphasizing the total lack of connection or identity. The lighting is slightly cooler, creating a sense of hesitation and doubt. Subsurface scattering on the character's round, soft fingers. no text"
+    },
+    {
+      "image_number": 29,
+      "scene": "Scene 2: The Stranger in the Mirror",
+      "narration_snippet": "you'd say no. Obviously.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character quickly pulls the bills back toward their chest, shaking their head firmly from side to side. They make a small, emphatic hand wave as if to dismiss the idea completely. Their expression is one of common-sense refusal, eyebrows raised. The white fluffy hair and cowlick bounce slightly with the head movement. no text"
+    },
+    {
+      "image_number": 30,
+      "scene": "Scene 2: The Stranger in the Mirror",
+      "narration_snippet": "Now here's the uncomfortable truth:",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up as the chibi character leans in slightly toward the viewer, lowering their voice in a conspiratorial manner. Their dark eyes are widened and intense, and the pink blush marks are very prominent. The lighting is focused and dramatic, casting soft shadows that emphasize the character's round face and serious expression. no text"
+    },
+    {
+      "image_number": 31,
+      "scene": "Scene 2: The Stranger in the Mirror",
+      "narration_snippet": "when you choose not to put two hundred dollars into your savings account,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A wide shot shows the chibi character standing beside a very large, clean glass jar on a white pedestal. The bills previously in their hand are now drifting away upward into the air like falling leaves, floating away from both the character and the jar. The character looks on with a touch of helplessness. Soft ambient occlusion under the pedestal. no text"
+    },
+    {
+      "image_number": 32,
+      "scene": "Scene 2: The Stranger in the Mirror",
+      "narration_snippet": "your brain is running essentially that same calculation.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract shot showing two identical side-by-side brain scans glowing with a soft neon light. One scan is positioned above a hazy gray silhouette, and the other is above a simple wall calendar icon representing the future. Both brains glow with the exact same pattern of activation, visually linking the two concepts. The background is a clean dark space to make the scans pop. no text"
+    },
+    {
+      "image_number": 33,
+      "scene": "Scene 2: The Stranger in the Mirror",
+      "narration_snippet": "Future You is the stranger. Present You is handing over cash.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A split-frame composition. On the left side, the vibrant chibi character (Present You) holds out several gold coins. On the right side, a faint, semi-translucent aged silhouette (Future You) reaches out to receive them, but the coins simply vanish into sparkling dust in mid-air before reaching its hand. The character looks confused, and the silhouette looks disappointed. no text"
+    },
+    {
+      "image_number": 34,
+      "scene": "Scene 2: The Stranger in the Mirror",
+      "narration_snippet": "And your brain is saying, hard pass.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character crosses both of its small arms in a firm 'X' across their chest. Their expression is resolute and unyielding, with eyes narrowed into half-lidded crescents of refusal. The fluffy white hair is still and soft. The background is a neutral, clean white. The character's dark jogger pants and white sneakers are fully visible in this medium shot. no text"
+    },
+    {
+      "image_number": 35,
+      "scene": "Scene 2: The Stranger in the Mirror",
+      "narration_snippet": "This isn't poetry. It's neuroscience.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character holds a small, beautifully detailed glowing brain shape in one of their tiny palms. They are examining it with wide, curious eyes and a look of deep interest. The brain emits a soft prismatic light that illuminates the character's face and their white hoodie. The background is a soft, out-of-focus studio environment. no text"
+    },
+    {
+      "image_number": 36,
+      "scene": "Scene 2: The Stranger in the Mirror",
+      "narration_snippet": "Hershfield's fMRI research showed that people whose brains treated their future selves as more 'stranger-like' were measurably less patient with financial decisions.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract wide shot. A glowing 'patience meter' resembling a thermometer is shown draining downward from green to red. In the background, a gray stranger silhouette grows increasingly opaque and distant on a foggy, hazy horizon. The character stands in the foreground, looking at the meter with concern. Atmospheric fog and soft glowing elements. no text"
+    },
+    {
+      "image_number": 37,
+      "scene": "Scene 2: The Stranger in the Mirror",
+      "narration_snippet": "And in a follow-up that should be on every financial advisor's wall,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character's dark eyes go wide with a look of impressed discovery. They hold up one tiny finger as if to say 'wait for it,' with a small, knowing smile on their face. The lighting is bright and optimistic. The character's fluffy white cowlick is perfectly illuminated from above. no text"
+    },
+    {
+      "image_number": 38,
+      "scene": "Scene 2: The Stranger in the Mirror",
+      "narration_snippet": "when researchers showed college students digitally aged versions of their own faces in virtual reality -",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character stands before a large, elegant oval mirror with a clean white frame. Instead of their current reflection, an older, silver-haired version of the same chibi character gazes back from within the mirror. The aged reflection is wrinkly but remains distinctly recognizable as the character. The character looks at it with curious fascination. no text"
+    },
+    {
+      "image_number": 39,
+      "scene": "Scene 2: The Stranger in the Mirror",
+      "narration_snippet": "wrinkles, silver hair, the whole package -",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up focus on the reflection in the mirror. We see soft, gentle wrinkles around the reflection's large dark eyes and a hint of silver sheen in the poofy white hair. The pink blush marks are still present. The overall expression of the reflection is one of wisdom and kindness. The lighting on the reflection is soft and warm. no text"
+    },
+    {
+      "image_number": 40,
+      "scene": "Scene 2: The Stranger in the Mirror",
+      "narration_snippet": "those students said they would save about 30% more of a hypothetical windfall",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A wide shot. The chibi character, after looking at the aged reflection, turns with sudden purpose to a large glass jar. They are scooping a huge, overflowing armful of gold coins and bills into the jar, which is now filling up rapidly and satisfyingly. The character's expression is one of newfound motivation. no text"
+    },
+    {
+      "image_number": 41,
+      "scene": "Scene 2: The Stranger in the Mirror",
+      "narration_snippet": "than students who saw their normal face.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A side-by-side comparison. On the left, a version of the character looks at a normal reflection and turns away from an empty jar with a shrug. On the right, the character looks at the aged reflection and is generously filling their jar with coins. The contrast in behavior is clear and immediate. Soft, clean composition. no text"
+    },
+    {
+      "image_number": 42,
+      "scene": "Scene 2: The Stranger in the Mirror",
+      "narration_snippet": "Just the visual. A few minutes in a headset. A 30% shift in savings intent.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An extreme close-up of the chibi character's dark eye. Perfectly reflected in the dark iris is the image of the aged version of themselves from the mirror. This single moment of recognition is powerful and focused. The surrounding white hair is soft and detailed. Subsurface scattering on the skin around the eye. no text"
+    },
+    {
+      "image_number": 43,
+      "scene": "Scene 2: The Stranger in the Mirror",
+      "narration_snippet": "When a real-world bank study replicated this with around 50,000 customers,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract wide overhead shot looking down at a vast sea of thousands of tiny chibi character figures. The crowd stretches all the way to the horizon, each one representing a bank customer. They are all organized and facing forward on a clean white surface. The scale is immense but the art style remains cute and consistent. no text"
+    },
+    {
+      "image_number": 44,
+      "scene": "Scene 2: The Stranger in the Mirror",
+      "narration_snippet": "the people shown aged images of themselves were 16% more likely to actually make a retirement contribution.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character is surrounded by flowing streams of gold coins. They are catching a beautiful, arc-shaped flow of coins in a large glass jar with a satisfied and successful expression. The coins glint with warm light as they fall into the jar. Clear glass textures with soft highlights. no text"
+    },
+    {
+      "image_number": 45,
+      "scene": "Scene 2: The Stranger in the Mirror",
+      "narration_snippet": "Your brain responds to its own future face the way it responds to family -",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up shot. The chibi character and the older mirror reflection are reaching out their tiny hands toward each other. Their fingertips are nearly touching at the surface of the glass, creating a gentle, emotional moment of connection. Both have soft, warm expressions. The lighting is golden and intimate. no text"
+    },
+    {
+      "image_number": 46,
+      "scene": "Scene 2: The Stranger in the Mirror",
+      "narration_snippet": "once it can see it.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The aged reflection in the mirror becomes fully vivid, colorful, and crisp, no longer hazy or ethereal. The chibi character's dark eyes soften with a look of deep warmth and recognition. The scene is bright and clear, symbolizing the clarity of seeing one's future self. Soft ambient occlusion and subsurface scattering. no text"
+    },
+    {
+      "image_number": 47,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "Now let's talk about the mechanics of why this happens,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character, with its fluffy white hair and cute cowlick, is seen rolling up the sleeves of its white puffy hoodie. Their expression is focused, determined, and ready to dive into the technical details. Large dark eyes and prominent pink blush marks are clearly visible. The background is a clean, neutral white studio space. no text"
+    },
+    {
+      "image_number": 48,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "because your brain isn't just being dramatic about strangers.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up focus on the chibi character's face. They are wearing a wry, knowing smile with one tiny eyebrow raised slightly in a playful, intelligent expression. The reflective sheen on their dark gray eyes catches a soft highlight. The fluffy texture of their white hair is prominent. no text"
+    },
+    {
+      "image_number": 49,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "It has a fundamentally broken relationship with time.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract wide shot showing the chibi character standing in the center of a giant, warped clock face on the floor. Near the center (the present), the clock's hands are spinning erratically and fast, while near the outer edges (the future), they are frozen or barely moving. The character looks around at the distorted time and space with an expression of mild confusion. no text"
+    },
+    {
+      "image_number": 50,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "Here's a classic experiment.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character steps forward confidently and presents two glowing, semi-transparent platforms floating in mid-air. One platform is small and floating very close to the character, and the other is much larger but floating far off in the distance. The lighting is crisp and the character's expression is one of introducing a formal test. no text"
+    },
+    {
+      "image_number": 51,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "You're offered a choice: fifty dollars right now, or one hundred dollars in a year.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. On the closer, smaller platform sits a single, bright, sparkling gold coin. On the farther, larger platform sit two identical gold coins, though they appear slightly dimmer due to the distance. The chibi character stands between them, with their tiny chin in their hand, looking thoughtfully from one to the other. no text"
+    },
+    {
+      "image_number": 52,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "Most people take the fifty.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character's tiny hand shoots out quickly and decisively to grab the single, close gold coin. They are already clutching it to their chest before their eyes have even fully focused on the larger, distant option. Their expression is one of immediate, impulsive satisfaction. no text"
+    },
+    {
+      "image_number": 53,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "That's almost everyone.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A wide shot that pulls back to reveal an entire array of identical tiny chibi figures, all simultaneously reaching out their hands toward their own closer platforms. It is a mass, synchronized movement of a crowd choosing the immediate reward. The scale of the crowd emphasizes how common this behavior is. no text"
+    },
+    {
+      "image_number": 54,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "Rationally, that's a 100% annual return on the wait -",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract shot of a glowing, technical graph arc that shoots upward with dramatic steepness. At the base of the left side is a single gold coin, which clearly doubles to two gold coins at the peak on the right. The graph looks mathematically perfect and impressive. The background is a deep, clean blue-black. no text"
+    },
+    {
+      "image_number": 55,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "you'd be hard-pressed to find that in any market -",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character is seen looking at the impressive glowing graph arc from the previous shot. Their eyebrows are raised in genuine, wide-eyed surprise, and their small mouth is slightly open in realization of the huge missed return. They look back and forth between the coin in their hand and the graph. no text"
+    },
+    {
+      "image_number": 56,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "but the brain doesn't do compounding. It does now.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A tight close-up on the chibi character's small fist as it is clenched tightly around the single gold coin. Their knuckles are pressing against the soft fabric of their white puffy hoodie. The tactile sense of 'having it now' is emphasized. The lighting is very warm and close-up. no text"
+    },
+    {
+      "image_number": 57,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "But flip the timeline.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character is seen physically reaching out with both hands to grab and rotate the two floating platforms in the air. The motion is active and energetic, with the whole scene spinning around to show a different perspective. Prismatic light trails follow the movement of the platforms. no text"
+    },
+    {
+      "image_number": 58,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "Would you rather have fifty dollars in five years, or one hundred dollars in six years?",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. Two new platforms appear, but this time both are equally distant and appear slightly faded and hazy, representing the far future. One platform has a single coin, and the other has two. The chibi character is squinting their dark eyes, studying the two distant options with careful, unhurried deliberation. no text"
+    },
+    {
+      "image_number": 59,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "Suddenly, nearly everyone picks the hundred.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character's hand extends slowly and deliberately toward the farther, two-coin platform. They are making a thoughtful, patient choice rather than an impulsive one. Their expression is calm and confident. The distant gold coins glow with a soft, promising light. no text"
+    },
+    {
+      "image_number": 60,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "Same one-year gap. Same math. Completely different answer.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract split-frame composition. On the top half, the 'Now' scenario with the hand grabbing the close coin. On the bottom half, the 'Future' scenario with the hand choosing the two distant coins. A large, glowing golden equals sign floats in the middle, visually connecting the identical one-year gap in both cases. no text"
+    },
+    {
+      "image_number": 61,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "This is what economists call hyperbolic discounting.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character holds up a small, elegant line of light in their palm. The line is a curve that drops off very steeply at one end and then flattens out into a gentle slope, resembling a dramatic ski-jump shape. The character looks at the curve with intelligence and academic focus. no text"
+    },
+    {
+      "image_number": 62,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "The name makes it sound dry, but the phenomenon is electric.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character touches the steep, vertical part of the glowing light-curve. A small, bright jolt of static electricity sparks from the curve. The character's fluffy white hair and cowlick puff out in all directions, and their eyes go wide in a genuinely startled but amused expression. no text"
+    },
+    {
+      "image_number": 63,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "Your brain doesn't apply a steady, rational discount to time the way a spreadsheet would.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract shot comparing two lines of light. One is a clean, steady, straight diagonal line (the 'rational' approach), and the other is the character's steep, curved ski-jump line. The chibi character stands between them, pointing a tiny finger at the obvious difference between the two shapes. no text"
+    },
+    {
+      "image_number": 64,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "Instead, it discounts the near future ferociously and the far future gently.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up focus on the glowing curve. First, the camera zooms into the steep cliff-like section as the tiny chibi character slides down it at high speed. Then, it shows the character on the long, gentle bottom slope, where they are barely moving at all despite trying to push forward. no text"
+    },
+    {
+      "image_number": 65,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "A dollar today feels dramatically more valuable than a dollar tomorrow.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. Two identical gold coins sit side-by-side. The one on the left (Today) is glowing with an intense, oversized warm light and looks huge. The one on the right (Tomorrow) is much smaller and has a cooler, dimmer tone. The character's dark eyes are locked onto the huge glowing coin on the left with total focus. no text"
+    },
+    {
+      "image_number": 66,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "A dollar in ten years barely feels different from a dollar in eleven years.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. Two more gold coins are shown, both appearing very small, faint, and far away in the distance. The chibi character is seen in the foreground, squinting their eyes and shrugging their shoulders as they try to see any difference at all between the two distant points. They both look equally insignificant. no text"
+    },
+    {
+      "image_number": 67,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "That steep drop-off right at 'now' is the cliff your savings keeps falling off.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A dramatic wide shot showing the chibi character standing at the very edge of a vertical, black-and-white cliff face. A steady stream of gold coins is rolling past their feet and tumbling over the edge of the cliff into a deep, dark void below. The character's expression is one of helpless observation. no text"
+    },
+    {
+      "image_number": 68,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "Your prefrontal cortex - the reluctant accountant of your skull -",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract representation of a small interior section of a brain. Inside, a tiny, stylized brain character wearing a miniature pair of glasses is hunched over a huge pile of gold coins and complicated-looking financial graphs. This 'accountant' brain looks exhausted and overwhelmed. Soft, cool lighting inside the brain workspace. no text"
+    },
+    {
+      "image_number": 69,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "understands the math. It knows the hundred dollars is better.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character is seen in a medium shot, tapping their temple with one tiny finger and nodding their head slowly. Their expression is one of frustrated knowledge - they understand the logic, but find it hard to act on it. Their large dark eyes are clear and focused. no text"
+    },
+    {
+      "image_number": 70,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "But it's constantly being drowned out by your limbic system,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The scene from the previous shot of the 'accountant' brain-section is suddenly overwhelmed by a massive, rushing wave of warm, golden, liquid light flooding in from another part of the brain. The accountant is being completely washed away by the sheer force and brightness of the emotional 'now' impulse. no text"
+    },
+    {
+      "image_number": 71,
+      "scene": "Scene 3: The $50 Problem (And the $100 Problem)",
+      "narration_snippet": "which is essentially a golden retriever that only understands right now, right here, this treat.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character is suddenly knocked backward off their feet by an invisible, excited force of pure energy and enthusiasm. Their white puffy hoodie is ruffled, and their arms are windmilling in the air as they laugh softly at the chaotic, puppy-like energy of their own impulses. Festive, bright lighting. no text"
+    },
+    {
+      "image_number": 72,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "Think about the last time you told yourself you'd start saving next month.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character stands before a large, clean wall calendar with a simple white grid. They are peeling off the current month's page with a hopeful and optimistic expression, pointing an enthusiastic finger at the next month's name. Their fluffy white hair and cute cowlick are well-lit. The background is a clean, neutral white studio space. no text"
+    },
+    {
+      "image_number": 73,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "Or after the raise. Or once the vacation was paid off.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A medium shot showing the chibi character continuing to flip through various calendar pages. Each new page revealed features a small, simple icon - a tiny paycheck, a little suitcase, another blank calendar. The character's expression gradually shifts from hopeful to slightly sheepish and embarrassed as the excuses pile up. Soft lighting emphasizes the character's round blush marks. no text"
+    },
+    {
+      "image_number": 74,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "That wasn't weakness.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up focus on the chibi character's face. They are looking directly at the camera with a firm but kind and understanding expression. They give a very small, gentle shake of their head to reassure the viewer. Their dark eyes are soft and sincere. The lighting is warm and supportive. no text"
+    },
+    {
+      "image_number": 75,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "That was your brain's temporal discount curve doing exactly what it was built to do.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character holds up the glowing line of the ski-jump-shaped 'discount curve' again. They are tapping the very steep, cliff-like portion of the curve with a tiny finger, identifying it as the cause of the problem. Their expression is educational and clear. The background is a clean, soft white. no text"
+    },
+    {
+      "image_number": 76,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "The human brain evolved over hundreds of thousands of years",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract wide shot showing the chibi character standing in the middle of a vast, glowing timeline that stretches all the way to the horizon. In the far distant background, hazy silhouettes of ancient cave-dwellers are visible. The chibi character looks like a tiny, modern figure standing in the deep past section of the timeline. Atmospheric lighting and soft perspective. no text"
+    },
+    {
+      "image_number": 77,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "in environments where the future was genuinely uncertain.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A wide shot with the chibi character in a primitive, rocky landscape with jagged stones and rough ground. Large, dark, moody storm clouds are rolling in from the background, making visibility low and unpredictable. The horizon is obscured by a thick, mysterious fog. The character looks slightly wary of their surroundings. no text"
+    },
+    {
+      "image_number": 78,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "If there was food now, you ate now.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up shot of an ancient-styled chibi version of the character. They have the same fluffy white hair and large dark eyes, but they are crouching in a primitive, rocky environment and eating some berries from their small, cupped hands. The motion is urgent and immediate. The lighting is warm and naturalistic. no text"
+    },
+    {
+      "image_number": 79,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "Delayed gratification was a luxury of stability that most of our ancestors couldn't afford.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A wide shot showing the chibi character looking longingly toward a small berry bush in the distance. Suddenly, a massive, dark thundercloud rolls over the bush, completely obscuring it from view. The character immediately turns back and continues eating from what's already in its hand, realizing the future opportunity might never come. no text"
+    },
+    {
+      "image_number": 80,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "The brain that ignored a guaranteed berry to wait for a hypothetical feast didn't survive.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character holds up a single, bright, glowing red berry. They look at it for a split second, then glance at the stormy, dangerous horizon, and immediately pop the berry into their mouth with no hesitation. The wide pull-back shot shows how vast and unforgiving the surrounding wilderness really is. no text"
+    },
+    {
+      "image_number": 81,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "Present bias wasn't a bug in our ancestors - it was the whole feature.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up focus on the chibi character's face. They are giving a slow, meaningful nod of understanding toward the viewer. Their dark eyes are soft and wise, and they let out a small, gentle exhale. The lighting is warm and empathetic. The character's fluffy white hair is softly catching the light. no text"
+    },
+    {
+      "image_number": 82,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "Then we invented retirement accounts.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character suddenly snaps forward into a modern, brightly lit environment. They are holding a small, glowing holographic credit-card-sized account card in their tiny hands, examining it with a mixture of intense curiosity and mild bewilderment. Their expression is quizzical, one eyebrow raised. no text"
+    },
+    {
+      "image_number": 83,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "And compound interest.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract shot of a small, glowing sapling that is rapidly growing into a large, magnificent tree right before the character's eyes. Tiny gold coins are hanging from the branches like ripening fruit, and they are multiplying in number as the tree expands. The chibi character watches with their head tilted upward in total amazement. no text"
+    },
+    {
+      "image_number": 84,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "And a forty-year career horizon with no saber-toothed tigers in sight.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A wide shot showing the chibi character standing in the middle of a perfectly smooth, white, endless road that stretches all the way to a bright, peaceful horizon. The surroundings are completely empty and serene, with no threats or dangers whatsoever. The character looks around with a slightly confused and amused expression at the total calm. no text"
+    },
+    {
+      "image_number": 85,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "And suddenly that hardwired preference for now is catastrophically out of place.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character is seen trying to use an old, jagged prehistoric stone tool on a very sleek, high-tech modern glass coin jar. The two items clearly do not belong together and are completely incompatible. The character holds both of them, looking utterly baffled and confused by the mismatch. no text"
+    },
+    {
+      "image_number": 86,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "The numbers confirm the mismatch.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character holds up a small handful of tiny, glowing white data spheres. They are squinting their dark eyes to examine the tiny numbers pulsing with energetic light inside each sphere. Their expression is serious and analytical. The background is a clean dark navy space. no text"
+    },
+    {
+      "image_number": 87,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "As of 2026, 43% of Americans cannot cover a $1,000 emergency expense with savings.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A wide shot of a huge crowd of thousands of tiny chibi silhouettes. Almost half of the crowd is shown with empty jars at their feet and empty, open hands. The other half holds small, modest amounts of coins. The character stands in the center of the crowd, looking around with a sober and concerned expression. no text"
+    },
+    {
+      "image_number": 88,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "The median American emergency fund holds five hundred dollars -",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up as the chibi character holds out their small, open palm. A single, medium-sized gold coin sits all alone in the center of their hand. The coin looks very small relative to the space in the character's hand. The lighting is focused and emphasizes the isolation of the single coin. no text"
+    },
+    {
+      "image_number": 89,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "enough to cover roughly four days of average household expenses.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract shot showing the single coin sitting beneath a glowing holographic timeline bar. The bar has many notches representing days, but it only lasts for four very short notches before draining completely and turning red. The chibi character watches the bar drain with wide, worried eyes. no text"
+    },
+    {
+      "image_number": 90,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "The US personal savings rate recently sat at around 3.5%,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract shot of a large, clear glass container. Only a tiny, thin layer of gold coins is scattered across the very bottom, leaving the rest of the container completely empty. The chibi character peers over the edge and into the jar, with their expression visibly dropping in disappointment. no text"
+    },
+    {
+      "image_number": 91,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "compared to a historical high of nearly 32% during the early days of the COVID pandemic -",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The same glass container from the previous shot suddenly flashes into a bright, colorful memory of itself being absolutely overflowing with gold coins, almost spilling over the top. The chibi character's dark eyes go wide with shock at the massive difference in volume. no text"
+    },
+    {
+      "image_number": 92,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "which is fascinating, because that spike didn't happen because Americans suddenly became more disciplined.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up on the chibi character's face. They are performing a slow, deliberate headshake to the side, with a furrowed brow. They gently wag a tiny finger at the camera to indicate that the obvious answer is incorrect. Their expression is one of highlighting a deep misconception. no text"
+    },
+    {
+      "image_number": 93,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "The environment changed. Spending opportunities disappeared. Behavior followed automatically.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A wide shot with the chibi character standing in a completely empty, peaceful white landscape with no shops, signs, or distractions. A huge pile of gold coins is naturally accumulating at their feet without any effort at all. The character looks down at the growing wealth with a look of pure surprise. no text"
+    },
+    {
+      "image_number": 94,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "That is the single most important sentence in this video:",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An extreme close-up where the chibi character's round face almost fills the entire frame. Their expression is utterly earnest and intense. They are leaning in toward the camera with their dark eyes locked forward and their voice lowering for emphasis. Their pink cheek blush marks are glowing warmly. no text"
+    },
+    {
+      "image_number": 95,
+      "scene": "Scene 4: The Design Flaw That Isn't Your Fault",
+      "narration_snippet": "behavior followed automatically.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract shot of a single, powerful glowing phrase of white light that pulses and expands outward like a ripple in a pool. The chibi character stands at the center of the ripple, with their small arms slightly spread as if presenting the fundamental truth of the concept. The atmosphere is one of profound importance. no text"
+    },
+    {
+      "image_number": 96,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "If the problem is a brain that wasn't designed for long time horizons,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A wide shot shows the chibi character standing at the base of a massive, impossibly tall white cliff face that stretches up into the clouds. The character looks tiny and determined but clearly daunted by the height. Their white puffy hoodie and dark joggers are sharp against the white cliff. The lighting is bright but atmospheric. no text"
+    },
+    {
+      "image_number": 97,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "the solution can't just be 'try harder.'",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character is seen flexing their tiny muscles and bracing themselves against the cliff, but the cliff doesn't move an inch. The character then slumps down, exhausted, with their hands on their knees. A single small pebble rolls down the cliff and bonks them gently on their fluffy white head. Their expression is one of tired defeat. no text"
+    },
+    {
+      "image_number": 98,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "The solution has to work with the brain's architecture, not against it.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract shot. Instead of climbing the cliff, the chibi character finds a gentle, winding path perfectly carved into the side of the stone. They step onto the path, which fits their stride perfectly. Their expression shifts to one of relief and realization. The path is lit with a soft, inviting golden glow. no text"
+    },
+    {
+      "image_number": 99,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "Three interventions have real evidence behind them.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character holds up three of their tiny fingers, one at a time. Their expression is one of focused confidence and expertise. The lighting is clear and bright, highlighting the character's round pink blush marks and large dark eyes. The background is a clean, neutral white studio. no text"
+    },
+    {
+      "image_number": 100,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "First: automation.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up focus on the chibi character's hand as they reach out and flip a single, elegant white switch on a clean panel. There is a satisfying 'click' sound reflected in the character's purposeful expression. A soft, warm glow pulses from the switch and begins to spread across the frame. no text"
+    },
+    {
+      "image_number": 101,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "Nobel laureate Richard Thaler put it bluntly - people only save if it's automatic.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract shot showing gold coins flowing effortlessly through a glowing, semi-transparent channel. The coins move from one side of the frame into a large jar on the other side. The chibi character stands in the middle with their hands tucked comfortably into their hoodie pockets, watching the process with a serene and relaxed expression. no text"
+    },
+    {
+      "image_number": 102,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "His Save More Tomorrow program, launched in the early 2000s, asked workers to commit to having future raises partially routed to retirement savings.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A wide shot with the chibi character standing at a fork in a pipeline made of glowing light. A portion of the flowing coin stream is being diverted down a separate, smaller channel that leads to a jar in the far distance. The character is placing a small, glowing marker at the fork with a casual, stress-free gesture. no text"
+    },
+    {
+      "image_number": 103,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "They weren't giving up anything they had today.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up shot showing the chibi character's tiny hands completely full and overflowing with their own stack of gold coins. They are clutching their wealth happily, and nothing is being taken away from them. The diverted stream of coins is happening in the background, separate and unnoticed. The character looks content. no text"
+    },
+    {
+      "image_number": 104,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "They were pre-committing future earnings they'd never learned to spend.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract shot of a future-dated gold coin that is slightly translucent and glowing. It floats gently into a large jar on its own accord. The chibi character hasn't even received the coin yet; it's being routed automatically before they can even touch it. The scene conveys a sense of seamless, invisible efficiency. no text"
+    },
+    {
+      "image_number": 105,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "Savings rates among participants climbed from 3.5% to 13.6% over three years.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract shot of a glowing green bar graph that is rising steadily and significantly. The chibi character is standing beside the bar, watching it climb higher and higher with an expression of growing excitement and joy. Their pink blush marks are bright and cheerful. The lighting is optimistic. no text"
+    },
+    {
+      "image_number": 106,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "Eighty percent stayed enrolled.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A wide shot showing a large, organized group of thousands of tiny chibi silhouettes. The vast majority of them (80%) are standing together inside a large, glowing green circle on the ground, representing their commitment. Only a few scattered figures have stepped outside the circle. The atmosphere is one of collective success. no text"
+    },
+    {
+      "image_number": 107,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "The brain never felt a loss because there was never a present moment of deprivation.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up focus on the chibi character's face. They look completely calm and relaxed, with their white fluffy hair and soft hoodie looking extra comfortable. There is no sign of stress or worry on their face. They look happy and secure. The lighting is warm and gentle. no text"
+    },
+    {
+      "image_number": 108,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "Second: if-then planning.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character holds up two of their tiny fingers. Their expression is sharper and more focused now, conveying the importance of logical planning. Their dark eyes are bright with intelligence. The background is a clean, neutral white studio space. no text"
+    },
+    {
+      "image_number": 109,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "Psychologist Peter Gollwitzer spent decades studying why good intentions collapse into bad behavior.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract shot showing a long, white road marked with glowing 'intention-arrows.' At the start, the arrows are bright and direct, but as the road continues, they begin to dim, waver, and eventually drift off-course and scatter into the dark. The chibi character watches this breakdown with a knowing, understanding look. no text"
+    },
+    {
+      "image_number": 110,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "His answer: vagueness kills follow-through.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up focus on a blurry, indistinct shape made of glowing white mist. As the chibi character reaches out to touch it, the shape simply dissolves and vanishes into nothingness. The character's expression is one of disappointment at the lack of substance. The background is a clean dark navy. no text"
+    },
+    {
+      "image_number": 111,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "'I'll save more' is vapor.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character appears to be speaking (though no words are shown). As they exhale, a soft, translucent puff of white mist rises from their mouth and instantly disappears into the air. Nothing remains and nothing was accomplished. The character looks slightly frustrated by the lack of results. no text"
+    },
+    {
+      "image_number": 112,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "'When I get paid on the first of the month, I will immediately transfer $200 to savings before I touch anything else' is a plan with a trigger.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character performs a very deliberate, mechanical sequence of actions. They receive a gold coin, immediately turn, and place it into a large glass jar before even looking at the rest of their environment. The motion is crisp, satisfying, and precise. Their expression is one of disciplined follow-through. no text"
+    },
+    {
+      "image_number": 113,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "Across 94 studies, implementation intentions produced a medium-to-large improvement in actual goal achievement.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract shot of a long path with many small, glowing green goal-markers. Each marker lights up one by one as the chibi character walks confidently along the path. Almost all of the markers are lit up, showing a high rate of success. The atmosphere is one of progress and achievement. no text"
+    },
+    {
+      "image_number": 114,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "Your brain needs a script, not a wish.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up shot where the chibi character is comparing two things. In one hand, they hold a small, glowing, highly detailed flow-chart shape made of light. In the other hand, they hold the same dissolving puff of white mist as before. They are looking at the flow-chart and nodding with clear approval. no text"
+    },
+    {
+      "image_number": 115,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "Third: make Future You feel real.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character holds up three fingers. They turn their body to face the faint, hazy aged silhouette from Scene 1, which is still visible far in the distance. This time, the character takes a very deliberate and confident step toward the silhouette. no text"
+    },
+    {
+      "image_number": 116,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "You don't need a VR headset.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character holds up their small, empty hands toward the camera, showing they aren't using any high-tech gadgets or VR equipment. Their expression is simple and honest. Their fluffy white cowlick and pink cheeks are lit with soft, neutral light. no text"
+    },
+    {
+      "image_number": 117,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "Hershfield suggests writing a letter to your future self -",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up focus on the chibi character's tiny hand as it moves in a graceful, flowing writing motion in the air. A beautiful, glowing trail of gold light follows their fingertip, forming elegant but unreadable script-like lines. The character's expression is one of deep, thoughtful connection. no text"
+    },
+    {
+      "image_number": 118,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "in detail, with specifics about what you hope they're experiencing.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. As the chibi character writes in the air, several soft, hazy, dreamlike images begin to bloom and glow around them. We see a vision of a cozy, well-lit home and a relaxed, older version of the character sitting peacefully. The atmosphere is one of calm, future happiness. no text"
+    },
+    {
+      "image_number": 119,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "Describe where they live,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. One of the dreamlike panels blooms large. It shows a warm, inviting window of a comfortable, stylized home with golden light spilling out onto a peaceful street. The image is cozy, safe, and desirable. The character's white hoodie and hair are illuminated by its glow. no text"
+    },
+    {
+      "image_number": 120,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "what they're free from,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A second dreamlike panel blooms. It shows a set of heavy, dark chains that are physically dissolving and crumbling into bright, sparkling particles of light. The image conveys a profound sense of liberation and freedom from worry. The lighting is dramatic and transformative. no text"
+    },
+    {
+      "image_number": 121,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "what they get to do.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A third dreamlike panel blooms. It shows the future, silver-haired version of the chibi character walking freely and happily along a beautiful, sun-drenched coastal path. The image is filled with bright, hopeful colors and a sense of endless possibility. no text"
+    },
+    {
+      "image_number": 122,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "The more vivid and emotionally concrete your future self becomes,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up focus as the hazy silhouette in the distance begins to gain solid color, form, and rich detail. The pink blush marks and large dark eyes of the character become clearly recognizable on the older face. The image is becoming real and vivid. no text"
+    },
+    {
+      "image_number": 123,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "the less of a stranger they are,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A wide shot showing the long bridge from the first scene. The gap between the chibi character and the aged figure has narrowed significantly, and they are now standing much closer to each other, looking at one another with recognition. no text"
+    },
+    {
+      "image_number": 124,
+      "scene": "Scene 5: The Fixes That Actually Work",
+      "narration_snippet": "and the more your present brain will treat saving as self-care rather than self-sacrifice.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character is seen dropping several gold coins gently and lovingly into their glass jar. Their expression is warm, purposeful, and tender, as if they are taking care of something they love. This is no longer a chore, but an act of care. Warm, golden lighting. no text"
+    },
+    {
+      "image_number": 125,
+      "scene": "Scene 6: Conclusion - The Stranger Becomes Family",
+      "narration_snippet": "Here's what it comes down to.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character steps to the center of the frame, bathed in a soft, welcoming light. They have a calm and distilling expression, conveying a sense of finality and clarity. Their white fluffy hair and pink cheeks are perfectly rendered. The background is a clean, tranquil white space. no text"
+    },
+    {
+      "image_number": 126,
+      "scene": "Scene 6: Conclusion - The Stranger Becomes Family",
+      "narration_snippet": "You are not bad at saving.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up focus on the chibi character's face. They are shaking their head slowly and reassuringly, wearing a gentle and direct smile. Their large dark eyes are warm and supportive, looking straight at the camera. The lighting is soft and comforting, emphasizing the character's round, friendly features. no text"
+    },
+    {
+      "image_number": 127,
+      "scene": "Scene 6: Conclusion - The Stranger Becomes Family",
+      "narration_snippet": "Your brain is bad at strangers.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The blurred, faceless gray silhouette from earlier floats in the background beside the chibi character. The character glances at the silhouette with a knowing and almost sympathetic look, as if understanding its purpose. The lighting is neutral and clear. no text"
+    },
+    {
+      "image_number": 128,
+      "scene": "Scene 6: Conclusion - The Stranger Becomes Family",
+      "narration_snippet": "The good news is that strangers can become familiar.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The gray silhouette slowly begins to gain color, warmth, and detail, similar to a photograph developing in a darkroom. The hazy form is becoming solid and recognizable. The chibi character watches this transformation with a hopeful and encouraging expression. Soft, prismatic light accents. no text"
+    },
+    {
+      "image_number": 129,
+      "scene": "Scene 6: Conclusion - The Stranger Becomes Family",
+      "narration_snippet": "Faces you've never seen can become faces you recognize.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up focus on the chibi character's dark eyes. Reflected perfectly in the iris is the aged mirror face from before. With each breath, the reflection becomes clearer, sharper, and more familiar. The overall mood is one of profound realization and connection. Subsurface scattering on the character's skin. no text"
+    },
+    {
+      "image_number": 130,
+      "scene": "Scene 6: Conclusion - The Stranger Becomes Family",
+      "narration_snippet": "Future You - the one who needs that money in thirty years,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A wide shot shows the chibi character looking across the bridge at the future version of themselves. The aged figure is now fully visible, detailed, and completely recognizable as the character grown older. They are both standing under a beautiful, starry sky representing the vastness of time. no text"
+    },
+    {
+      "image_number": 131,
+      "scene": "Scene 6: Conclusion - The Stranger Becomes Family",
+      "narration_snippet": "the one who needs that emergency fund next Tuesday -",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A quick, dynamic cut where the chibi character and the aged version of themselves are standing side by side, holding hands. A single, gleaming gold coin is being passed between their small hands in a gesture of mutual support and care. The lighting is warm and joyous. no text"
+    },
+    {
+      "image_number": 132,
+      "scene": "Scene 6: Conclusion - The Stranger Becomes Family",
+      "narration_snippet": "can become as real and as worth protecting as anyone you love right now.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up focus as the chibi character and the older figure stand side-by-side, shoulder to shoulder. The character is looking at the older figure with the same intense warmth and care as one would look at a dearest friend. Both have identical pink blush marks and large, loving dark eyes. no text"
+    },
+    {
+      "image_number": 133,
+      "scene": "Scene 6: Conclusion - The Stranger Becomes Family",
+      "narration_snippet": "The brain that saw fifty dollars and took it over a hundred",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract memory shot of the small gold coin on the close platform, with a tiny hand reaching out to grab it quickly. The motion is familiar and impulsive. The background is a soft, faded white, like a memory. no text"
+    },
+    {
+      "image_number": 134,
+      "scene": "Scene 6: Conclusion - The Stranger Becomes Family",
+      "narration_snippet": "was just doing what brains do: surviving the present.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character is seen briefly in the ancient rocky landscape from before, surrounded by shadows and uncertain fog. The scene then gently dissolves back into the modern, bright setting, creating a smooth visual bridge between the past and the present. no text"
+    },
+    {
+      "image_number": 135,
+      "scene": "Scene 6: Conclusion - The Stranger Becomes Family",
+      "narration_snippet": "But you are not just a survival machine.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character straightens up to their full height, lifting their chin slightly with a sense of quiet dignity and pride. Their expression is one of self-worth and potential. The lighting is heroic and clear. Their white puffy hoodie is bright and clean. no text"
+    },
+    {
+      "image_number": 136,
+      "scene": "Scene 6: Conclusion - The Stranger Becomes Family",
+      "narration_snippet": "You have a prefrontal cortex that can build systems,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An abstract shot where the previously exhausted 'accountant' brain-section is now sitting upright, energized, and organized. It is expertly routing glowing streams of gold coins into various clean, efficient channels and jars. The atmosphere is one of order and intelligence. no text"
+    },
+    {
+      "image_number": 137,
+      "scene": "Scene 6: Conclusion - The Stranger Becomes Family",
+      "narration_snippet": "write if-then plans,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character's tiny finger is seen tracing a complex, glowing flow-chart in the air. The lines of light are crisp, golden, and purposeful, showing a clear plan of action. The character's expression is one of focus and success. no text"
+    },
+    {
+      "image_number": 138,
+      "scene": "Scene 6: Conclusion - The Stranger Becomes Family",
+      "narration_snippet": "automate transfers,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up focus on a panel where the white switch is flipped once again. A beautiful, smooth stream of gold coins flows automatically and effortlessly across the screen. The motion is rhythmic and satisfying. Soft ambient occlusion reflections on the metallic coins. no text"
+    },
+    {
+      "image_number": 139,
+      "scene": "Scene 6: Conclusion - The Stranger Becomes Family",
+      "narration_snippet": "and spend five minutes looking at a photo of who you might become.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character holds up a beautiful, glowing oval shape. Inside the oval, the silver-haired aged version of themselves looks back at them with a warm and loving smile. The character studies the image quietly, their expression open, tender, and deeply connected. no text"
+    },
+    {
+      "image_number": 140,
+      "scene": "Scene 6: Conclusion - The Stranger Becomes Family",
+      "narration_snippet": "The stranger in the mirror is waiting.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A wide shot with the chibi character slowly approaching the large oval mirror from before. The aged reflection is already there, waiting patiently with its hand raised in a gentle greeting. The atmosphere is quiet, respectful, and emotional. no text"
+    },
+    {
+      "image_number": 141,
+      "scene": "Scene 6: Conclusion - The Stranger Becomes Family",
+      "narration_snippet": "Go introduce yourself.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A final close-up focus on the mirror. The chibi character's tiny hand reaches out and touches the glass, and the older figure's hand touches back from the other side at the exact same spot. Both characters have their pink blush marks glowing softly with warmth. The scene slowly fades to a pure, peaceful white. no text"
+    }
+  ]
+}

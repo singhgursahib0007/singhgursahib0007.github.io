@@ -1,0 +1,804 @@
+{
+  "video_title": "Why Losing $100 Hurts More Than Winning $100 Feels Good",
+  "total_images": 133,
+  "prompts": [
+    {
+      "image_number": 1,
+      "scene": "Scene 1: Hook - The Coin Flip",
+      "narration_snippet": "Imagine you're flipping a coin.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A chibi character with fluffy, voluminous white hair with a single small cowlick curling upward at the crown, large, circular, dark gray eyes - almost black - with a gentle reflective sheen, and prominent round pink blush marks on both cheeks, holds a gleaming gold coin between two tiny fingers. The character's eyes are wide with anticipation as they prepare to flip the coin. The character wears an oversized, puffy white zip-up hoodie with a large deep hood, visible front zipper in light silver, two drawstring cords at the chest, dark charcoal gray jogger pants, and small clean white sneakers. Classic chibi proportions - head roughly half the total body height, stubby rounded limbs, small compact torso. The background is a clean, neutral studio space with a soft warm lighting. Subsurface scattering on skin, matte cloth shading on the hoodie. no text"
+    },
+    {
+      "image_number": 2,
+      "scene": "Scene 1: Hook - The Coin Flip",
+      "narration_snippet": "Heads, you win a hundred dollars.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The gold coin is captured mid-air in a slow-motion spin, glowing with a warm, magical golden light that radiates from above. The chibi character, with fluffy white hair and a small cowlick, looks upward with hopeful, sparkling dark gray eyes. The character's expression is one of optimistic wonder. They are wearing their oversized puffy white zip-up hoodie and dark gray jogger pants. Classic chibi proportions. The environment is filled with a soft golden haze that emphasizes the joy of a potential win. The lighting is warm and inviting, highlighting the metallic texture of the spinning coin. Subsurface scattering on the character's skin and matte cloth shading on the hoodie add to the premium 3D look. no text"
+    },
+    {
+      "image_number": 3,
+      "scene": "Scene 1: Hook - The Coin Flip",
+      "narration_snippet": "Tails, you lose a hundred dollars.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The same spinning gold coin is now silhouetted against a cool, dim light, casting a sharp, dark shadow downward that stretches toward the viewer. The chibi character's expression has shifted to uneasy concern, with their large dark gray eyes narrowed and brow slightly furrowed. They have fluffy white hair with a cowlick and pink blush marks on their cheeks. They are wearing their signature white puffy hoodie and dark joggers. Classic chibi proportions. The atmosphere transitions to a somber, cooler tone with deep blue and gray shadows. The contrast between the previous warm glow and this sudden chill emphasizes the threat of loss. Matte cloth shading on the hoodie and subtle ambient occlusion. no text"
+    },
+    {
+      "image_number": 4,
+      "scene": "Scene 1: Hook - The Coin Flip",
+      "narration_snippet": "Pure fifty-fifty.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. In a wide shot, the gold coin is seen balanced perfectly on its edge on a thin, taut wire stretched across a vast chasm between two high cliffs. One side of the frame is bathed in bright, warm sunlight, while the other side is draped in deep, cool shadows. The chibi character is not visible, focusing on the precarious balance of the coin as a metaphor for probability. The clouds in the sky match the split lighting, with fluffy white clouds on the left and heavy gray ones on the right. The metallic surface of the coin reflects both environments equally. The mood is one of tense equilibrium. no text"
+    },
+    {
+      "image_number": 5,
+      "scene": "Scene 1: Hook - The Coin Flip",
+      "narration_snippet": "Mathematically, that's a perfect deal.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character, with fluffy white hair and a small cowlick, is enthusiastically scribbling complex equations on a large floating chalkboard in a bright, modern setting. The equations and numbers glow with a vibrant lime green neon light, symbolizing mathematical certainty and balance. The character has a focused, happy expression with an innocent smile and pink blush marks. They wear their oversized white zip-up hoodie and dark joggers. Classic chibi proportions. Around the character, floating geometric shapes and 3D graphs reinforce the theme of logic and rationality. The lighting is bright and even, creating a clear, intellectual atmosphere. Subsurface scattering on skin and matte cloth shading. no text"
+    },
+    {
+      "image_number": 6,
+      "scene": "Scene 1: Hook - The Coin Flip",
+      "narration_snippet": "Now ask yourself: does that feel like a fair bet?",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character turns away from the floating chalkboard and looks directly into the camera with a suspicious, skeptical squint, one eye slightly narrowed. Their arms are crossed over their chest, and they have a slightly tilted head, conveying doubt. They have fluffy white hair with a cowlick, large dark gray eyes, and pink blush marks. They are wearing their puffy white hoodie and dark joggers. Classic chibi proportions. The background equations have dimmed slightly, and the lighting becomes more focused on the character's questioning face. The mood shifts from abstract logic to subjective feeling. Soft shadows and subsurface scattering on the character's round cheeks. no text"
+    },
+    {
+      "image_number": 7,
+      "scene": "Scene 1: Hook - The Coin Flip",
+      "narration_snippet": "For most people, it doesn't. Not even close.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character shakes their head slowly from side to side with a look of firm disagreement. They have taken a protective step back from the floating coin, with their tiny palms raised in a 'no thanks' gesture. They have fluffy white hair with a cowlick, large dark gray eyes, and pink blush marks on their cheeks. They are wearing their white puffy hoodie and dark joggers. Classic chibi proportions. The background is a soft, neutral gray that makes the character's white hoodie stand out. The lighting is slightly cooler, emphasizing the emotional distance from the 'fair' bet. Subtle ambient occlusion and matte cloth textures. no text"
+    },
+    {
+      "image_number": 8,
+      "scene": "Scene 1: Hook - The Coin Flip",
+      "narration_snippet": "You'd need the win closer to two hundred dollars",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A giant, glowing golden orb emblazoned with a large stylized dollar symbol sits on the winning side of a metaphorical scale, completely dwarfing the much smaller and dimmer losing side. The chibi character, with fluffy white hair and a cowlick, stands between the two, looking up at the massive winning orb with a mixture of curiosity and dawning interest. The character wears their oversized white zip-up hoodie and dark joggers. Classic chibi proportions. The massive orb casts a strong golden light across the scene, creating long, soft shadows. The overall mood is one of extreme imbalance, highlighting the high price of participation. no text"
+    },
+    {
+      "image_number": 9,
+      "scene": "Scene 1: Hook - The Coin Flip",
+      "narration_snippet": "before your gut finally said okay, fine.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character reluctantly reaches a tiny hand toward the gold coin, one eyebrow raised and lips pursed in a look that says 'I'm still not entirely sure.' They have fluffy white hair with a cowlick, large dark gray eyes, and pink blush marks. They are wearing their puffy white hoodie and dark joggers. Classic chibi proportions. The character's posture is hesitant, leaning slightly away even as they reach forward. The background is a warm, hazy gradient, suggesting the internal emotional tug-of-war. The lighting is soft and focused on the character's conflicted expression. Subsurface scattering on the character's skin and matte cloth textures. no text"
+    },
+    {
+      "image_number": 10,
+      "scene": "Scene 1: Hook - The Coin Flip",
+      "narration_snippet": "The math hasn't changed. The odds haven't changed.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A split-screen composition shows two identical, perfectly balanced mechanical scales side-by-side. Both scales are made of polished silver and hold a single gold coin on each side. The chibi character, with fluffy white hair and a cowlick, stands in the center of the split, looking from one scale to the other with a look of genuine confusion and furrowed brows. The character wears their white puffy hoodie and dark joggers. Classic chibi proportions. The lighting is clinical and even, emphasizing the objective equality of the two situations. Each side of the split-screen has a slightly different background color-one Pale blue, one pale yellow-to differentiate them without breaking the symmetry. no text"
+    },
+    {
+      "image_number": 11,
+      "scene": "Scene 1: Hook - The Coin Flip",
+      "narration_snippet": "But the feeling of that loss is twice as heavy.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. One side of a large mechanical scale slams down violently under the weight of a massive, dark, stone-textured weight labeled with a dull, heavy-looking dollar symbol. The other side, holding several bright golden coins, is thrown upward into the air as if weightless. The chibi character stands in front of the sinking side, looking dwarfed and intimidated by the heavy dark weight. They have fluffy white hair with a cowlick, wide dark eyes reflecting the dark shadow, and pink blush marks. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. Dark, smoky tendrils rise from the heavy weight, while the golden coins sparkles in a beam of light. The contrast in visual weight is extreme. no text"
+    },
+    {
+      "image_number": 12,
+      "scene": "Scene 1: Hook - The Coin Flip",
+      "narration_snippet": "This is one of the most fundamental features of the human brain.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An extreme close-up focuses on the chibi character's large, circular, dark gray eye. The pupil is dilated, and the reflective surface of the eye captures a tiny, spinning gold coin in infinite detail. Deep within the reflection, something primal and ancient seems to flicker-a hint of a wild savanna landscape. The character's long white eyelashes and pink blush on their lid are visible. The lighting is dramatic and close, emphasizing the biological depth of the moment. Subsurface scattering on the skin around the eye and a wet, glassy sheen on the eyeball itself. no text"
+    },
+    {
+      "image_number": 13,
+      "scene": "Scene 1: Hook - The Coin Flip",
+      "narration_snippet": "A bias so deep it predates money, civilization, even language.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The camera pulls back dramatically from the character to reveal them standing alone in the center of a vast, ancient, and prehistoric landscape. It is a wide African savanna at dusk, with towering acacia trees silhouetted against a deep orange and purple sky. There are no buildings, roads, or signs of modern life. The chibi character, with fluffy white hair and a small cowlick, looks tiny and vulnerable in this immense wilderness. They wear their white puffy hoodie and dark joggers, creating a striking contrast with the primitive environment. The wind blows through the tall, dry grass. The lighting is epic and atmospheric, suggesting the dawn of time. no text"
+    },
+    {
+      "image_number": 14,
+      "scene": "Scene 1: Hook - The Coin Flip",
+      "narration_snippet": "It's called loss aversion.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character stands in the center of the frame, facing forward with a serious, grounded expression. To their left, a dark, swirling vortex of shadow pulses with a cold energy, representing loss. To their right, a warm, radiant column of golden light glows with a gentle heat, representing gain. The air between the two forces crackles with visible tension and static electricity. The character, with fluffy white hair and a cowlick, seems to be holding the two forces apart with their sheer presence. They wear their oversized white zip-up hoodie and dark joggers. Classic chibi proportions. The lighting is cinematic and high-contrast, highlighting the character's central role. no text"
+    },
+    {
+      "image_number": 15,
+      "scene": "Scene 1: Hook - The Coin Flip",
+      "narration_snippet": "And once you see it, you'll never look at a financial decision the same way again.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character's eyes widen in a sudden, profound realization, their large dark gray pupils dilating and reflecting a world of complex patterns. As they have this epiphany, the entire environment around them shifts color dramatically from a warm, cozy amber to a crisp, cool electric blue. They have fluffy white hair with a cowlick and pink blush marks. They wear their puffy white hoodie and dark joggers. Classic chibi proportions. Subtle light particles dance in the air, suggesting a change in perception. The character's expression is one of shock and awe. Subsurface scattering on skin and matte cloth textures. no text"
+    },
+    {
+      "image_number": 16,
+      "scene": "Scene 1: Hook - The Coin Flip",
+      "narration_snippet": "So let's talk about it.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character sits comfortably cross-legged on a soft, invisible surface, leaning forward toward the viewer with an eager and inviting smile. Their posture is that of someone starting a cozy campfire conversation. They have fluffy white hair with a small cowlick curling upward, large dark eyes, and bright pink blush marks on their cheeks. They wear their oversized white zip-up hoodie and dark charcoal gray jogger pants. Classic chibi proportions. The background is a soft, warm, and slightly out-of-focus gradient that suggests a safe and friendly space. The lighting is gentle and focuses on the character's welcoming face. no text"
+    },
+    {
+      "image_number": 17,
+      "scene": "Scene 2: The Feeling That Changed Economics",
+      "narration_snippet": "In 1979, two psychologists",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A wide establishing shot shows the interior of a classic, grand university library. The room is filled with warm, polished wood shelves that stretch to the high vaulted ceiling, thousands of old books, and elegant amber desk lamps that cast a soft glow. The chibi character is not visible in this shot, emphasizing the historical and academic setting. The air is filled with tiny, slowly drifting dust motes dancing in shafts of afternoon sunlight filtering through tall windows. The atmosphere is quiet, studious, and filled with the weight of knowledge. no text"
+    },
+    {
+      "image_number": 18,
+      "scene": "Scene 2: The Feeling That Changed Economics",
+      "narration_snippet": "published a paper that quietly broke economics.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An old, thick academic journal with a leather-bound cover drops onto a polished mahogany desk, captured at the moment of impact. A physical shockwave ripple emanates from the point of impact, visibly distorting the air and knocking over a long row of tiny, intricately detailed dominos that stretch across the desk. The chibi character's tiny hands are just visible at the edge of the frame, having dropped the book. The lighting is warm and dramatic, with the ripples catching the light like water. Matte textures on the book cover and a high-gloss finish on the desk. no text"
+    },
+    {
+      "image_number": 19,
+      "scene": "Scene 2: The Feeling That Changed Economics",
+      "narration_snippet": "Up until then, the field had a foundational assumption:",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character stands before a massive, ancient stone monument carved from solid white marble. The monument is engraved with a simple, elegant symbol of perfectly balanced mechanical scales. The character, with fluffy white hair and a small cowlick, looks up at the monument with a sense of respect and order. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. The environment is vast and bright, suggesting a long-standing and undisputed tradition. The stone has a subtle grain and texture, highlighted by the soft light. no text"
+    },
+    {
+      "image_number": 20,
+      "scene": "Scene 2: The Feeling That Changed Economics",
+      "narration_snippet": "people are rational.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The massive stone monument with the balanced scales gleams in a beam of perfect, divine sunlight that highlights its flawless symmetry. The chibi character, with fluffy white hair and a cowlick, stands in front of it, nodding approvingly with a satisfied and confident smile. They have large dark gray eyes and pink blush marks. They wear their oversized white hoodie and dark joggers. Classic chibi proportions. The background is a clean, blue sky with a few wispy clouds, reinforcing the feeling of clarity and reason. Subsurface scattering on skin and matte cloth textures. no text"
+    },
+    {
+      "image_number": 21,
+      "scene": "Scene 2: The Feeling That Changed Economics",
+      "narration_snippet": "They calculate gains and losses objectively,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character is dressed in a tiny, perfectly fitted white lab coat over their hoodie. They are surrounded by dozens of floating, glowing calculation bubbles filled with mathematical symbols and geometric shapes that are all perfectly organized and aligned. The character has a studious and focused expression, looking through a pair of tiny round glasses. They have fluffy white hair and a cowlick. Classic chibi proportions. The background is a high-tech, clean laboratory environment with soft blue accent lights. The lighting is bright and meticulous, suggesting precision and objectivity. no text"
+    },
+    {
+      "image_number": 22,
+      "scene": "Scene 2: The Feeling That Changed Economics",
+      "narration_snippet": "weigh probabilities like pocket calculators,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up of the chibi character shows their large dark gray eyes briefly transforming into spinning, intricate clockwork gear wheels and glowing digital readouts. Their expression is empty and mechanical, mimicking the cold logic of a machine. They have fluffy white hair with a cowlick and pink blush marks on their cheeks. They wear their oversized white zip-up hoodie. Classic chibi proportions. The lighting is a cool, sterile white, reflecting the lack of emotion in the process. The gears are rendered with a brushed metal texture, catching sharp highlights. no text"
+    },
+    {
+      "image_number": 23,
+      "scene": "Scene 2: The Feeling That Changed Economics",
+      "narration_snippet": "and make decisions that maximize their own benefit.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character, with fluffy white hair and a cowlick, carefully places a single gold coin onto a perfectly leveled and highly precise mechanical scale with surgical precision. They have a satisfied, slightly smug smile and look very pleased with their work. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. The background is a clean, minimalist workspace with warm, professional lighting. The scale is rendered with detailed metallic shaders, and the coin has a rich, golden luster. Subsurface scattering on skin and matte cloth textures. no text"
+    },
+    {
+      "image_number": 24,
+      "scene": "Scene 2: The Feeling That Changed Economics",
+      "narration_snippet": "Kahneman and Tversky had a different idea.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. Two tall, shadowy, and mysterious silhouettes of intellectuals appear behind the chibi character. One silhouette is gesturing toward a crumbling, weathered version of the stone monument with the balanced scales. The chibi character, with fluffy white hair and a cowlick, looks back at them with a look of surprise and curiosity. They wear their white hoodie and dark joggers. Classic chibi proportions. The background transitions from the clean sky to a dark, library-like space with long shadows. The lighting is dramatic and moody, signaling a shift in perspective. no text"
+    },
+    {
+      "image_number": 25,
+      "scene": "Scene 2: The Feeling That Changed Economics",
+      "narration_snippet": "They ran experiment after experiment,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. In a montage-style composition, the chibi character is seen sitting at several different floating mahogany desks that recede into the distance. At each desk, the character is presented with a different glowing 'gamble' card showing various abstract symbols. The character's expression is focused as they move from one desk to the next. They have fluffy white hair with a cowlick and pink blush marks. They wear their oversized white hoodie and dark joggers. Classic chibi proportions. The environment is a surreal, infinite space filled with soft teal and purple gradients. The lighting is varied, creating a sense of repetitive testing. no text"
+    },
+    {
+      "image_number": 26,
+      "scene": "Scene 2: The Feeling That Changed Economics",
+      "narration_snippet": "and what they found was consistent and strange.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character's expression has shifted from focused to genuinely puzzled and intrigued. They lean back in their floating chair, rubbing their tiny chin with one hand and staring at a set of results. They have fluffy white hair with a cowlick, large dark gray eyes wide with wonder, and pink blush marks. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. Around them, the floating desks have stabilized into a single, organized but unusual pattern of results. The background is a soft, dreamlike haze of warm colors. Subsurface scattering on skin and matte cloth textures. no text"
+    },
+    {
+      "image_number": 27,
+      "scene": "Scene 2: The Feeling That Changed Economics",
+      "narration_snippet": "People didn't treat losses and gains symmetrically.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. Two identical floating orbs of light-one a warm honey gold and one a cool sapphire blue-are presented side-by-side to the chibi character. Despite their equal size and beauty, the character instinctively reaches away from the blue 'loss' orb and toward the golden 'gain' orb with a look of slight hesitation. They have fluffy white hair with a cowlick and pink blush marks. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. The background is a neutral, dark space that makes the glowing orbs the primary focus. The lighting is dominated by the contrasting colors of the orbs. no text"
+    },
+    {
+      "image_number": 28,
+      "scene": "Scene 2: The Feeling That Changed Economics",
+      "narration_snippet": "Losses felt disproportionately heavier.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The sapphire blue 'loss' orb suddenly and dramatically expands, becoming a massive, dark, and heavy sphere with a rough, obsidian-like texture. The golden 'gain' orb remains small and bright. The chibi character staggers back, their tiny arms straining to hold up the weight of the massive dark orb that looms over them. They have fluffy white hair with a cowlick and a look of pained effort on their face. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. The floor beneath the character seems to crack under the weight. The mood is intense and burdensome. no text"
+    },
+    {
+      "image_number": 29,
+      "scene": "Scene 2: The Feeling That Changed Economics",
+      "narration_snippet": "The paper was called Prospect Theory,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An ornate, glowing academic book materializes in the air before the chibi character. Its cover is made of deep navy blue velvet and is embossed with a golden mountain peak rising from a shadowy valley, symbolizing prospect. The book emits a soft, prestigious glow. The chibi character reaches for it with both tiny hands, their eyes wide with reverence and awe. They have fluffy white hair with a cowlick and pink blush marks. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. The background is a soft, warm amber that highlights the book's importance. no text"
+    },
+    {
+      "image_number": 30,
+      "scene": "Scene 2: The Feeling That Changed Economics",
+      "narration_snippet": "and it eventually won Kahneman a Nobel Prize.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A large, beautifully detailed glowing gold medallion on a rich crimson ribbon descends slowly from above. The medallion features a classic portrait and elegant engravings. The chibi character, with fluffy white hair and a cowlick, stares at the medal with genuine respect and sparkling dark gray eyes. They have a small, proud smile and pink blush marks on their cheeks. They wear their oversized white zip-up hoodie. Classic chibi proportions. The background is a soft, celebratory blur of warm lights and sparkling particles. The lighting is dramatic and focused on the gold medallion. no text"
+    },
+    {
+      "image_number": 31,
+      "scene": "Scene 2: The Feeling That Changed Economics",
+      "narration_snippet": "Not bad for pointing out that humans are irrational in a very predictable way.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character glances up at the hanging gold medallion, then turns back to look at the viewer with a small, amused, and knowing smirk. One eye is slightly squinted in a playful way. They have fluffy white hair with a cowlick and pink blush marks. They wear their oversized white zip-up hoodie and dark gray joggers. Classic chibi proportions. The background is a clean, neutral space with a hint of warm light. The character's posture is relaxed and confident. Subsurface scattering on skin and matte cloth textures. no text"
+    },
+    {
+      "image_number": 32,
+      "scene": "Scene 2: The Feeling That Changed Economics",
+      "narration_snippet": "The loss aversion coefficient: roughly 2 to 2.5.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A large, glowing mechanical scale is shown where two heavy, dark obsidian blocks labeled with loss symbols on one side are barely balanced by a single, brilliant golden block of the same size on the other. The scale is tilted slightly toward the dark side, illustrating the disproportionate weight of loss. The chibi character is not visible, focusing on the visual math. The background is a soft, dark gray gradient. The lighting is high-contrast, with the golden block casting a warm glow and the dark blocks casting deep shadows. no text"
+    },
+    {
+      "image_number": 33,
+      "scene": "Scene 2: The Feeling That Changed Economics",
+      "narration_snippet": "Some studies put it closer to 1.9. Some push it to 3.1.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The large glowing scale is shown oscillating gently back and forth, the numbers 1.9 and 3.1 briefly flickering in the mid-air as glowing neon light trails before dissolving. The scale never settles into a perfect balance, always tilting and swaying in a narrow range. The chibi character, with fluffy white hair and a cowlick, watches the scale with a look of calm observation and a tilted head. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. The background is a soft, neutral space with floating data points. The lighting is soft and ambient. no text"
+    },
+    {
+      "image_number": 34,
+      "scene": "Scene 2: The Feeling That Changed Economics",
+      "narration_snippet": "Losses hurt more. Every time.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character clenches a tiny hand over their heart, their expression quiet, resigned, and slightly somber. A small, soft dark cloud hovers just a few inches above their head, casting a gentle shadow over their face. They have fluffy white hair with a cowlick, large dark gray eyes looking slightly downward, and pink blush marks. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. The background is a cool, pale lavender gradient that feels peaceful but melancholy. The lighting is soft and diffused, emphasizing the internal feeling. Subsurface scattering on skin and matte cloth textures. no text"
+    },
+    {
+      "image_number": 35,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "Here's the thing: this wasn't always irrational.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character stands at the fork of a long, winding timeline path that stretches through a misty void. Behind them, the path is made of rough, ancient earth; ahead, one branch leads toward a distant, gleaming modern city skyline. The character has fluffy white hair with a cowlick, large dark gray eyes, and pink blush marks. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. The character looks thoughtful, with one tiny finger tapping their chin. The lighting is soft and transitional, suggesting a bridge between eras. no text"
+    },
+    {
+      "image_number": 36,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "In fact, it was brilliant.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A warm, magnificent golden sunrise floods the entire frame, casting a hopeful and awe-inspiring light. The chibi character, with fluffy white hair and a small cowlick, shields their eyes with a tiny hand while looking out at the horizon with a look of genuine wonder and amazement. They have wide, sparkling dark gray eyes and pink blush marks. They wear their oversized white zip-up hoodie. Classic chibi proportions. The air is filled with shimmering golden light particles. The atmosphere is one of brilliant discovery and ancient wisdom. no text"
+    },
+    {
+      "image_number": 37,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "Go back 100,000 years.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The camera rushes backward at high speed through a tunnel of light and time. Modern buildings dissolve into dust, paved roads vanish into grass, and lush green trees grow instantly out of the ground. The background is a blur of motion and color. In the distance, a vast, untouched African savanna begins to resolve. The lighting is kinetic and energetic, using light trails to suggest rapid travel through millennia. no text"
+    },
+    {
+      "image_number": 38,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "Your ancestor on the African savanna",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A wide shot of a vast, golden African savanna at dusk is shown. In the far distance, a small, silhouetted figure of an ancient ancestor stands at the edge of tall, swaying grass. The sky is a deep, warm orange with a few wispy clouds. The sun is just setting behind a lone, wide acacia tree. The mood is one of quiet, ancient survival. The landscape is rich with texture, from the individual blades of grass to the distant hills. no text"
+    },
+    {
+      "image_number": 39,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "doesn't have a salary or a savings account.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character is dressed in simple, ancient furs and hides instead of their hoodie. They are patting their empty pockets with a look of mild surprise and shrug-there is nothing there but a small, empty woven pouch. They have fluffy white hair with a cowlick and pink blush marks. Classic chibi proportions. The background is a rocky outcrop on the savanna with sparse vegetation. The lighting is the warm, harsh light of a midday sun. Subsurface scattering on skin and detailed textures on the primitive clothing. no text"
+    },
+    {
+      "image_number": 40,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "They have a hunting band, a territory,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A group of small, silhouetted chibi-style figures is seen moving together across a high ridge during the golden hour. They move with purpose and unity, suggesting a tight-knit hunting band. The leader, with fluffy white hair visible even in silhouette, carries a small primitive tool. The sky is a vibrant palette of pink and gold. The long shadows stretch across the ridge, emphasizing the vastness of their territory. The mood is one of communal strength and navigation. no text"
+    },
+    {
+      "image_number": 41,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "and enough food for a few days.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character, in their ancient fur dress, cradles a modest bundle of gathered fruits and nuts protectively in both arms. Their expression is extremely cautious and careful, as if the bundle is the most precious thing in the world. They have fluffy white hair with a cowlick, large dark gray eyes scanning their surroundings, and pink blush marks. Classic chibi proportions. The background is a safe, sheltered area near some rocks. The lighting is soft and warm, highlighting the textures of the food and the furs. no text"
+    },
+    {
+      "image_number": 42,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "What happens if they lose that food?",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A moment of sudden disaster: the bundle of food slips from the character's hands. The chibi character's face flashes with sudden, genuine horror, eyes wide and mouth slightly open in a gasp. The food is captured mid-tumble, falling toward a dark, deep pit or chasm below. They have fluffy white hair with a cowlick and pink blush marks. Classic chibi proportions. The lighting becomes instantly cooler and harsher, emphasizing the shock and peril of the loss. no text"
+    },
+    {
+      "image_number": 43,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "They could die.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character stands alone at the center of a vast, dark, and empty landscape under a cold, starry night sky. They look incredibly small and still, with a somber and vulnerable expression. A cold wind blows past, visible through a few swirling dust particles. They have fluffy white hair with a cowlick and large, dark, lonely eyes. Classic chibi proportions. The silence of the scene is palpable. Deep blue shadows and a single, weak moonlight highlight create a mood of absolute gravity and existential threat. no text"
+    },
+    {
+      "image_number": 44,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "What happens if they find double the food?",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character discovers a second, identical bundle of food abandoned near a lush bush. Their eyes light up with a small, happy bounce of excitement and a delighted smile. They have fluffy white hair with a cowlick and pink blush marks on their cheeks. They are still wearing their ancient fur dress. Classic chibi proportions. The environment is vibrant and green, bathed in a warm, encouraging sunlight. The mood is a sharp contrast to the previous scene, full of relief and modest joy. no text"
+    },
+    {
+      "image_number": 45,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "They eat well. They're happy.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character sits by a small, crackling campfire at night, eating contentedly with a full belly and a peaceful, satisfied expression. Their eyes are closed in a gentle smile, and the firelight casts a warm, flickering orange glow across their face and fluffy white hair. They have pink blush marks on their cheeks. Classic chibi proportions. Beside them is the second bundle of food. The background is a dark, safe cave or rocky shelter. The atmosphere is one of cozy comfort and temporary abundance. no text"
+    },
+    {
+      "image_number": 46,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "But they don't gain a second life.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character looks up at the vast, starry night sky and gestures upward with a hopeful but questioning hand. Nothing supernatural or extraordinary happens-the sky remains just a beautiful, empty expanse of stars. The character's hopeful gesture slowly fades, and their expression becomes one of quiet realization of their own limitations. They have fluffy white hair with a cowlick and pink blush marks. Classic chibi proportions. The lighting is cool and vast, emphasizing the distance between human desire and reality. no text"
+    },
+    {
+      "image_number": 47,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "The upside is capped. The downside is catastrophic.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. In a split-frame composition, the left side shows the chibi character standing under a low, soft ceiling of pleasant warm light that they can only gently bump against, representing the capped upside. The right side shows an endless, terrifyingly dark chasm with no visible bottom and no safety net, representing the catastrophic downside. The character's face in the center is half-lit by the warm glow and half-shrouded in the dark shadow. They have fluffy white hair and a cowlick. Classic chibi proportions. The visual contrast is stark and frightening. no text"
+    },
+    {
+      "image_number": 48,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "being hypersensitive to potential loss was a survival advantage.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character in their ancient dress has their ears perk up sharply and their body freezes mid-step. Every sense is visibly alert; they are scanning the horizon with focused, intense dark gray eyes. A single drop of sweat is visible on their brow. They have fluffy white hair with a cowlick and pink blush marks. Classic chibi proportions. The environment is the wild savanna at dawn, with tall grass swaying in the wind. The lighting is tense and expectant, highlighting the character's hyper-awareness. no text"
+    },
+    {
+      "image_number": 49,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "The brain evolved a mechanism that gives priority to bad news,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. Inside a stylized, softly glowing blue brain visualization, a sharp, jagged dark signal pulse races much faster along glowing neural pathways than a soft, rounded bright pulse. The dark signal is clearly taking priority, pushing the bright signal aside. The chibi character's wide eyes are visible in the background, out of focus. The neural pathways sparkle with electric energy. The environment is abstract and internal. The lighting is high-contrast, emphasizing the speed and dominance of the dark pulse. no text"
+    },
+    {
+      "image_number": 50,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "shaving milliseconds off the time it takes to detect a threat.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. In extreme slow-motion, a tiny, indistinct dark shape is barely visible on the horizon of the savanna. Before the shape even resolves into an image, the chibi character's pupils dilate instantly and their body begins to tensed and coil for movement. Their primitive animal instincts have already reacted. They have fluffy white hair with a cowlick and pink blush marks. Classic chibi proportions. The background is a soft-focus blur of the sunset savanna. The lighting is subtle but focused on the character's biological reaction. no text"
+    },
+    {
+      "image_number": 51,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "Your amygdala - the ancient alarm center",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. Deep inside the stylized, translucent glowing brain, a small, almond-shaped core at the center-the amygdala-begins to pulse with a deep, urgent red light. The red glow is intense and demanding, overshadowing the calm blue of the rest of the brain. The chibi character's silhouette is visible in the background, frozen in alarm. The internal environment is filled with flowing energy and data. The lighting is ominous and red, signaling a high-priority alert. no text"
+    },
+    {
+      "image_number": 52,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "fires faster and harder in response to potential loss",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The small red amygdala core erupts in a violent burst of bright, flashing red light that completely overwhelms and floods the entire brain visualization. The light is jagged and explosive, like a camera flash in a dark room. The chibi character's expression is one of sudden, intense alertness. They have fluffy white hair and a cowlick. Classic chibi proportions. The environment is now dominated by the emergency red light. The mood is one of maximum urgency and survival instinct. no text"
+    },
+    {
+      "image_number": 53,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "than to potential gain.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. In the same brain visualization, a soft, gentle golden pulse enters from the other side. Compared to the previous red explosion, this golden pulse is small, quiet, and moves at a much slower, more leisurely pace. It is almost an afterthought in the busy brain. The contrast reinforces the brain's bias. The chibi character's silhouette looks relaxed and almost disinterested in this pulse. The lighting is warm but much dimmer than the red alarm. no text"
+    },
+    {
+      "image_number": 54,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "Evolution didn't wire us for rational utility calculations.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character, dressed in ancient furs, is clumsily trying to operate a tiny, floating, high-tech abacus with glowing beads. As they touch it, the beads fly off in every direction, and the character looks confused and overwhelmed. They have fluffy white hair with a cowlick, large dark eyes, and a frustrated expression. Classic chibi proportions. The environment is a mix of the primitive savanna and out-of-place futuristic tools. The lighting is a discordant mix of warm sun and cool neon. no text"
+    },
+    {
+      "image_number": 55,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "It wired us to not die.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character is captured mid-bolt, performing a full-speed, high-energy 'chibi sprint' away from an unseen threat. Their tiny legs are a blur of motion, and their fluffy white hair is blown back by the wind. Their expression is one of pure, focused determination to survive. They wear their ancient furs. Classic chibi proportions. The background is a blur of savanna grass and dust. The lighting is dynamic and high-action, with motion blur effects on the ground. no text"
+    },
+    {
+      "image_number": 56,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "That ancient system is still running.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An ancient cave painting of the chibi character in their fur dress glows with a faint, pulse-like light on a rough rock wall. As the camera watches, the painting smoothly and magically transforms into a sleek, modern, and glowing stock market chart with a jagged line. The transition is seamless. The lighting in the cave is warm and flickering like torchlight, but the stock chart emits a cool, modern blue light. The textures of the rock wall are detailed and ancient. no text"
+    },
+    {
+      "image_number": 57,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "Chimpanzees show the same loss-averse behavior.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A simple and elegant silhouette of a chimpanzee is shown in a clean, experimental laboratory-style setting. The chimp reaches for two identical, brightly colored fruits. However, when one fruit is framed as a potential loss, the chimp silhouette recoils with a visible startle. The environment is bright, neutral, and minimalist. The character is not present, focusing on the cross-species nature of the bias. The lighting is even and scientific. no text"
+    },
+    {
+      "image_number": 58,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "This bias is millions of years old.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A massive timeline stretches into the impossibly far distance across a celestial void. Tiny, glowing dots representing human civilizations are only visible at the very far right edge, while the rest of the vast line stretches back into ancient darkness. The chibi character is not visible, emphasizing the cosmic scale. The background is a deep cosmic purple with distant nebulae. The lighting is epic and highlights the length of the timeline. no text"
+    },
+    {
+      "image_number": 59,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "Your financial decisions are being filtered through survival software",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character, in their modern white hoodie, sits before a large, glowing, floating holographic screen filled with complex financial data. However, the reflection in their large dark gray eyes doesn't show the screen; instead, it shows the reflection of ancient orange campfire flames and dark, prowling animal shapes. They have fluffy white hair and pink blush marks. Classic chibi proportions. The environment is a clean, modern apartment at night. The lighting is a mix of the screen's blue glow and the warm firelight from the reflection. no text"
+    },
+    {
+      "image_number": 60,
+      "scene": "Scene 3: Your Brain's Ancient Alarm System",
+      "narration_snippet": "written for a completely different problem.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The modern holographic screen suddenly flickers and glitches, revealing for a split second that underneath the digital interface is a rough, ancient stone slab carved with primitive symbols of spears and animals. The two layers are momentarily overlapped. The chibi character looks at the screen with a look of dawning realization. They have fluffy white hair with a cowlick. Classic chibi proportions. The lighting is a chaotic mix of digital glitch and ancient torchlight. no text"
+    },
+    {
+      "image_number": 61,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "Loss aversion isn't just an interesting psychological fact.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character holds a small, glowing, translucent blue brain in both hands. The brain is filled with intricate, glowing neural networks. The character has fluffy white hair with a cowlick, large dark gray eyes, and pink blush marks. They wear their oversized white zip-up hoodie and dark joggers. Classic chibi proportions. The character's expression is one of calm observation. The background is a clean, neutral studio space with soft, professional lighting. Subsurface scattering on skin and the glowing brain creates a soft, luminous effect. no text"
+    },
+    {
+      "image_number": 62,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "It's actively expensive.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The small glowing brain in the character's hands begins to leak dozens of bright golden coins from its base, which pour steadily downward. The coins fall into an invisible drain at the bottom of the frame. The chibi character watches the disappearing coins with a look of dawning alarm and wide eyes. They have fluffy white hair with a cowlick and pink blush marks. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. The background is a soft, dark gray that makes the golden coins stand out. The lighting is focused on the falling coins and the character's worried face. no text"
+    },
+    {
+      "image_number": 63,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "Consider the disposition effect.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character stands in front of a large, floating holographic stock portfolio board. The board is filled with dozens of square tiles; some are glowing with a vibrant, healthy green light, while others are a dull, sinking dark red. The character looks at the board with a look of intense concentration. They have fluffy white hair with a cowlick, large dark eyes, and pink blush marks. They wear their oversized white hoodie and dark joggers. Classic chibi proportions. The environment is a clean, futuristic financial office with soft blue ambient light. The scene is sharp and modern. no text"
+    },
+    {
+      "image_number": 64,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "Loss-averse investors sell their winning stocks too early,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character hastily grabs a bright, vibrant green 'winning' tile from the holographic board. The tile is still visibly rising in its position. The character looks nervous and hurried, stuffing the tile into a small pouch at their waist. They have fluffy white hair with a cowlick and pink blush marks. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. The background features the rest of the board, showing other green tiles continuing to climb. The lighting is slightly frantic, with the green glow from the tile illuminating the character's face from below. no text"
+    },
+    {
+      "image_number": 65,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "because locking in a gain feels safe.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character clutches the small pouch tight to their chest with both tiny hands, closing their eyes with a deep, relieved exhale. However, they can't help but glance back over their shoulder at the holographic board, where the green tile they just 'saved' would have continued to climb much higher. They have fluffy white hair with a cowlick and pink blush marks. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. The background is a soft, warm amber haze. The lighting is comforting but tinged with a hint of regretful 'what-if'. no text"
+    },
+    {
+      "image_number": 66,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "And they hold onto their losing stocks far too long,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character is seen gripping a large, dark red 'losing' tile with both tiny hands, their knuckles white from the effort. The tile is sinking steadily downward, dragging the character's arms along with it, but the character refuses to let go. Their expression is one of stubborn, pained determination. They have fluffy white hair with a cowlick, large dark eyes narrowed in a squint, and pink blush marks. They wear their oversized white hoodie. Classic chibi proportions. The background is a cool, dark void filled with sinking red numbers. The lighting is high-contrast and dramatic. no text"
+    },
+    {
+      "image_number": 67,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "because selling means converting a paper loss into a real one.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up view of the dark red tile in the character's hands shows it pulsing with an ominous, dark energy. The character knows that the moment they loosen their grip and 'sell', the tile will transform into a heavy, dark shadow that will crash down. Their expression is one of intense dread. They have fluffy white hair and a cowlick. The character's face is illuminated by the red pulse. The background is a dense, smoky shadow. Matte textures on the character's hoodie and subsurface scattering on skin. no text"
+    },
+    {
+      "image_number": 68,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "The brain treats the moment of selling a loser as the moment the loss becomes real.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A ghost-like, transparent version of a gold coin floats slowly away from the red tile as the character finally, painfully releases it in their mind. The character watches the coin go with a deeply pained and regretful expression, as if they are losing something tangible. They have fluffy white hair with a cowlick, large dark gray eyes, and pink blush marks. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. The background is a soft, cool gray. The lighting is melancholic and focuses on the character's face. no text"
+    },
+    {
+      "image_number": 69,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "So it resists. It waits. It hopes.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character is seen sitting cross-legged on the floor beside the sinking red tile. Their eyes are tightly closed, and their tiny fingers are crossed on both hands in a gesture of desperate hope. They are visibly waiting for a miracle. They have fluffy white hair with a cowlick and pink blush marks on their cheeks. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. The background is a dark, still space with a single shaft of light pointing toward the character. The mood is one of quiet, frozen inaction. no text"
+    },
+    {
+      "image_number": 70,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "You end up with a portfolio of losers",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. In a wide shot, the chibi character is shown standing in the center of a vast field of drooping, wilting red tiles. Every tile is pointing downward like a dying flower, and the entire scene is bathed in a dull, depressing red glow. The character looks around with a lost and overwhelmed expression. They have fluffy white hair with a cowlick and pink blush marks. They wear their oversized white zip-up hoodie and dark joggers. Classic chibi proportions. The scale of the 'losers' around them is immense. The lighting is somber and heavy. no text"
+    },
+    {
+      "image_number": 71,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "and a memory of all the winners you sold too soon.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character looks up wistfully at the sky. High above them, ghost-like, shimmering green versions of 'winning' tiles float far out of reach, having risen to incredible heights. The character's expression is one of deep nostalgia and 'what-could-have-been.' They have fluffy white hair with a cowlick, large dark gray eyes full of longing, and pink blush marks. They wear their white puffy hoodie. Classic chibi proportions. The contrast between the drooping red field below and the brilliant green sky above is stark. Soft, dreamlike lighting. no text"
+    },
+    {
+      "image_number": 72,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "In 2022, average investors lost more than the market itself.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A large, clean graph visualization occupies the frame. It shows two downward-plunging curves side-by-side. One curve (the market) is sharp but the other curve (the average investor) is visibly steeper and dives even deeper. The chibi character stands beside the graph, pointing to the gap with a wince and a look of pained empathy. they have fluffy white hair with a cowlick and pink blush marks. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. The background is a neutral, professional gray. The lighting is clear and informative but somber. no text"
+    },
+    {
+      "image_number": 73,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "That gap - year after year, compounded -",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The small gap between the two downward graph lines is shown slowly but steadily widening into a massive, yawning chasm as the lines extend rightward across the frame. The chasm is dark and bottomless. The chibi character is not visible, focusing on the sheer scale of the lost opportunity. The background is a clean, abstract space that emphasizes the mathematical truth of compounding. The lighting is dramatic, highlighting the expanding void. no text"
+    },
+    {
+      "image_number": 74,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "traces back almost entirely to loss-averse behavior.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character's own long shadow is seen stretching across the growing chasm in the graph. The character themselves stands at the edge, looking down at their shadow with a look of dawning recognition and realization. They have fluffy white hair with a cowlick, large dark gray eyes, and pink blush marks. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. The lighting is low and dramatic, with the character silhouetted against the dark gap. Subsurface scattering on skin and matte cloth textures. no text"
+    },
+    {
+      "image_number": 75,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "Panic selling at the bottom.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. In a moment of pure chaos, the chibi character is seen throwing their portfolio cards into the air with a look of unbridled panic and wide eyes. Behind them, the stock market graph hits a terrifying rock bottom. The cards scatter everywhere like falling leaves. The character has fluffy white hair with a cowlick and pink blush marks. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. The lighting is jagged and alarming, with flashing red signals in the background. The mood is one of desperate, irrational escape. no text"
+    },
+    {
+      "image_number": 76,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "Refusing to buy back in while the market recovers.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character stands at the base of a magnificent, rising golden staircase that represents the recovering market. Their arms are tightly crossed over their chest, and they have a stubborn, refusing expression. They are deliberately not stepping on. Other small, blurred figures can be seen walking confidently up the stairs past them. The character has fluffy white hair with a cowlick and pink blush marks. They wear their white puffy hoodie. Classic chibi proportions. The staircase glows with a warm, invitational light. The character's shadow is long and defiant. no text"
+    },
+    {
+      "image_number": 77,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "Watching it go up from the sidelines.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character has their face pressed flattened against an invisible glass wall. Through the glass, they are watching the golden market staircase continue to rise high into a bright sky. Their breath is fogging the glass in a small patch. They have fluffy white hair with a cowlick, large dark gray eyes full of longing and regret, and pink blush marks. They wear their white puffy hoodie. Classic chibi proportions. The lighting is a sharp contrast between the character's dim 'sideline' area and the brilliantly lit world beyond the glass. no text"
+    },
+    {
+      "image_number": 78,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "Loss aversion also powers the sunk cost fallacy.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character sits in a small, cozy red velvet cinema seat looking utterly miserable. Their arms are crossed, their expression is one of profound boredom and suffering, and their bucket of popcorn is completely untouched beside them. Despite their misery, they are firmly staying seated. They have fluffy white hair with a cowlick, large dark eyes, and pink blush marks. They wear their oversized white zip-up hoodie. Classic chibi proportions. The background is a dark, empty movie theater with a flickering screen. no text"
+    },
+    {
+      "image_number": 79,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "the reason you finish a terrible movie",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A close-up focuses on the chibi character's face in the movie theater. They are in a state of pure suffering, with one eye barely open and the other squinted shut. Their chin is resting in one hand, looking like they want to be anywhere else. They have fluffy white hair with a cowlick and pink blush marks on their cheeks. Classic chibi proportions. The light from the movie screen flashes across their face in discordant colors-ugly greens and purples. The mood is one of unnecessary perseverance. no text"
+    },
+    {
+      "image_number": 80,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "because you already spent money on the ticket.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A single, torn, and slightly dirty movie ticket stub is seen floating in the air in front of the chibi character. They are staring at the ticket with more intensity and focus than they are at the screen. Their expression is pained, as if the ticket represents a great loss. They have fluffy white hair and a cowlick. High-quality 3D textures on the ticket stub, with individual fibers and paper grain visible. The background is a soft-focus blur of the theater. The lighting is focused on the ticket. no text"
+    },
+    {
+      "image_number": 81,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "You're trying to avoid the psychological pain",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character clenches both sides of their head dramatically with their tiny hands, eyes scrunched shut in a look of mental strain. A dark, swirling, oily spiral of shadow forms a few inches above their head, symbolizing psychological pain and conflict. They have fluffy white hair with a cowlick and pink blush marks. They wear their white puffy hoodie. Classic chibi proportions. The background is a deep, dark purple space. The lighting is high-contrast, highlighting the character's distress. Subsurface scattering on skin and matte cloth textures. no text"
+    },
+    {
+      "image_number": 82,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "of acknowledging that the money is already gone.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The torn movie ticket stub is seen dissolving into a fine, sparkling gray dust that blows away in an invisible breeze. The chibi character watches it go with a pained and wide-eyed expression, realizing it's already far too late. They have fluffy white hair with a cowlick and pink blush marks. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. The background is a neutral gray gradient. The lighting is soft and melancholic, emphasizing the finality of the loss. no text"
+    },
+    {
+      "image_number": 83,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "It powers the endowment effect, too.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character is seen holding a perfectly plain, matte white ceramic coffee mug in both hands. They are looking at it with a surprising amount of warmth, affection, and a small, content smile. It's just a mug, but to them, it feels special. They have fluffy white hair with a cowlick, large dark eyes, and pink blush marks. They wear their oversized white zip-up hoodie. Classic chibi proportions. The background is a clean, warmly lit kitchen-like space. Soft subsurface scattering on the ceramic mug and the character's skin. no text"
+    },
+    {
+      "image_number": 84,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "Ask people how much they'd pay for a coffee mug - about three dollars.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character holds out three small silver coins in their open palm with an easy, carefree expression. They are clearly willing to part with them for an ordinary mug. They have fluffy white hair with a cowlick and pink blush marks on their cheeks. They wear their white puffy hoodie. Classic chibi proportions. The background is a soft-focus retail space with light neutral colors. The coins catch the soft light with a gentle metallic sheen. The mood is one of casual, low-stakes exchange. no text"
+    },
+    {
+      "image_number": 85,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "Give them the mug, then ask how much they'd sell it for - about seven.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character is now clutching the same white ceramic mug protectively to their chest with both tiny arms, shaking their head firmly from side to side. Their expression is one of high valuation and protectiveness. They have fluffy white hair with a cowlick and pink blush marks. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. Around them float seven golden coins, representing the higher price they now demand. The background is a warm, cozy amber. The lighting is focused and highlights the character's attachment to the object. no text"
+    },
+    {
+      "image_number": 86,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "Nothing changed about the mug.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The plain white ceramic coffee mug is shown floating in the center of a neutral gray air. It remains perfectly ordinary-no magical glow, no transformation, no extra detail. It is exactly the same object as before. The chibi character is not visible, focusing on the mug itself. The lighting is even and clean, highlighting its simple shape and matte texture. High-quality 3D rendering with subtle ambient occlusion shadows beneath its base. no text"
+    },
+    {
+      "image_number": 87,
+      "scene": "Scene 4: What Loss Aversion Costs You Right Now",
+      "narration_snippet": "What changed is that now parting with it feels like a loss.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A faint, soft dark halo or aura forms around the white mug the moment the chibi character imagines giving it away. To them, the ordinary object now looks incredibly precious and irreplaceable. They have fluffy white hair with a cowlick, large dark gray eyes looking with attachment at the mug, and pink blush marks. They wear their white puffy hoodie. Classic chibi proportions. The background is a soft lavender gradient. The lighting is dramatic and highlights the emotional weight now attached to the object. no text"
+    },
+    {
+      "image_number": 88,
+      "scene": "Scene 5: The Flip Side - Using Loss Aversion for Good",
+      "narration_snippet": "Loss aversion sounds like a villain,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A small, dark-cloaked figure stands dramatically at the center of the frame, wearing a large, swirling cape made of a shadowy loss-vortex material. The figure is almost comically theatrical, like a cartoon villain. The chibi character is not visible yet. The background is a stark, high-contrast space with a spotlight on the 'villain'. The lighting is moody and dramatic, with deep shadows stretching across the floor. no text"
+    },
+    {
+      "image_number": 89,
+      "scene": "Scene 5: The Flip Side - Using Loss Aversion for Good",
+      "narration_snippet": "but here's the twist:",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character steps out from behind the dark cloaked 'villain' figure with a confident, knowing grin. They are holding up one tiny finger as if revealing a secret. The character has fluffy white hair with a cowlick, large dark gray eyes, and pink blush marks on their cheeks. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. The lighting becomes warmer and more invitational, breaking the 'villainous' mood. Subsurface scattering on skin and matte cloth textures. no text"
+    },
+    {
+      "image_number": 90,
+      "scene": "Scene 5: The Flip Side - Using Loss Aversion for Good",
+      "narration_snippet": "the same force can be harnessed to build better habits.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The dark, swirling cloak of the 'villain' magically transforms and wraps around the chibi character, but now it has become a practical and organized tool belt. The material is the same shadowy vortex, but the purpose is clearly different. The character looks empowered and ready for action. They have fluffy white hair with a cowlick and pink blush marks. They wear their white puffy hoodie. Classic chibi proportions. The background is a soft, productive-looking workshop environment. The lighting is bright and focused. no text"
+    },
+    {
+      "image_number": 91,
+      "scene": "Scene 5: The Flip Side - Using Loss Aversion for Good",
+      "narration_snippet": "A grocery store tried offering a five-cent bonus for reusable bags.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character is seen at a grocery store checkout counter, holding out a single, bright, glowing golden coin with a 'plus' sign on it to a cashier. The cashier looks bored and is shrugging, while other customers in the background are completely ignoring the bonus. The character has fluffy white hair with a cowlick and pink blush marks. They wear their white puffy hoodie. Classic chibi proportions. The background is a detailed grocery store interior with shelves and products. The lighting is even and mundane. no text"
+    },
+    {
+      "image_number": 92,
+      "scene": "Scene 5: The Flip Side - Using Loss Aversion for Good",
+      "narration_snippet": "It barely worked.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A wide shot shows a grocery store parking lot almost entirely filled with people carrying single-use plastic bags. The bright 'bonus' coins from the previous scene are seen sitting unclaimed and dusty in a small glass bowl on the checkout counter. The chibi character looks on from the side with a disappointed expression. They have fluffy white hair and a cowlick. The background is a soft-focus exterior. The lighting is a dull, overcast day. no text"
+    },
+    {
+      "image_number": 93,
+      "scene": "Scene 5: The Flip Side - Using Loss Aversion for Good",
+      "narration_snippet": "Then they flipped it: a five-cent tax for using plastic bags.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The same checkout scene is shown, but now a small, dark, and slightly intimidating toll gate or barrier has appeared beside the plastic bag dispenser. A dark coin with a 'minus' sign on it is shown as the 'price' for a bag. The chibi character looks at the toll gate with a look of sudden attention and concern. They have fluffy white hair with a cowlick and pink blush marks. They wear their white puffy hoodie. Classic chibi proportions. The lighting is slightly sharper and more focused on the new barrier. no text"
+    },
+    {
+      "image_number": 94,
+      "scene": "Scene 5: The Flip Side - Using Loss Aversion for Good",
+      "narration_snippet": "Suddenly, people brought their own bags.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A wide shot of the same parking lot shows a dramatic change: it is now dotted with people carrying dozens of different colorful, reusable cloth bags. People are walking confidently and purposefully. The single-use plastic bags are nowhere to be seen. The chibi character is seen in the crowd, also carrying a large reusable bag with a happy and satisfied expression. They have fluffy white hair and a cowlick. The lighting is a bright, clear, and successful day. no text"
+    },
+    {
+      "image_number": 95,
+      "scene": "Scene 5: The Flip Side - Using Loss Aversion for Good",
+      "narration_snippet": "Same five cents. Completely different outcome.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. Two identical silver coins are shown side-by-side in the center of a neutral gray frame. One coin is glowing with a warm, soft gold light (the bonus), while the other coin casts a long, sharp, and intimidating shadow (the tax). The chibi character stands between them, pointing to the shadow coin with raised eyebrows and a 'can you believe it?' expression. They have fluffy white hair with a cowlick and pink blush marks. Classic chibi proportions. High-quality 3D textures on the coins and the character's clothing. no text"
+    },
+    {
+      "image_number": 96,
+      "scene": "Scene 5: The Flip Side - Using Loss Aversion for Good",
+      "narration_snippet": "Because now not bringing a bag felt like a loss.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character reaches a tiny hand toward a plastic bag in the store, but they suddenly hesitate and pull back. An invisible, semi-transparent wall of 'discomfort' or 'dread' seems to stop their hand mid-air. Their expression is one of momentary conflict and then a firm decision to use their own bag. They have fluffy white hair with a cowlick, large dark gray eyes, and pink blush marks. Classic chibi proportions. The background is a soft-blur grocery store. The lighting is focused on the tension in the character's hand. no text"
+    },
+    {
+      "image_number": 97,
+      "scene": "Scene 5: The Flip Side - Using Loss Aversion for Good",
+      "narration_snippet": "A ride-sharing company asked drivers: earn sixty euros tonight?",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character is seen in the driver's seat of a clean, modern car at night. Their smartphone is mounted on the dashboard, glowing with a friendly, bright invitation that uses positive language and a 'plus' symbol. The character glances at the phone with an unimpressed, slightly sleepy expression and starts to set it down. They have fluffy white hair with a cowlick and pink blush marks. They wear their white puffy hoodie. Classic chibi proportions. The background is a soft-focus city street with bokeh lights. no text"
+    },
+    {
+      "image_number": 98,
+      "scene": "Scene 5: The Flip Side - Using Loss Aversion for Good",
+      "narration_snippet": "That framing barely moved the needle.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A large, circular gauge or meter is shown in the center of the frame. The needle on the gauge barely twitches a few millimeters to the right, then immediately settles back down to zero. The chibi character is not visible, focusing on the lack of response. The background is a clean, analytical gray. High-quality 3D rendering with subtle ambient occlusion shadows around the gauge. The lighting is clinical and neutral. no text"
+    },
+    {
+      "image_number": 99,
+      "scene": "Scene 5: The Flip Side - Using Loss Aversion for Good",
+      "narration_snippet": "They switched to: would you sit home and lose sixty euros?",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The smartphone screen in the car shifts to a new message. The framing has changed, and now it implies that staying home is actively 'costing' or 'losing' something, using a 'minus' symbol and more urgent colors. The chibi character sits up straight in the driver's seat, suddenly very alert and wide-eyed. Their expression is one of dawning realization and urgency. They have fluffy white hair with a cowlick and pink blush marks. They wear their white puffy hoodie. Classic chibi proportions. The lighting from the phone is sharper and more intense. no text"
+    },
+    {
+      "image_number": 100,
+      "scene": "Scene 5: The Flip Side - Using Loss Aversion for Good",
+      "narration_snippet": "Conversion rates jumped by 54%.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The large circular gauge is shown again, but this time the needle slams hard and fast to the far right with a visible 'thud' against the stopper. The chibi character's large dark gray eyes are seen wide with excitement in the reflection of the gauge. The background is a vibrant, energetic orange. High-quality 3D textures on the gauge. The lighting is dynamic and successful. no text"
+    },
+    {
+      "image_number": 101,
+      "scene": "Scene 5: The Flip Side - Using Loss Aversion for Good",
+      "narration_snippet": "The brain responds to the threat of loss with more urgency",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character bolts upright from a relaxed slouch, galvanized by an invisible alarm or threat. Their movement is incredibly fast, decisive, and energetic. Their fluffy white hair is blown slightly by the sudden movement. They have a focused and urgent expression with pink blush marks on their cheeks. They wear their white puffy hoodie. Classic chibi proportions. The background is a soft-focus home environment. The lighting is sharp and high-priority. no text"
+    },
+    {
+      "image_number": 102,
+      "scene": "Scene 5: The Flip Side - Using Loss Aversion for Good",
+      "narration_snippet": "than the promise of reward.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. In a contrasting scene, the same chibi character hears a gentle, melodic chime for a potential reward on their phone. They smile mildly and look pleasant, but they quickly go back to what they were doing without any real urgency. Their posture is relaxed and slow. They have fluffy white hair with a cowlick and pink blush marks. Classic chibi proportions. The background is a soft, warm amber haze. The lighting is gentle and non-urgent. no text"
+    },
+    {
+      "image_number": 103,
+      "scene": "Scene 5: The Flip Side - Using Loss Aversion for Good",
+      "narration_snippet": "There are platforms built on this exact principle.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character stands before a large, glowing, and floating commitment device-a complex glass sphere with a high-tech lock. Inside the sphere, a cluster of glowing golden coins is visible. The character looks at the device with a look of respect and resolve. They have fluffy white hair with a cowlick, large dark eyes, and pink blush marks. They wear their oversized white hoodie. Classic chibi proportions. The background is a clean, minimalist space with soft lavender light. no text"
+    },
+    {
+      "image_number": 104,
+      "scene": "Scene 5: The Flip Side - Using Loss Aversion for Good",
+      "narration_snippet": "Stickk lets you commit money you'll lose if you fail a goal.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character carefully places a stack of their own golden coins into the glass sphere commitment device. The sphere seals shut with a heavy, final-sounding metallic 'click'. The coins are now clearly visible but locked away, at risk of being lost. The character has a determined and slightly serious expression. They have fluffy white hair with a cowlick and pink blush marks. Classic chibi proportions. The lighting is focused and emphasizes the stakes involved. no text"
+    },
+    {
+      "image_number": 105,
+      "scene": "Scene 5: The Flip Side - Using Loss Aversion for Good",
+      "narration_snippet": "The fear of that loss turns out to be a remarkably effective motivator.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character is seen lacing up their little white running shoes with fierce, unwavering determination. The glass sphere with their locked coins floats steadily beside them, the coins clearly visible and at stake. The character's expression is one of unbreakable focus. They have fluffy white hair with a cowlick and pink blush marks. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. The background is a bright, early-morning park. The lighting is crisp and motivating. no text"
+    },
+    {
+      "image_number": 106,
+      "scene": "Scene 5: The Flip Side - Using Loss Aversion for Good",
+      "narration_snippet": "for running more, eating better, or finishing a project.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. In a quick montage-style composition, the chibi character is seen jogging with high energy, pushing away a plate of junk food, and finally, completing a difficult task at a desk. In every scene, the glass sphere commitment device is glowing steadily nearby, providing the necessary pressure. The character's expression is one of hard-earned success and pride. They have fluffy white hair and a cowlick. High-quality 3D rendering with vibrant colors and rich textures. no text"
+    },
+    {
+      "image_number": 107,
+      "scene": "Scene 5: The Flip Side - Using Loss Aversion for Good",
+      "narration_snippet": "You can do this yourself.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character looks directly forward into the camera with a small, knowing, and encouraging nod. They have a calm, empowered, and friendly expression. They have fluffy white hair with a cowlick, large dark eyes, and pink blush marks on their cheeks. They wear their oversized white zip-up hoodie. Classic chibi proportions. The background is a soft, neutral studio-like space with warm, professional lighting. The mood is one of quiet confidence and invitation. no text"
+    },
+    {
+      "image_number": 108,
+      "scene": "Scene 5: The Flip Side - Using Loss Aversion for Good",
+      "narration_snippet": "Instead of thinking: if I invest early I'll gain more,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character is seen daydreaming, looking up at a soft, distant vision of a massive, glowing golden mountain of wealth. The vision is pleasant and beautiful, but it seems a bit vague and unhurried. The character has a relaxed and dreamy expression. They have fluffy white hair with a cowlick and pink blush marks. Classic chibi proportions. The environment is a soft, pastel-colored void. The lighting is gentle and ethereal. no text"
+    },
+    {
+      "image_number": 109,
+      "scene": "Scene 5: The Flip Side - Using Loss Aversion for Good",
+      "narration_snippet": "think: every month I wait, I'm giving up hundreds in future returns.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The same golden mountain of wealth is shown, but now it is visibly and painfully shrinking slightly each time a large, ancient-looking clock ticks in the foreground. The chibi character watches the mountain shrink with a look of dawning urgency and wide eyes. They are now much more motivated to act. They have fluffy white hair with a cowlick and pink blush marks. Classic chibi proportions. The lighting becomes sharper and more urgent, with a focus on the ticking clock. no text"
+    },
+    {
+      "image_number": 110,
+      "scene": "Scene 5: The Flip Side - Using Loss Aversion for Good",
+      "narration_snippet": "Your brain hears the second version louder.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. In an abstract visualization, two sound waves are shown side-by-side. The wave for the 'gain' framing is a gentle, low-amplitude ripple. The wave for the 'loss' framing is a bold, high-amplitude, and cresting wave that fills the entire frame with vibrant energy. The chibi character's large dark gray eyes are wide as they 'hear' the larger wave. The background is a deep navy blue, making the glowing sound waves pop. The lighting is cinematic and energetic. no text"
+    },
+    {
+      "image_number": 111,
+      "scene": "Scene 6: Conclusion - The Pause That's Worth Everything",
+      "narration_snippet": "The bias that causes so much financial pain isn't stupidity.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character is seen standing in the middle of a room filled with scattered, glowing gold coins and several torn, floating stock market cards. Their expression is not one of shame or regret, but of deep, quiet thoughtfulness and observation. They have fluffy white hair with a cowlick, large dark gray eyes, and pink blush marks on their cheeks. They wear their oversized white zip-up hoodie and dark joggers. Classic chibi proportions. The background is a clean, neutral-toned space with professional, soft-focus lighting. The mood is one of dawning wisdom and self-compassion. no text"
+    },
+    {
+      "image_number": 112,
+      "scene": "Scene 6: Conclusion - The Pause That's Worth Everything",
+      "narration_snippet": "It isn't weakness.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character straightens their posture slowly, their spine becoming long and their chin level and firm. Their expression is one of quiet dignity and self-assurance. They have fluffy white hair with a cowlick, large dark gray eyes with a calm, resolute gaze, and pink blush marks. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. The background is a warm, solid, and inviting light. The lighting is strong and even, highlighting the character's strength and resilience. Subsurface scattering on skin and matte cloth textures. no text"
+    },
+    {
+      "image_number": 113,
+      "scene": "Scene 6: Conclusion - The Pause That's Worth Everything",
+      "narration_snippet": "It's a survival system that worked.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. In a dramatic visualization, the silhouette of an ancient ancestor figure is shown on a vast African savanna at sunset. The figure has just avoided a dangerous moment, looking successful, alert, and very much alive. The chibi character's reflection is seen in the corner of the frame, watching the ancestor with respect. The ancestor silhouette is clean and heroic. The sky is a deep, warm orange. The mood is one of long-term success and biological triumph. no text"
+    },
+    {
+      "image_number": 114,
+      "scene": "Scene 6: Conclusion - The Pause That's Worth Everything",
+      "narration_snippet": "Worked extraordinarily well, for an extraordinarily long time,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A sweeping, epic timeline path is shown stretching across hundreds of thousands of years of human existence, represented by an unbroken, glowing golden line. The savanna ancestor figure from the previous scene is seen repeated dozens of times along the long line, signifying continuous survival. The chibi character is not visible, focusing on the historical scale. The background is a deep cosmic blue. The lighting is vast and highlights the immense duration of human history. no text"
+    },
+    {
+      "image_number": 115,
+      "scene": "Scene 6: Conclusion - The Pause That's Worth Everything",
+      "narration_snippet": "in conditions that no longer exist.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The ancient savanna landscape magically dissolves and is replaced by a clean, modern, and beautiful city skyline bathed in the clear light of a peaceful day. The city is full of lush green glass buildings and clean, quiet streets, representing a world of unprecedented abundance. The transition is smooth and peaceful. The chibi character stands on a high balcony, looking out at the city with a sense of awe. They have fluffy white hair and pink blush marks. The lighting is bright and promising. no text"
+    },
+    {
+      "image_number": 116,
+      "scene": "Scene 6: Conclusion - The Pause That's Worth Everything",
+      "narration_snippet": "Your ancestors didn't have stock portfolios.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A silhouetted ancient ancestor figure is seen looking utterly baffled and confused at a tiny, glowing modern smartphone screen showing a complex, jagged stock market chart. The ancestor is holding the phone upside down and examining it like a strange rock. The chibi character is seen in the corner, holding their own phone with a small, understanding smile. They have fluffy white hair with a cowlick and pink blush marks. The background is a mix of a rocky cave wall and a soft-focus modern room. no text"
+    },
+    {
+      "image_number": 117,
+      "scene": "Scene 6: Conclusion - The Pause That's Worth Everything",
+      "narration_snippet": "They had predators.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A massive, dark, and intimidating shadowed shape looms at the edge of a thick treeline behind the ancient ancestor figure on the savanna. The ancestor's survival instincts have snapped into perfect, needle-sharp focus; they are frozen in a state of high-alert alertness. The chibi character is not visible, focusing on the real danger of the past. The background is a high-contrast savanna at dusk. The lighting is dramatic and ominous, highlighting the threat. no text"
+    },
+    {
+      "image_number": 118,
+      "scene": "Scene 6: Conclusion - The Pause That's Worth Everything",
+      "narration_snippet": "The brain that kept them alive",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A stylized, glowing blue neural network pulses with ancient and complex patterns that fill the entire frame. The network looks beautiful, battle-tested, and incredibly complex, with sparks of electric energy traveling along its paths. The chibi character's large dark gray eyes are wide as they 'see' the network. The background is a deep navy blue void. The lighting is epic and highlights the intricate design of the survival system. no text"
+    },
+    {
+      "image_number": 119,
+      "scene": "Scene 6: Conclusion - The Pause That's Worth Everything",
+      "narration_snippet": "is the brain you're using to make decisions",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The same glowing neural network from the previous scene is now seen glowing softly inside the chibi character's own head as they stare intently at a floating, modern investment dashboard filled with data. The transition is seamless, showing the same ancient system at work in a new context. The character has fluffy white hair with a cowlick, large dark gray eyes, and pink blush marks. They wear their white puffy hoodie. Classic chibi proportions. The lighting is a mix of the neural glow and the modern dashboard's soft blue light. no text"
+    },
+    {
+      "image_number": 120,
+      "scene": "Scene 6: Conclusion - The Pause That's Worth Everything",
+      "narration_snippet": "in a world those ancestors couldn't have imagined.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character stands before a massive, floor-to-ceiling window overlooking a vast, glowing city of the future at night. The city is filled with shimmering lights, floating vehicles, and complex structures that stretch to the horizon in every direction. The scale is immense and breathtaking. The character looks out with a look of awe and quiet contemplation. They have fluffy white hair with a cowlick and pink blush marks on their cheeks. They wear their white puffy hoodie and dark joggers. Classic chibi proportions. The lighting is brilliant and multi-colored. no text"
+    },
+    {
+      "image_number": 121,
+      "scene": "Scene 6: Conclusion - The Pause That's Worth Everything",
+      "narration_snippet": "Loss aversion will always be there.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The original gold coin from the opening scene returns, its dark, shadowed side casting a long shadow as it floats gently back into the center of the frame. The chibi character watches it with a calm and accepting expression, no longer afraid but respectful of its power. They have fluffy white hair with a cowlick, large dark gray eyes, and pink blush marks. They wear their white puffy hoodie. Classic chibi proportions. The background is a soft, neutral-toned void. The lighting is balanced and highlights both the gold and the shadow of the coin. no text"
+    },
+    {
+      "image_number": 122,
+      "scene": "Scene 6: Conclusion - The Pause That's Worth Everything",
+      "narration_snippet": "You don't switch it off.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character reaches out a tiny hand to flip an imaginary, glowing 'off' switch in the air, but their hand passes through it as if it's made of smoke. The switch flickers but remains 'on'. The character lowers their hand with a small, accepting, and peaceful nod, realizing it's a part of them. They have fluffy white hair with a cowlick and pink blush marks. They wear their white puffy hoodie. Classic chibi proportions. The background is a soft, warm amber haze. The lighting is gentle and focuses on the character's accepting expression. no text"
+    },
+    {
+      "image_number": 123,
+      "scene": "Scene 6: Conclusion - The Pause That's Worth Everything",
+      "narration_snippet": "But knowing it's there changes things.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A small, warm, and steady golden light softly clicks on inside the chibi character's chest, right where their heart would be. The light is subtle but provides a constant, reassuring glow that illuminates their face from below. Their expression becomes much more aware and clear-eyed. They have fluffy white hair with a cowlick, large dark eyes, and pink blush marks. They wear their white puffy hoodie. Classic chibi proportions. The background is a deep, peaceful purple. The lighting is warm and internal. no text"
+    },
+    {
+      "image_number": 124,
+      "scene": "Scene 6: Conclusion - The Pause That's Worth Everything",
+      "narration_snippet": "The next time a market dip makes you want to sell everything,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. Several large, glowing stock market charts are shown plunging sharply downward on floating screens around the chibi character. Static electricity and panic ripples are seen in the air, creating a frantic atmosphere. The character's eyes briefly widen in alarm, and they start to reach for a 'sell' button. They have fluffy white hair and pink blush marks. They wear their white puffy hoodie. Classic chibi proportions. The environment is high-tech and intense. The lighting is a flashing red signal. no text"
+    },
+    {
+      "image_number": 125,
+      "scene": "Scene 6: Conclusion - The Pause That's Worth Everything",
+      "narration_snippet": "you can pause and ask:",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character suddenly freezes in mid-movement, their hand hovering just inches from the 'sell' button. They close their eyes and take a single, deep, and deliberate breath. The frantic red signals around them seem to slow down and dim. They have fluffy white hair with a cowlick and pink blush marks on their cheeks. They wear their white puffy hoodie. Classic chibi proportions. The lighting becomes instantly softer and more tranquil, focusing on the character's quiet moment of pause. no text"
+    },
+    {
+      "image_number": 126,
+      "scene": "Scene 6: Conclusion - The Pause That's Worth Everything",
+      "narration_snippet": "am I responding to real danger,",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A quick, dreamlike flash of an ancient savanna at dusk is shown. A real, dangerous predator is crouching in the tall grass, waiting to strike-this is what 'real danger' looks like. The ancient ancestor figure is seen in silhouette. The chibi character is not visible, focusing on the historical memory. The lighting is high-contrast and dramatic. The mood is one of true biological peril. no text"
+    },
+    {
+      "image_number": 127,
+      "scene": "Scene 6: Conclusion - The Pause That's Worth Everything",
+      "narration_snippet": "or am I 100,000 years behind schedule?",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The 'predator' from the previous scene suddenly and magically dissolves into a mild, harmless-looking downward dip on a small stock market chart. The chibi character opens their eyes, their hands moving away from the 'sell' button as they release their tension with a small, knowing smile. They have fluffy white hair with a cowlick and pink blush marks. They wear their white puffy hoodie. Classic chibi proportions. The environment is now a calm, modern space. The lighting is warm and bright. no text"
+    },
+    {
+      "image_number": 128,
+      "scene": "Scene 6: Conclusion - The Pause That's Worth Everything",
+      "narration_snippet": "That pause - that half-second of recognition -",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. An extreme close-up focuses on the chibi character's face in that quiet moment of pause. Their large dark gray eyes are calm and clear, their expression is one of peaceful settling, and a faint, gentle smile touches their lips. They have fluffy white hair with a cowlick and pink blush marks on their round cheeks. Classic chibi proportions. The lighting is incredibly soft and focuses on the character's skin texture and calm eyes. Subsurface scattering on skin and matte texture on the hoodie. no text"
+    },
+    {
+      "image_number": 129,
+      "scene": "Scene 6: Conclusion - The Pause That's Worth Everything",
+      "narration_snippet": "might be worth more than any investment strategy you could name.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. A large, beautifully designed golden mechanical scale is shown. On one side sits a massive, heavy pile of complex financial strategy documents and charts. On the other side sits a single, almost weightless white feather representing 'the pause'. In a surprising twist, the feather is shown to be significantly heavier, causing its side of the scale to gently and firmly touch the bottom. The chibi character is not visible, focusing on the symbolic weight. The lighting is cinematic and prestigious. no text"
+    },
+    {
+      "image_number": 130,
+      "scene": "Scene 6: Conclusion - The Pause That's Worth Everything",
+      "narration_snippet": "Remember that coin flip at the beginning.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The original gold coin from the opening scene returns, spinning slowly and elegantly in the air between the chibi character's tiny fingers. The scene has come full circle. The character has fluffy white hair with a cowlick, large dark gray eyes, and pink blush marks. They wear their white puffy hoodie. Classic chibi proportions. The background is a clean, neutral space with soft, professional lighting that highlights the coin's golden luster. no text"
+    },
+    {
+      "image_number": 131,
+      "scene": "Scene 6: Conclusion - The Pause That's Worth Everything",
+      "narration_snippet": "Heads: win a hundred. Tails: lose a hundred.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The gold coin is seen catching the light perfectly on both sides as it spins-one side a warm, glowing gold and the other a cool, deep shadow. The chibi character watches it spin with a look of calm, unhurried observation and a small, peaceful smile. They have fluffy white hair and a cowlick. High-quality 3D textures on the coin and the character's hoodie. The background is a soft-focus gradient. The mood is one of quiet understanding. no text"
+    },
+    {
+      "image_number": 132,
+      "scene": "Scene 6: Conclusion - The Pause That's Worth Everything",
+      "narration_snippet": "Still feels unfair, doesn't it?",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character glances toward the viewer with a soft, knowing, and very human half-smile, with the coin still spinning gracefully beside them. They have fluffy white hair with a cowlick, large dark gray eyes that seem to hold a secret, and pink blush marks on their cheeks. They wear their oversized white zip-up hoodie. Classic chibi proportions. The moon is one of shared understanding and gentle humor. The lighting is soft and intimate. no text"
+    },
+    {
+      "image_number": 133,
+      "scene": "Scene 6: Conclusion - The Pause That's Worth Everything",
+      "narration_snippet": "Now you know why.",
+      "prompt": "The scene is rendered in a high-quality 3D Pixar style with soft matte lighting, subtle ambient occlusion, and clean cinematic composition. The chibi character closes their tiny hand gently and firmly around the gold coin, bringing the spinning to a stop. They look at the closed hand with a peaceful and final expression. The scene begins to fade slowly to a clean, pure white void. They have fluffy white hair with a cowlick, large dark eyes, and pink blush marks. They wear their white puffy hoodie. Classic chibi proportions. The lighting is bright and final, suggesting a completed journey. no text"
+    }
+  ]
+}
