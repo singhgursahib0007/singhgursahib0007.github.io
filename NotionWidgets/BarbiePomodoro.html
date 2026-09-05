@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barbie Pomodoro</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    :root {
+        --pink: #ff4fa3;
+        --hot-pink: #ff2f92;
+        --light-pink: #ffe5f2;
+        --soft-pink: #fff5fa;
+        --dark-pink: #d81b70;
+        --text: #6e2147;
+        --white: #ffffff;
+    }
+
+    body {
+        min-height: 100vh;
+        font-family: Arial, Helvetica, sans-serif;
+        background:
+            radial-gradient(circle at 10% 10%, rgba(255,255,255,.8) 0 3px, transparent 4px),
+            radial-gradient(circle at 80% 20%, rgba(255,255,255,.7) 0 2px, transparent 3px),
+            linear-gradient(145deg, #ffd4e9, #fff0f7 45%, #ffc6df);
+        background-size: 90px 90px, 130px 130px, cover;
+        color: var(--text);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 25px;
+        overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+        content: "✦";
+        position: fixed;
+        color: rgba(255,255,255,.7);
+        font-size: 45px;
+        animation: float 5s ease-in-out infinite;
+        pointer-events: none;
+    }
+
+    body::before {
+        top: 8%;
+        left: 8%;
+    }
+
+    body::after {
+        right: 8%;
+        bottom: 12%;
+        animation-delay: 1.5s;
+    }
+
+    @keyframes float {
+        0%,100% {
+            transform: translateY(0) rotate(0deg);
+        }
+        50% {
+            transform: translateY(-15px) rotate(12deg);
+        }
+    }
+
+    .app {
+        width: 100%;
+        max-width: 460px;
+        background: rgba(255,255,255,.78);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border: 1px solid rgba(255,255,255,.9);
+        border-radius: 34px;
+        padding: 28px;
+        box-shadow:
+            0 25px 70px rgba(216,27,112,.18),
+            0 5px 20px rgba(255,79,163,.12);
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 24px;
+    }
+
+    .crown {
+        font-size: 30px;
+        margin-bottom: 4px;
+        display: inline-block;
+        animation: crownFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes crownFloat {
+        0%,100% { transform: translateY(0); }
+        50% { transform: translateY(-4px); }
+    }
+
+    .brand {
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--hot-pink);
+    }
+
+    h1 {
+        font-size: 32px;
+        margin-top: 4px;
+        letter-spacing: -1px;
+    }
+
+    .subtitle {
+        font-size: 13px;
+        margin-top: 5px;
+        color: #a45c82;
+    }
+
+    .mode-tabs {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+        background: #ffe7f2;
+        padding: 5px;
+        border-radius: 16px;
+        margin-bottom: 26px;
+    }
+
+    .mode-tabs button {
+        border: 0;
+        background: transparent;
+        color: #b65a87;
+        padding: 10px 4px;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 700;
+        transition: .2s ease;
+    }
+
+    .mode-tabs button.active {
+        background: white;
+        color: var(--hot-pink);
+        box-shadow: 0 3px 10px rgba(216,27,112,.1);
+    }
+
+    .timer-container {
+        position: relative;
+        width: 280px;
+        height: 280px;
+        margin: 0 auto 25px;
+    }
+
+    .progress-ring {
+        position: absolute;
+        inset: 0;
+        transform: rotate(-90deg);
+    }
+
+    .progress-ring circle {
+        fill: none;
+        stroke-width: 10;
+    }
+
+    .ring-bg {
+        stroke: #ffe0ed;
+    }
+
+    .ring-progress {
+        stroke: var(--hot-pink);
+        stroke-linecap: round;
+        transition: stroke-dashoffset .5s linear;
+        filter: drop-shadow(0 4px 7px rgba(255,47,146,.2));
+    }
+
+    .timer-content {
+        position: absolute;
+        inset: 25px;
+        border-radius: 50%;
+        background: linear-gradient(145deg, #fff, #fff4f9);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow:
+            inset 0 0 25px rgba(255,79,163,.08),
+            0 8px 25px rgba(216,27,112,.08);
+    }
+
+    .mode-label {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--hot-pink);
+        font-weight: 800;
+        margin-bottom: 5px;
+    }
+
+    .time {
+        font-size: 57px;
+        line-height: 1;
+        letter-spacing: -3px;
+        font-weight: 800;
+        color: #7d2552;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .heart {
+        margin-top: 8px;
+        font-size: 18px;
+        color: var(--pink);
+    }
+
+    .controls {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 25px;
+    }
+
+    .controls button {
+        border: 0;
+        cursor: pointer;
+        font-weight: 800;
+        transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .controls button:hover {
+        transform: translateY(-2px);
+    }
+
+    .controls button:active {
+        transform: translateY(0);
+    }
+
+    .main-btn {
+        min-width: 150px;
+        padding: 14px 25px;
+        border-radius: 17px;
+        color: white;
+        background: linear-gradient(135deg, #ff58aa, #e92783);
+        box-shadow: 0 10px 20px rgba(233,39,131,.22);
+        font-size: 15px;
+    }
+
+    .secondary-btn {
+        width: 47px;
+        height: 47px;
+        border-radius: 15px;
+        background: white;
+        color: var(--hot-pink);
+        font-size: 18px;
+        box-shadow: 0 5px 15px rgba(216,27,112,.08);
+    }
+
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 9px;
+        margin-bottom: 18px;
+    }
+
+    .stat {
+        background: rgba(255,232,243,.72);
+        border-radius: 17px;
+        padding: 14px 8px;
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 20px;
+        font-weight: 800;
+        color: var(--dark-pink);
+    }
+
+    .stat-label {
+        font-size: 10px;
+        margin-top: 3px;
+        color: #a45c82;
+        text-transform: uppercase;
+        letter-spacing: .7px;
+        font-weight: 700;
+    }
+
+    .quote {
+        background: linear-gradient(135deg, #fff0f7, #ffe1ef);
+        border-radius: 18px;
+        padding: 15px 18px;
+        text-align: center;
+        font-size: 12px;
+        line-height: 1.5;
+        color: #93466d;
+        font-style: italic;
+    }
+
+    .quote strong {
+        display: block;
+        font-style: normal;
+        color: var(--hot-pink);
+        margin-top: 4px;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .today {
+        text-align: center;
+        font-size: 11px;
+        color: #b0678c;
+        margin-top: 15px;
+    }
+
+    .sparkle {
+        position: fixed;
+        pointer-events: none;
+        font-size: 16px;
+        animation: sparkle 1.5s ease-out forwards;
+    }
+
+    @keyframes sparkle {
+        0% {
+            opacity: 1;
+            transform: scale(.5) translateY(0);
+        }
+        100% {
+            opacity: 0;
+            transform: scale(1.4) translateY(-60px);
+        }
+    }
+
+    @media (max-width: 480px) {
+        body {
+            padding: 12px;
+        }
+
+        .app {
+            padding: 22px 17px;
+            border-radius: 27px;
+        }
+
+        .timer-container {
+            width: 250px;
+            height: 250px;
+        }
+
+        .time {
+            font-size: 50px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <div class="header">
+        <div class="crown">♕</div>
+        <div class="brand">Barbie Productivity</div>
+        <h1>Dream. Focus. Slay.</h1>
+        <div class="subtitle">Your pretty little productivity timer.</div>
+    </div>
+
+    <div class="mode-tabs">
+        <button class="active" onclick="setMode('work')">Focus</button>
+        <button onclick="setMode('short')">Short Break</button>
+        <button onclick="setMode('long')">Long Break</button>
+    </div>
+
+    <div class="timer-container">
+
+        <svg class="progress-ring" width="280" height="280" viewBox="0 0 280 280">
+            <circle
+                class="ring-bg"
+                cx="140"
+                cy="140"
+                r="125"
+            />
+
+            <circle
+                id="progress"
+                class="ring-progress"
+                cx="140"
+                cy="140"
+                r="125"
+            />
+        </svg>
+
+        <div class="timer-content">
+            <div id="modeLabel" class="mode-label">Focus Time</div>
+            <div id="time" class="time">25:00</div>
+            <div class="heart">♡</div>
+        </div>
+
+    </div>
+
+    <div class="controls">
+        <button class="secondary-btn" onclick="resetTimer()" title="Reset">
+            ↻
+        </button>
+
+        <button id="startBtn" class="main-btn" onclick="toggleTimer()">
+            Start Focusing
+        </button>
+
+        <button class="secondary-btn" onclick="skipTimer()" title="Skip">
+            →
+        </button>
+    </div>
+
+    <div class="stats">
+
+        <div class="stat">
+            <div id="sessions" class="stat-number">0</div>
+            <div class="stat-label">Sessions</div>
+        </div>
+
+        <div class="stat">
+            <div id="minutes" class="stat-number">0</div>
+            <div class="stat-label">Minutes</div>
+        </div>
+
+        <div class="stat">
+            <div id="streak" class="stat-number">♡</div>
+            <div class="stat-label">Today</div>
+        </div>
+
+    </div>
+
+    <div class="quote">
+        "You can be anything."
+        <strong>Now go make it happen ✦</strong>
+    </div>
+
+    <div class="today">
+        Barbie says: one beautiful task at a time.
+    </div>
+
+</div>
+
+<script>
+
+const modes = {
+    work: {
+        duration: 25 * 60,
+        label: "Focus Time"
+    },
+    short: {
+        duration: 5 * 60,
+        label: "Short Break"
+    },
+    long: {
+        duration: 15 * 60,
+        label: "Long Break"
+    }
+};
+
+let currentMode = "work";
+let remaining = modes.work.duration;
+let timer = null;
+let running = false;
+
+let sessions = 0;
+let minutes = 0;
+
+const progress = document.getElementById("progress");
+const timeDisplay = document.getElementById("time");
+const modeLabel = document.getElementById("modeLabel");
+const startBtn = document.getElementById("startBtn");
+
+const radius = 125;
+const circumference = 2 * Math.PI * radius;
+
+progress.style.strokeDasharray = circumference;
+progress.style.strokeDashoffset = 0;
+
+function updateDisplay() {
+
+    const mins = Math.floor(remaining / 60);
+    const secs = remaining % 60;
+
+    timeDisplay.textContent =
+        String(mins).padStart(2, "0") +
+        ":" +
+        String(secs).padStart(2, "0");
+
+    modeLabel.textContent = modes[currentMode].label;
+
+    const percentage =
+        remaining / modes[currentMode].duration;
+
+    progress.style.strokeDashoffset =
+        circumference * (1 - percentage);
+
+    document.title =
+        `${timeDisplay.textContent} • Barbie Pomodoro`;
+}
+
+function toggleTimer() {
+
+    if (running) {
+        pauseTimer();
+    } else {
+        startTimer();
+    }
+}
+
+function startTimer() {
+
+    running = true;
+
+    startBtn.textContent = "Pause";
+
+    timer = setInterval(() => {
+
+        remaining--;
+
+        updateDisplay();
+
+        if (remaining <= 0) {
+            completeTimer();
+        }
+
+    }, 1000);
+}
+
+function pauseTimer() {
+
+    running = false;
+
+    clearInterval(timer);
+
+    startBtn.textContent = "Continue";
+}
+
+function resetTimer() {
+
+    clearInterval(timer);
+
+    running = false;
+
+    remaining = modes[currentMode].duration;
+
+    startBtn.textContent = "Start Focusing";
+
+    updateDisplay();
+}
+
+function skipTimer() {
+
+    clearInterval(timer);
+
+    running = false;
+
+    if (currentMode === "work") {
+        setMode("short");
+    } else {
+        setMode("work");
+    }
+
+    startBtn.textContent = "Start Focusing";
+}
+
+function completeTimer() {
+
+    clearInterval(timer);
+
+    running = false;
+
+    if (currentMode === "work") {
+
+        sessions++;
+
+        minutes += 25;
+
+        updateStats();
+
+        createSparkles();
+
+        notifyUser(
+            "Pomodoro complete! 💗",
+            "Amazing work. Time for a little break."
+        );
+
+        if (sessions % 4 === 0) {
+            setMode("long");
+        } else {
+            setMode("short");
+        }
+
+    } else {
+
+        setMode("work");
+
+        notifyUser(
+            "Break is over ✨",
+            "Ready to get back to being fabulous?"
+        );
+    }
+
+    startBtn.textContent = "Start Focusing";
+
+    updateDisplay();
+}
+
+function setMode(mode) {
+
+    currentMode = mode;
+
+    remaining = modes[mode].duration;
+
+    document.querySelectorAll(".mode-tabs button")
+        .forEach(button => button.classList.remove("active"));
+
+    const buttons =
+        document.querySelectorAll(".mode-tabs button");
+
+    if (mode === "work") buttons[0].classList.add("active");
+    if (mode === "short") buttons[1].classList.add("active");
+    if (mode === "long") buttons[2].classList.add("active");
+
+    modeLabel.textContent = modes[mode].label;
+
+    updateDisplay();
+}
+
+function updateStats() {
+
+    document.getElementById("sessions")
+        .textContent = sessions;
+
+    document.getElementById("minutes")
+        .textContent = minutes;
+
+    document.getElementById("streak")
+        .textContent = sessions > 0 ? "♥" : "♡";
+}
+
+function notifyUser(title, message) {
+
+    if ("Notification" in window &&
+        Notification.permission === "granted") {
+
+        new Notification(title, {
+            body: message
+        });
+    }
+
+    alert(title + "\n\n" + message);
+}
+
+function createSparkles() {
+
+    const symbols = ["✦", "♡", "✧", "♥", "⋆"];
+
+    for (let i = 0; i < 12; i++) {
+
+        const sparkle =
+            document.createElement("div");
+
+        sparkle.className = "sparkle";
+
+        sparkle.textContent =
+            symbols[Math.floor(Math.random() * symbols.length)];
+
+        sparkle.style.left =
+            Math.random() * window.innerWidth + "px";
+
+        sparkle.style.top =
+            Math.random() * window.innerHeight + "px";
+
+        sparkle.style.animationDelay =
+            Math.random() * .4 + "s";
+
+        document.body.appendChild(sparkle);
+
+        setTimeout(() => {
+            sparkle.remove();
+        }, 2000);
+    }
+}
+
+if ("Notification" in window &&
+    Notification.permission === "default") {
+
+    document.addEventListener("click", () => {
+        Notification.requestPermission();
+    }, { once: true });
+}
+
+updateDisplay();
+
+</script>
+
+</body>
+</html>
