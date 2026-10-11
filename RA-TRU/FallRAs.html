@@ -1,0 +1,1931 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F5F5F7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="RA Hours">
+<title>RA Hours</title>
+<style>
+:root{
+  --bg:#F5F5F7; --card:#FFFFFF; --ink:#1D1D1F; --ink2:#6E6E73; --ink3:#86868B;
+  --line:#E3E3E8; --grid:#EEEEF1; --fill:#EFEFF3; --fill2:#F7F7F9;
+  --accent:#E8590C; --accent-2:#C4470A; --accent-tint:#FFF2EA; --accent-soft:#FFE0CC;
+  --irf:#E8590C; --uraf:#3A57D6;
+  --good:#1E8E3E; --good-tint:#E7F6EC; --warn:#9A5B00; --warn-tint:#FFF3D6; --bad:#D70015; --bad-tint:#FFEBED;
+  --r-lg:22px; --r-md:16px; --r-sm:12px;
+  --shadow:0 1px 2px rgba(0,0,0,.04),0 6px 24px rgba(0,0,0,.05);
+  --shadow-lg:0 20px 60px rgba(0,0,0,.18);
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 var(--font);-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+body.noscroll{overflow:hidden}
+button,input,select{font:inherit;color:inherit;letter-spacing:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+.num,b,.big,td{font-variant-numeric:tabular-nums}
+svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+h1,h2,h3,h4{margin:0;letter-spacing:-.022em}
+p{margin:0}
+
+/* ---------- Lock ---------- */
+.lock{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:#FBFBFD;overflow:hidden;transition:opacity .35s var(--ease),transform .35s var(--ease)}
+.lock.out{opacity:0;transform:scale(1.04);pointer-events:none}
+.lock-glow{position:absolute;inset:-20%;background:
+  radial-gradient(40% 35% at 20% 15%,rgba(232,89,12,.20),transparent 70%),
+  radial-gradient(35% 30% at 85% 85%,rgba(255,149,0,.16),transparent 70%),
+  radial-gradient(30% 30% at 80% 10%,rgba(58,87,214,.07),transparent 70%);filter:blur(10px)}
+.lock-in{position:relative;display:flex;flex-direction:column;align-items:center;padding:24px 16px calc(24px + env(safe-area-inset-bottom))}
+.app-icon{width:68px;height:68px;border-radius:17px;background:linear-gradient(160deg,#FF8A3D,#E8590C 55%,#C4470A);display:grid;place-items:center;color:#fff;box-shadow:0 10px 30px rgba(232,89,12,.35),inset 0 1px 0 rgba(255,255,255,.35)}
+.app-icon svg{width:34px;height:34px;stroke-width:2}
+.lock h2{margin-top:18px;font-size:22px;font-weight:600}
+#lock-msg{margin-top:4px;color:var(--ink2);font-size:15px;min-height:22px}
+.dots{display:flex;gap:18px;margin:22px 0 30px}
+.dots i{width:13px;height:13px;border-radius:50%;border:1.5px solid var(--ink);transition:background .15s}
+.dots i.on{background:var(--ink)}
+.dots.shake{animation:shake .45s}
+@keyframes shake{10%,90%{transform:translateX(-2px)}20%,80%{transform:translateX(4px)}30%,50%,70%{transform:translateX(-9px)}40%,60%{transform:translateX(9px)}}
+.pad{display:grid;grid-template-columns:repeat(3,78px);gap:16px 26px}
+.key{width:78px;height:78px;border-radius:50%;border:0;background:rgba(120,120,128,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:background .15s,transform .1s;backdrop-filter:blur(10px)}
+.key:active{background:rgba(120,120,128,.3);transform:scale(.96)}
+.key span{font-size:32px;font-weight:400;line-height:1}
+.key small{font-size:9.5px;font-weight:600;letter-spacing:.18em;color:var(--ink2);margin-top:2px;min-height:12px}
+.key.ghost{background:transparent;font-size:16px;color:var(--ink)}
+.key.ghost:active{background:rgba(120,120,128,.12)}
+.lock-foot{margin-top:28px;font-size:13px;color:var(--ink3);display:flex;gap:6px;align-items:center}
+.lock-foot svg{width:15px;height:15px}
+
+/* ---------- Top bar ---------- */
+.top{position:sticky;top:0;z-index:20;padding-top:env(safe-area-inset-top);background:rgba(245,245,247,.78);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:.5px solid rgba(0,0,0,.08)}
+.top-in{max-width:1120px;margin:0 auto;height:56px;padding:0 20px;display:flex;align-items:center;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:16px;white-space:nowrap}
+.logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(160deg,#FF8A3D,#E8590C 55%,#C4470A);display:grid;place-items:center;color:#fff}
+.logo svg{width:17px;height:17px;stroke-width:2.2}
+.seg-nav{margin:0 auto;display:flex;background:rgba(118,118,128,.12);border-radius:10px;padding:2px}
+.seg-nav button{border:0;background:transparent;padding:6px 16px;border-radius:8px;font-size:13.5px;font-weight:500;color:var(--ink);transition:background .2s,box-shadow .2s}
+.seg-nav button.on{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 1px rgba(0,0,0,.04);font-weight:600}
+.top-actions{display:flex;gap:8px;align-items:center;margin-left:auto}
+.icon-btn{border:0;background:rgba(118,118,128,.12);width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:var(--ink)}
+.icon-btn svg{width:19px;height:19px}
+.icon-btn:active{transform:scale(.95)}
+.btn-add{border:0;background:var(--accent);color:#fff;height:36px;border-radius:18px;padding:0 14px 0 10px;display:flex;align-items:center;gap:5px;font-weight:600;font-size:14px;box-shadow:0 4px 14px rgba(232,89,12,.3)}
+.btn-add svg{width:18px;height:18px;stroke-width:2.3}
+
+/* ---------- Tab bar (phone) ---------- */
+.tabbar{display:none}
+.fab{display:none}
+@media (max-width:760px){
+  .seg-nav{display:none}
+  .top-in{padding:0 16px}
+  .btn-add{display:none}
+  .tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:20;padding:6px 6px calc(6px + env(safe-area-inset-bottom));background:rgba(250,250,252,.86);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-top:.5px solid rgba(0,0,0,.1)}
+  .tabbar button{flex:1;border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10.5px;font-weight:500;color:#8E8E93;padding:4px 0}
+  .tabbar button.on{color:var(--accent)}
+  .tabbar svg.i{width:25px;height:25px}
+  .fab{display:grid;place-items:center;position:fixed;right:18px;bottom:calc(76px + env(safe-area-inset-bottom));z-index:19;width:56px;height:56px;border-radius:50%;border:0;background:var(--accent);color:#fff;box-shadow:0 10px 26px rgba(232,89,12,.42)}
+  .fab svg{width:26px;height:26px;stroke-width:2.4}
+  .fab:active{transform:scale(.94)}
+}
+
+/* ---------- Layout ---------- */
+.wrap{max-width:1120px;margin:0 auto;padding:22px 20px 60px}
+@media (max-width:760px){.wrap{padding:14px 16px calc(150px + env(safe-area-inset-bottom))}}
+.view{animation:fade .35s var(--ease)}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:6px 2px 18px}
+.eyebrow{font-size:13px;font-weight:600;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em}
+h1{font-size:34px;font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-top:2px}
+@media (max-width:760px){h1{font-size:30px}}
+.card{background:var(--card);border-radius:var(--r-lg);padding:20px;box-shadow:var(--shadow)}
+.card h3{font-size:17px;font-weight:600}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.sub{color:var(--ink2);font-size:13.5px}
+.muted{color:var(--ink3)}
+.stack{display:grid;gap:16px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.log-grid{display:grid;grid-template-columns:minmax(320px,400px) 1fr;gap:16px;align-items:start}
+@media (max-width:900px){.g4{grid-template-columns:1fr 1fr}.log-grid{grid-template-columns:1fr}}
+@media (max-width:760px){.g2{grid-template-columns:1fr}.g4,.g2,.stack,.log-grid{gap:12px}.card{padding:16px;border-radius:20px}}
+
+/* ---------- Buttons & inputs ---------- */
+.btn{border:0;height:44px;padding:0 18px;border-radius:12px;font-weight:600;font-size:15px;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:transform .1s,background .15s,opacity .15s;white-space:nowrap}
+.btn:active{transform:scale(.98)}
+.btn svg{width:18px;height:18px}
+.btn.primary{background:var(--accent);color:#fff}
+.btn.primary:hover{background:var(--accent-2)}
+.btn.tint{background:var(--accent-tint);color:var(--accent-2)}
+.btn.plain{background:var(--fill);color:var(--ink)}
+.btn.danger{background:var(--bad-tint);color:var(--bad)}
+.btn.sm{height:34px;padding:0 12px;font-size:13.5px;border-radius:10px}
+.btn.block{width:100%}
+.btn[disabled]{opacity:.45;pointer-events:none}
+.link{border:0;background:none;color:var(--accent-2);font-weight:600;padding:0;font-size:14px}
+input[type=text],input[type=email],input[type=number],input[type=date],input[type=time],input[type=password],select{
+  width:100%;height:44px;border-radius:12px;border:1px solid transparent;background:var(--fill);padding:0 12px;font-size:16px;outline:none;transition:border .15s,box-shadow .15s,background .15s;-webkit-appearance:none;appearance:none;min-width:0}
+input[type=date],input[type=time]{display:flex;align-items:center}
+input:focus,select:focus{background:#fff;border-color:var(--accent);box-shadow:0 0 0 4px rgba(232,89,12,.14)}
+select{background-image:linear-gradient(45deg,transparent 50%,var(--ink2) 50%),linear-gradient(135deg,var(--ink2) 50%,transparent 50%);background-position:calc(100% - 18px) 19px,calc(100% - 13px) 19px;background-size:5px 5px;background-repeat:no-repeat;padding-right:32px}
+.field{display:grid;gap:6px;margin-bottom:14px}
+.field>span{font-size:13px;font-weight:600;color:var(--ink2)}
+.field em{font-style:normal;font-weight:400;color:var(--ink3)}
+.seg{display:flex;background:rgba(118,118,128,.12);border-radius:11px;padding:2px;margin-bottom:14px}
+.seg button{flex:1;border:0;background:transparent;height:36px;border-radius:9px;font-size:14px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:7px;transition:background .2s,box-shadow .2s}
+.seg button.on{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12);font-weight:600}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--c,var(--accent));flex:none}
+.stepper{display:grid;grid-template-columns:44px 1fr 44px;gap:6px}
+.stepper button{border:0;border-radius:12px;background:var(--fill);font-size:22px;font-weight:400;color:var(--ink)}
+.stepper button:active{background:var(--line)}
+.stepper input{text-align:center;font-weight:600;font-size:18px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.chip{border:0;background:var(--fill2);border:1px solid var(--line);height:30px;padding:0 11px;border-radius:15px;font-size:13px;font-weight:500}
+.chip:active,.chip.on{background:var(--accent-tint);border-color:var(--accent-soft);color:var(--accent-2)}
+details.range{margin-top:8px}
+details.range summary{font-size:13px;color:var(--accent-2);font-weight:600;cursor:pointer;list-style:none}
+details.range summary::-webkit-details-marker{display:none}
+.range-row{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-top:8px;color:var(--ink2);font-size:13px}
+.hint{font-size:13.5px;line-height:1.4;padding:10px 12px;border-radius:12px;background:var(--fill2);color:var(--ink2);margin:2px 0 14px;display:flex;gap:8px;align-items:flex-start}
+.hint svg{width:17px;height:17px;flex:none;margin-top:1px}
+.hint.err{background:var(--bad-tint);color:var(--bad)}
+.hint.ok{background:var(--good-tint);color:#17672D}
+.hint.shake{animation:shake .4s}
+.form-actions{display:flex;gap:10px}
+.form-actions .primary{flex:1}
+
+/* ---------- Toggle ---------- */
+.switch{position:relative;width:51px;height:31px;flex:none}
+.switch input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer;z-index:1}
+.switch i{position:absolute;inset:0;border-radius:16px;background:rgba(120,120,128,.18);transition:background .25s}
+.switch i::after{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 3px 8px rgba(0,0,0,.15),0 1px 1px rgba(0,0,0,.08);transition:transform .25s var(--ease)}
+.switch input:checked+i{background:var(--accent)}
+.switch input:checked+i::after{transform:translateX(20px)}
+.switch input:focus-visible+i{box-shadow:0 0 0 4px rgba(232,89,12,.2)}
+
+/* ---------- Status pills ---------- */
+.pill{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 9px;border-radius:12px;font-size:12px;font-weight:600;white-space:nowrap}
+.pill svg{width:13px;height:13px;stroke-width:2.4}
+.pill.good{background:var(--good-tint);color:#17672D}
+.pill.warn{background:var(--warn-tint);color:var(--warn)}
+.pill.bad{background:var(--bad-tint);color:var(--bad)}
+.pill.neutral{background:var(--fill);color:var(--ink2)}
+.pill.accent{background:var(--accent-tint);color:var(--accent-2)}
+.tagc{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:12px;font-size:12px;font-weight:600;background:color-mix(in srgb,var(--c) 11%,white);color:var(--ink)}
+
+/* ---------- Overview ---------- */
+.nudge{position:relative;overflow:hidden;border-radius:var(--r-lg);padding:20px 22px;color:#fff;background:linear-gradient(135deg,#FF7A2F 0%,#E8590C 45%,#B8410A 100%);box-shadow:0 14px 40px rgba(232,89,12,.28);display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.nudge::after{content:"";position:absolute;right:-60px;top:-80px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.22),transparent 65%)}
+.nudge .lbl{font-size:13px;font-weight:600;opacity:.9;text-transform:uppercase;letter-spacing:.05em}
+.nudge .amt{font-size:44px;font-weight:700;letter-spacing:-.04em;line-height:1.05;margin:4px 0 6px}
+.nudge .amt small{font-size:18px;font-weight:600;opacity:.85;letter-spacing:-.01em}
+.nudge p.d{font-size:14.5px;opacity:.95;max-width:560px}
+.nudge .btn{background:#fff;color:var(--accent-2);position:relative;z-index:1}
+.nudge.calm{background:linear-gradient(135deg,#FFFFFF,#FFF6F0);color:var(--ink);box-shadow:var(--shadow)}
+.nudge.calm .amt{font-size:30px}
+.nudge.calm .btn{background:var(--accent-tint)}
+.nudge-stats{display:flex;gap:22px;margin-top:12px;flex-wrap:wrap}
+.nudge-stats div{font-size:12.5px;opacity:.9}
+.nudge-stats b{display:block;font-size:19px;font-weight:700;opacity:1}
+@media (max-width:760px){.nudge{padding:18px}.nudge .amt{font-size:38px}.nudge .btn{width:100%}}
+
+.hero{display:flex;gap:26px;align-items:center}
+.ring-svg{width:156px;height:156px;flex:none}
+.ring-p{animation:ring 1.2s var(--ease) both}
+@keyframes ring{from{stroke-dashoffset:var(--c0)}}
+.hero-main{flex:1;min-width:0}
+.big{font-size:40px;font-weight:700;letter-spacing:-.035em;line-height:1.1}
+.big .of{font-size:17px;font-weight:500;color:var(--ink2);letter-spacing:-.01em}
+.hero-rows{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px;margin-top:14px}
+.hrow{display:flex;gap:10px;align-items:flex-start}
+.hrow .key2{width:4px;align-self:stretch;border-radius:2px;background:var(--c)}
+.hrow b{font-size:16px;display:block}
+.hrow small{color:var(--ink2);font-size:12.5px}
+@media (max-width:560px){.hero{flex-direction:column;align-items:stretch;gap:14px}.ring-wrap{display:flex;justify-content:center}.big{font-size:34px}.hero-main{text-align:left}}
+
+.kpi .lbl{font-size:12.5px;font-weight:600;color:var(--ink2);display:flex;align-items:center;gap:6px}
+.kpi .lbl svg{width:15px;height:15px;color:var(--accent)}
+.kpi .val{font-size:28px;font-weight:700;letter-spacing:-.03em;margin-top:6px;line-height:1.1}
+.kpi .val small{font-size:14px;font-weight:500;color:var(--ink2);letter-spacing:0}
+.kpi .foot{font-size:12.5px;color:var(--ink2);margin-top:6px}
+.meter{height:6px;border-radius:3px;background:var(--fill);overflow:hidden;display:flex;gap:2px;margin-top:10px}
+.meter i{display:block;height:100%;background:var(--c,var(--accent));border-radius:3px}
+.meter i.ghost{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--c) 45%,white) 0 3px,color-mix(in srgb,var(--c) 15%,white) 3px 6px)}
+@media (max-width:760px){.kpi .val{font-size:24px}}
+
+.job{border-top:4px solid var(--c)}
+.job-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.job h3{margin-top:10px;font-size:19px}
+.job .sub{margin-top:2px}
+.prog{position:relative;height:10px;border-radius:5px;background:color-mix(in srgb,var(--c) 12%,white);margin:16px 0 6px}
+.prog i{position:absolute;left:0;top:0;bottom:0;border-radius:5px;background:var(--c);transition:width .8s var(--ease)}
+.prog b{position:absolute;top:-4px;width:2px;height:18px;border-radius:1px;background:var(--ink);transform:translateX(-1px)}
+.prog-leg{display:flex;justify-content:space-between;font-size:12px;color:var(--ink2)}
+.job-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.job-grid div{background:var(--fill2);border-radius:12px;padding:10px 12px}
+.job-grid small{display:block;font-size:11.5px;color:var(--ink2);font-weight:500}
+.job-grid b{font-size:17px;font-weight:650}
+.job-grid .hl{background:var(--accent-tint)}
+.job-grid .hl b{color:var(--accent-2)}
+
+.wk-list{display:grid;gap:8px}
+.wk-row{display:grid;grid-template-columns:88px 1fr 64px;gap:12px;align-items:center;padding:8px 10px;border-radius:12px}
+.wk-row.today{background:var(--accent-tint)}
+.wk-row .dname{font-weight:600;font-size:14px}
+.wk-row .dname small{display:block;font-weight:400;color:var(--ink2);font-size:12px}
+.wk-row .tot{text-align:right;font-weight:600;font-size:14px}
+.wk-row .tot small{display:block;font-weight:400;color:var(--ink2);font-size:11.5px}
+.wk-row.off{opacity:.55}
+.bline{display:flex;gap:2px;height:22px;align-items:stretch}
+.bline i{display:flex;align-items:center;justify-content:center;font-style:normal;font-size:11.5px;font-weight:600;color:#fff;border-radius:6px;background:var(--c);min-width:0;overflow:hidden;white-space:nowrap}
+.bline i.ghost{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--c) 32%,white) 0 4px,color-mix(in srgb,var(--c) 12%,white) 4px 8px);color:var(--ink)}
+.bline .offtxt{font-size:12.5px;color:var(--ink2);align-self:center}
+
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--ink2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend .sw{width:12px;height:12px;border-radius:3px;background:var(--c)}
+.legend .sw.ghost{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--c) 50%,white) 0 2px,color-mix(in srgb,var(--c) 15%,white) 2px 4px)}
+.legend .ln{width:16px;height:0;border-top:2px solid var(--c)}
+.legend .ln.dash{border-top-style:dashed;opacity:.8}
+.legend .ln.cap{border-top:2px solid var(--ink)}
+.chart{position:relative;width:100%;min-height:220px;touch-action:pan-y}
+.chart svg{display:block;overflow:visible}
+.chart text{font-family:var(--font);font-size:11px;fill:var(--ink3)}
+.chart .vlab{fill:var(--ink2);font-weight:600;font-size:11px}
+.chart .endlab{fill:var(--ink);font-weight:600;font-size:12px}
+.chart .col{transition:opacity .15s}
+.chart svg.hovering .col:not(.hl){opacity:.35}
+.tip{position:fixed;left:0;top:0;z-index:90;pointer-events:none;background:rgba(255,255,255,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.14),0 0 0 .5px rgba(0,0,0,.08);padding:10px 12px;font-size:12.5px;min-width:170px;max-width:260px}
+.tip h5{margin:0 0 6px;font-size:12.5px;font-weight:650}
+.tip .tr{display:flex;align-items:center;gap:7px;justify-content:space-between;margin-top:3px}
+.tip .tr span{display:flex;align-items:center;gap:6px;color:var(--ink2)}
+.tip .tr b{font-weight:650}
+.tip hr{border:0;border-top:.5px solid var(--line);margin:7px 0}
+
+/* ---------- Log ---------- */
+.timer-face{font-size:44px;font-weight:300;letter-spacing:-.02em;text-align:center;margin:10px 0 2px;font-variant-numeric:tabular-nums}
+.timer-sub{text-align:center;color:var(--ink2);font-size:13.5px;margin-bottom:14px}
+.timer-run{display:flex;gap:10px}
+.timer-run .btn{flex:1}
+.pulse{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--bad);margin-right:6px;animation:pulse 1.4s infinite}
+@keyframes pulse{50%{opacity:.25}}
+.filter{display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap}
+.wgroup{margin-top:14px}
+.wgroup-h{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:0 4px 8px;font-size:13px;color:var(--ink2);font-weight:600}
+.wgroup-h .meter{width:90px;margin:0}
+.elist{background:var(--fill2);border-radius:14px;overflow:hidden}
+.erow{width:100%;border:0;background:transparent;display:grid;grid-template-columns:4px 1fr auto;gap:12px;align-items:center;padding:11px 14px 11px 12px;text-align:left;border-bottom:.5px solid var(--line)}
+.erow:last-child{border-bottom:0}
+.erow:hover{background:rgba(0,0,0,.025)}
+.erow .ebar{width:4px;height:32px;border-radius:2px;background:var(--c)}
+.erow .emain{min-width:0}
+.erow .emain b{display:block;font-size:14.5px;font-weight:600}
+.erow .emain small{display:block;color:var(--ink2);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.erow .eright{text-align:right}
+.erow .eright b{display:block;font-size:15px}
+.erow .eright small{color:var(--good);font-size:12.5px;font-weight:600}
+.empty{text-align:center;padding:30px 16px;color:var(--ink2)}
+.empty svg{width:40px;height:40px;color:var(--ink3);stroke-width:1.4;margin-bottom:6px}
+.miss-row{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:10px 12px;border-bottom:.5px solid var(--line)}
+.miss-row:last-child{border-bottom:0}
+.miss-row b{font-size:14.5px;font-weight:600;display:block}
+.miss-row small{color:var(--ink2);font-size:12.5px}
+.miss-row .usd{font-weight:650;color:var(--accent-2);font-size:14px}
+.more{width:100%;border:0;background:none;color:var(--accent-2);font-weight:600;padding:12px;font-size:14px}
+
+/* ---------- Calendar ---------- */
+.cal-nav{display:flex;align-items:center;gap:8px}
+.cal-nav h3{min-width:150px;text-align:center;font-size:18px}
+.cal-dow{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:6px;font-size:12px;font-weight:600;color:var(--ink3);text-align:center}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cell{position:relative;border:0;background:var(--fill2);border-radius:14px;min-height:84px;padding:7px 8px;display:flex;flex-direction:column;align-items:stretch;text-align:left;gap:4px;transition:transform .1s,background .15s;overflow:hidden}
+.cell:hover{background:#F0F0F3}
+.cell:active{transform:scale(.97)}
+.cell .n{font-size:14px;font-weight:600;line-height:1}
+.cell .tg{font-size:10px;font-weight:600;color:var(--bad);line-height:1.1}
+.cell .hv{margin-top:auto;font-size:12px;font-weight:650}
+.cell .hv.plan{color:var(--ink2);font-weight:500}
+.cell .cb{display:flex;gap:2px;height:6px}
+.cell .cb i{border-radius:3px;background:var(--c)}
+.cell .cb i.ghost{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--c) 55%,white) 0 2px,color-mix(in srgb,var(--c) 18%,white) 2px 4px)}
+.cell.blank{background:transparent;pointer-events:none}
+.cell.wkend{background:repeating-linear-gradient(135deg,#F4F4F6 0 6px,#EDEDF0 6px 7px)}
+.cell.wkend .n,.cell.out .n{color:var(--ink3)}
+.cell.hol{background:var(--bad-tint)}
+.cell.out{background:#FAFAFB}
+.cell.today{box-shadow:inset 0 0 0 2px var(--accent)}
+.cell.today .n{color:var(--accent-2)}
+.cell.miss::after{content:"";position:absolute;top:8px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--accent-tint)}
+@media (max-width:760px){
+  .cal,.cal-dow{gap:4px}
+  .cell{min-height:58px;border-radius:11px;padding:6px 5px;gap:3px}
+  .cell .n{font-size:13px}
+  .cell .tg{font-size:8.5px}
+  .cell .hv{font-size:10.5px}
+  .cell .cb{height:4px}
+  .cell.miss::after{top:6px;right:5px;width:6px;height:6px}
+  .cal-nav h3{min-width:120px;font-size:16px}
+}
+.wsum{display:grid;grid-template-columns:120px 1fr 110px;gap:14px;align-items:center;padding:10px 4px;border-bottom:.5px solid var(--line);font-size:14px}
+.wsum:last-child{border-bottom:0}
+.wsum .meter{margin:0;height:8px}
+.wsum .r{text-align:right;font-weight:600}
+.wsum .r small{display:block;font-weight:400;color:var(--ink2);font-size:12px}
+@media (max-width:560px){.wsum{grid-template-columns:96px 1fr 84px;gap:10px;font-size:13px}}
+
+/* ---------- Pay ---------- */
+.period{display:grid;grid-template-columns:1.2fr 1.3fr 1fr;gap:14px;align-items:center;padding:16px 4px;border-bottom:.5px solid var(--line)}
+.period:last-child{border-bottom:0}
+.period.cur{background:linear-gradient(90deg,var(--accent-tint),transparent);border-radius:14px;padding-left:12px;padding-right:12px}
+.period b.t{font-size:15.5px;font-weight:650;display:block}
+.period small{color:var(--ink2);font-size:12.5px}
+.period .hrs{display:flex;flex-direction:column;gap:4px;font-size:13px}
+.period .hrs span{display:flex;align-items:center;gap:7px}
+.period .amt{text-align:right}
+.period .amt b{font-size:20px;font-weight:700;letter-spacing:-.02em;display:block}
+.p-actions{grid-column:1/-1;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.p-actions label.tg2{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:500;background:var(--fill2);border-radius:12px;padding:6px 10px 6px 12px}
+.p-actions .switch{transform:scale(.82);transform-origin:right center;margin-right:-6px}
+.p-actions input.net{width:120px;height:36px;font-size:15px}
+@media (max-width:760px){.period{grid-template-columns:1fr auto}.period .hrs{grid-column:1/-1;flex-direction:row;gap:14px;order:3}.p-actions{order:4}}
+.sched{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}
+.sched .field{margin:0}
+@media (max-width:620px){.sched{grid-template-columns:1fr 1fr}.sched .btn{grid-column:1/-1}}
+
+/* ---------- Settings ---------- */
+.group-title{font-size:13px;font-weight:600;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em;margin:24px 6px 8px}
+.group-title:first-child{margin-top:0}
+.glist{background:var(--card);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.gitem{display:flex;align-items:center;gap:12px;padding:10px 16px;min-height:52px;border-bottom:.5px solid var(--line)}
+.gitem:last-child{border-bottom:0}
+.gitem>label,.gitem>.gl{flex:1;font-size:15px;min-width:0}
+.gitem .gl small{display:block;color:var(--ink2);font-size:12.5px}
+.gitem input:not([type=checkbox]),.gitem select{max-width:210px;height:38px;font-size:16px;text-align:right;background:var(--fill2)}
+.gitem input[type=date]{text-align:left}
+.gnote{font-size:12.5px;color:var(--ink2);padding:8px 16px 0;line-height:1.45}
+.gitem .x{border:0;background:var(--fill);width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:var(--ink2)}
+.gitem .x svg{width:14px;height:14px;stroke-width:2.4}
+.add-hol{display:grid;grid-template-columns:150px 1fr auto;gap:8px;padding:12px 16px}
+@media (max-width:560px){.add-hol{grid-template-columns:1fr 1fr}.add-hol .btn{grid-column:1/-1}.gitem input:not([type=checkbox]),.gitem select{max-width:150px}}
+
+/* ---------- Sheet ---------- */
+.sheet{position:fixed;inset:0;z-index:60;pointer-events:none}
+.sheet-bg{position:absolute;inset:0;background:rgba(0,0,0,.28);opacity:0;transition:opacity .3s}
+.sheet-panel{position:absolute;left:50%;top:50%;width:min(480px,calc(100% - 32px));max-height:min(86vh,820px);overflow:auto;background:#fff;border-radius:24px;box-shadow:var(--shadow-lg);padding:24px;transform:translate(-50%,-46%) scale(.97);opacity:0;transition:transform .35s var(--ease),opacity .25s;overscroll-behavior:contain}
+.sheet.open{pointer-events:auto}
+.sheet.open .sheet-bg{opacity:1}
+.sheet.open .sheet-panel{transform:translate(-50%,-50%) scale(1);opacity:1}
+.grabber{display:none}
+.sheet-x{position:absolute;right:16px;top:16px;border:0;width:30px;height:30px;border-radius:50%;background:var(--fill);color:var(--ink2);display:grid;place-items:center}
+.sheet-x svg{width:14px;height:14px;stroke-width:2.6}
+.sheet h2{font-size:24px;font-weight:700;margin:2px 0 6px;padding-right:36px}
+.sheet h4{font-size:15px;font-weight:650;margin:18px 0 10px}
+@media (max-width:760px){
+  .sheet-panel{left:0;right:0;top:auto;bottom:0;width:100%;max-height:92vh;border-radius:22px 22px 0 0;padding:10px 18px calc(22px + env(safe-area-inset-bottom));transform:translateY(100%);opacity:1}
+  .sheet.open .sheet-panel{transform:translateY(0)}
+  .grabber{display:block;width:38px;height:5px;border-radius:3px;background:#D1D1D6;margin:0 auto 12px}
+  .sheet-x{top:14px}
+}
+.daystat{display:inline-flex;gap:6px;align-items:center;margin:4px 0 12px}
+.expbox{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0 4px}
+.expbox div{background:var(--fill2);border-radius:12px;padding:10px}
+.expbox small{display:block;font-size:11.5px;color:var(--ink2);font-weight:500}
+.expbox b{font-size:17px}
+.expbox .hl{background:var(--accent-tint)}
+.expbox .hl b{color:var(--accent-2)}
+
+/* ---------- Toast ---------- */
+.toast{position:fixed;left:50%;bottom:calc(30px + env(safe-area-inset-bottom));transform:translate(-50%,20px);z-index:120;background:rgba(29,29,31,.92);color:#fff;padding:11px 18px;border-radius:14px;font-size:14px;font-weight:500;opacity:0;transition:opacity .25s,transform .35s var(--ease);pointer-events:none;max-width:calc(100% - 32px);backdrop-filter:blur(10px);text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media (max-width:760px){.toast{bottom:calc(150px + env(safe-area-inset-bottom))}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- Cloud sync ---------- */
+.auth-in{position:relative;width:min(360px,100%);display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px 16px calc(24px + env(safe-area-inset-bottom));text-align:center}
+.auth-in h2{margin-top:6px;font-size:22px;font-weight:600}
+.auth-in .sub{margin-bottom:6px}
+.auth-in input{background:#fff;box-shadow:0 0 0 .5px rgba(0,0,0,.1)}
+.auth-err{color:var(--bad);font-size:13.5px;min-height:19px}
+.sync{position:relative}
+.sync::after{content:"";position:absolute;right:5px;top:5px;width:8px;height:8px;border-radius:50%;box-shadow:0 0 0 2px var(--bg);background:var(--ink3)}
+.sync[data-st=synced]::after{background:var(--good)}
+.sync[data-st=syncing]::after,.sync[data-st=pending]::after{background:var(--accent);animation:pulse 1s infinite}
+.sync[data-st=offline]::after{background:#C98A00}
+.sync[data-st=error]::after{background:var(--bad)}
+</style>
+</head>
+<body>
+
+<!-- ============ Lock screen ============ -->
+<div id="lock" class="lock" role="dialog" aria-label="Enter passcode">
+  <div class="lock-glow"></div>
+  <div class="lock-in">
+    <div class="app-icon"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></div>
+    <h2>RA Hours</h2>
+    <p id="lock-msg">Enter Passcode</p>
+    <div class="dots" id="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="pad" id="pad"></div>
+    <p class="lock-foot"><svg class="i" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>Private to your account</p>
+  </div>
+</div>
+
+<!-- ============ Supabase sign-in (once per device) ============ -->
+<div id="auth" class="lock" hidden>
+  <div class="lock-glow"></div>
+  <form class="auth-in" id="authForm" novalidate>
+    <div class="app-icon"><svg class="i" viewBox="0 0 24 24"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.96A6 6 0 0 0 6.6 9.1 4.75 4.75 0 0 0 7 18.5z"/></svg></div>
+    <h2>Sign in to sync</h2>
+    <p class="sub">Use the account you created in Supabase → Authentication. You only do this once per device.</p>
+    <input type="email" name="email" placeholder="Email" autocomplete="username" required>
+    <input type="password" name="password" placeholder="Password" autocomplete="current-password" required>
+    <p class="auth-err" id="authErr" aria-live="polite"></p>
+    <button class="btn primary block" type="submit">Sign in</button>
+    <button class="link" type="button" data-act="skip-auth">Use on this device only for now</button>
+  </form>
+</div>
+
+<!-- ============ App ============ -->
+<div id="app" hidden>
+  <header class="top">
+    <div class="top-in">
+      <div class="brand"><span class="logo"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span>RA Hours</div>
+      <nav class="seg-nav" id="topnav"></nav>
+      <div class="top-actions">
+        <button class="btn-add" data-act="quick"><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Log</button>
+        <button class="icon-btn sync" id="syncbtn" data-act="syncnow" data-st="local" aria-label="Sync status" title="Not syncing"><svg class="i" viewBox="0 0 24 24"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.96A6 6 0 0 0 6.6 9.1 4.75 4.75 0 0 0 7 18.5z"/></svg></button>
+        <button class="icon-btn" data-act="lock" aria-label="Lock"><svg class="i" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg></button>
+      </div>
+    </div>
+  </header>
+  <main class="wrap">
+    <section id="v-overview" class="view"></section>
+    <section id="v-log" class="view" hidden></section>
+    <section id="v-calendar" class="view" hidden></section>
+    <section id="v-pay" class="view" hidden></section>
+    <section id="v-settings" class="view" hidden></section>
+  </main>
+  <button class="fab" data-act="quick" aria-label="Log hours"><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+  <nav class="tabbar" id="tabbar"></nav>
+</div>
+
+<div id="sheet" class="sheet" aria-hidden="true">
+  <div class="sheet-bg" data-close></div>
+  <div class="sheet-panel" role="dialog" aria-modal="true">
+    <div class="grabber"></div>
+    <button class="sheet-x" data-close aria-label="Close"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div id="sheet-body"></div>
+  </div>
+</div>
+<div id="tip" class="tip" hidden></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<input type="file" id="importFile" accept="application/json,.json" hidden>
+
+<script>
+(() => {
+'use strict';
+
+/* =====================================================================
+   Helpers
+   ===================================================================== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const pad2 = n => String(n).padStart(2, '0');
+const ds = d => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+const pd = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d, 12); };
+const addDays = (s, n) => { const d = pd(s); d.setDate(d.getDate() + n); return ds(d); };
+const dow = s => pd(s).getDay();                 // 0 = Sunday
+const weekKey = s => addDays(s, -((dow(s) + 6) % 7)); // Monday of that week
+const todayStr = () => ds(new Date());
+const fmt = (s, o) => pd(s).toLocaleDateString('en-US', o);
+const fmtShort = s => fmt(s, { month: 'short', day: 'numeric' });
+const fmtDay = s => fmt(s, { weekday: 'short', month: 'short', day: 'numeric' });
+const fmtLong = s => fmt(s, { weekday: 'long', month: 'long', day: 'numeric' });
+const fmtRange = (a, b) => pd(a).getMonth() === pd(b).getMonth()
+  ? `${fmtShort(a)} – ${pd(b).getDate()}` : `${fmtShort(a)} – ${fmtShort(b)}`;
+const r2 = v => Math.round((+v || 0) * 100) / 100;
+const fmtH = h => { h = r2(h); return Number.isInteger(h) ? String(h) : String(h); };
+const money = v => { v = r2(v); return (v < 0 ? '-$' : '$') + Math.abs(v).toLocaleString('en-US', { minimumFractionDigits: v % 1 ? 2 : 0, maximumFractionDigits: 2 }); };
+const roundQ = x => Math.round(x * 4) / 4;
+const minD = (a, b) => (a < b ? a : b), maxD = (a, b) => (a > b ? a : b);
+
+const cyrb53 = (str, seed = 0) => {
+  let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+  for (let i = 0, ch; i < str.length; i++) { ch = str.charCodeAt(i); h1 = Math.imul(h1 ^ ch, 2654435761); h2 = Math.imul(h2 ^ ch, 1597334677); }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507); h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507); h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
+};
+const hashPin = p => cyrb53('ra-tracker::' + p, 7);
+const DEFAULT_PIN_HASH = '2a7t0ttm862';
+
+const IC = {
+  overview: '<svg class="i" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="9" rx="2"/><rect x="13.5" y="3.5" width="7" height="5" rx="2"/><rect x="13.5" y="11.5" width="7" height="9" rx="2"/><rect x="3.5" y="15.5" width="7" height="5" rx="2"/></svg>',
+  log: '<svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>',
+  calendar: '<svg class="i" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',
+  pay: '<svg class="i" viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9.5v5M18 9.5v5"/></svg>',
+  settings: '<svg class="i" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>',
+  check: '<svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  warn: '<svg class="i" viewBox="0 0 24 24"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.2v.1"/></svg>',
+  clock: '<svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>',
+  info: '<svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 7.8v.1"/></svg>',
+  plus: '<svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',
+  x: '<svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  left: '<svg class="i" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>',
+  right: '<svg class="i" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>',
+  play: '<svg class="i" viewBox="0 0 24 24"><path d="M8 5.5v13l10-6.5z"/></svg>',
+  stop: '<svg class="i" viewBox="0 0 24 24"><rect x="6.5" y="6.5" width="11" height="11" rx="2"/></svg>',
+  cash: '<svg class="i" viewBox="0 0 24 24"><path d="M12 3v18M16.5 7.5c-.8-1.3-2.5-2-4.5-2-2.5 0-4.2 1.3-4.2 3.1 0 4.4 9 2.3 9 6.8 0 1.9-1.9 3.2-4.8 3.2-2.2 0-4-.8-4.8-2.2"/></svg>',
+  week: '<svg class="i" viewBox="0 0 24 24"><path d="M4 19V9M9.3 19V5M14.6 19v-7M20 19v-4"/></svg>',
+  flag: '<svg class="i" viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>',
+  cal: '<svg class="i" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',
+};
+
+/* =====================================================================
+   State (localStorage only)
+   ===================================================================== */
+const KEY = 'raTracker.v1';
+const JOB_COLORS = ['#E8590C', '#3A57D6'];
+const DEFAULT = () => ({
+  v: 1,
+  jobs: [
+    { id: 'irf',  grant: 'IRF',  prof: 'Prof. Mridula Sharma', start: '2026-09-21', end: '2026-11-30', rate: 20, hours: 125 },
+    { id: 'uraf', grant: 'URAF', prof: 'Prof. Manu Sharma',    start: '2026-10-15', end: '2026-11-30', rate: 20, hours: 150 },
+  ],
+  entries: [],
+  settings: {
+    weeklyCap: 35, dailyCap: 8, payAnchor: '2026-09-21', paydayOffset: 5, autoLock: 5, pinHash: DEFAULT_PIN_HASH,
+    holidays: [
+      { id: 'h1', date: '2026-09-30', name: 'Truth & Reconciliation Day', on: true },
+      { id: 'h2', date: '2026-10-12', name: 'Thanksgiving', on: true },
+      { id: 'h3', date: '2026-11-11', name: 'Remembrance Day', on: true },
+    ],
+  },
+  pay: {},
+  timer: null,
+  lastJob: 'irf',
+});
+
+function load() {
+  const base = DEFAULT();
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (raw) {
+      const o = JSON.parse(raw);
+      return {
+        ...base, ...o,
+        settings: { ...base.settings, ...(o.settings || {}) },
+        jobs: (o.jobs && o.jobs.length === 2) ? o.jobs : base.jobs,
+        entries: Array.isArray(o.entries) ? o.entries : [],
+        pay: o.pay || {},
+      };
+    }
+  } catch (e) { /* fall through */ }
+  return base;
+}
+let S = load();
+let user = null;   // Supabase user once signed in
+let storageOK = true;
+// Local copy = fast start + offline cache. Supabase is the source of truth once signed in.
+function cacheLocal() {
+  try { localStorage.setItem(KEY, JSON.stringify(S)); storageOK = true; }
+  catch (e) { if (storageOK && !user) toast('Couldn’t save — this browser is blocking local storage'); storageOK = false; }
+}
+function save() { cacheLocal(); scheduleSync(); }
+const colorOf = j => JOB_COLORS[S.jobs.indexOf(j)] || '#888';
+const jobById = id => S.jobs.find(j => j.id === id);
+
+/* =====================================================================
+   Rules & derived data
+   ===================================================================== */
+let HOL = {};
+let D = null;
+const isWeekend = d => { const w = dow(d); return w === 0 || w === 6; };
+const isWorkday = d => !isWeekend(d) && !HOL[d];
+const inJob = (j, d) => d >= j.start && d <= j.end;
+const countWork = (a, b, j) => { let n = 0; for (let d = a; d <= b; d = addDays(d, 1)) if (isWorkday(d) && (!j || inJob(j, d))) n++; return n; };
+const cap = () => +S.settings.weeklyCap || 35;
+const dcap = () => +S.settings.dailyCap || 8;
+
+/* Spread hours across work days: level daily load, never over the weekly cap or
+   the daily cap, each position only inside its own date window. Used for the
+   "target from day one" baseline (useLogs=false) and the forward plan (useLogs=true). */
+function schedule(from, remIn, useLogs) {
+  const rem = { ...remIn }, days = {}, wkPlan = {};
+  const end = D.span.end, list = [];
+  for (let d = from; d <= end; d = addDays(d, 1)) if (isWorkday(d) && S.jobs.some(j => inJob(j, d))) list.push(d);
+  for (let i = 0; i < list.length; i++) {
+    const d = list[i];
+    const A = S.jobs.filter(j => inJob(j, d) && rem[j.id] > 0.01);
+    if (!A.length) continue;
+    const live = S.jobs.filter(j => j.end >= d && rem[j.id] > 0.01);
+    const R = live.reduce((s, j) => s + rem[j.id], 0);
+    let N = 0; for (let x = i; x < list.length; x++) if (live.some(j => inJob(j, list[x]))) N++;
+    const w = weekKey(d);
+    let k = 0; for (let x = i; x < list.length && weekKey(list[x]) === w; x++) k++;
+    const used = (useLogs ? (D.byWeek[w]?.total || 0) : 0) + (wkPlan[w] || 0);
+    const dayCap = Math.max(0, Math.min(dcap() - (useLogs ? (D.byDate[d]?.total || 0) : 0), (cap() - used) / k));
+    const r = {}; let sumR = 0;
+    A.forEach(j => { let n = 0; for (let x = i; x < list.length && list[x] <= j.end; x++) if (inJob(j, list[x])) n++; r[j.id] = rem[j.id] / n; sumR += r[j.id]; });
+    const target = Math.min(dayCap, Math.max(R / N, sumR));
+    const out = {};
+    if (sumR >= target) A.forEach(j => out[j.id] = sumR ? r[j.id] * target / sumR : 0);
+    else {
+      A.forEach(j => out[j.id] = r[j.id]);
+      let extra = target - sumR;
+      for (let pass = 0; pass < 3 && extra > 1e-6; pass++) {
+        const can = A.filter(j => rem[j.id] - out[j.id] > 1e-6);
+        const tot = can.reduce((s, j) => s + rem[j.id] - out[j.id], 0);
+        if (!tot) break;
+        let gave = 0;
+        can.forEach(j => { const add = Math.min(extra * (rem[j.id] - out[j.id]) / tot, rem[j.id] - out[j.id]); out[j.id] += add; gave += add; });
+        extra -= gave;
+      }
+    }
+    let tot = 0;
+    A.forEach(j => {
+      let h = Math.round(out[j.id] * 2) / 2;
+      if (h > rem[j.id]) h = rem[j.id];
+      if (rem[j.id] - h < 0.5) h = rem[j.id];
+      out[j.id] = h; tot += h;
+    });
+    let guard = 0;
+    while (tot > dayCap + 1e-9 && guard++ < 50) {
+      const big = A.reduce((a, b) => (out[a.id] >= out[b.id] ? a : b));
+      const dec = Math.min(out[big.id], Math.max(0.25, Math.ceil((tot - dayCap) * 4) / 4));
+      out[big.id] -= dec; tot -= dec;
+    }
+    if (tot <= 0) continue;
+    days[d] = { total: tot };
+    A.forEach(j => { if (out[j.id] > 0) { days[d][j.id] = out[j.id]; rem[j.id] -= out[j.id]; } });
+    wkPlan[w] = (wkPlan[w] || 0) + tot;
+  }
+  const short = {}; S.jobs.forEach(j => short[j.id] = Math.max(0, r2(rem[j.id])));
+  return { days, short };
+}
+
+function derive() {
+  HOL = {};
+  (S.settings.holidays || []).forEach(h => { if (h.on && h.date) HOL[h.date] = h.name || 'Stat holiday'; });
+  const T = todayStr();
+  const span = { start: S.jobs.reduce((a, j) => minD(a, j.start), S.jobs[0].start), end: S.jobs.reduce((a, j) => maxD(a, j.end), S.jobs[0].end) };
+  const byDate = {}, byWeek = {}, byJob = {};
+  S.jobs.forEach(j => byJob[j.id] = 0);
+  for (const e of S.entries) {
+    if (!jobById(e.job)) continue;
+    const b = byDate[e.date] || (byDate[e.date] = { total: 0 });
+    b[e.job] = (b[e.job] || 0) + e.hours; b.total += e.hours;
+    const w = weekKey(e.date), bw = byWeek[w] || (byWeek[w] = { total: 0 });
+    bw[e.job] = (bw[e.job] || 0) + e.hours; bw.total += e.hours;
+    byJob[e.job] += e.hours;
+  }
+  D = { T, Y: addDays(T, -1), span, byDate, byWeek, byJob };
+  // Baseline target: how a perfect schedule would look from contract day one.
+  const base = schedule(span.start, Object.fromEntries(S.jobs.map(j => [j.id, +j.hours || 0])), false);
+  const cum = {}, run = {}; S.jobs.forEach(j => run[j.id] = 0);
+  for (let d = span.start; d <= span.end; d = addDays(d, 1)) { const b = base.days[d]; if (b) S.jobs.forEach(j => run[j.id] += b[j.id] || 0); cum[d] = { ...run }; }
+  D.base = { days: base.days, cum };
+  // Forward plan from today with what's actually logged.
+  const rem = Object.fromEntries(S.jobs.map(j => [j.id, Math.max(0, (+j.hours || 0) - byJob[j.id])]));
+  D.plan = schedule(maxD(T, span.start), rem, true);
+  return D;
+}
+const expBy = (d, jid) => { if (d < D.span.start) return 0; d = minD(d, D.span.end); const c = D.base.cum[d]; return c ? (jid ? c[jid] || 0 : S.jobs.reduce((s, j) => s + (c[j.id] || 0), 0)) : 0; };
+const logBy = (d, jid) => S.entries.reduce((s, e) => s + (e.date <= d && (!jid || e.job === jid) && jobById(e.job) ? e.hours : 0), 0);
+const plannedWeek = (w, jid) => { let s = 0; for (let i = 0; i < 7; i++) { const p = D.plan.days[addDays(w, i)]; if (p) s += jid ? (p[jid] || 0) : p.total; } return s; };
+
+function gap() {
+  const per = S.jobs.map(j => {
+    const target = expBy(D.Y, j.id), logged = logBy(D.T, j.id);
+    const miss = Math.max(0, target - logged);
+    return { j, target, logged, miss, usd: miss * j.rate, ahead: Math.max(0, logged - target) };
+  });
+  const sum = k => per.reduce((s, p) => s + p[k], 0);
+  return { per, target: sum('target'), logged: sum('logged'), miss: sum('miss'), usd: sum('usd'), ahead: sum('ahead') };
+}
+function unloggedDays() {
+  const out = [];
+  for (let d = D.span.start; d <= minD(D.Y, D.span.end); d = addDays(d, 1)) {
+    if (!isWorkday(d) || !S.jobs.some(j => inJob(j, d))) continue;
+    if (!D.byDate[d]) out.push(d);
+  }
+  return out.reverse();
+}
+function jobStats(j) {
+  const logged = D.byJob[j.id] || 0, left = Math.max(0, j.hours - logged);
+  const target = expBy(D.Y, j.id), loggedNow = logBy(D.T, j.id);
+  const diff = loggedNow - target;
+  const daysLeft = D.T > j.end ? 0 : countWork(maxD(D.T, j.start), j.end, j);
+  const perDay = daysLeft ? left / daysLeft : 0;
+  const short = D.plan.short[j.id] || 0;
+  let st;
+  if (left <= 0.001) st = { k: 'good', t: 'Complete', i: 'check' };
+  else if (D.T < j.start) st = { k: 'neutral', t: 'Starts ' + fmtShort(j.start), i: 'clock' };
+  else if (D.T > j.end) st = { k: 'bad', t: `${fmtH(left)} h unused`, i: 'warn' };
+  else if (short > 0.01) st = { k: 'bad', t: `Can’t fit ${fmtH(short)} h`, i: 'warn' };
+  else if (diff >= -1) st = { k: 'good', t: diff > 1 ? 'Ahead' : 'On track', i: 'check' };
+  else st = { k: 'warn', t: `${fmtH(-diff)} h behind`, i: 'warn' };
+  return { j, c: colorOf(j), logged, left, target, diff, daysLeft, perDay, short, st,
+    pct: j.hours ? Math.min(1, logged / j.hours) : 0, tpct: j.hours ? Math.min(1, target / j.hours) : 0,
+    earned: logged * j.rate, budget: j.hours * j.rate, miss: Math.max(0, -diff) };
+}
+function periods() {
+  const off = +S.settings.paydayOffset || 0;
+  let p = S.settings.payAnchor || D.span.start;
+  while (p > D.span.start) p = addDays(p, -14);
+  while (addDays(p, 13) < D.span.start) p = addDays(p, 14);
+  const out = [];
+  for (let i = 1; p <= D.span.end; p = addDays(p, 14), i++) {
+    const e = addDays(p, 13), r = { i, start: p, end: e, payday: addDays(e, off), h: {}, ph: {}, th: {}, gross: 0, pgross: 0, tgross: 0 };
+    S.jobs.forEach(j => { r.h[j.id] = 0; r.ph[j.id] = 0; r.th[j.id] = 0; });
+    for (let d = p; d <= e; d = addDays(d, 1)) {
+      const b = D.byDate[d], pl = D.plan.days[d], bs = D.base.days[d];
+      S.jobs.forEach(j => { r.h[j.id] += b?.[j.id] || 0; r.ph[j.id] += pl?.[j.id] || 0; r.th[j.id] += bs?.[j.id] || 0; });
+    }
+    S.jobs.forEach(j => { r.gross += r.h[j.id] * j.rate; r.pgross += r.ph[j.id] * j.rate; r.tgross += r.th[j.id] * j.rate; });
+    r.status = D.T < r.start ? 'upcoming' : D.T <= r.end ? 'current' : D.T < r.payday ? 'processing' : D.T === r.payday ? 'today' : 'paid';
+    r.rec = S.pay[r.start] || {};
+    out.push(r);
+  }
+  return out;
+}
+
+/* Validation for one entry (hard university rules) */
+function validate(v) {
+  const j = jobById(v.job);
+  if (!j) return 'Choose a position.';
+  if (!v.date) return 'Pick a date.';
+  if (isWeekend(v.date)) return 'Weekends are off-limits under your RA terms.';
+  if (HOL[v.date]) return `${fmtShort(v.date)} is ${HOL[v.date]} — a stat holiday, no RA work allowed.`;
+  if (!inJob(j, v.date)) return `${j.grant} runs ${fmtShort(j.start)} – ${fmtShort(j.end)} only.`;
+  if (!(v.hours > 0)) return 'Enter the hours you worked.';
+  const others = S.entries.filter(e => e.id !== v.id);
+  const day = others.reduce((s, e) => s + (e.date === v.date ? e.hours : 0), 0);
+  if (day + v.hours > 24) return 'That’s more than 24 hours in one day.';
+  const wk = weekKey(v.date);
+  const wkUsed = others.reduce((s, e) => s + (weekKey(e.date) === wk ? e.hours : 0), 0);
+  if (wkUsed + v.hours > cap() + 1e-9) return `Week of ${fmtShort(wk)} would hit ${fmtH(wkUsed + v.hours)} h — the limit is ${cap()} h. ${fmtH(Math.max(0, cap() - wkUsed))} h left that week.`;
+  const jobUsed = others.reduce((s, e) => s + (e.job === j.id ? e.hours : 0), 0);
+  if (jobUsed + v.hours > j.hours + 1e-9) return `Only ${fmtH(Math.max(0, j.hours - jobUsed))} h left on the ${j.grant} contract.`;
+  return null;
+}
+
+/* =====================================================================
+   UI plumbing
+   ===================================================================== */
+let view = 'overview', calMonth = null, logFilter = 'all', formMem = {}, firstRings = true, missOpen = false;
+const TABS = [['overview', 'Overview'], ['log', 'Log'], ['calendar', 'Calendar'], ['pay', 'Pay'], ['settings', 'Settings']];
+$('#topnav').innerHTML = TABS.map(([k, l]) => `<button data-tab="${k}">${l}</button>`).join('');
+$('#tabbar').innerHTML = TABS.map(([k, l]) => `<button data-tab="${k}">${IC[k]}<span>${l}</span></button>`).join('');
+
+function show(v) {
+  view = v;
+  $$('.view').forEach(s => s.hidden = s.id !== 'v-' + v);
+  $$('[data-tab]').forEach(b => b.classList.toggle('on', b.dataset.tab === v));
+  try { sessionStorage.setItem('ra.view', v); } catch (e) {}
+  if (v === 'settings') renderSettings();
+  window.scrollTo({ top: 0 });
+  requestAnimationFrame(renderCharts);
+}
+function renderAll() {
+  derive();
+  renderOverview(); renderLog(); renderCalendar(); renderPay();
+  requestAnimationFrame(renderCharts);
+}
+function renderCharts() {
+  hideTip();
+  if (view === 'overview') { lineChart($('#c-cum')); weekChart($('#c-week')); }
+  if (view === 'pay') payChart($('#c-pay'));
+}
+let toastT;
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); }
+
+/* =====================================================================
+   Overview
+   ===================================================================== */
+function ringsSVG(stats) {
+  const sz = 156, c = sz / 2, sw = 15, radii = [c - sw / 2 - 1, c - sw / 2 - 1 - sw - 4];
+  const tot = stats.reduce((s, x) => s + x.logged, 0), all = stats.reduce((s, x) => s + x.j.hours, 0);
+  const pct = all ? Math.round(tot / all * 100) : 0;
+  return `<svg class="ring-svg" viewBox="0 0 ${sz} ${sz}" role="img" aria-label="${pct}% of contract hours logged">
+    ${stats.map((s, i) => {
+      const r = radii[i], C = 2 * Math.PI * r, off = C * (1 - s.pct);
+      return `<circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="${s.c}" stroke-opacity=".14" stroke-width="${sw}"/>` +
+        (s.pct > 0 ? `<circle class="${firstRings ? 'ring-p' : ''}" cx="${c}" cy="${c}" r="${r}" fill="none" stroke="${s.c}" stroke-width="${sw}" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${off}" style="--c0:${C}" transform="rotate(-90 ${c} ${c})"/>` : '');
+    }).join('')}
+    <text x="${c}" y="${c + 2}" text-anchor="middle" font-size="26" font-weight="700" fill="#1D1D1F" font-family="-apple-system,BlinkMacSystemFont,sans-serif">${pct}%</text>
+    <text x="${c}" y="${c + 20}" text-anchor="middle" font-size="11" fill="#6E6E73" font-family="-apple-system,BlinkMacSystemFont,sans-serif">of ${fmtH(all)} h</text>
+  </svg>`;
+}
+function nextPay() {
+  const P = periods();
+  return P.find(p => p.payday >= D.T && (p.gross + p.pgross) > 0) || P.find(p => p.payday >= D.T) || null;
+}
+function renderOverview() {
+  const stats = S.jobs.map(jobStats);
+  const G = gap(), miss = unloggedDays();
+  const earned = stats.reduce((s, x) => s + x.earned, 0), budget = stats.reduce((s, x) => s + x.budget, 0);
+  const wk = weekKey(D.T), wUsed = D.byWeek[wk]?.total || 0, wPlan = plannedWeek(wk);
+  const np = nextPay();
+  const workLeft = D.T > D.span.end ? 0 : countWork(maxD(D.T, D.span.start), D.span.end);
+  const shortAll = Object.values(D.plan.short).reduce((a, b) => a + b, 0);
+  const remAll = stats.reduce((s, x) => s + x.left, 0);
+
+  const nudge = G.miss > 0.01 ? `
+    <div class="nudge">
+      <div style="position:relative;z-index:1">
+        <p class="lbl">Not logged yet</p>
+        <p class="amt">${money(G.usd)} <small>waiting for you</small></p>
+        <p class="d">By the end of ${fmtDay(D.Y)} your target was <b>${fmtH(G.target)} h</b>. You’ve entered <b>${fmtH(G.logged)} h</b>, so about <b>${fmtH(G.miss)} h</b> are missing${miss.length ? ` across <b>${miss.length}</b> empty work day${miss.length > 1 ? 's' : ''}` : ''}. Every hour you add is ${money(S.jobs[0].rate)}.</p>
+        <div class="nudge-stats">${G.per.map(p => `<div>${esc(p.j.grant)} missing<b>${fmtH(p.miss)} h · ${money(p.usd)}</b></div>`).join('')}</div>
+      </div>
+      <button class="btn" data-act="catchup">Catch up now ${IC.right}</button>
+    </div>` : `
+    <div class="nudge calm">
+      <div>
+        <p class="lbl" style="color:var(--good)">All caught up</p>
+        <p class="amt">${G.ahead > 0.01 ? `${fmtH(G.ahead)} h ahead of target` : 'Right on target'}</p>
+        <p class="d sub">Target by end of ${fmtDay(D.Y)}: ${fmtH(G.target)} h · You’ve entered ${fmtH(G.logged)} h.</p>
+      </div>
+      <button class="btn" data-act="quick">${IC.plus} Log today</button>
+    </div>`;
+
+  const stTile = shortAll > 0.01
+    ? { k: 'bad', v: `${fmtH(shortAll)}<small> h won’t fit</small>`, f: `At ${cap()} h/week there isn’t room for all ${fmtH(remAll)} h left. Log any hours you’ve already worked.` }
+    : remAll <= 0.01 ? { k: 'good', v: 'Done', f: 'Both contracts fully logged.' }
+    : { k: 'good', v: `On plan`, f: `${fmtH(remAll)} h left fit within ${cap()} h/week.` };
+
+  // This/next week plan
+  let pw = wk; if (isWeekend(D.T)) pw = addDays(wk, 7);
+  const weekRows = [0, 1, 2, 3, 4].map(i => {
+    const d = addDays(pw, i), b = D.byDate[d], p = D.plan.days[d];
+    const off = !isWorkday(d) || !S.jobs.some(j => inJob(j, d));
+    const why = HOL[d] ? HOL[d] : !S.jobs.some(j => inJob(j, d)) ? 'Outside contracts' : '';
+    const segs = S.jobs.map(j => {
+      const h = b?.[j.id] || 0, ph = d >= D.T ? (p?.[j.id] || 0) : 0, c = colorOf(j);
+      return (h ? `<i style="--c:${c};flex:${h}" title="${esc(j.grant)} logged">${fmtH(h)}</i>` : '') +
+             (ph ? `<i class="ghost" style="--c:${c};flex:${ph}" title="${esc(j.grant)} planned">${fmtH(ph)}</i>` : '');
+    }).join('');
+    const lt = b?.total || 0, pt = d >= D.T ? (p?.total || 0) : 0;
+    const exp = D.base.days[d]?.total || 0;
+    return `<div class="wk-row ${d === D.T ? 'today' : ''} ${off ? 'off' : ''}">
+      <div class="dname">${fmt(d, { weekday: 'short' })}<small>${fmtShort(d)}</small></div>
+      <div class="bline" style="max-width:${Math.min(100, Math.max(lt + pt, 0.01) / dcap() * 100)}%">${off ? `<span class="offtxt">${esc(why) || 'Off'}</span>` : segs || `<span class="offtxt">${d < D.T ? `Nothing logged · target ${fmtH(exp)} h` : '—'}</span>`}</div>
+      <div class="tot">${off ? '' : lt ? fmtH(lt) + ' h' : pt ? '~' + fmtH(pt) + ' h' : '0 h'}<small>${off ? '' : lt && pt ? '+' + fmtH(pt) + ' plan' : lt ? 'logged' : pt ? 'planned' : ''}</small></div>
+    </div>`;
+  }).join('');
+  const pwUsed = D.byWeek[pw]?.total || 0, pwPlan = plannedWeek(pw);
+
+  $('#v-overview').innerHTML = `
+    <div class="head"><div><p class="eyebrow">${fmtLong(D.T)}</p><h1>Overview</h1></div></div>
+    <div class="stack">
+      ${S.entries.length === 0 ? `<div class="hint">${IC.info}<span>Start by back-filling the hours you’ve already worked since ${fmtShort(D.span.start)} — or use <b>Pay → Enter period hours</b> to type one total per pay period. Everything below updates instantly.</span></div>` : ''}
+      ${nudge}
+      <div class="card hero">
+        <div class="ring-wrap">${ringsSVG(stats)}</div>
+        <div class="hero-main">
+          <p class="eyebrow">Earned so far · gross</p>
+          <p class="big">${money(earned)}<span class="of"> of ${money(budget)}</span></p>
+          <div class="hero-rows">
+            ${stats.map(s => `<div class="hrow" style="--c:${s.c}"><span class="key2"></span><div><b>${fmtH(s.logged)} / ${fmtH(s.j.hours)} h</b><small>${esc(s.j.grant)} · ${money(s.earned)} of ${money(s.budget)}</small></div></div>`).join('')}
+          </div>
+        </div>
+      </div>
+      <div class="g4">
+        <div class="card kpi"><p class="lbl">${IC.week}This week</p><p class="val">${fmtH(wUsed)}<small> / ${cap()} h</small></p>
+          <div class="meter">${S.jobs.map(j => { const h = D.byWeek[wk]?.[j.id] || 0; return h ? `<i style="--c:${colorOf(j)};width:${h / cap() * 100}%"></i>` : ''; }).join('')}${wPlan ? `<i class="ghost" style="--c:var(--accent);width:${Math.min(wPlan, cap()) / cap() * 100}%"></i>` : ''}</div>
+          <p class="foot">${fmtH(Math.max(0, cap() - wUsed))} h left under the cap</p></div>
+        <div class="card kpi"><p class="lbl">${IC.cash}Next payday</p>
+          ${np ? `<p class="val">${money(np.gross + (np.status === 'current' || np.status === 'upcoming' ? np.pgross : 0))}</p><p class="foot">${fmtDay(np.payday)} · for ${fmtRange(np.start, np.end)}${np.pgross && (np.status === 'current' || np.status === 'upcoming') ? ' · incl. planned' : ''}</p>` : `<p class="val">—</p><p class="foot">No more paydays</p>`}</div>
+        <div class="card kpi"><p class="lbl">${IC.flag}Empty work days</p><p class="val">${miss.length}<small> day${miss.length === 1 ? '' : 's'}</small></p>
+          <p class="foot">${miss.length ? `Past work days with nothing entered` : 'Every past work day has hours'}</p></div>
+        <div class="card kpi"><p class="lbl">${IC[stTile.k === 'bad' ? 'warn' : 'check']}Plan to Nov 30</p><p class="val" style="color:${stTile.k === 'bad' ? 'var(--bad)' : 'inherit'}">${stTile.v}</p><p class="foot">${stTile.f}</p></div>
+      </div>
+      <div class="g2">${stats.map(jobCard).join('')}</div>
+      <div class="card">
+        <div class="card-head">
+          <div><h3>${pw === wk ? 'This week' : 'Next week'} · ${fmtRange(pw, addDays(pw, 4))}</h3><p class="sub">${fmtH(pwUsed)} h logged${pwPlan ? ` · ~${fmtH(pwPlan)} h suggested` : ''} · limit ${cap()} h · ${workLeft} work days left in total</p></div>
+          <div class="legend">${S.jobs.map(j => `<span><i class="sw" style="--c:${colorOf(j)}"></i>${esc(j.grant)}</span>`).join('')}<span><i class="sw ghost" style="--c:var(--ink2)"></i>Suggested</span></div>
+        </div>
+        <div class="wk-list">${weekRows}</div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>Hours vs. target</h3><p class="sub">Solid = entered · dashed = where you should be (fits the ${cap()} h/week limit)</p></div>
+          <div class="legend">${S.jobs.map(j => `<span><i class="ln" style="--c:${colorOf(j)}"></i>${esc(j.grant)}</span>`).join('')}<span><i class="ln dash" style="--c:var(--ink2)"></i>Target</span></div></div>
+        <div id="c-cum" class="chart"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>Weekly hours</h3><p class="sub">Both positions combined against the ${cap()} h weekly limit</p></div>
+          <div class="legend">${S.jobs.map(j => `<span><i class="sw" style="--c:${colorOf(j)}"></i>${esc(j.grant)}</span>`).join('')}<span><i class="sw ghost" style="--c:var(--ink2)"></i>Planned</span><span><i class="ln cap"></i>${cap()} h limit</span></div></div>
+        <div id="c-week" class="chart"></div>
+      </div>
+    </div>`;
+  firstRings = false;
+}
+function jobCard(s) {
+  const j = s.j;
+  return `<article class="card job" style="--c:${s.c}">
+    <div class="job-top"><span class="tagc" style="--c:${s.c}"><i class="dot" style="--c:${s.c}"></i>${esc(j.grant)} grant</span><span class="pill ${s.st.k}">${IC[s.st.i]}${esc(s.st.t)}</span></div>
+    <h3>${esc(j.prof)}</h3>
+    <p class="sub">${fmtShort(j.start)} – ${fmtShort(j.end)} · ${money(j.rate)}/h · ${fmtH(j.hours)} h = ${money(s.budget)}</p>
+    <div class="prog" title="Bar = entered · tick = target by now"><i style="width:${s.pct * 100}%"></i>${D.T >= j.start ? `<b style="left:${s.tpct * 100}%"></b>` : ''}</div>
+    <div class="prog-leg"><span>${Math.round(s.pct * 100)}% entered</span><span>▏target ${fmtH(s.target)} h</span></div>
+    <div class="job-grid">
+      <div><small>Entered</small><b>${fmtH(s.logged)} h</b></div>
+      <div><small>Target by now</small><b>${fmtH(s.target)} h</b></div>
+      <div class="${s.miss > 0.01 ? 'hl' : ''}"><small>${s.miss > 0.01 ? 'Missing' : 'Ahead by'}</small><b>${s.miss > 0.01 ? fmtH(s.miss) + ' h' : fmtH(Math.max(0, s.diff)) + ' h'}</b></div>
+      <div><small>Earned</small><b>${money(s.earned)}</b></div>
+      <div><small>Hours left</small><b>${fmtH(s.left)} h</b></div>
+      <div><small>Needed</small><b>${s.daysLeft ? fmtH(Math.round(s.perDay * 10) / 10) + ' h/day' : '—'}</b></div>
+    </div>
+    <p class="sub" style="margin-top:12px">${s.daysLeft} work day${s.daysLeft === 1 ? '' : 's'} left · ${money(s.left * j.rate)} still to earn${s.miss > 0.01 ? ` · <b style="color:var(--accent-2)">${money(s.miss * j.rate)} not logged</b>` : ''}</p>
+  </article>`;
+}
+
+/* =====================================================================
+   Charts (hand-drawn SVG — works offline)
+   ===================================================================== */
+const tip = $('#tip');
+let tipTouch = false;
+function showTip(html, x, y) {
+  tip.innerHTML = html; tip.hidden = false;
+  const r = tip.getBoundingClientRect();
+  let L = x + 14, T = y + 14;
+  if (L + r.width > innerWidth - 8) L = x - r.width - 14;
+  if (T + r.height > innerHeight - 8) T = y - r.height - 14;
+  tip.style.transform = `translate(${Math.max(8, L)}px,${Math.max(8, T)}px)`;
+}
+function hideTip() { tip.hidden = true; }
+document.addEventListener('pointerdown', e => { if (!e.target.closest('.chart')) hideTip(); });
+function niceMax(v, steps = 4) {
+  if (!(v > 0)) return { max: steps, step: 1 };
+  const raw = v / steps, p = 10 ** Math.floor(Math.log10(raw)), f = raw / p;
+  const step = (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * p;
+  return { max: Math.ceil(v / step - 1e-9) * step, step };
+}
+const tr = (c, label, val) => `<div class="tr"><span><i class="dot" style="--c:${c}"></i>${label}</span><b>${val}</b></div>`;
+
+function lineChart(host) {
+  if (!host) return;
+  const W = Math.max(280, host.clientWidth), narrow = W < 520, H = narrow ? 230 : 280;
+  const m = { t: 14, r: narrow ? 44 : 64, b: 26, l: 34 };
+  const dates = []; for (let d = D.span.start; d <= D.span.end; d = addDays(d, 1)) dates.push(d);
+  const n = dates.length, step = (W - m.l - m.r) / (n - 1);
+  const X = i => m.l + i * step;
+  const lastEntry = S.entries.reduce((a, e) => maxD(a, e.date), '0');
+  const actEnd = minD(D.span.end, maxD(D.T, lastEntry));
+  const ser = S.jobs.map(j => {
+    let cum = 0;
+    const act = dates.map(d => { cum += D.byDate[d]?.[j.id] || 0; return cum; });
+    const tgt = dates.map(d => d < j.start ? null : (D.base.cum[d]?.[j.id] || 0));
+    return { j, c: colorOf(j), act, tgt };
+  });
+  const top = Math.max(...S.jobs.map(j => +j.hours || 0), ...ser.map(s => s.act[n - 1]));
+  const { max: ymax, step: ys } = niceMax(top);
+  const Y = v => H - m.b - (v / ymax) * (H - m.t - m.b);
+  let g = '';
+  for (let v = 0; v <= ymax + 1e-9; v += ys) g += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="#EEEEF1"/><text x="${m.l - 8}" y="${Y(v) + 4}" text-anchor="end">${fmtH(v)}</text>`;
+  let lastLab = -1e9;
+  dates.forEach((d, i) => {
+    if (dow(d) === 1 && X(i) - lastLab > (narrow ? 56 : 70)) { g += `<text x="${X(i)}" y="${H - 6}" text-anchor="middle">${fmtShort(d)}</text>`; lastLab = X(i); }
+  });
+  const ti = dates.indexOf(D.T);
+  if (ti >= 0) g += `<line x1="${X(ti)}" x2="${X(ti)}" y1="${m.t}" y2="${H - m.b}" stroke="#1D1D1F" stroke-opacity=".25"/><text x="${X(ti)}" y="${m.t - 2}" text-anchor="middle" class="vlab">Today</text>`;
+  const aEnd = dates.indexOf(actEnd);
+  ser.forEach(s => {
+    const tp = s.tgt.map((v, i) => v == null ? null : `${X(i).toFixed(1)},${Y(v).toFixed(1)}`).filter(Boolean);
+    g += `<polyline points="${tp.join(' ')}" fill="none" stroke="${s.c}" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="4 4"/>`;
+    const si = Math.max(0, dates.indexOf(s.j.start));
+    if (aEnd >= si) {
+      const ap = []; for (let i = si; i <= aEnd; i++) ap.push(`${X(i).toFixed(1)},${Y(s.act[i]).toFixed(1)}`);
+      const area = `M${X(si)},${Y(0)} L${ap.join(' L')} L${X(aEnd)},${Y(0)}Z`;
+      g += `<path d="${area}" fill="${s.c}" fill-opacity=".08"/><polyline points="${ap.join(' ')}" fill="none" stroke="${s.c}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+      g += `<circle cx="${X(aEnd)}" cy="${Y(s.act[aEnd])}" r="4.5" fill="${s.c}" stroke="#fff" stroke-width="2"/>`;
+    }
+  });
+  // end labels (avoid collisions)
+  const labs = ser.filter(s => actEnd >= s.j.start).map(s => ({ y: Y(s.act[Math.max(0, aEnd)]), t: `${fmtH(s.act[Math.max(0, aEnd)])} h`, x: X(Math.max(0, aEnd)) })).sort((a, b) => a.y - b.y);
+  for (let i = 1; i < labs.length; i++) if (labs[i].y - labs[i - 1].y < 14) labs[i].y = labs[i - 1].y + 14;
+  labs.forEach(l => g += `<text x="${l.x + 9}" y="${l.y + 4}" class="endlab">${l.t}</text>`);
+  // final target labels at right
+  ser.forEach(s => g += `<text x="${W - m.r + 6}" y="${Y(s.tgt[n - 1] || 0) + 4}" class="vlab">${fmtH(s.j.hours)}</text>`);
+  const cross = `<g class="cross" visibility="hidden"><line class="cl" y1="${m.t}" y2="${H - m.b}" stroke="#1D1D1F" stroke-opacity=".35"/>${ser.map(s => `<circle class="cd" r="4.5" fill="${s.c}" stroke="#fff" stroke-width="2"/>`).join('')}</g>`;
+  host.innerHTML = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Cumulative hours entered versus target">${g}${cross}<rect class="hit" x="${m.l}" y="0" width="${W - m.l - m.r}" height="${H}" fill="transparent"/></svg>`;
+  const svg = host.firstChild, cg = svg.querySelector('.cross'), cl = cg.querySelector('.cl'), cds = cg.querySelectorAll('.cd');
+  const move = e => {
+    const r = svg.getBoundingClientRect();
+    const i = clamp(Math.round((e.clientX - r.left - m.l) / step), 0, n - 1), d = dates[i];
+    cg.setAttribute('visibility', 'visible'); cl.setAttribute('x1', X(i)); cl.setAttribute('x2', X(i));
+    let rows = '';
+    ser.forEach((s, k) => {
+      const showA = d <= actEnd && d >= s.j.start;
+      cds[k].setAttribute('visibility', showA ? 'visible' : 'hidden');
+      cds[k].setAttribute('cx', X(i)); cds[k].setAttribute('cy', Y(s.act[i]));
+      if (d < s.j.start) { rows += tr(s.c, esc(s.j.grant), 'not started'); return; }
+      const t = s.tgt[i] || 0;
+      rows += tr(s.c, esc(s.j.grant) + (showA ? ' entered' : ' target'), showA ? `${fmtH(s.act[i])} h` : `${fmtH(t)} h`);
+      if (showA) { const gp = t - s.act[i]; rows += `<div class="tr"><span style="padding-left:15px">target ${fmtH(t)} h</span><b style="color:${gp > 0.01 ? 'var(--accent-2)' : 'var(--good)'}">${gp > 0.01 ? '−' + fmtH(gp) + ' h' : 'on track'}</b></div>`; }
+    });
+    showTip(`<h5>${fmtDay(d)}${HOL[d] ? ' · ' + esc(HOL[d]) : isWeekend(d) ? ' · weekend' : ''}</h5>${rows}`, e.clientX, e.clientY);
+  };
+  svg.addEventListener('pointermove', move);
+  svg.addEventListener('pointerdown', e => { tipTouch = e.pointerType === 'touch'; move(e); });
+  svg.addEventListener('pointerleave', () => { if (!tipTouch) { cg.setAttribute('visibility', 'hidden'); hideTip(); } });
+}
+
+function roundTop(x, y, w, h, r) {
+  r = Math.min(r, h, w / 2);
+  return `M${x},${y + h}V${y + r}Q${x},${y} ${x + r},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h}Z`;
+}
+let chartSeq = 0;
+function barChart(host, cfg) {
+  if (!host) return;
+  const W = Math.max(280, host.clientWidth), narrow = W < 520, H = narrow ? 220 : 260;
+  const m = { t: 22, r: cfg.cap ? (narrow ? 8 : 12) : 8, b: 26, l: cfg.money ? 46 : 34 };
+  const cats = cfg.cats, n = cats.length, band = (W - m.l - m.r) / n, bw = Math.min(24, band * .62);
+  const totals = cats.map(c => c.segs.reduce((s, x) => s + x.v, 0));
+  const { max: ymax, step: ys } = niceMax(Math.max(cfg.cap ? cfg.cap * 1.08 : 0, ...totals, cfg.floor || 0));
+  const Y = v => H - m.b - (v / ymax) * (H - m.t - m.b);
+  const fv = cfg.money ? money : v => fmtH(v);
+  const id = 'b' + (++chartSeq);
+  let defs = '<defs>' + S.jobs.map((j, k) => `<pattern id="${id}h${k}" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="${colorOf(j)}" fill-opacity=".14"/><rect width="2" height="5" fill="${colorOf(j)}" fill-opacity=".5"/></pattern>`).join('') + '</defs>';
+  let g = '';
+  for (let v = 0; v <= ymax + 1e-9; v += ys) g += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="#EEEEF1"/><text x="${m.l - 8}" y="${Y(v) + 4}" text-anchor="end">${cfg.money ? '$' + (v >= 1000 ? (v / 1000) + 'k' : v) : fmtH(v)}</text>`;
+  let cols = '';
+  const every = band < 34 ? Math.ceil(34 / band) : 1;
+  cats.forEach((c, i) => {
+    const x = m.l + band * i + band / 2 - bw / 2;
+    let y = Y(0), parts = '';
+    const segs = c.segs.filter(s => s.v > 0);
+    segs.forEach((s, k) => {
+      const h = Y(0) - Y(s.v), top = k === segs.length - 1;
+      const gapPx = k > 0 ? 2 : 0, hh = Math.max(0, h - gapPx), yy = y - gapPx - hh;
+      const fill = s.ghost ? `url(#${id}h${S.jobs.findIndex(j => j.id === s.job)})` : s.color;
+      parts += top ? `<path d="${roundTop(x, yy, bw, hh, 4)}" fill="${fill}"/>` : `<rect x="${x}" y="${yy}" width="${bw}" height="${hh}" fill="${fill}"/>`;
+      y = yy;
+    });
+    const real = c.segs.filter(s => !s.ghost).reduce((a, s) => a + s.v, 0), tot = totals[i];
+    if (!narrow || band >= 30) {
+      if (real > 0) parts += `<text x="${x + bw / 2}" y="${y - 6}" text-anchor="middle" class="vlab">${cfg.money ? money(real).replace('.00', '') : fmtH(real)}</text>`;
+      else if (tot > 0) parts += `<text x="${x + bw / 2}" y="${y - 6}" text-anchor="middle">~${cfg.money ? money(tot) : fmtH(tot)}</text>`;
+    }
+    if (i % every === 0) parts += `<text x="${x + bw / 2}" y="${H - 7}" text-anchor="middle"${c.now ? ' class="vlab"' : ''}>${esc(c.label)}</text>`;
+    cols += `<g class="col" data-i="${i}">${parts}<rect class="hitc" x="${m.l + band * i}" y="${m.t}" width="${band}" height="${H - m.t - m.b}" fill="transparent"/></g>`;
+  });
+  if (cfg.cap) g += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(cfg.cap)}" y2="${Y(cfg.cap)}" stroke="#1D1D1F" stroke-width="1.5"/><text x="${W - m.r}" y="${Y(cfg.cap) - 6}" text-anchor="end" class="vlab">${cfg.cap} h limit</text>`;
+  host.innerHTML = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(cfg.label)}">${defs}${g}${cols}</svg>`;
+  const svg = host.firstChild;
+  const on = e => {
+    const col = e.target.closest('.col'); if (!col) return;
+    svg.classList.add('hovering'); $$('.col', svg).forEach(c => c.classList.toggle('hl', c === col));
+    showTip(cats[+col.dataset.i].tip, e.clientX, e.clientY);
+  };
+  svg.addEventListener('pointermove', on);
+  svg.addEventListener('pointerdown', e => { tipTouch = e.pointerType === 'touch'; on(e); });
+  svg.addEventListener('pointerleave', () => { if (!tipTouch) { svg.classList.remove('hovering'); hideTip(); } });
+}
+function weekChart(host) {
+  const cats = [];
+  for (let w = weekKey(D.span.start); w <= D.span.end; w = addDays(w, 7)) {
+    const segs = [];
+    S.jobs.forEach(j => segs.push({ v: D.byWeek[w]?.[j.id] || 0, color: colorOf(j), job: j.id }));
+    S.jobs.forEach(j => segs.push({ v: plannedWeek(w, j.id), color: colorOf(j), job: j.id, ghost: true }));
+    const used = D.byWeek[w]?.total || 0, pl = plannedWeek(w);
+    let tgt = 0; for (let i = 0; i < 7; i++) tgt += D.base.days[addDays(w, i)]?.total || 0;
+    const tip = `<h5>Week of ${fmtRange(w, addDays(w, 6))}</h5>` +
+      S.jobs.map(j => tr(colorOf(j), esc(j.grant) + ' entered', fmtH(D.byWeek[w]?.[j.id] || 0) + ' h')).join('') +
+      (pl ? S.jobs.map(j => { const p = plannedWeek(w, j.id); return p ? tr(colorOf(j), esc(j.grant) + ' planned', '~' + fmtH(p) + ' h') : ''; }).join('') : '') +
+      `<hr>${tr('transparent', 'Total', fmtH(used + pl) + ' / ' + cap() + ' h')}${tr('transparent', 'Target', fmtH(tgt) + ' h')}${tr('transparent', 'Earned', money(S.jobs.reduce((s, j) => s + (D.byWeek[w]?.[j.id] || 0) * j.rate, 0)))}`;
+    cats.push({ label: fmtShort(w), segs, tip, now: w === weekKey(D.T) });
+  }
+  barChart(host, { cats, cap: cap(), label: 'Weekly hours by position against the weekly limit' });
+}
+function payChart(host) {
+  const cats = periods().map(p => {
+    const segs = [];
+    S.jobs.forEach(j => segs.push({ v: p.h[j.id] * j.rate, color: colorOf(j), job: j.id }));
+    S.jobs.forEach(j => segs.push({ v: p.ph[j.id] * j.rate, color: colorOf(j), job: j.id, ghost: true }));
+    const tip = `<h5>Pay period ${p.i} · ${fmtRange(p.start, p.end)}</h5>` +
+      S.jobs.map(j => tr(colorOf(j), `${esc(j.grant)} · ${fmtH(p.h[j.id])} h`, money(p.h[j.id] * j.rate))).join('') +
+      (p.pgross ? `${tr('transparent', 'Planned (not worked yet)', '~' + money(p.pgross))}` : '') +
+      `<hr>${tr('transparent', 'Gross entered', money(p.gross))}${tr('transparent', 'Target', money(p.tgross))}${tr('transparent', 'Payday', fmtDay(p.payday))}`;
+    return { label: 'P' + p.i, segs, tip, now: p.status === 'current' };
+  });
+  barChart(host, { cats, money: true, label: 'Gross pay per pay period' });
+}
+
+/* =====================================================================
+   Entry form (shared by Log tab and sheets)
+   ===================================================================== */
+function defaultDate(jid) {
+  const j = jobById(jid) || S.jobs[0];
+  let d = minD(D.T, j.end);
+  for (let i = 0; i < 14 && d >= j.start; i++, d = addDays(d, -1)) if (isWorkday(d)) return d;
+  return j.start > D.T ? j.start : minD(D.T, j.end);
+}
+function formHTML(v) {
+  const j = jobById(v.job) || S.jobs[0];
+  return `<form class="entry-form" data-id="${v.id || ''}" novalidate>
+    <div class="seg" role="radiogroup" aria-label="Position">${S.jobs.map(x => `<button type="button" role="radio" data-job="${x.id}" aria-checked="${x.id === j.id}" class="${x.id === j.id ? 'on' : ''}"><span class="dot" style="--c:${colorOf(x)}"></span>${esc(x.grant)}</button>`).join('')}</div>
+    <label class="field"><span>Date</span><input type="date" name="date" value="${v.date || ''}" min="${j.start}" max="${j.end}"></label>
+    <div class="field"><span>Hours</span>
+      <div class="stepper"><button type="button" data-step="-0.25" aria-label="Decrease">−</button><input name="hours" type="number" inputmode="decimal" step="0.25" min="0.25" max="24" value="${v.hours || ''}" placeholder="0"><button type="button" data-step="0.25" aria-label="Increase">+</button></div>
+      <div class="chips">${[1, 2, 3, 4, 5, 6, 7].map(h => `<button type="button" class="chip" data-quick="${h}">${h} h</button>`).join('')}</div>
+      <details class="range"><summary>Use start &amp; end time</summary><div class="range-row"><input type="time" name="from" aria-label="Start time"><span>to</span><input type="time" name="to" aria-label="End time"></div></details>
+    </div>
+    <label class="field"><span>Note <em>optional</em></span><input name="note" type="text" maxlength="140" value="${esc(v.note || '')}" placeholder="What did you work on?"></label>
+    <p class="hint" aria-live="polite"></p>
+    <div class="form-actions">${v.id ? `<button type="button" class="btn danger" data-del>Delete</button>` : ''}<button class="btn primary" type="submit">${v.id ? 'Save changes' : 'Log hours'}</button></div>
+  </form>`;
+}
+function bindForm(form, after) {
+  const F = form.elements;
+  let job = form.querySelector('[data-job].on').dataset.job;
+  const read = () => ({ id: form.dataset.id || null, job, date: F.date.value, hours: roundQ(parseFloat(F.hours.value)), note: F.note.value.trim() });
+  const hint = form.querySelector('.hint');
+  const upd = () => {
+    const v = read();
+    let err = validate(v);
+    if (!(v.hours > 0) && err === 'Enter the hours you worked.') err = null;
+    const j = jobById(job);
+    if (err) { hint.className = 'hint err'; hint.innerHTML = IC.warn + `<span>${esc(err)}</span>`; }
+    else if (v.date && v.hours > 0) {
+      const wk = weekKey(v.date), used = S.entries.filter(e => e.id !== v.id && weekKey(e.date) === wk).reduce((s, e) => s + e.hours, 0);
+      hint.className = 'hint ok'; hint.innerHTML = IC.check + `<span>+${money(v.hours * j.rate)} · week of ${fmtShort(wk)} → ${fmtH(used + v.hours)} / ${cap()} h</span>`;
+    } else if (v.date) {
+      const wk = weekKey(v.date), used = S.entries.filter(e => e.id !== v.id && weekKey(e.date) === wk).reduce((s, e) => s + e.hours, 0);
+      const tg = D.base.days[v.date]?.[job];
+      hint.className = 'hint'; hint.innerHTML = IC.info + `<span>${fmtH(Math.max(0, cap() - used))} h left that week${tg ? ` · target for this day ${fmtH(tg)} h` : ''} · ${fmtH(Math.max(0, j.hours - (D.byJob[job] || 0)))} h left on ${esc(j.grant)}</span>`;
+    } else { hint.className = 'hint'; hint.innerHTML = IC.info + '<span>Pick a weekday inside the contract dates.</span>'; }
+    if (!form.dataset.id) formMem = { job, date: v.date };
+  };
+  form.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.job) {
+      job = b.dataset.job;
+      form.querySelectorAll('[data-job]').forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-checked', x === b); });
+      const j = jobById(job); F.date.min = j.start; F.date.max = j.end;
+      upd();
+    } else if (b.dataset.step) {
+      F.hours.value = Math.max(0, roundQ((parseFloat(F.hours.value) || 0) + parseFloat(b.dataset.step))) || ''; upd();
+    } else if (b.dataset.quick) {
+      F.hours.value = b.dataset.quick; upd();
+    } else if (b.hasAttribute('data-del')) {
+      if (confirm('Delete this entry?')) { S.entries = S.entries.filter(x => x.id !== form.dataset.id); save(); renderAll(); closeSheet(); toast('Entry deleted'); }
+    }
+  });
+  form.addEventListener('input', e => {
+    if (e.target === F.from || e.target === F.to) {
+      const a = F.from.value, b = F.to.value;
+      if (a && b) { const [h1, m1] = a.split(':').map(Number), [h2, m2] = b.split(':').map(Number); const h = roundQ((h2 * 60 + m2 - h1 * 60 - m1) / 60); if (h > 0) F.hours.value = h; }
+    }
+    upd();
+  });
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const v = read(), err = validate(v);
+    if (err) { hint.className = 'hint err'; hint.innerHTML = IC.warn + `<span>${esc(err)}</span>`; hint.classList.remove('shake'); void hint.offsetWidth; hint.classList.add('shake'); return; }
+    const j = jobById(v.job);
+    if (v.id) { const x = S.entries.find(z => z.id === v.id); Object.assign(x, { job: v.job, date: v.date, hours: v.hours, note: v.note }); }
+    else S.entries.push({ id: uid(), job: v.job, date: v.date, hours: v.hours, note: v.note, created: Date.now() });
+    S.lastJob = v.job; save();
+    toast(v.id ? 'Entry updated' : `Logged ${fmtH(v.hours)} h · +${money(v.hours * j.rate)}`);
+    after && after(v);
+    renderAll();
+  });
+  upd();
+}
+
+/* =====================================================================
+   Log view
+   ===================================================================== */
+function renderLog() {
+  const job = formMem.job && jobById(formMem.job) ? formMem.job : (jobById(S.lastJob) ? S.lastJob : S.jobs[0].id);
+  const date = formMem.date || defaultDate(job);
+  const t = S.timer;
+  const timerCard = t ? `
+    <div class="card">
+      <div class="card-head" style="margin-bottom:0"><h3><span class="pulse"></span>Timer running</h3><span class="tagc" style="--c:${colorOf(jobById(t.job))}"><i class="dot" style="--c:${colorOf(jobById(t.job))}"></i>${esc(jobById(t.job)?.grant)}</span></div>
+      <div class="timer-face" id="timer-face">0:00:00</div>
+      <p class="timer-sub">Started ${new Date(t.start).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })} · rounds to the nearest 15 min</p>
+      <div class="timer-run"><button class="btn plain" data-act="timer-discard">Discard</button><button class="btn primary" data-act="timer-stop">${IC.stop} Stop &amp; log</button></div>
+    </div>` : `
+    <div class="card">
+      <div class="card-head" style="margin-bottom:10px"><div><h3>Timer</h3><p class="sub">Start it when you sit down to work</p></div></div>
+      <div class="timer-run">${S.jobs.map(j => `<button class="btn tint" data-act="timer-start" data-job="${j.id}"><span class="dot" style="--c:${colorOf(j)}"></span>Start ${esc(j.grant)}</button>`).join('')}</div>
+    </div>`;
+
+  const miss = unloggedDays();
+  const shown = missOpen ? miss : miss.slice(0, 5);
+  const missCard = miss.length ? `
+    <div class="card">
+      <div class="card-head" style="margin-bottom:8px"><div><h3>Catch up</h3><p class="sub">${miss.length} past work day${miss.length > 1 ? 's have' : ' has'} no hours. Tap one to fill it in.</p></div><span class="pill accent">${money(gap().usd)} unlogged</span></div>
+      <div class="elist">${shown.map(d => {
+        const tg = D.base.days[d] || {};
+        return `<div class="miss-row"><div><b>${fmtDay(d)}</b><small>Target ${S.jobs.filter(j => tg[j.id]).map(j => `${esc(j.grant)} ${fmtH(tg[j.id])} h`).join(' · ') || '—'}</small></div><span class="usd">${money(S.jobs.reduce((s, j) => s + (tg[j.id] || 0) * j.rate, 0))}</span><button class="btn sm tint" data-day="${d}">${IC.plus}Add</button></div>`;
+      }).join('')}</div>
+      ${miss.length > 5 ? `<button class="more" data-act="miss-more">${missOpen ? 'Show fewer' : `Show all ${miss.length}`}</button>` : ''}
+    </div>` : '';
+
+  const list = S.entries.filter(e => jobById(e.job) && (logFilter === 'all' || e.job === logFilter))
+    .sort((a, b) => b.date.localeCompare(a.date) || (b.created || 0) - (a.created || 0));
+  const groups = {};
+  list.forEach(e => (groups[weekKey(e.date)] ||= []).push(e));
+  const listHTML = list.length ? Object.keys(groups).sort().reverse().map(w => {
+    const used = D.byWeek[w]?.total || 0;
+    return `<div class="wgroup"><div class="wgroup-h"><span>${fmtRange(w, addDays(w, 6))}</span><span style="display:flex;gap:10px;align-items:center">${fmtH(used)} / ${cap()} h<span class="meter">${S.jobs.map(j => { const h = D.byWeek[w]?.[j.id] || 0; return h ? `<i style="--c:${colorOf(j)};width:${h / cap() * 100}%"></i>` : ''; }).join('')}</span></span></div>
+      <div class="elist">${groups[w].map(entryRow).join('')}</div></div>`;
+  }).join('') : `<div class="empty">${IC.log}<p>No entries yet.<br>Log your first hours on the left.</p></div>`;
+
+  $('#v-log').innerHTML = `
+    <div class="head"><div><p class="eyebrow">${fmtH(Object.values(D.byJob).reduce((a, b) => a + b, 0))} h · ${money(S.jobs.reduce((s, j) => s + (D.byJob[j.id] || 0) * j.rate, 0))} entered</p><h1>Log hours</h1></div></div>
+    <div class="log-grid">
+      <div class="stack">
+        ${timerCard}
+        <div class="card"><div class="card-head" style="margin-bottom:12px"><h3>New entry</h3></div><div id="main-form">${formHTML({ job, date })}</div></div>
+      </div>
+      <div class="stack">
+        ${missCard}
+        <div class="card">
+          <div class="card-head" style="margin-bottom:4px"><h3>Entries</h3>
+            <div class="seg" style="margin:0;min-width:210px">${[['all', 'All'], ...S.jobs.map(j => [j.id, j.grant])].map(([k, l]) => `<button data-filter="${k}" class="${logFilter === k ? 'on' : ''}">${esc(l)}</button>`).join('')}</div>
+          </div>
+          ${listHTML}
+        </div>
+      </div>
+    </div>`;
+  bindForm($('#main-form form'), v => { formMem = { job: v.job, date: v.date }; });
+  tickTimer();
+}
+function entryRow(e) {
+  const j = jobById(e.job);
+  return `<button class="erow" data-edit="${e.id}" style="--c:${colorOf(j)}"><span class="ebar"></span><span class="emain"><b>${fmtDay(e.date)}</b><small>${esc(j.grant)}${e.bulk ? ' · period total' : ''}${e.note ? ' · ' + esc(e.note) : ''}</small></span><span class="eright"><b>${fmtH(e.hours)} h</b><small>+${money(e.hours * j.rate)}</small></span></button>`;
+}
+function tickTimer() {
+  const f = $('#timer-face'); if (!f || !S.timer) return;
+  const s = Math.max(0, Math.floor((Date.now() - S.timer.start) / 1000));
+  f.textContent = `${Math.floor(s / 3600)}:${pad2(Math.floor(s / 60) % 60)}:${pad2(s % 60)}`;
+}
+setInterval(tickTimer, 1000);
+
+/* =====================================================================
+   Calendar view
+   ===================================================================== */
+function dayInfo(d) {
+  if (isWeekend(d)) return { k: 'neutral', t: 'Weekend — no RA work allowed', i: 'info' };
+  if (HOL[d]) return { k: 'bad', t: `${HOL[d]} — stat holiday, no work`, i: 'warn' };
+  const js = S.jobs.filter(j => inJob(j, d));
+  if (!js.length) return { k: 'neutral', t: 'Outside both contract periods', i: 'info' };
+  return { k: 'good', t: 'Work day · ' + js.map(j => j.grant).join(' & '), i: 'check', jobs: js };
+}
+function renderCalendar() {
+  const months = []; for (let m = D.span.start.slice(0, 7); m <= D.span.end.slice(0, 7);) { months.push(m); const [y, mo] = m.split('-').map(Number); m = mo === 12 ? `${y + 1}-01` : `${y}-${pad2(mo + 1)}`; }
+  if (!calMonth || !months.includes(calMonth)) calMonth = months.includes(D.T.slice(0, 7)) ? D.T.slice(0, 7) : months[0];
+  const mi = months.indexOf(calMonth);
+  const [y, mo] = calMonth.split('-').map(Number);
+  const first = `${calMonth}-01`, lead = (dow(first) + 6) % 7, dim = new Date(y, mo, 0).getDate(), last = `${calMonth}-${pad2(dim)}`;
+  let cells = '';
+  for (let i = 0; i < lead; i++) cells += '<div class="cell blank"></div>';
+  let mH = 0, mUSD = 0, mWork = 0, mMissing = 0;
+  for (let k = 1; k <= dim; k++) {
+    const d = `${calMonth}-${pad2(k)}`, b = D.byDate[d], p = d >= D.T ? D.plan.days[d] : null;
+    const wk = isWeekend(d), hol = HOL[d], out = !S.jobs.some(j => inJob(j, d));
+    const work = !wk && !hol && !out;
+    if (work) mWork++;
+    const missing = work && d < D.T && !b;
+    if (missing) mMissing++;
+    if (b) { mH += b.total; mUSD += S.jobs.reduce((s, j) => s + (b[j.id] || 0) * j.rate, 0); }
+    const lt = b?.total || 0, pt = p?.total || 0, tt = lt + pt;
+    const bars = tt ? `<span class="cb" style="width:${Math.min(100, tt / dcap() * 100)}%">${S.jobs.map(j => (b?.[j.id] ? `<i style="--c:${colorOf(j)};flex:${b[j.id]}"></i>` : '') + (p?.[j.id] ? `<i class="ghost" style="--c:${colorOf(j)};flex:${p[j.id]}"></i>` : '')).join('')}</span>` : '';
+    const cls = ['cell', wk && 'wkend', hol && 'hol', out && !wk && 'out', d === D.T && 'today', missing && 'miss'].filter(Boolean).join(' ');
+    const label = `${fmtLong(d)}${hol ? ', ' + hol : ''}${lt ? `, ${fmtH(lt)} hours logged` : ''}${pt ? `, ${fmtH(pt)} planned` : ''}${missing ? ', nothing logged' : ''}`;
+    cells += `<button class="${cls}" data-day="${d}" aria-label="${esc(label)}"><span class="n">${k}</span>${hol ? `<span class="tg">${innerWidth < 760 ? 'Stat' : esc(hol)}</span>` : ''}${bars}${lt ? `<span class="hv">${fmtH(lt)}h</span>` : pt ? `<span class="hv plan">~${fmtH(pt)}h</span>` : ''}</button>`;
+  }
+  const weeks = [];
+  for (let w = weekKey(first); w <= last; w = addDays(w, 7)) weeks.push(w);
+  $('#v-calendar').innerHTML = `
+    <div class="head"><div><p class="eyebrow">Weekends &amp; stat holidays blocked</p><h1>Calendar</h1></div></div>
+    <div class="stack">
+      <div class="card">
+        <div class="card-head">
+          <div class="cal-nav"><button class="icon-btn" data-cal="-1" ${mi <= 0 ? 'disabled style="opacity:.3"' : ''} aria-label="Previous month">${IC.left}</button><h3>${pd(first).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</h3><button class="icon-btn" data-cal="1" ${mi >= months.length - 1 ? 'disabled style="opacity:.3"' : ''} aria-label="Next month">${IC.right}</button></div>
+          <div class="legend">${S.jobs.map(j => `<span><i class="sw" style="--c:${colorOf(j)}"></i>${esc(j.grant)}</span>`).join('')}<span><i class="sw ghost" style="--c:var(--ink2)"></i>Suggested</span><span><i class="dot" style="--c:var(--accent)"></i>Nothing logged</span></div>
+        </div>
+        <div class="cal-dow">${['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(x => `<span>${innerWidth < 760 ? x[0] : x}</span>`).join('')}</div>
+        <div class="cal">${cells}</div>
+        <p class="sub" style="margin-top:14px">${fmtH(mH)} h · ${money(mUSD)} entered this month · ${mWork} work days${mMissing ? ` · <b style="color:var(--accent-2)">${mMissing} empty</b>` : ''}</p>
+      </div>
+      <div class="card">
+        <div class="card-head" style="margin-bottom:4px"><h3>Weeks</h3><p class="sub">Entered + suggested vs. the ${cap()} h limit</p></div>
+        ${weeks.map(w => {
+          const used = D.byWeek[w]?.total || 0, pl = plannedWeek(w);
+          let tg = 0; for (let i = 0; i < 7; i++) tg += D.base.days[addDays(w, i)]?.total || 0;
+          return `<div class="wsum"><span>${fmtRange(w, addDays(w, 6))}</span><span class="meter">${S.jobs.map(j => { const h = D.byWeek[w]?.[j.id] || 0; return h ? `<i style="--c:${colorOf(j)};width:${h / cap() * 100}%"></i>` : ''; }).join('')}${S.jobs.map(j => { const h = plannedWeek(w, j.id); return h ? `<i class="ghost" style="--c:${colorOf(j)};width:${h / cap() * 100}%"></i>` : ''; }).join('')}</span><span class="r">${fmtH(used)}${pl ? ` +${fmtH(pl)}` : ''} / ${cap()} h<small>target ${fmtH(tg)} h</small></span></div>`;
+        }).join('')}
+      </div>
+    </div>`;
+}
+function openDay(d) {
+  const info = dayInfo(d), es = S.entries.filter(e => e.date === d && jobById(e.job));
+  const p = D.plan.days[d], wk = weekKey(d), used = D.byWeek[wk]?.total || 0;
+  const tgtBy = expBy(d), logBy_ = logBy(d), g = tgtBy - logBy_;
+  const usdGap = S.jobs.reduce((s, j) => s + Math.max(0, expBy(d, j.id) - logBy(d, j.id)) * j.rate, 0);
+  const dayT = D.base.days[d];
+  let job = info.jobs ? (info.jobs.find(j => j.id === S.lastJob) || info.jobs[0]).id : null;
+  // if this day's target is for one job only, prefill with it
+  let hours = '';
+  if (info.jobs && !es.length && dayT) {
+    const firstMissing = info.jobs.find(j => dayT[j.id]);
+    if (firstMissing) { job = firstMissing.id; if (d < D.T) hours = dayT[job]; }
+  }
+  const html = `
+    <p class="eyebrow">${fmt(d, { weekday: 'long' })}</p>
+    <h2>${fmt(d, { month: 'long', day: 'numeric', year: 'numeric' })}</h2>
+    <span class="pill ${info.k} daystat">${IC[info.i]}${esc(info.t)}</span>
+    ${d >= D.span.start ? `<div class="expbox">
+      <div><small>Target by this day</small><b>${fmtH(tgtBy)} h</b></div>
+      <div><small>Entered by then</small><b>${fmtH(logBy_)} h</b></div>
+      <div class="${g > 0.01 ? 'hl' : ''}"><small>${g > 0.01 ? (d >= D.T ? 'Still to log' : 'Missing') : 'Ahead'}</small><b>${g > 0.01 ? fmtH(g) + ' h · ' + money(usdGap) : fmtH(-g) + ' h'}</b></div>
+    </div>` : ''}
+    <p class="sub" style="margin:8px 0 2px">Week of ${fmtShort(wk)}: ${fmtH(used)} / ${cap()} h used${dayT ? ` · target this day: ${S.jobs.filter(j => dayT[j.id]).map(j => `${esc(j.grant)} ${fmtH(dayT[j.id])} h`).join(', ')}` : ''}${p && d >= D.T ? ` · suggested: ${S.jobs.filter(j => p[j.id]).map(j => `${esc(j.grant)} ${fmtH(p[j.id])} h`).join(', ')}` : ''}</p>
+    ${es.length ? `<h4>Entries</h4><div class="elist">${es.map(entryRow).join('')}</div>` : ''}
+    ${info.jobs ? `<h4>${es.length ? 'Add more' : 'Add hours'}</h4>${formHTML({ job, date: d, hours })}` : ''}`;
+  openSheet(html, body => { const f = body.querySelector('form'); if (f) bindForm(f, () => closeSheet()); });
+}
+function openEdit(id) {
+  const e = S.entries.find(x => x.id === id); if (!e) return;
+  openSheet(`<p class="eyebrow">Edit entry</p><h2>${fmtDay(e.date)}</h2>${e.bulk ? `<p class="sub" style="margin-bottom:10px">Created from a pay-period total.</p>` : ''}${formHTML(e)}`,
+    body => bindForm(body.querySelector('form'), () => closeSheet()));
+}
+function openQuick() {
+  const job = jobById(S.lastJob) ? S.lastJob : S.jobs[0].id;
+  openSheet(`<p class="eyebrow">Quick log</p><h2>Log hours</h2>${formHTML({ job, date: defaultDate(job) })}`,
+    body => bindForm(body.querySelector('form'), () => closeSheet()));
+}
+
+/* =====================================================================
+   Pay view
+   ===================================================================== */
+const PSTAT = { upcoming: ['neutral', 'Upcoming'], current: ['accent', 'In progress'], processing: ['warn', 'Processing'], today: ['good', 'Payday today'], paid: ['neutral', 'Payday passed'] };
+function renderPay() {
+  const P = periods();
+  const earned = S.jobs.reduce((s, j) => s + (D.byJob[j.id] || 0) * j.rate, 0);
+  const planned = P.reduce((s, p) => s + p.pgross, 0);
+  const received = Object.values(S.pay).reduce((s, r) => s + (r.got && +r.net ? +r.net : 0), 0);
+  const gotN = P.filter(p => p.rec.got).length;
+  const budget = S.jobs.reduce((s, j) => s + j.hours * j.rate, 0);
+  const G = gap();
+  $('#v-pay').innerHTML = `
+    <div class="head"><div><p class="eyebrow">Bi-weekly · gross before deductions</p><h1>Pay</h1></div></div>
+    <div class="stack">
+      <div class="g4">
+        <div class="card kpi"><p class="lbl">${IC.cash}Entered so far</p><p class="val">${money(earned)}</p><p class="foot">${fmtH(Object.values(D.byJob).reduce((a, b) => a + b, 0))} h × ${money(S.jobs[0].rate)}</p></div>
+        <div class="card kpi"><p class="lbl">${IC.warn}Not logged yet</p><p class="val" style="color:${G.usd > 0.01 ? 'var(--accent-2)' : 'inherit'}">${money(G.usd)}</p><p class="foot">${fmtH(G.miss)} h behind your target</p></div>
+        <div class="card kpi"><p class="lbl">${IC.check}Received</p><p class="val">${money(received)}</p><p class="foot">${gotN} deposit${gotN === 1 ? '' : 's'} marked · net</p></div>
+        <div class="card kpi"><p class="lbl">${IC.flag}Contract total</p><p class="val">${money(budget)}</p><p class="foot">${money(Math.max(0, budget - earned))} left · ~${money(planned)} planned</p></div>
+      </div>
+      <div class="card">
+        <div class="card-head" style="margin-bottom:12px"><div><h3>Pay schedule</h3><p class="sub">Enter the start date of any bi-weekly pay period — the rest line up automatically.</p></div></div>
+        <div class="sched">
+          <label class="field"><span>A pay period starts on</span><input type="date" data-s="payAnchor" value="${esc(S.settings.payAnchor)}"></label>
+          <label class="field"><span>Payday · days after period ends</span><input type="number" min="0" max="30" data-s="paydayOffset" value="${esc(S.settings.paydayOffset)}"></label>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>Gross pay per period</h3><p class="sub">Hatched = suggested hours you haven’t worked yet</p></div>
+          <div class="legend">${S.jobs.map(j => `<span><i class="sw" style="--c:${colorOf(j)}"></i>${esc(j.grant)}</span>`).join('')}<span><i class="sw ghost" style="--c:var(--ink2)"></i>Planned</span></div></div>
+        <div id="c-pay" class="chart"></div>
+      </div>
+      <div class="card">
+        <div class="card-head" style="margin-bottom:0"><div><h3>Pay periods</h3><p class="sub">Lazy mode: tap <b>Enter period hours</b> and type one total per position — it’s spread over the work days for you.</p></div></div>
+        ${P.map(p => {
+          const [k, l] = p.status === 'paid' && p.rec.got ? ['good', 'Received'] : PSTAT[p.status];
+          const hrs = S.jobs.reduce((s, j) => s + p.h[j.id], 0), th = S.jobs.reduce((s, j) => s + p.th[j.id], 0);
+          const pmiss = p.end < D.T || p.status === 'current' ? Math.max(0, S.jobs.reduce((s, j) => s + (Math.min(expBy(minD(p.end, D.Y), j.id) - expBy(addDays(p.start, -1), j.id), p.th[j.id]) - p.h[j.id]) * j.rate, 0)) : 0;
+          return `<div class="period ${p.status === 'current' ? 'cur' : ''}">
+            <div><b class="t">Period ${p.i}</b><small>${fmtRange(p.start, p.end)} · payday ${fmtDay(p.payday)}</small><div style="margin-top:6px"><span class="pill ${k}">${esc(l)}</span>${p.rec.sub ? ' <span class="pill good">' + IC.check + 'Timesheet in</span>' : ''}</div></div>
+            <div class="hrs">${S.jobs.map(j => `<span><i class="dot" style="--c:${colorOf(j)}"></i>${esc(j.grant)} <b>${fmtH(p.h[j.id])} h</b>${p.ph[j.id] ? `<small>+~${fmtH(p.ph[j.id])} planned</small>` : ''}</span>`).join('')}<small>Target ${fmtH(th)} h${pmiss > 0.01 ? ` · <b style="color:var(--accent-2)">${money(pmiss)} not logged</b>` : ''}</small></div>
+            <div class="amt"><b>${money(p.gross)}</b><small>${hrs ? fmtH(hrs) + ' h entered' : 'nothing entered'}${p.pgross ? ` · ~${money(p.gross + p.pgross)} projected` : ''}</small></div>
+            <div class="p-actions">
+              <button class="btn sm tint" data-period="${p.start}">${IC.plus}Enter period hours</button>
+              <label class="tg2">Timesheet submitted <span class="switch"><input type="checkbox" data-sub="${p.start}" ${p.rec.sub ? 'checked' : ''}><i></i></span></label>
+              ${p.payday <= D.T ? `<label class="tg2">Received <span class="switch"><input type="checkbox" data-got="${p.start}" ${p.rec.got ? 'checked' : ''}><i></i></span></label>
+              <input class="net" type="number" inputmode="decimal" placeholder="Net $" data-net="${p.start}" value="${p.rec.net ?? ''}" aria-label="Net amount received">` : ''}
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+}
+function openPeriod(start) {
+  const p = periods().find(x => x.start === start); if (!p) return;
+  const html = `<p class="eyebrow">Period ${p.i} · payday ${fmtDay(p.payday)}</p><h2>${fmtRange(p.start, p.end)}</h2>
+    <p class="sub" style="margin-bottom:14px">Type the total hours you worked (or submitted on your timesheet) in this period. They’re spread evenly across the allowed work days — skipping weekends &amp; stat holidays and staying under ${cap()} h/week. Any existing entries for that position in this period are replaced.</p>
+    <form id="pform" novalidate>
+      ${S.jobs.map(j => {
+        const days = []; for (let d = p.start; d <= p.end; d = addDays(d, 1)) if (isWorkday(d) && inJob(j, d)) days.push(d);
+        return `<label class="field"><span><i class="dot" style="--c:${colorOf(j)};display:inline-block;margin-right:6px"></i>${esc(j.grant)} · ${days.length} work day${days.length === 1 ? '' : 's'} · target ${fmtH(p.th[j.id])} h</span>
+          <input type="number" inputmode="decimal" step="0.25" min="0" name="${j.id}" value="${p.h[j.id] ? r2(p.h[j.id]) : ''}" placeholder="${days.length ? 'Total hours' : 'Not active this period'}" ${days.length ? '' : 'disabled'}></label>`;
+      }).join('')}
+      <p class="hint" id="phint">${IC.info}<span>Leave a box empty to keep that position unchanged.</span></p>
+      <div class="form-actions"><button type="submit" class="btn primary">Save period hours</button></div>
+    </form>`;
+  openSheet(html, body => {
+    const f = body.querySelector('#pform'), hint = body.querySelector('#phint');
+    const calc = () => {
+      let usd = 0; S.jobs.forEach(j => { const v = parseFloat(f.elements[j.id].value); if (v > 0) usd += v * j.rate; });
+      if (usd) { hint.className = 'hint ok'; hint.innerHTML = IC.check + `<span>${money(usd)} gross for this period</span>`; }
+    };
+    f.addEventListener('input', calc);
+    f.addEventListener('submit', e => {
+      e.preventDefault();
+      let entries = S.entries.slice(), changed = 0;
+      for (const j of S.jobs) {
+        const raw = f.elements[j.id].value; if (raw === '' || f.elements[j.id].disabled) continue;
+        const total = roundQ(parseFloat(raw)); if (!(total >= 0)) continue;
+        const res = spread(entries, p, j, total);
+        if (res.err) { hint.className = 'hint err'; hint.innerHTML = IC.warn + `<span>${esc(res.err)}</span>`; return; }
+        entries = res.entries; changed++;
+      }
+      if (!changed) { closeSheet(); return; }
+      S.entries = entries; save(); renderAll(); closeSheet(); toast('Period hours saved');
+    });
+  });
+}
+function spread(entries, p, j, total) {
+  const others = entries.filter(e => !(e.job === j.id && e.date >= p.start && e.date <= p.end));
+  const used = others.filter(e => e.job === j.id).reduce((s, e) => s + e.hours, 0);
+  if (used + total > j.hours + 1e-9) return { err: `${j.grant}: only ${fmtH(Math.max(0, j.hours - used))} h left on the contract outside this period.` };
+  if (total === 0) return { entries: others };
+  const days = []; for (let d = p.start; d <= p.end; d = addDays(d, 1)) if (isWorkday(d) && inJob(j, d)) days.push(d);
+  const fill = pool => {
+    const wu = {}, du = {}; others.forEach(e => { const w = weekKey(e.date); wu[w] = (wu[w] || 0) + e.hours; du[e.date] = (du[e.date] || 0) + e.hours; });
+    const alloc = {}; let left = total, moved = true;
+    while (left > 1e-9 && moved) {
+      moved = false;
+      for (const d of pool) {
+        if (left <= 1e-9) break;
+        const w = weekKey(d), st = Math.min(0.25, left);
+        if ((wu[w] || 0) + st <= cap() + 1e-9 && (du[d] || 0) + (alloc[d] || 0) + st <= 24) { alloc[d] = (alloc[d] || 0) + st; wu[w] = (wu[w] || 0) + st; left -= st; moved = true; }
+      }
+    }
+    return { alloc, left };
+  };
+  const past = days.filter(d => d <= D.T);
+  let res = past.length ? fill(past) : { left: total };
+  if (res.left > 1e-9) res = fill(days);
+  if (res.left > 1e-9) return { err: `${j.grant}: ${fmtH(total)} h doesn’t fit in this period under the ${cap()} h/week limit (max about ${fmtH(total - res.left)} h).` };
+  const now = Date.now();
+  const add = Object.entries(res.alloc).map(([d, h]) => ({ id: uid(), job: j.id, date: d, hours: r2(h), note: '', bulk: true, created: now }));
+  return { entries: others.concat(add) };
+}
+
+/* =====================================================================
+   Settings
+   ===================================================================== */
+function renderSettings() {
+  const s = S.settings;
+  $('#v-settings').innerHTML = `
+    <div class="head"><div><p class="eyebrow">${user ? 'Synced with Supabase' : 'Stored only in this browser'}</p><h1>Settings</h1></div></div>
+    <div style="max-width:720px">
+      <p class="group-title">Cloud sync · Supabase</p>
+      <div class="glist">
+        ${user ? `
+        <div class="gitem"><div class="gl">Signed in<small>${esc(user.email)}</small></div><span class="pill good">${IC.check}Connected</span></div>
+        <div class="gitem"><div class="gl">Status<small id="acct-status">${STATUS_TXT[status]}</small></div><button class="btn sm plain" data-act="syncnow">Sync now</button></div>
+        <div class="gitem"><div class="gl">Sign out<small>Your data stays in Supabase; this device’s copy is removed</small></div><button class="btn sm danger" data-act="signout">Sign out</button></div>` : `
+        <div class="gitem"><div class="gl">Not signed in<small>Entries are only on this device right now</small></div><button class="btn sm primary" data-act="signin">Sign in</button></div>`}
+      </div>
+      <p class="gnote">Your entries live in the <b>ra_tracker</b> schema of your Supabase project. Only your login can read them; a copy stays on this device for speed and offline use.</p>
+      ${S.jobs.map(j => `
+        <p class="group-title" style="display:flex;align-items:center;gap:8px"><i class="dot" style="--c:${colorOf(j)}"></i>${esc(j.grant)} position</p>
+        <div class="glist">
+          <div class="gitem"><label for="j-${j.id}-prof">Professor</label><input id="j-${j.id}-prof" type="text" data-j="${j.id}:prof" value="${esc(j.prof)}"></div>
+          <div class="gitem"><label for="j-${j.id}-grant">Grant name</label><input id="j-${j.id}-grant" type="text" data-j="${j.id}:grant" value="${esc(j.grant)}"></div>
+          <div class="gitem"><label for="j-${j.id}-start">Start date</label><input id="j-${j.id}-start" type="date" data-j="${j.id}:start" value="${j.start}"></div>
+          <div class="gitem"><label for="j-${j.id}-end">End date</label><input id="j-${j.id}-end" type="date" data-j="${j.id}:end" value="${j.end}"></div>
+          <div class="gitem"><label for="j-${j.id}-rate">Hourly rate (CAD)</label><input id="j-${j.id}-rate" type="number" step="0.01" min="0" data-j="${j.id}:rate" value="${j.rate}"></div>
+          <div class="gitem"><div class="gl">Contract hours<small>${money(j.hours * j.rate)} total</small></div><input type="number" step="0.25" min="0" data-j="${j.id}:hours" value="${j.hours}" aria-label="Contract hours"></div>
+        </div>`).join('')}
+      <p class="group-title">Work rules</p>
+      <div class="glist">
+        <div class="gitem"><div class="gl">Weekly limit (both positions)<small>University rule — entries above this are blocked</small></div><input type="number" min="1" max="80" step="0.5" data-s="weeklyCap" value="${s.weeklyCap}" aria-label="Weekly limit"></div>
+        <div class="gitem"><div class="gl">Max hours per day in plans<small>Only used for targets &amp; suggestions</small></div><input type="number" min="1" max="16" step="0.5" data-s="dailyCap" value="${s.dailyCap}" aria-label="Daily max"></div>
+        <div class="gitem"><div class="gl">Weekends<small>Always blocked</small></div><span class="pill neutral">Blocked</span></div>
+      </div>
+      <p class="group-title">Stat holidays (blocked)</p>
+      <div class="glist">
+        ${(s.holidays || []).slice().sort((a, b) => a.date.localeCompare(b.date)).map(h => `
+          <div class="gitem"><div class="gl">${esc(h.name)}<small>${fmtLong(h.date)}</small></div>
+            <button class="x" data-delhol="${h.id}" aria-label="Remove ${esc(h.name)}">${IC.x}</button>
+            <span class="switch"><input type="checkbox" data-hol="${h.id}" ${h.on ? 'checked' : ''} aria-label="Block ${esc(h.name)}"><i></i></span></div>`).join('')}
+        <div class="add-hol"><input type="date" id="hol-date" aria-label="Holiday date"><input type="text" id="hol-name" placeholder="Holiday name" aria-label="Holiday name"><button class="btn sm tint" data-act="addhol">${IC.plus}Add</button></div>
+      </div>
+      <p class="gnote">Stat holidays differ by province — Truth &amp; Reconciliation Day and Remembrance Day aren’t stats everywhere (e.g. Ontario). Turn off any your university doesn’t observe.</p>
+      <p class="group-title">Pay schedule</p>
+      <div class="glist">
+        <div class="gitem"><div class="gl">A pay period starts on<small>Any period’s first day · they repeat every 14 days</small></div><input type="date" data-s="payAnchor" value="${s.payAnchor}" aria-label="Pay period start"></div>
+        <div class="gitem"><div class="gl">Payday<small>Days after the period ends (5 = the Friday after)</small></div><input type="number" min="0" max="30" data-s="paydayOffset" value="${s.paydayOffset}" aria-label="Payday offset"></div>
+      </div>
+      <p class="group-title">Passcode &amp; lock</p>
+      <div class="glist">
+        <div class="gitem"><label for="pin1">New 4-digit passcode</label><input id="pin1" type="password" inputmode="numeric" maxlength="4" pattern="[0-9]*" autocomplete="new-password"></div>
+        <div class="gitem"><label for="pin2">Confirm</label><input id="pin2" type="password" inputmode="numeric" maxlength="4" pattern="[0-9]*" autocomplete="new-password"></div>
+        <div class="gitem"><span class="gl"></span><button class="btn sm tint" data-act="setpin">Change passcode</button></div>
+        <div class="gitem"><label for="autolock">Auto-lock after inactivity</label><select id="autolock" data-s="autoLock">${[[1, '1 minute'], [5, '5 minutes'], [15, '15 minutes'], [30, '30 minutes'], [0, 'Never']].map(([v, l]) => `<option value="${v}" ${+s.autoLock === v ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
+      </div>
+      <p class="gnote">The passcode is a quick privacy screen on this device. The real protection for your data is your Supabase login.</p>
+      <p class="group-title">Backup</p>
+      <div class="glist">
+        <div class="gitem"><div class="gl">Export a backup<small>Download a .json of every entry &amp; setting</small></div><button class="btn sm plain" data-act="export">Export</button></div>
+        <div class="gitem"><div class="gl">Restore from backup<small>Replaces what’s here — use it to move data between phone &amp; laptop</small></div><button class="btn sm plain" data-act="import">Import</button></div>
+        <div class="gitem"><div class="gl" style="color:var(--bad)">Erase everything<small>Deletes all entries${user ? ' here and in Supabase' : ''} and resets the passcode to default</small></div><button class="btn sm danger" data-act="reset">Erase</button></div>
+      </div>
+      <p class="gnote">${user ? 'Backups are optional now that Supabase keeps your data, but handy to have.' : 'Nothing is sent anywhere until you sign in. Clearing your browser’s site data deletes it, so export a backup now and then.'}</p>
+    </div>`;
+}
+function onSettingChange(t) {
+  if (t.dataset.s) {
+    const k = t.dataset.s;
+    if (k === 'payAnchor') { if (!t.value) return; S.settings[k] = t.value; }
+    else { const v = parseFloat(t.value); if (!(v >= 0)) return; S.settings[k] = v; }
+    save(); renderAll();
+    if (view === 'settings') $$('[data-s="' + k + '"]').forEach(x => { if (x !== t) x.value = t.value; });
+    return true;
+  }
+  if (t.dataset.j) {
+    const [id, f] = t.dataset.j.split(':'), j = jobById(id);
+    if (f === 'rate' || f === 'hours') { const v = parseFloat(t.value); if (!(v >= 0)) return; j[f] = v; }
+    else if (f === 'start' || f === 'end') {
+      const nv = t.value; if (!nv) return;
+      if ((f === 'start' && nv > j.end) || (f === 'end' && nv < j.start)) { toast('Start must be before end'); t.value = j[f]; return; }
+      j[f] = nv;
+    } else j[f] = t.value.trim() || j[f];
+    save(); renderAll(); toast('Saved'); return true;
+  }
+  if (t.dataset.hol) { const h = S.settings.holidays.find(x => x.id === t.dataset.hol); h.on = t.checked; save(); renderAll(); return true; }
+  if (t.dataset.sub || t.dataset.got) {
+    const k = t.dataset.sub || t.dataset.got, r = S.pay[k] || (S.pay[k] = {});
+    if (t.dataset.sub) r.sub = t.checked; else r.got = t.checked;
+    save(); renderAll(); return true;
+  }
+  if (t.dataset.net) { const r = S.pay[t.dataset.net] || (S.pay[t.dataset.net] = {}); r.net = t.value === '' ? null : parseFloat(t.value); if (r.net) r.got = true; save(); renderAll(); return true; }
+}
+
+/* =====================================================================
+   Sheet
+   ===================================================================== */
+const sheet = $('#sheet');
+function openSheet(html, mount) {
+  $('#sheet-body').innerHTML = html;
+  sheet.classList.add('open'); sheet.setAttribute('aria-hidden', 'false'); document.body.classList.add('noscroll');
+  $('.sheet-panel').scrollTop = 0;
+  mount && mount($('#sheet-body'));
+}
+function closeSheet() { sheet.classList.remove('open'); sheet.setAttribute('aria-hidden', 'true'); document.body.classList.remove('noscroll'); }
+
+/* =====================================================================
+   Events
+   ===================================================================== */
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-tab],[data-act],[data-day],[data-edit],[data-close],[data-filter],[data-cal],[data-period],[data-delhol]');
+  if (!t) return;
+  if (t.dataset.tab) return show(t.dataset.tab);
+  if (t.hasAttribute('data-close')) return closeSheet();
+  if (t.dataset.day) return openDay(t.dataset.day);
+  if (t.dataset.edit) return openEdit(t.dataset.edit);
+  if (t.dataset.period) return openPeriod(t.dataset.period);
+  if (t.dataset.filter) { logFilter = t.dataset.filter; renderLog(); return; }
+  if (t.dataset.cal) { const m = calMonth.split('-').map(Number); let mo = m[1] + +t.dataset.cal, y = m[0]; if (mo < 1) { mo = 12; y--; } if (mo > 12) { mo = 1; y++; } calMonth = `${y}-${pad2(mo)}`; renderCalendar(); return; }
+  if (t.dataset.delhol) { S.settings.holidays = S.settings.holidays.filter(h => h.id !== t.dataset.delhol); save(); renderAll(); renderSettings(); return; }
+  const a = t.dataset.act;
+  if (a === 'lock') lock();
+  else if (a === 'syncnow') { if (user) refresh().then(() => toast(STATUS_TXT[status])); else { cloudSkipped = false; startCloud(); } }
+  else if (a === 'signin') { cloudSkipped = false; startCloud(); }
+  else if (a === 'signout') signOut();
+  else if (a === 'skip-auth') { cloudSkipped = true; $('#auth').hidden = true; setStatus('local'); }
+  else if (a === 'quick') openQuick();
+  else if (a === 'catchup') { show('log'); }
+  else if (a === 'miss-more') { missOpen = !missOpen; renderLog(); }
+  else if (a === 'timer-start') { S.timer = { job: t.dataset.job, start: Date.now() }; save(); renderLog(); toast('Timer started'); }
+  else if (a === 'timer-discard') { if (confirm('Discard this timer?')) { S.timer = null; save(); renderLog(); } }
+  else if (a === 'timer-stop') {
+    const tm = S.timer; S.timer = null; save();
+    const h = Math.max(0.25, roundQ((Date.now() - tm.start) / 3.6e6));
+    const d = ds(new Date(tm.start));
+    openSheet(`<p class="eyebrow">Timer stopped</p><h2>Save ${fmtH(h)} h?</h2>${formHTML({ job: tm.job, date: d, hours: h })}`,
+      body => bindForm(body.querySelector('form'), () => closeSheet()));
+    renderLog();
+  }
+  else if (a === 'addhol') {
+    const d = $('#hol-date').value, n = $('#hol-name').value.trim();
+    if (!d) return toast('Pick a date for the holiday');
+    S.settings.holidays.push({ id: uid(), date: d, name: n || 'Stat holiday', on: true }); save(); renderAll(); renderSettings(); toast('Holiday added');
+  }
+  else if (a === 'setpin') {
+    const p1 = $('#pin1').value, p2 = $('#pin2').value;
+    if (!/^\d{4}$/.test(p1)) return toast('Passcode must be exactly 4 digits');
+    if (p1 !== p2) return toast('Passcodes don’t match');
+    S.settings.pinHash = hashPin(p1); save(); $('#pin1').value = $('#pin2').value = ''; toast('Passcode changed');
+  }
+  else if (a === 'export') {
+    const blob = new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob), link = document.createElement('a');
+    link.href = url; link.download = `ra-hours-backup-${D.T}.json`; document.body.appendChild(link); link.click(); link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000); toast('Backup downloaded');
+  }
+  else if (a === 'import') $('#importFile').click();
+  else if (a === 'reset') {
+    if (confirm(`Erase ALL entries and settings${user ? ' from this device AND Supabase' : ' from this browser'}? This can’t be undone.`) && confirm('Really erase everything?')) {
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      S = DEFAULT(); save(); renderAll(); renderSettings(); toast('Everything erased');
+    }
+  }
+});
+document.addEventListener('change', e => { if (e.target.closest('#v-settings,#v-pay')) onSettingChange(e.target); });
+$('#importFile').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const rd = new FileReader();
+  rd.onload = () => {
+    try {
+      const o = JSON.parse(rd.result);
+      if (!Array.isArray(o.entries) || !Array.isArray(o.jobs)) throw new Error('bad');
+      if (!confirm(`Replace current data with this backup (${o.entries.length} entries)?`)) return;
+      localStorage.setItem(KEY, JSON.stringify(o)); S = load(); save(); renderAll(); if (view === 'settings') renderSettings(); toast('Backup restored');
+    } catch (err) { toast('That file isn’t a valid RA Hours backup'); }
+  };
+  rd.readAsText(f); e.target.value = '';
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
+let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { renderCalendar(); renderCharts(); }, 150); });
+
+/* =====================================================================
+   Cloud sync (Supabase, schema ra_tracker)
+   Every save diffs the current state against the last state the server
+   confirmed, then upserts / deletes only what changed. Offline edits wait
+   and go up when the connection returns.
+   ===================================================================== */
+const SB_URL = 'https://zklnldjjjmzgsymgkuvo.supabase.co';
+const SB_KEY = 'sb_publishable_TuLwPC9PQSDe9rBdlFzz-w_SVaMYMRk';   // publishable: safe in the page, RLS protects the rows
+const SB_LIB = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+const BASE_KEY = 'raTracker.base';
+const TBL = { settings: 'user_id', jobs: 'user_id,id', holidays: 'user_id,id', pay_periods: 'user_id,period_start', entries: 'user_id,id' };
+const STATUS_TXT = { local: 'Not syncing — this device only', syncing: 'Syncing…', pending: 'Saving…', synced: 'Saved to Supabase', offline: 'Offline — changes sync when you’re back online', error: 'Sync problem — tap to retry' };
+let sb = null, base = null, syncing = false, dirty = false, syncT, lastPull = 0, cloudSkipped = false, cloudStarted = false, status = 'local';
+
+function loadLib() {
+  if (window.supabase?.createClient) return Promise.resolve();
+  return new Promise((res, rej) => {
+    const s = document.createElement('script'); s.src = SB_LIB; s.onload = res;
+    s.onerror = () => { s.remove(); rej(new Error('Network: could not load Supabase')); };
+    document.head.appendChild(s);
+  });
+}
+async function client() {
+  if (sb) return sb;
+  await loadLib();
+  sb = window.supabase.createClient(SB_URL, SB_KEY, { db: { schema: 'ra_tracker' }, auth: { persistSession: true, autoRefreshToken: true, storageKey: 'raTracker.auth' } });
+  sb.auth.onAuthStateChange((ev, s) => { if (ev === 'SIGNED_OUT') { user = null; setStatus('local'); } else if (s?.user) user = s.user; });
+  return sb;
+}
+const isNet = e => !navigator.onLine || /fetch|network|load failed|timed? ?out/i.test(e?.message || String(e));
+function cleanErr(e) {
+  const c = e?.code, m = e?.message || String(e);
+  if (c === 'PGRST106') return 'the ra_tracker schema isn’t exposed (Project Settings → Data API).';
+  if (c === '42P01' || c === 'PGRST205') return 'tables missing — run supabase-setup.sql first.';
+  return m.replace(/^RA rule:\s*/, '');
+}
+function setStatus(s) {
+  status = s;
+  const b = $('#syncbtn'); if (b) { b.dataset.st = s; b.title = STATUS_TXT[s]; b.setAttribute('aria-label', STATUS_TXT[s]); }
+  const el = $('#acct-status'); if (el) el.textContent = STATUS_TXT[s];
+}
+const saveBase = () => { try { localStorage.setItem(BASE_KEY, JSON.stringify({ uid: user.id, rows: base })); } catch (e) {} };
+const loadBase = () => { try { return JSON.parse(localStorage.getItem(BASE_KEY)); } catch (e) { return null; } };
+
+function toRows(st, uid) {
+  const s = st.settings, o = { settings: {}, jobs: {}, holidays: {}, pay_periods: {}, entries: {} };
+  o.settings[uid] = {
+    user_id: uid, weekly_cap: Math.round((+s.weeklyCap || 35) * 10) / 10, daily_cap: Math.round((+s.dailyCap || 8) * 10) / 10,
+    pay_anchor: s.payAnchor, payday_offset: Math.round(+s.paydayOffset || 0), auto_lock_min: Math.round(+s.autoLock || 0),
+    pin_hash: s.pinHash || null, last_job: st.lastJob || null, timer: st.timer ? { job: st.timer.job, start: st.timer.start } : null,
+  };
+  st.jobs.forEach((j, i) => o.jobs[j.id] = { user_id: uid, id: j.id, grant_name: j.grant, professor: j.prof, start_date: j.start, end_date: j.end, hourly_rate: r2(j.rate), contract_hours: r2(j.hours), sort_order: i });
+  (s.holidays || []).forEach(h => o.holidays[h.id] = { user_id: uid, id: h.id, holiday_date: h.date, name: h.name, enabled: !!h.on });
+  Object.entries(st.pay || {}).forEach(([k, r]) => o.pay_periods[k] = { user_id: uid, period_start: k, timesheet_submitted: !!r.sub, received: !!r.got, net_amount: r.net == null || isNaN(r.net) ? null : r2(r.net) });
+  st.entries.forEach(e => o.entries[e.id] = { user_id: uid, id: e.id, job_id: e.job, work_date: e.date, hours: r2(e.hours), note: e.note || null, from_period_total: !!e.bulk, created_at: new Date(e.created || 0).toISOString() });
+  return o;
+}
+function fromServer(R) {
+  const set = R.settings[0] || {}, d = DEFAULT();
+  const jobs = R.jobs.slice().sort((a, b) => a.sort_order - b.sort_order)
+    .map(j => ({ id: j.id, grant: j.grant_name, prof: j.professor, start: j.start_date, end: j.end_date, rate: +j.hourly_rate, hours: +j.contract_hours }));
+  return {
+    v: 1,
+    jobs: jobs.length === 2 ? jobs : d.jobs,
+    entries: R.entries.map(e => ({ id: e.id, job: e.job_id, date: e.work_date, hours: +e.hours, note: e.note || '', bulk: !!e.from_period_total, created: Date.parse(e.created_at) || 0 })),
+    settings: {
+      weeklyCap: +(set.weekly_cap ?? 35), dailyCap: +(set.daily_cap ?? 8), payAnchor: set.pay_anchor || d.settings.payAnchor,
+      paydayOffset: +(set.payday_offset ?? 5), autoLock: +(set.auto_lock_min ?? 5), pinHash: set.pin_hash || DEFAULT_PIN_HASH,
+      holidays: R.holidays.map(h => ({ id: h.id, date: h.holiday_date, name: h.name, on: !!h.enabled })),
+    },
+    pay: Object.fromEntries(R.pay_periods.map(p => [p.period_start, { sub: !!p.timesheet_submitted, got: !!p.received, net: p.net_amount == null ? null : +p.net_amount }])),
+    timer: set.timer || null,
+    lastJob: set.last_job || d.lastJob,
+  };
+}
+async function pull() {
+  const names = Object.keys(TBL), R = {};
+  const res = await Promise.all(names.map(t => sb.from(t).select('*')));
+  res.forEach((r, i) => { if (r.error) throw r.error; R[names[i]] = r.data; });
+  return R;
+}
+async function push() {
+  const cur = toRows(S, user.id), b = base || { settings: {}, jobs: {}, holidays: {}, pay_periods: {}, entries: {} };
+  const same = (x, y) => JSON.stringify(x) === JSON.stringify(y);
+  const run = async q => { const { error } = await q; if (error) throw error; };
+  const up = async t => { const rows = Object.keys(cur[t]).filter(k => !b[t]?.[k] || !same(cur[t][k], b[t][k])).map(k => cur[t][k]); if (rows.length) await run(sb.from(t).upsert(rows, { onConflict: TBL[t] })); };
+  const del = async t => { const ids = Object.keys(b[t] || {}).filter(k => !cur[t][k]); if (ids.length) await run(sb.from(t).delete().in(t === 'pay_periods' ? 'period_start' : 'id', ids)); };
+  // Order matters for the database rules: parents first, removed entries before new ones.
+  await up('settings'); await up('jobs'); await up('holidays'); await del('holidays');
+  await del('entries'); await up('entries'); await up('pay_periods'); await del('pay_periods'); await del('jobs');
+  base = cur; saveBase();
+}
+const hasPending = () => !!(user && base && JSON.stringify(toRows(S, user.id)) !== JSON.stringify(base));
+function scheduleSync() { if (!user || !sb) return; dirty = true; setStatus('pending'); clearTimeout(syncT); syncT = setTimeout(runSync, 350); }
+async function runSync() {
+  if (!user || !sb) return;
+  if (syncing) { dirty = true; return; }
+  syncing = true; dirty = false; setStatus('syncing');
+  try { await push(); setStatus('synced'); }
+  catch (err) {
+    if (isNet(err)) setStatus('offline');
+    else { toast('Not saved: ' + cleanErr(err)); await resetFromServer(); }
+  } finally {
+    syncing = false;
+    if (dirty && status !== 'offline') { dirty = false; runSync(); }
+  }
+}
+function applyServer(R) {
+  const next = fromServer(R), nb = toRows(next, user.id);
+  const changed = JSON.stringify(nb) !== JSON.stringify(toRows(S, user.id));
+  S = next; base = nb; saveBase(); cacheLocal();
+  if (changed && !APP.hidden) { renderAll(); if (view === 'settings') renderSettings(); }
+}
+async function resetFromServer() {
+  try { applyServer(await pull()); setStatus('synced'); } catch (e) { setStatus(isNet(e) ? 'offline' : 'error'); }
+}
+async function refresh() {
+  if (!user || !sb || syncing) return;
+  lastPull = Date.now();
+  try {
+    if (hasPending()) { await runSync(); if (status !== 'synced') return; }
+    applyServer(await pull()); setStatus('synced');
+  } catch (e) { setStatus(isNet(e) ? 'offline' : 'error'); }
+}
+async function startCloud() {
+  if (cloudSkipped) return setStatus('local');
+  try { await client(); } catch (e) { setStatus('offline'); return; }
+  const { data } = await sb.auth.getSession();
+  user = data.session?.user || null;
+  if (!user) { showAuth(); return; }
+  cloudStarted = true;
+  await initialSync();
+}
+async function initialSync() {
+  setStatus('syncing');
+  try {
+    const R = await pull(), stored = loadBase();
+    if (!R.settings.length && !R.jobs.length) {
+      // Brand-new cloud: upload everything on this device (defaults + any local entries).
+      try { localStorage.setItem('raTracker.preSync', JSON.stringify(S)); } catch (e) {}
+      base = null; await push();
+      toast(S.entries.length ? `Uploaded ${S.entries.length} entries to Supabase` : 'Connected to Supabase');
+    } else if (stored && stored.uid === user.id) {
+      // Returning device: send anything changed offline, then take the server copy.
+      base = stored.rows; if (hasPending()) await push(); applyServer(await pull());
+    } else {
+      // First sign-in on this device: cloud wins, but keep entries that only exist here.
+      const local = S, srv = fromServer(R), ids = new Set(srv.entries.map(e => e.id));
+      const extra = local.entries.filter(e => !ids.has(e.id) && srv.jobs.some(j => j.id === e.job));
+      base = toRows(srv, user.id); saveBase();
+      S = srv; S.entries = srv.entries.concat(extra);
+      Object.entries(local.pay || {}).forEach(([k, r]) => { if (!S.pay[k]) S.pay[k] = r; });
+      cacheLocal();
+      if (hasPending()) { await push(); if (extra.length) toast(`Added ${extra.length} entries from this device`); }
+    }
+    lastPull = Date.now();
+    setStatus('synced'); renderAll(); if (view === 'settings') renderSettings();
+  } catch (err) {
+    if (isNet(err)) setStatus('offline');
+    else { setStatus('error'); toast('Supabase: ' + cleanErr(err)); if (base) await resetFromServer(); }
+  }
+}
+function showAuth() {
+  const a = $('#auth'); a.hidden = false; a.classList.remove('out');
+  $('#authErr').textContent = '';
+  setTimeout(() => $('#authForm').elements.email.focus(), 50);
+}
+$('#authForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const f = e.target, btn = f.querySelector('[type=submit]'), err = $('#authErr');
+  const email = f.elements.email.value.trim(), password = f.elements.password.value;
+  if (!email || !password) { err.textContent = 'Enter your email and password.'; return; }
+  btn.disabled = true; err.textContent = '';
+  try {
+    await client();
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    user = data.user; f.elements.password.value = '';
+    $('#auth').hidden = true; cloudSkipped = false; cloudStarted = true;
+    await initialSync();
+  } catch (ex) {
+    err.textContent = isNet(ex) ? 'No connection — try again when you’re online.' : (ex.message || 'Sign-in failed');
+  } finally { btn.disabled = false; }
+});
+async function signOut() {
+  if (!confirm('Sign out? Your data stays safe in Supabase; the copy on this device is removed.')) return;
+  if (hasPending()) await runSync();
+  try { await sb?.auth.signOut(); } catch (e) {}
+  try { localStorage.removeItem(KEY); localStorage.removeItem(BASE_KEY); } catch (e) {}
+  user = null; base = null; cloudStarted = false; S = DEFAULT(); setStatus('local');
+  lock();
+}
+addEventListener('online', () => { if (!LOCK.hidden) return; if (user) refresh(); else if (!cloudSkipped && !cloudStarted) startCloud(); });
+const maybeRefresh = () => { if (document.visibilityState === 'visible' && LOCK.hidden && user && Date.now() - lastPull > 20000) refresh(); };
+document.addEventListener('visibilitychange', maybeRefresh);
+addEventListener('focus', maybeRefresh);
+
+/* =====================================================================
+   Lock screen
+   ===================================================================== */
+const LOCK = $('#lock'), APP = $('#app');
+let buf = '', fails = 0, coolUntil = 0;
+$('#pad').innerHTML = [['1', ''], ['2', 'ABC'], ['3', 'DEF'], ['4', 'GHI'], ['5', 'JKL'], ['6', 'MNO'], ['7', 'PQRS'], ['8', 'TUV'], ['9', 'WXYZ']]
+  .map(([n, l]) => `<button class="key" data-k="${n}" aria-label="${n}"><span>${n}</span><small>${l}</small></button>`).join('') +
+  `<span></span><button class="key" data-k="0" aria-label="0"><span>0</span><small></small></button><button class="key ghost" data-k="del" aria-label="Delete">Delete</button>`;
+const dots = () => $$('#dots i').forEach((d, i) => d.classList.toggle('on', i < buf.length));
+function press(k) {
+  if (LOCK.hidden) return;
+  if (Date.now() < coolUntil) return;
+  if (k === 'del') buf = buf.slice(0, -1); else if (buf.length < 4) buf += k;
+  dots();
+  if (buf.length === 4) {
+    const attempt = buf;
+    setTimeout(() => {
+      if (hashPin(attempt) === S.settings.pinHash) { fails = 0; unlock(); }
+      else {
+        fails++; buf = ''; const el = $('#dots'); el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); dots();
+        if (fails >= 5) { coolUntil = Date.now() + 30000; $('#lock-msg').textContent = 'Too many tries — wait 30 seconds'; setTimeout(() => { $('#lock-msg').textContent = 'Enter Passcode'; fails = 0; }, 30000); }
+        else $('#lock-msg').textContent = 'Wrong passcode';
+      }
+    }, 130);
+  }
+}
+$('#pad').addEventListener('click', e => { const b = e.target.closest('[data-k]'); if (b) press(b.dataset.k); });
+document.addEventListener('keydown', e => { if (LOCK.hidden) return; if (/^\d$/.test(e.key)) press(e.key); else if (e.key === 'Backspace') press('del'); });
+let lastActive = Date.now();
+const touch = () => { lastActive = Date.now(); try { sessionStorage.setItem('ra.active', lastActive); } catch (e) {} };
+['pointerdown', 'keydown', 'scroll'].forEach(ev => addEventListener(ev, () => { if (LOCK.hidden && Date.now() - lastActive > 5000) touch(); }, { passive: true }));
+function lock() {
+  try { sessionStorage.removeItem('ra.active'); } catch (e) {}
+  buf = ''; dots(); $('#lock-msg').textContent = 'Enter Passcode';
+  closeSheet(); hideTip(); $('#auth').hidden = true;
+  LOCK.hidden = false; requestAnimationFrame(() => LOCK.classList.remove('out'));
+  APP.hidden = true;
+}
+function unlock() {
+  touch();
+  APP.hidden = false;
+  LOCK.classList.add('out'); setTimeout(() => { LOCK.hidden = true; }, 350);
+  firstRings = true;
+  renderAll();
+  let v = 'overview'; try { v = sessionStorage.getItem('ra.view') || 'overview'; } catch (e) {}
+  show(TABS.some(t => t[0] === v) ? v : 'overview');
+  if (user) maybeRefresh(); else if (!cloudStarted) startCloud();
+}
+setInterval(() => {
+  const m = +S.settings.autoLock;
+  if (LOCK.hidden && m > 0 && Date.now() - lastActive > m * 60000) lock();
+}, 10000);
+document.addEventListener('visibilitychange', () => {
+  const m = +S.settings.autoLock;
+  if (document.visibilityState === 'visible' && LOCK.hidden && m > 0 && Date.now() - lastActive > m * 60000) lock();
+});
+
+// Boot: stay unlocked across a refresh only if recently active in this tab.
+(() => {
+  let a = 0; try { a = +sessionStorage.getItem('ra.active') || 0; } catch (e) {}
+  const m = +S.settings.autoLock;
+  if (a && (m === 0 || Date.now() - a < m * 60000)) { LOCK.hidden = true; unlock(); }
+})();
+})();
+</script>
+</body>
+</html>
