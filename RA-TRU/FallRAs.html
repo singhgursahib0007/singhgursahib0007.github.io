@@ -369,6 +369,8 @@ details.range summary::-webkit-details-marker{display:none}
 .gnote{font-size:12.5px;color:var(--ink2);padding:8px 16px 0;line-height:1.45}
 .gitem .x{border:0;background:var(--fill);width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:var(--ink2)}
 .gitem .x svg{width:14px;height:14px;stroke-width:2.4}
+.prompt{display:block;width:100%;height:240px;resize:vertical;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ink);background:var(--fill2);border:0;border-radius:12px;padding:12px;white-space:pre-wrap;overflow-wrap:anywhere}
+.secret{display:flex;align-items:center;gap:10px;font:13px ui-monospace,SFMono-Regular,Menlo,monospace;word-break:break-all}
 .add-hol{display:grid;grid-template-columns:150px 1fr auto;gap:8px;padding:12px 16px}
 @media (max-width:560px){.add-hol{grid-template-columns:1fr 1fr}.add-hol .btn{grid-column:1/-1}.gitem input:not([type=checkbox]),.gitem select{max-width:150px}}
 
@@ -544,6 +546,8 @@ const IC = {
   cash: '<svg class="i" viewBox="0 0 24 24"><path d="M12 3v18M16.5 7.5c-.8-1.3-2.5-2-4.5-2-2.5 0-4.2 1.3-4.2 3.1 0 4.4 9 2.3 9 6.8 0 1.9-1.9 3.2-4.8 3.2-2.2 0-4-.8-4.8-2.2"/></svg>',
   week: '<svg class="i" viewBox="0 0 24 24"><path d="M4 19V9M9.3 19V5M14.6 19v-7M20 19v-4"/></svg>',
   flag: '<svg class="i" viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>',
+  copy: '<svg class="i" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="12" height="12" rx="2.5"/><path d="M15.5 8.5V6a2.5 2.5 0 0 0-2.5-2.5H6A2.5 2.5 0 0 0 3.5 6v7A2.5 2.5 0 0 0 6 15.5h2.5"/></svg>',
+  key: '<svg class="i" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4.5"/><path d="M11.2 11.8L20 3M16.5 6.5l2.5 2.5M14 9l2 2"/></svg>',
   cal: '<svg class="i" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',
 };
 
@@ -1503,6 +1507,7 @@ function renderSettings() {
         <div class="gitem"><div class="gl">Not signed in<small>Entries are only on this device right now</small></div><button class="btn sm primary" data-act="signin">Sign in</button></div>`}
       </div>
       <p class="gnote">Your entries live in the <b>ra_tracker</b> schema of your Supabase project. Only your login can read them; a copy stays on this device for speed and offline use.</p>
+      ${agentHTML()}
       ${S.jobs.map(j => `
         <p class="group-title" style="display:flex;align-items:center;gap:8px"><i class="dot" style="--c:${colorOf(j)}"></i>${esc(j.grant)} position</p>
         <div class="glist">
@@ -1609,6 +1614,10 @@ document.addEventListener('click', e => {
   else if (a === 'syncnow') { if (user) refresh().then(() => toast(STATUS_TXT[status])); else { cloudSkipped = false; startCloud(); } }
   else if (a === 'signin') { cloudSkipped = false; startCloud(); }
   else if (a === 'signout') signOut();
+  else if (a === 'copy-prompt') copyText(buildPrompt(storedToken()), 'Prompt copied — paste it into a new agent chat');
+  else if (a === 'copy-token') copyText(storedToken(), 'Token copied');
+  else if (a === 'new-token') createToken();
+  else if (a === 'revoke') revokeToken(t.dataset.id, t.dataset.hint);
   else if (a === 'skip-auth') { cloudSkipped = true; $('#auth').hidden = true; setStatus('local'); }
   else if (a === 'quick') openQuick();
   else if (a === 'catchup') { show('log'); }
@@ -1849,12 +1858,103 @@ $('#authForm').addEventListener('submit', async e => {
     err.textContent = isNet(ex) ? 'No connection — try again when you’re online.' : (ex.message || 'Sign-in failed');
   } finally { btn.disabled = false; }
 });
+/* =====================================================================
+   AI agent access (token-based, see agent-setup.sql)
+   An agent in another chat logs hours through the agent_* functions with a
+   personal token. The token only reaches entries and can be revoked here.
+   ===================================================================== */
+const TOKEN_KEY = 'raTracker.agentToken';
+let tokens = null;
+const storedToken = () => { try { return localStorage.getItem(TOKEN_KEY) || ''; } catch (e) { return ''; } };
+function buildPrompt(tok) {
+  const t = tok || '<PASTE_AGENT_TOKEN>', cap = S.settings.weeklyCap;
+  const jobs = S.jobs.map(j => `- ${j.grant} (job "${j.id}"): ${j.prof}, ${j.start} to ${j.end}, $${j.rate}/h CAD, ${j.hours} h contract`).join('\n');
+  return `You log my university RA work hours into my "RA Hours" tracker. It is a Supabase database you reach over HTTPS from your terminal (curl). When I describe work I did, turn it into entries and log them with the functions below. You need no other credentials; never ask for my password or a secret key.
+
+## Connection
+- POST ${SB_URL}/rest/v1/rpc/<function_name> with a JSON body of named parameters
+- Headers (all required):
+  apikey: ${SB_KEY}
+  Content-Type: application/json
+  Content-Profile: ra_tracker
+- Every body includes "p_token": "${t}"
+  (my personal agent token: it only reaches my hours, only through these functions)
+
+## My positions
+${jobs}
+
+## Functions
+1. agent_status {p_token} → {today, weekly_cap, this_week_start, this_week_hours, positions: [{job, grant, professor, start, end, rate, contract_hours, logged_hours, remaining_hours, earned_cad}], holidays: [date]}
+   Call this first, every session.
+2. agent_list {p_token, p_from?, p_to?} → [{id, job, date, hours, note}]. No dates = the current Mon–Sun week.
+3. agent_log {p_token, p_job: "IRF" | "URAF", p_date: "YYYY-MM-DD", p_hours, p_note?} → the new entry. Hours round to 0.25.
+4. agent_update {p_token, p_id, p_changes: {job?, date?, hours?, note?}} → the updated entry.
+5. agent_delete {p_token, p_id} → {"deleted": id}.
+
+## Rules (the database enforces them; a break comes back as "RA rule: …")
+- Weekdays only, never an enabled stat holiday, only inside that position's dates.
+- At most ${cap} h per Mon–Sun week across both positions, and never past a position's contract hours.
+- Dates are America/Toronto. Work out "yesterday", "Monday" etc. from "today" in agent_status.
+- If I don't say which position or which day, ask. If I give one total for several days ("10 h on IRF this week"), propose a split over the weekdays (≤ 8 h a day) and confirm before logging.
+- Call agent_list for those dates before logging, so you don't log the same work twice. Ask before deleting anything.
+- p_note: a short description of the work in my words (≤ 140 characters).
+- After acting, reply with a short table (date, position, hours, $ = hours × rate) and the new totals from agent_status.
+- "Invalid or revoked agent token" → ask me for a new one (RA Hours → Settings → AI agent).
+
+## Example
+curl -s -X POST '${SB_URL}/rest/v1/rpc/agent_log' \\
+  -H 'apikey: ${SB_KEY}' -H 'Content-Type: application/json' -H 'Content-Profile: ra_tracker' \\
+  -d '{"p_token":"${t}","p_job":"IRF","p_date":"${D?.T || ds(new Date())}","p_hours":3.5,"p_note":"Literature review"}'`;
+}
+function agentHTML() {
+  const tok = storedToken();
+  if (user && tokens === null) loadTokens().then(() => { if (view === 'settings') renderSettings(); });
+  return `
+      <p class="group-title">AI agent</p>
+      <div class="glist">
+        <div class="gitem"><div class="gl">Let an AI log your hours<small>Copy the prompt into a new chat with an agent that can run terminal commands, then tell it what you worked on</small></div><button class="btn sm primary" data-act="copy-prompt">${IC.copy}Copy prompt</button></div>
+        ${user ? `
+        <div class="gitem"><div class="gl">Agent token<small>${tok ? 'Saved on this device and filled into the prompt' : 'Create one so the prompt works'}</small></div><button class="btn sm tint" data-act="new-token">${IC.key}${tok ? 'New token' : 'Create token'}</button></div>
+        ${tok ? `<div class="gitem"><span class="secret" style="flex:1">${esc(tok)}</span><button class="btn sm plain" data-act="copy-token">${IC.copy}Copy</button></div>` : ''}
+        ${(tokens || []).map(x => `<div class="gitem"><div class="gl">${esc(x.label)} · rah_…${esc(x.token_hint)}<small>Created ${fmtLong(x.created_at.slice(0, 10))} · ${x.last_used_at ? 'last used ' + fmtLong(x.last_used_at.slice(0, 10)) : 'never used'}</small></div><button class="btn sm danger" data-act="revoke" data-id="${x.id}" data-hint="${esc(x.token_hint)}">Revoke</button></div>`).join('')}` : `
+        <div class="gitem"><div class="gl">Agent token<small>Sign in to Supabase first to create one</small></div><button class="btn sm plain" data-act="signin">Sign in</button></div>`}
+        <div class="gitem" style="display:block"><textarea class="prompt" readonly spellcheck="false" aria-label="Agent prompt">${esc(buildPrompt(tok))}</textarea></div>
+      </div>
+      <p class="gnote">Anyone with this prompt can add and change your entries until you revoke the token. It never contains your password or secret key, and every entry still has to pass the university rules.</p>`;
+}
+async function loadTokens() {
+  if (!user || !sb) { tokens = null; return; }
+  const { data, error } = await sb.from('agent_tokens').select('id,label,token_hint,created_at,last_used_at').order('created_at', { ascending: false });
+  tokens = error ? [] : data;
+  if (error) toast('Couldn’t load tokens: ' + (/agent_tokens/.test(error.message) ? 'run agent-setup.sql first.' : cleanErr(error)));
+}
+async function createToken() {
+  if (!user || !sb) return toast('Sign in first');
+  const label = prompt('Label for this token', 'Claude');
+  if (label === null) return;
+  const { data, error } = await sb.rpc('create_agent_token', { p_label: label.trim() || 'Agent' });
+  if (error) return toast('Couldn’t create token: ' + (/create_agent_token/.test(error.message) ? 'run agent-setup.sql first.' : cleanErr(error)));
+  try { localStorage.setItem(TOKEN_KEY, data); } catch (e) {}
+  tokens = null; await loadTokens(); renderSettings(); toast('Token created — the prompt now includes it');
+}
+async function revokeToken(id, hint) {
+  if (!confirm('Revoke this token? Any agent using it loses access immediately.')) return;
+  const { error } = await sb.from('agent_tokens').delete().eq('id', id);
+  if (error) return toast('Couldn’t revoke: ' + cleanErr(error));
+  if (storedToken().endsWith(hint)) try { localStorage.removeItem(TOKEN_KEY); } catch (e) {}
+  await loadTokens(); renderSettings(); toast('Token revoked');
+}
+async function copyText(s, msg) {
+  try { await navigator.clipboard.writeText(s); toast(msg); }
+  catch (e) { const ta = document.createElement('textarea'); ta.value = s; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); toast(msg); }
+}
+
 async function signOut() {
   if (!confirm('Sign out? Your data stays safe in Supabase; the copy on this device is removed.')) return;
   if (hasPending()) await runSync();
   try { await sb?.auth.signOut(); } catch (e) {}
-  try { localStorage.removeItem(KEY); localStorage.removeItem(BASE_KEY); } catch (e) {}
-  user = null; base = null; cloudStarted = false; S = DEFAULT(); setStatus('local');
+  try { localStorage.removeItem(KEY); localStorage.removeItem(BASE_KEY); localStorage.removeItem(TOKEN_KEY); } catch (e) {}
+  user = null; base = null; tokens = null; cloudStarted = false; S = DEFAULT(); setStatus('local');
   lock();
 }
 addEventListener('online', () => { if (!LOCK.hidden) return; if (user) refresh(); else if (!cloudSkipped && !cloudStarted) startCloud(); });
