@@ -543,7 +543,7 @@ const ACCENTS = {
   blue:   { ui: '#4C9AFF', chart: '#3F87F0', alt: '#E8823A', ink: '#04101F' },
   pink:   { ui: '#FF5FA2', chart: '#F0508F', alt: '#4FA3F7', ink: '#1A0610' },
 };
-const DEF_SETTINGS = () => ({ name: '', tz: Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/Toronto', autoCarry: false, accent: 'orange', prefs: { showDone: true, haptics: true } });
+const DEF_SETTINGS = () => ({ name: '', tz: Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/Toronto', autoCarry: false, accent: 'orange', prefs: { showDone: true, haptics: true, addTo: 'top' } });
 function load() {
   try {
     const o = JSON.parse(localStorage.getItem(KEY));
@@ -563,6 +563,8 @@ const openOn = d => dayTasks(d).filter(t => !t.done).sort(byPos);
 const doneOn = d => dayTasks(d).filter(t => t.done).sort((a, b) => (b.doneAt || 0) - (a.doneAt || 0));
 const overdue = () => S.tasks.filter(t => !t.done && t.date < T()).sort((a, b) => a.date.localeCompare(b.date) || byPos(a, b));
 const nextPos = d => Math.max(0, ...dayTasks(d).map(t => t.pos)) + 1;
+const topPos = d => Math.min(1, ...dayTasks(d).map(t => t.pos)) - 1;
+const addOnTop = () => S.settings.prefs.addTo !== 'bottom';
 const getTask = id => S.tasks.find(t => t.id === id);
 const postponeTarget = t => (t.date < T() ? T() : addDays(t.date, 1));
 const postponeLabel = t => (t.date < T() ? 'Today' : rel(addDays(t.date, 1)));
@@ -580,7 +582,7 @@ function commit(label, fn, { undo = true } = {}) {
 }
 function addTask(f) {
   const d = f.date || T();
-  const t = { id: uuid(), title: f.title, notes: f.notes || '', date: d, origin: d, pos: nextPos(d), pri: f.pri || 0, tag: f.tag || '', carry: !!f.carry, carries: 0, done: false, doneAt: null, createdAt: Date.now(), source: 'app' };
+  const t = { id: uuid(), title: f.title, notes: f.notes || '', date: d, origin: d, pos: addOnTop() ? topPos(d) : nextPos(d), pri: f.pri || 0, tag: f.tag || '', carry: !!f.carry, carries: 0, done: false, doneAt: null, createdAt: Date.now(), source: 'app' };
   S.tasks.push(t); return t;
 }
 function moveTo(t, d) {
@@ -1026,6 +1028,7 @@ function renderSettings() {
     <p class="gt">Behaviour</p>
     <div class="gl">
       <div class="gi"><div class="l">Carry everything forward<small>Unfinished tasks move to today automatically. Off: only tasks marked “Auto-carry” (or <code>~</code>) do; the rest wait in “From earlier”.</small></div><label class="sw"><input type="checkbox" data-set="autoCarry" ${s.autoCarry ? 'checked' : ''}><i></i></label></div>
+      <div class="gi"><div class="l">New tasks go to<small>Where a task you add lands in that day’s list</small></div><div class="seg">${[['top', 'Top'], ['bottom', 'Bottom']].map(([v, l]) => `<button data-addto="${v}" class="${(s.prefs.addTo || 'top') === v ? 'on' : ''}">${l}</button>`).join('')}</div></div>
       <div class="gi"><div class="l">Show completed tasks<small>Under each day’s list</small></div><label class="sw"><input type="checkbox" data-pref="showDone" ${s.prefs.showDone ? 'checked' : ''}><i></i></label></div>
       <div class="gi"><div class="l">Haptics<small>Small vibration on swipes (Android)</small></div><label class="sw"><input type="checkbox" data-pref="haptics" ${s.prefs.haptics ? 'checked' : ''}><i></i></label></div>
     </div>
@@ -1100,7 +1103,7 @@ $('#qaIn').addEventListener('paste', e => {
   const lines = txt.split(/\r?\n/).map(l => l.replace(/^\s*(?:[-*•]|\d+[.)]|\[[ x]\])\s*/i, '').trim()).filter(Boolean);
   if (lines.length < 2) return;
   e.preventDefault();
-  commit(`Added ${lines.length} tasks`, () => lines.forEach(l => quickAdd(l)));
+  commit(`Added ${lines.length} tasks`, () => (addOnTop() ? lines.slice().reverse() : lines).forEach(l => quickAdd(l)));
 });
 $('#qaIn').addEventListener('keydown', e => { if (e.key === 'Escape') { e.target.value = ''; e.target.blur(); updateQaChips(); } });
 
@@ -1264,7 +1267,7 @@ document.addEventListener('click', e => {
     if (t && !t.done) { r.classList.add('checking'); setTimeout(() => toggleTask(t.id), 260); } else if (t) toggleTask(t.id);
     return;
   }
-  const b = e.target.closest('[data-tab],[data-pick],[data-step],[data-act],[data-close],[data-qa-date],[data-range],[data-accent],[data-revoke]');
+  const b = e.target.closest('[data-tab],[data-pick],[data-step],[data-act],[data-close],[data-qa-date],[data-range],[data-accent],[data-revoke],[data-addto]');
   if (!b) { const r = e.target.closest('.task'); if (r && !e.target.closest('[data-handle]')) { selId = r.dataset.id; openEdit(r.dataset.id); } return; }
   if (b.dataset.tab) return show(b.dataset.tab);
   if (b.dataset.pick) return pick(b.dataset.pick);
@@ -1274,6 +1277,7 @@ document.addEventListener('click', e => {
   if (b.dataset.range) { insRange = +b.dataset.range; renderInsights(); return; }
   if (b.dataset.accent) { S.settings.accent = b.dataset.accent; applyAccent(); save(); renderSettings(); renderAll(); return; }
   if (b.dataset.revoke) return revokeToken(b.dataset.revoke, b.dataset.hint);
+  if (b.dataset.addto) { S.settings.prefs.addTo = b.dataset.addto; save(); renderSettings(); toast(`New tasks will go to the ${b.dataset.addto}`); return; }
   const a = b.dataset.act;
   if (a === 'carry-all') { const od = overdue(); commit(`Moved ${plural(od.length, 'task')} to today`, () => od.forEach(t => moveTo(t, T()))); }
   else if (a === 'toggle-done') { doneOpen = !doneOpen; renderToday(); }
