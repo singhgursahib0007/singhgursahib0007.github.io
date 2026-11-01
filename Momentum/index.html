@@ -1449,8 +1449,17 @@ async function push() {
   for (const t of ['settings', 'tasks']) {
     const dels = Object.keys(b[t] || {}).filter(k => !cur[t][k]);
     for (let i = 0; i < dels.length; i += 200) await run(sb.from(t).delete().in(TBL[t], dels.slice(i, i + 200)));
-    const ups = Object.keys(cur[t]).filter(k => !b[t]?.[k] || !same(cur[t][k], b[t][k])).map(k => cur[t][k]);
-    for (let i = 0; i < ups.length; i += 400) await run(sb.from(t).upsert(ups.slice(i, i + 400), { onConflict: TBL[t] }));
+    // New rows go up whole. Existing rows send only the fields changed on this device, so a stale
+    // copy can't overwrite newer edits from another device (e.g. reopen a task ticked on the phone).
+    const ins = [], patches = [];
+    for (const k of Object.keys(cur[t])) {
+      const c = cur[t][k], o = b[t]?.[k];
+      if (!o) { ins.push(c); continue; }
+      const p = {}; for (const f of Object.keys(c)) if (!same(c[f], o[f])) p[f] = c[f];
+      if (Object.keys(p).length) patches.push([k, p]);
+    }
+    for (let i = 0; i < ins.length; i += 400) await run(sb.from(t).upsert(ins.slice(i, i + 400), { onConflict: TBL[t] }));
+    for (let i = 0; i < patches.length; i += 8) await Promise.all(patches.slice(i, i + 8).map(([k, p]) => run(sb.from(t).update(p).eq(TBL[t], k))));
   }
   base = cur; saveBase(); lastPush = Date.now();
 }
@@ -1554,6 +1563,7 @@ async function signOut() {
   applyAccent(); setStatus('local'); renderAll(); show('today'); showAuth();
 }
 addEventListener('online', () => { if (user) refresh(true); else if (!cloudSkipped && !cloudStarted) startCloud(); });
+const synced = () => { try { return !!localStorage.getItem(BASE_KEY); } catch (e) { return false; } };
 const maybeRefresh = () => { if (document.visibilityState === 'visible') { dayTick(); if (user) refresh(); } };
 document.addEventListener('visibilitychange', maybeRefresh);
 addEventListener('focus', maybeRefresh);
@@ -1564,13 +1574,13 @@ addEventListener('focus', maybeRefresh);
 let curDay = T();
 function dayTick() {
   const t = T();
-  if (t !== curDay) { if (selDate === curDay) selDate = t; curDay = t; rollover(); renderAll(); }
+  if (t !== curDay) { if (selDate === curDay) selDate = t; curDay = t; if (user) refresh(true); else if (!synced()) rollover(); renderAll(); }
 }
 setInterval(dayTick, 30000);
 let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { renderRail(); if (view === 'insights') renderInsights(); }, 150); });
 
 applyAccent();
-rollover();
+if (!synced()) rollover();   // synced devices carry forward after the first pull instead
 const params = new URLSearchParams(location.search);
 let first = params.get('tab') || (() => { try { return sessionStorage.getItem('momentum.view'); } catch (e) { return null; } })() || 'today';
 if (!TABS.some(t => t[0] === first)) first = 'today';
