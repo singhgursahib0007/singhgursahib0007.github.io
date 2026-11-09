@@ -29,7 +29,7 @@ body.noscroll{overflow:hidden}
 button,input,select{font:inherit;color:inherit;letter-spacing:inherit}
 button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 [hidden]{display:none!important}
-.num,b,.big,td{font-variant-numeric:tabular-nums}
+.num,b,td{font-variant-numeric:tabular-nums}
 svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
 h1,h2,h3,h4{margin:0;letter-spacing:-.022em}
 p{margin:0}
@@ -108,11 +108,9 @@ h1{font-size:34px;font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-t
 .sub{color:var(--ink2);font-size:13.5px}
 .muted{color:var(--ink3)}
 .stack{display:grid;gap:16px}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .log-grid{display:grid;grid-template-columns:minmax(320px,400px) 1fr;gap:16px;align-items:start}
-@media (max-width:900px){.g4{grid-template-columns:1fr 1fr}.log-grid{grid-template-columns:1fr}}
-@media (max-width:760px){.g2{grid-template-columns:1fr}.g4,.g2,.stack,.log-grid{gap:12px}.card{padding:16px;border-radius:20px}}
+@media (max-width:900px){.log-grid{grid-template-columns:1fr}}
+@media (max-width:760px){.stack,.log-grid{gap:12px}.card{padding:16px;border-radius:20px}}
 
 /* ---------- Buttons & inputs ---------- */
 .btn{border:0;height:44px;padding:0 18px;border-radius:12px;font-weight:600;font-size:15px;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:transform .1s,background .15s,opacity .15s;white-space:nowrap}
@@ -178,73 +176,9 @@ details.range summary::-webkit-details-marker{display:none}
 .tagc{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:12px;font-size:12px;font-weight:600;background:color-mix(in srgb,var(--c) 11%,white);color:var(--ink)}
 
 /* ---------- Overview ---------- */
-.nudge{position:relative;overflow:hidden;border-radius:var(--r-lg);padding:20px 22px;color:#fff;background:linear-gradient(135deg,#FF7A2F 0%,#E8590C 45%,#B8410A 100%);box-shadow:0 14px 40px rgba(232,89,12,.28);display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-.nudge::after{content:"";position:absolute;right:-60px;top:-80px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.22),transparent 65%)}
-.nudge .lbl{font-size:13px;font-weight:600;opacity:.9;text-transform:uppercase;letter-spacing:.05em}
-.nudge .amt{font-size:44px;font-weight:700;letter-spacing:-.04em;line-height:1.05;margin:4px 0 6px}
-.nudge .amt small{font-size:18px;font-weight:600;opacity:.85;letter-spacing:-.01em}
-.nudge p.d{font-size:14.5px;opacity:.95;max-width:560px}
-.nudge .btn{background:#fff;color:var(--accent-2);position:relative;z-index:1}
-.nudge.calm{background:linear-gradient(135deg,#FFFFFF,#FFF6F0);color:var(--ink);box-shadow:var(--shadow)}
-.nudge.calm .amt{font-size:30px}
-.nudge.calm .btn{background:var(--accent-tint)}
-.nudge-stats{display:flex;gap:22px;margin-top:12px;flex-wrap:wrap}
-.nudge-stats div{font-size:12.5px;opacity:.9}
-.nudge-stats b{display:block;font-size:19px;font-weight:700;opacity:1}
-@media (max-width:760px){.nudge{padding:18px}.nudge .amt{font-size:38px}.nudge .btn{width:100%}}
-
-.hero{display:flex;gap:26px;align-items:center}
-.ring-svg{width:156px;height:156px;flex:none}
-.ring-p{animation:ring 1.2s var(--ease) both}
-@keyframes ring{from{stroke-dashoffset:var(--c0)}}
-.hero-main{flex:1;min-width:0}
-.big{font-size:40px;font-weight:700;letter-spacing:-.035em;line-height:1.1}
-.big .of{font-size:17px;font-weight:500;color:var(--ink2);letter-spacing:-.01em}
-.hero-rows{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px 18px;margin-top:14px}
-.hrow{display:flex;gap:10px;align-items:flex-start}
-.hrow .key2{width:4px;align-self:stretch;border-radius:2px;background:var(--c)}
-.hrow b{font-size:16px;display:block}
-.hrow small{color:var(--ink2);font-size:12.5px}
-@media (max-width:560px){.hero{flex-direction:column;align-items:stretch;gap:14px}.ring-wrap{display:flex;justify-content:center}.big{font-size:34px}.hero-main{text-align:left}}
-
-.kpi .lbl{font-size:12.5px;font-weight:600;color:var(--ink2);display:flex;align-items:center;gap:6px}
-.kpi .lbl svg{width:15px;height:15px;color:var(--accent)}
-.kpi .val{font-size:28px;font-weight:700;letter-spacing:-.03em;margin-top:6px;line-height:1.1}
-.kpi .val small{font-size:14px;font-weight:500;color:var(--ink2);letter-spacing:0}
-.kpi .foot{font-size:12.5px;color:var(--ink2);margin-top:6px}
 .meter{height:6px;border-radius:3px;background:var(--fill);overflow:hidden;display:flex;gap:2px;margin-top:10px}
 .meter i{display:block;height:100%;background:var(--c,var(--accent));border-radius:3px}
 .meter i.ghost{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--c) 45%,white) 0 3px,color-mix(in srgb,var(--c) 15%,white) 3px 6px)}
-@media (max-width:760px){.kpi .val{font-size:24px}}
-
-.job{border-top:4px solid var(--c)}
-.job-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.job h3{margin-top:10px;font-size:19px}
-.job .sub{margin-top:2px}
-.prog{position:relative;height:10px;border-radius:5px;background:color-mix(in srgb,var(--c) 12%,white);margin:16px 0 6px}
-.prog i{position:absolute;left:0;top:0;bottom:0;border-radius:5px;background:var(--c);transition:width .8s var(--ease)}
-.prog b{position:absolute;top:-4px;width:2px;height:18px;border-radius:1px;background:var(--ink);transform:translateX(-1px)}
-.prog-leg{display:flex;justify-content:space-between;font-size:12px;color:var(--ink2)}
-.job-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
-.job-grid div{background:var(--fill2);border-radius:12px;padding:10px 12px}
-.job-grid small{display:block;font-size:11.5px;color:var(--ink2);font-weight:500}
-.job-grid b{font-size:17px;font-weight:650}
-.job-grid .hl{background:var(--accent-tint)}
-.job-grid .hl b{color:var(--accent-2)}
-
-.wk-list{display:grid;gap:8px}
-.wk-row{display:grid;grid-template-columns:88px 1fr 64px;gap:12px;align-items:center;padding:8px 10px;border-radius:12px}
-.wk-row.today{background:var(--accent-tint)}
-.wk-row .dname{font-weight:600;font-size:14px}
-.wk-row .dname small{display:block;font-weight:400;color:var(--ink2);font-size:12px}
-.wk-row .tot{text-align:right;font-weight:600;font-size:14px}
-.wk-row .tot small{display:block;font-weight:400;color:var(--ink2);font-size:11.5px}
-.wk-row.off{opacity:.55}
-.bline{display:flex;gap:2px;height:22px;align-items:stretch}
-.bline i{display:flex;align-items:center;justify-content:center;font-style:normal;font-size:11.5px;font-weight:600;color:#fff;border-radius:6px;background:var(--c);min-width:0;overflow:hidden;white-space:nowrap}
-.bline i.ghost{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--c) 32%,white) 0 4px,color-mix(in srgb,var(--c) 12%,white) 4px 8px);color:var(--ink)}
-.bline .offtxt{font-size:12.5px;color:var(--ink2);align-self:center}
-
 .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--ink2)}
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .legend .sw{width:12px;height:12px;border-radius:3px;background:var(--c)}
@@ -252,6 +186,17 @@ details.range summary::-webkit-details-marker{display:none}
 .legend .ln{width:16px;height:0;border-top:2px solid var(--c)}
 .legend .ln.dash{border-top-style:dashed;opacity:.8}
 .legend .ln.cap{border-top:2px solid var(--ink)}
+.legend .ln.plan{border-top-style:dotted;border-top-width:3px}
+.tc{padding-top:14px;margin-top:14px;border-top:.5px solid var(--line)}
+.card-head+.tc{border-top:0;margin-top:0;padding-top:0}
+.tc-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.tc-name{font-size:16px;font-weight:650;display:flex;align-items:center;gap:8px}
+.tc-name span{font-weight:400;color:var(--ink2)}
+.tc-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.tc-big{font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.tc-big small{font-size:14px;font-weight:500;color:var(--ink2)}
+.chart.tchart{min-height:190px}
+@media (max-width:560px){.tc-right{flex-direction:row;align-items:center;width:100%;justify-content:space-between}}
 .chart{position:relative;width:100%;min-height:220px;touch-action:pan-y}
 .chart svg{display:block;overflow:visible}
 .chart text{font-family:var(--font);font-size:11px;fill:var(--ink3)}
@@ -534,7 +479,7 @@ const IC = {
    State (localStorage only)
    ===================================================================== */
 const KEY = 'raTracker.v1';
-const JOB_COLORS = ['#E8590C', '#3A57D6', '#1A9E77'];
+const JOB_COLORS = ['#E8590C', '#3A57D6', '#1A9E77', '#B0258A'];
 const DEFAULT = () => ({
   v: 1,
   jobs: [
@@ -752,7 +697,7 @@ function validate(v) {
 /* =====================================================================
    UI plumbing
    ===================================================================== */
-let view = 'overview', calMonth = null, logFilter = 'all', formMem = {}, firstRings = true, missOpen = false;
+let view = 'overview', calMonth = null, logFilter = 'all', formMem = {}, missOpen = false;
 const TABS = [['overview', 'Overview'], ['log', 'Log'], ['calendar', 'Calendar'], ['settings', 'Settings']];
 $('#topnav').innerHTML = TABS.map(([k, l]) => `<button data-tab="${k}">${l}</button>`).join('');
 $('#tabbar').innerHTML = TABS.map(([k, l]) => `<button data-tab="${k}">${IC[k]}<span>${l}</span></button>`).join('');
@@ -773,7 +718,7 @@ function renderAll() {
 }
 function renderCharts() {
   hideTip();
-  if (view === 'overview') { lineChart($('#c-cum')); weekChart($('#c-week')); }
+  if (view === 'overview') { VJ().forEach(j => targetChart($(`[data-tc="${j.id}"]`), j)); weekChart($('#c-week')); }
 }
 let toastT;
 function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); }
@@ -781,111 +726,26 @@ function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.ad
 /* =====================================================================
    Overview
    ===================================================================== */
-function ringsSVG(stats) {
-  const sz = 156, c = sz / 2, sw = stats.length > 2 ? 11 : 15, gap = stats.length > 2 ? 3 : 4, radii = stats.map((_, i) => c - sw / 2 - 1 - i * (sw + gap));
-  const tot = stats.reduce((s, x) => s + x.logged, 0), all = stats.reduce((s, x) => s + x.j.hours, 0);
-  const pct = all ? Math.round(tot / all * 100) : 0;
-  return `<svg class="ring-svg" viewBox="0 0 ${sz} ${sz}" role="img" aria-label="${pct}% of contract hours logged">
-    ${stats.map((s, i) => {
-      const r = radii[i], C = 2 * Math.PI * r, off = C * (1 - s.pct);
-      return `<circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="${s.c}" stroke-opacity=".14" stroke-width="${sw}"/>` +
-        (s.pct > 0 ? `<circle class="${firstRings ? 'ring-p' : ''}" cx="${c}" cy="${c}" r="${r}" fill="none" stroke="${s.c}" stroke-width="${sw}" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${off}" style="--c0:${C}" transform="rotate(-90 ${c} ${c})"/>` : '');
-    }).join('')}
-    <text x="${c}" y="${c + 2}" text-anchor="middle" font-size="26" font-weight="700" fill="#1D1D1F" font-family="-apple-system,BlinkMacSystemFont,sans-serif">${pct}%</text>
-    <text x="${c}" y="${c + 20}" text-anchor="middle" font-size="11" fill="#6E6E73" font-family="-apple-system,BlinkMacSystemFont,sans-serif">of ${fmtH(all)} h</text>
-  </svg>`;
-}
 function renderOverview() {
   const stats = VJ().map(jobStats);
-  const G = gap(), miss = unloggedDays();
-  const earned = stats.reduce((s, x) => s + x.earned, 0), budget = stats.reduce((s, x) => s + x.budget, 0);
-  const wk = weekKey(D.T), wUsed = D.byWeek[wk]?.total || 0, wPlan = plannedWeek(wk);
-  const workLeft = D.T > D.span.end ? 0 : countWork(maxD(D.T, D.span.start), D.span.end);
-  const shortAll = Object.values(D.plan.short).reduce((a, b) => a + b, 0);
-  const remAll = stats.reduce((s, x) => s + x.left, 0);
-
-  const nudge = G.miss > 0.01 ? `
-    <div class="nudge">
-      <div style="position:relative;z-index:1">
-        <p class="lbl">Not logged yet</p>
-        <p class="amt">${money(G.usd)} <small>waiting for you</small></p>
-        <p class="d">By the end of ${fmtDay(D.Y)} your target was <b>${fmtH(G.target)} h</b>. You’ve entered <b>${fmtH(G.logged)} h</b>, so about <b>${fmtH(G.miss)} h</b> are missing${miss.length ? ` across <b>${miss.length}</b> empty work day${miss.length > 1 ? 's' : ''}` : ''}. Every hour you add is ${rateTxt()}.</p>
-        <div class="nudge-stats">${G.per.map(p => `<div>${esc(p.j.grant)} missing<b>${fmtH(p.miss)} h · ${money(p.usd)}</b></div>`).join('')}</div>
-      </div>
-      <button class="btn" data-act="catchup">Catch up now ${IC.right}</button>
-    </div>` : `
-    <div class="nudge calm">
-      <div>
-        <p class="lbl" style="color:var(--good)">All caught up</p>
-        <p class="amt">${G.ahead > 0.01 ? `${fmtH(G.ahead)} h ahead of target` : 'Right on target'}</p>
-        <p class="d sub">Target by end of ${fmtDay(D.Y)}: ${fmtH(G.target)} h · You’ve entered ${fmtH(G.logged)} h.</p>
-      </div>
-      <button class="btn" data-act="quick">${IC.plus} Log today</button>
+  const head = s => {
+    const j = s.j, miss = s.miss > 0.01 && s.left > 0.01 && D.T <= j.end && D.T >= j.start;
+    const pill = s.short > 0.01 && s.left > 0.01 ? `<span class="pill bad">${IC.warn}${fmtH(s.short)} h won’t fit</span>`
+      : miss ? `<span class="pill accent">${IC.warn}${fmtH(s.miss)} h behind · ${money(s.miss * j.rate)}</span>`
+      : `<span class="pill ${s.st.k}">${IC[s.st.i]}${esc(s.st.t)}</span>`;
+    return `<div class="tc-head">
+      <div><p class="tc-name"><i class="dot" style="--c:${s.c}"></i>${esc(j.grant)} <span>· ${esc(j.prof)}</span></p>
+        <p class="sub">${fmtShort(j.start)} – ${fmtShort(j.end)} · ${money(j.rate)}/h · ${money(s.earned)} of ${money(s.budget)} earned</p></div>
+      <div class="tc-right"><p class="tc-big">${fmtH(s.logged)}<small> / ${fmtH(j.hours)} h</small></p>${pill}</div>
     </div>`;
-
-  const stTile = shortAll > 0.01
-    ? { k: 'bad', v: `${fmtH(shortAll)}<small> h won’t fit</small>`, f: `At ${cap()} h/week there isn’t room for all ${fmtH(remAll)} h left. Log any hours you’ve already worked.` }
-    : remAll <= 0.01 ? { k: 'good', v: 'Done', f: 'Every contract fully logged.' }
-    : { k: 'good', v: `On plan`, f: `${fmtH(remAll)} h left fit within ${cap()} h/week.` };
-
-  // This/next week plan
-  let pw = wk; if (isWeekend(D.T)) pw = addDays(wk, 7);
-  const weekRows = [0, 1, 2, 3, 4].map(i => {
-    const d = addDays(pw, i), b = D.byDate[d], p = D.plan.days[d];
-    const off = !isWorkday(d) || !VJ().some(j => inJob(j, d));
-    const why = HOL[d] ? HOL[d] : !VJ().some(j => inJob(j, d)) ? 'Outside contracts' : '';
-    const segs = VJ().map(j => {
-      const h = b?.[j.id] || 0, ph = d >= D.T ? (p?.[j.id] || 0) : 0, c = colorOf(j);
-      return (h ? `<i style="--c:${c};flex:${h}" title="${esc(j.grant)} logged">${fmtH(h)}</i>` : '') +
-             (ph ? `<i class="ghost" style="--c:${c};flex:${ph}" title="${esc(j.grant)} planned">${fmtH(ph)}</i>` : '');
-    }).join('');
-    const lt = b?.total || 0, pt = d >= D.T ? (p?.total || 0) : 0;
-    const exp = D.base.days[d]?.total || 0;
-    return `<div class="wk-row ${d === D.T ? 'today' : ''} ${off ? 'off' : ''}">
-      <div class="dname">${fmt(d, { weekday: 'short' })}<small>${fmtShort(d)}</small></div>
-      <div class="bline" style="max-width:${Math.min(100, Math.max(lt + pt, 0.01) / dcap() * 100)}%">${off ? `<span class="offtxt">${esc(why) || 'Off'}</span>` : segs || `<span class="offtxt">${d < D.T ? `Nothing logged · target ${fmtH(exp)} h` : '—'}</span>`}</div>
-      <div class="tot">${off ? '' : lt ? fmtH(lt) + ' h' : pt ? '~' + fmtH(pt) + ' h' : '0 h'}<small>${off ? '' : lt && pt ? '+' + fmtH(pt) + ' plan' : lt ? 'logged' : pt ? 'planned' : ''}</small></div>
-    </div>`;
-  }).join('');
-  const pwUsed = D.byWeek[pw]?.total || 0, pwPlan = plannedWeek(pw);
-
+  };
   $('#v-overview').innerHTML = `
     <div class="head"><div><p class="eyebrow">${fmtLong(D.T)}</p><h1>Overview</h1></div></div>
     <div class="stack">
-      ${S.entries.length === 0 ? `<div class="hint">${IC.info}<span>Start by back-filling the hours you’ve already worked since ${fmtShort(D.span.start)}. Everything below updates instantly.</span></div>` : ''}
-      ${nudge}
-      <div class="card hero">
-        <div class="ring-wrap">${ringsSVG(stats)}</div>
-        <div class="hero-main">
-          <p class="eyebrow">Earned so far · gross</p>
-          <p class="big">${money(earned)}<span class="of"> of ${money(budget)}</span></p>
-          <div class="hero-rows">
-            ${stats.map(s => `<div class="hrow" style="--c:${s.c}"><span class="key2"></span><div><b>${fmtH(s.logged)} / ${fmtH(s.j.hours)} h</b><small>${esc(s.j.grant)} · ${money(s.earned)} of ${money(s.budget)}</small></div></div>`).join('')}
-          </div>
-        </div>
-      </div>
-      <div class="g4">
-        <div class="card kpi"><p class="lbl">${IC.week}This week</p><p class="val">${fmtH(wUsed)}<small> / ${cap()} h</small></p>
-          <div class="meter">${VJ().map(j => { const h = D.byWeek[wk]?.[j.id] || 0; return h ? `<i style="--c:${colorOf(j)};width:${h / cap() * 100}%"></i>` : ''; }).join('')}${wPlan ? `<i class="ghost" style="--c:var(--accent);width:${Math.min(wPlan, cap()) / cap() * 100}%"></i>` : ''}</div>
-          <p class="foot">${fmtH(Math.max(0, cap() - wUsed))} h left under the cap</p></div>
-        <div class="card kpi"><p class="lbl">${IC.cash}Still to earn</p><p class="val">${money(Math.max(0, budget - earned))}</p>
-          <p class="foot">${fmtH(stats.reduce((a, x) => a + x.left, 0))} h left to log · gross</p></div>
-        <div class="card kpi"><p class="lbl">${IC.flag}Empty work days</p><p class="val">${miss.length}<small> day${miss.length === 1 ? '' : 's'}</small></p>
-          <p class="foot">${miss.length ? `Past work days with nothing entered` : 'Every past work day has hours'}</p></div>
-        <div class="card kpi"><p class="lbl">${IC[stTile.k === 'bad' ? 'warn' : 'check']}Plan to ${fmt(D.span.end, { month: 'short', day: 'numeric' })}</p><p class="val" style="color:${stTile.k === 'bad' ? 'var(--bad)' : 'inherit'}">${stTile.v}</p><p class="foot">${stTile.f}</p></div>
-      </div>
-      <div class="g2">${stats.map(jobCard).join('')}</div>
       <div class="card">
-        <div class="card-head">
-          <div><h3>${pw === wk ? 'This week' : 'Next week'} · ${fmtRange(pw, addDays(pw, 4))}</h3><p class="sub">${fmtH(pwUsed)} h logged${pwPlan ? ` · ~${fmtH(pwPlan)} h suggested` : ''} · limit ${cap()} h · ${workLeft} work days left in total</p></div>
-          <div class="legend">${VJ().map(j => `<span><i class="sw" style="--c:${colorOf(j)}"></i>${esc(j.grant)}</span>`).join('')}<span><i class="sw ghost" style="--c:var(--ink2)"></i>Suggested</span></div>
-        </div>
-        <div class="wk-list">${weekRows}</div>
-      </div>
-      <div class="card">
-        <div class="card-head"><div><h3>Hours vs. target</h3><p class="sub">Solid = entered · dashed = where you should be (fits the ${cap()} h/week limit)</p></div>
-          <div class="legend">${VJ().map(j => `<span><i class="ln" style="--c:${colorOf(j)}"></i>${esc(j.grant)}</span>`).join('')}<span><i class="ln dash" style="--c:var(--ink2)"></i>Target</span></div></div>
-        <div id="c-cum" class="chart"></div>
+        <div class="card-head"><div><h3>Hours vs. target</h3><p class="sub">Where you are, where you should be, and where you’ll land at up to ${cap()} h/week</p></div>
+          <div class="legend"><span><i class="ln" style="--c:var(--ink2)"></i>Entered</span><span><i class="ln dash" style="--c:var(--ink2)"></i>Target</span><span><i class="ln plan" style="--c:var(--ink2)"></i>Plan from today</span><span><i class="ln cap"></i>Contract hours</span></div></div>
+        ${stats.map(s => `<div class="tc">${head(s)}<div class="chart tchart" data-tc="${s.j.id}"></div></div>`).join('')}
       </div>
       <div class="card">
         <div class="card-head"><div><h3>Weekly hours</h3><p class="sub">All positions combined against the ${cap()} h weekly limit</p></div>
@@ -893,26 +753,6 @@ function renderOverview() {
         <div id="c-week" class="chart"></div>
       </div>
     </div>`;
-  firstRings = false;
-}
-function jobCard(s) {
-  const j = s.j;
-  return `<article class="card job" style="--c:${s.c}">
-    <div class="job-top"><span class="tagc" style="--c:${s.c}"><i class="dot" style="--c:${s.c}"></i>${esc(j.grant)} grant</span><span class="pill ${s.st.k}">${IC[s.st.i]}${esc(s.st.t)}</span></div>
-    <h3>${esc(j.prof)}</h3>
-    <p class="sub">${fmtShort(j.start)} – ${fmtShort(j.end)} · ${money(j.rate)}/h · ${fmtH(j.hours)} h = ${money(s.budget)}</p>
-    <div class="prog" title="Bar = entered · tick = target by now"><i style="width:${s.pct * 100}%"></i>${D.T >= j.start ? `<b style="left:${s.tpct * 100}%"></b>` : ''}</div>
-    <div class="prog-leg"><span>${Math.round(s.pct * 100)}% entered</span><span>▏target ${fmtH(s.target)} h</span></div>
-    <div class="job-grid">
-      <div><small>Entered</small><b>${fmtH(s.logged)} h</b></div>
-      <div><small>Target by now</small><b>${fmtH(s.target)} h</b></div>
-      <div class="${s.miss > 0.01 ? 'hl' : ''}"><small>${s.miss > 0.01 ? 'Missing' : 'Ahead by'}</small><b>${s.miss > 0.01 ? fmtH(s.miss) + ' h' : fmtH(Math.max(0, s.diff)) + ' h'}</b></div>
-      <div><small>Earned</small><b>${money(s.earned)}</b></div>
-      <div><small>Hours left</small><b>${fmtH(s.left)} h</b></div>
-      <div><small>Needed</small><b>${s.daysLeft ? fmtH(Math.round(s.perDay * 10) / 10) + ' h/day' : '—'}</b></div>
-    </div>
-    <p class="sub" style="margin-top:12px">${s.daysLeft} work day${s.daysLeft === 1 ? '' : 's'} left · ${money(s.left * j.rate)} still to earn${s.miss > 0.01 ? ` · <b style="color:var(--accent-2)">${money(s.miss * j.rate)} not logged</b>` : ''}</p>
-  </article>`;
 }
 
 /* =====================================================================
@@ -938,68 +778,57 @@ function niceMax(v, steps = 4) {
 }
 const tr = (c, label, val) => `<div class="tr"><span><i class="dot" style="--c:${c}"></i>${label}</span><b>${val}</b></div>`;
 
-function lineChart(host) {
+/* One panel per position, each on its own scale: entered (solid), target from
+   day one (dashed), the plan from today under the weekly limit (dotted), and
+   the contract hours as the finish line. */
+function targetChart(host, j) {
   if (!host) return;
-  const W = Math.max(280, host.clientWidth), narrow = W < 520, H = narrow ? 230 : 280;
-  const m = { t: 14, r: narrow ? 44 : 64, b: 26, l: 34 };
-  const dates = []; for (let d = D.span.start; d <= D.span.end; d = addDays(d, 1)) dates.push(d);
-  const n = dates.length, step = (W - m.l - m.r) / (n - 1);
-  const X = i => m.l + i * step;
-  const lastEntry = S.entries.reduce((a, e) => maxD(a, e.date), '0');
-  const actEnd = minD(D.span.end, maxD(D.T, lastEntry));
-  const ser = VJ().map(j => {
-    let cum = 0;
-    const act = dates.map(d => { cum += D.byDate[d]?.[j.id] || 0; return cum; });
-    const tgt = dates.map(d => d < j.start ? null : (D.base.cum[d]?.[j.id] || 0));
-    return { j, c: colorOf(j), act, tgt };
-  });
-  const top = Math.max(...VJ().map(j => +j.hours || 0), ...ser.map(s => s.act[n - 1]));
-  const { max: ymax, step: ys } = niceMax(top);
+  const W = Math.max(280, host.clientWidth), narrow = W < 520, H = narrow ? 190 : 220;
+  const m = { t: 16, r: narrow ? 46 : 64, b: 26, l: 34 };
+  const dates = []; for (let d = j.start; d <= j.end; d = addDays(d, 1)) dates.push(d);
+  const n = dates.length, step = (W - m.l - m.r) / Math.max(1, n - 1), X = i => m.l + i * step;
+  const c = colorOf(j);
+  let run = 0; const act = dates.map(d => (run += D.byDate[d]?.[j.id] || 0));
+  const tgt = dates.map(d => D.base.cum[d]?.[j.id] || 0);
+  const lastEntry = S.entries.reduce((a, e) => e.job === j.id ? maxD(a, e.date) : a, '0');
+  const aEnd = dates.indexOf(minD(j.end, maxD(D.T, lastEntry)));           // -1 = not started yet
+  // Plan: what's entered so far plus the suggested hours from today on.
+  const p0 = Math.max(0, aEnd), plan = dates.map(() => null);
+  if (D.T <= j.end) { let v = aEnd >= 0 ? act[aEnd] : 0; plan[p0] = v; for (let i = p0; i < n; i++) { if (dates[i] >= D.T) v += D.plan.days[dates[i]]?.[j.id] || 0; if (i > p0 || aEnd < 0) plan[i] = v; } }
+  const land = plan[n - 1] ?? act[n - 1], short = Math.max(0, j.hours - land);
+  const { max: ymax, step: ys } = niceMax(Math.max(j.hours, act[n - 1]), 5);
   const Y = v => H - m.b - (v / ymax) * (H - m.t - m.b);
+  const pts = (arr, a, b) => { const o = []; for (let i = a; i <= b; i++) if (arr[i] != null) o.push(`${X(i).toFixed(1)},${Y(arr[i]).toFixed(1)}`); return o.join(' '); };
   let g = '';
   for (let v = 0; v <= ymax + 1e-9; v += ys) g += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="#EEEEF1"/><text x="${m.l - 8}" y="${Y(v) + 4}" text-anchor="end">${fmtH(v)}</text>`;
   let lastLab = -1e9;
-  dates.forEach((d, i) => {
-    if (dow(d) === 1 && X(i) - lastLab > (narrow ? 56 : 70)) { g += `<text x="${X(i)}" y="${H - 6}" text-anchor="middle">${fmtShort(d)}</text>`; lastLab = X(i); }
-  });
+  dates.forEach((d, i) => { if (dow(d) === 1 && X(i) - lastLab > (narrow ? 52 : 66)) { g += `<text x="${X(i)}" y="${H - 6}" text-anchor="middle">${fmtShort(d)}</text>`; lastLab = X(i); } });
+  g += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(j.hours)}" y2="${Y(j.hours)}" stroke="#1D1D1F" stroke-width="1.5"/><text x="${W - m.r + 6}" y="${Y(j.hours) + 4}" class="vlab">${fmtH(j.hours)} h</text>`;
   const ti = dates.indexOf(D.T);
-  if (ti >= 0) g += `<line x1="${X(ti)}" x2="${X(ti)}" y1="${m.t}" y2="${H - m.b}" stroke="#1D1D1F" stroke-opacity=".25"/><text x="${X(ti)}" y="${m.t - 2}" text-anchor="middle" class="vlab">Today</text>`;
-  const aEnd = dates.indexOf(actEnd);
-  ser.forEach(s => {
-    const tp = s.tgt.map((v, i) => v == null ? null : `${X(i).toFixed(1)},${Y(v).toFixed(1)}`).filter(Boolean);
-    g += `<polyline points="${tp.join(' ')}" fill="none" stroke="${s.c}" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="4 4"/>`;
-    const si = Math.max(0, dates.indexOf(s.j.start));
-    if (aEnd >= si) {
-      const ap = []; for (let i = si; i <= aEnd; i++) ap.push(`${X(i).toFixed(1)},${Y(s.act[i]).toFixed(1)}`);
-      const area = `M${X(si)},${Y(0)} L${ap.join(' L')} L${X(aEnd)},${Y(0)}Z`;
-      g += `<path d="${area}" fill="${s.c}" fill-opacity=".08"/><polyline points="${ap.join(' ')}" fill="none" stroke="${s.c}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
-      g += `<circle cx="${X(aEnd)}" cy="${Y(s.act[aEnd])}" r="4.5" fill="${s.c}" stroke="#fff" stroke-width="2"/>`;
-    }
-  });
-  // end labels (avoid collisions)
-  const labs = ser.filter(s => actEnd >= s.j.start).map(s => ({ y: Y(s.act[Math.max(0, aEnd)]), t: `${fmtH(s.act[Math.max(0, aEnd)])} h`, x: X(Math.max(0, aEnd)) })).sort((a, b) => a.y - b.y);
-  for (let i = 1; i < labs.length; i++) if (labs[i].y - labs[i - 1].y < 14) labs[i].y = labs[i - 1].y + 14;
-  labs.forEach(l => g += `<text x="${l.x + 9}" y="${l.y + 4}" class="endlab">${l.t}</text>`);
-  // final target labels at right
-  ser.forEach(s => g += `<text x="${W - m.r + 6}" y="${Y(s.tgt[n - 1] || 0) + 4}" class="vlab">${fmtH(s.j.hours)}</text>`);
-  const cross = `<g class="cross" visibility="hidden"><line class="cl" y1="${m.t}" y2="${H - m.b}" stroke="#1D1D1F" stroke-opacity=".35"/>${ser.map(s => `<circle class="cd" r="4.5" fill="${s.c}" stroke="#fff" stroke-width="2"/>`).join('')}</g>`;
-  host.innerHTML = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Cumulative hours entered versus target">${g}${cross}<rect class="hit" x="${m.l}" y="0" width="${W - m.l - m.r}" height="${H}" fill="transparent"/></svg>`;
-  const svg = host.firstChild, cg = svg.querySelector('.cross'), cl = cg.querySelector('.cl'), cds = cg.querySelectorAll('.cd');
+  if (ti >= 0) g += `<line x1="${X(ti)}" x2="${X(ti)}" y1="${m.t}" y2="${H - m.b}" stroke="#1D1D1F" stroke-opacity=".25"/><text x="${X(ti) + (X(ti) - m.l < 24 ? 4 : 0)}" y="${m.t - 4}" text-anchor="${X(ti) - m.l < 24 ? 'start' : 'middle'}" class="vlab">Today</text>`;
+  g += `<polyline points="${pts(tgt, 0, n - 1)}" fill="none" stroke="${c}" stroke-opacity=".6" stroke-width="1.5" stroke-dasharray="5 4"/>`;
+  if (aEnd >= 0) {
+    // Shade the gap between entered and target up to today: the hours not logged yet.
+    const gapTop = [], gapBot = [];
+    for (let i = 0; i <= aEnd; i++) { gapTop.push(`${X(i).toFixed(1)},${Y(Math.max(act[i], tgt[i])).toFixed(1)}`); gapBot.unshift(`${X(i).toFixed(1)},${Y(act[i]).toFixed(1)}`); }
+    g += `<path d="M${X(0)},${Y(0)} L${pts(act, 0, aEnd).split(' ').join(' L')} L${X(aEnd)},${Y(0)}Z" fill="${c}" fill-opacity=".1"/>`;
+    g += `<polygon points="${gapTop.join(' ')} ${gapBot.join(' ')}" style="fill:var(--accent);fill-opacity:.12"/>`;
+    g += `<polyline points="${pts(act, 0, aEnd)}" fill="none" stroke="${c}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`;
+  }
+  if (plan.some(v => v != null)) g += `<polyline points="${pts(plan, 0, n - 1)}" fill="none" stroke="${c}" stroke-width="2.5" stroke-dasharray="0.5 5" stroke-linecap="round"/>`;
+  if (aEnd >= 0) g += `<circle cx="${X(aEnd)}" cy="${Y(act[aEnd])}" r="5" fill="${c}" stroke="#fff" stroke-width="2"/><text x="${X(aEnd) + (aEnd > n * .8 ? -9 : 9)}" y="${Y(act[aEnd]) - 8}" text-anchor="${aEnd > n * .8 ? 'end' : 'start'}" class="endlab">${fmtH(act[aEnd])} h</text>`;
+  if (short > 0.01 && D.T <= j.end) g += `<circle cx="${X(n - 1)}" cy="${Y(land)}" r="4" fill="#fff" stroke-width="2" style="stroke:var(--bad)"/><text x="${W - m.r + 6}" y="${Y(land) + 4}" class="vlab" style="fill:var(--bad)">${fmtH(land)} h</text>`;
+  const cross = `<g class="cross" visibility="hidden"><line class="cl" y1="${m.t}" y2="${H - m.b}" stroke="#1D1D1F" stroke-opacity=".35"/><circle class="cd" r="4.5" fill="${c}" stroke="#fff" stroke-width="2"/></g>`;
+  host.innerHTML = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(j.grant)}: ${fmtH(aEnd >= 0 ? act[aEnd] : 0)} of ${fmtH(j.hours)} hours entered, target ${fmtH(tgt[Math.max(0, aEnd)])} hours">${g}${cross}<rect x="${m.l}" y="0" width="${W - m.l - m.r}" height="${H}" fill="transparent"/></svg>`;
+  const svg = host.firstChild, cg = svg.querySelector('.cross'), cl = cg.querySelector('.cl'), cd = cg.querySelector('.cd');
   const move = e => {
-    const r = svg.getBoundingClientRect();
-    const i = clamp(Math.round((e.clientX - r.left - m.l) / step), 0, n - 1), d = dates[i];
-    cg.setAttribute('visibility', 'visible'); cl.setAttribute('x1', X(i)); cl.setAttribute('x2', X(i));
-    let rows = '';
-    ser.forEach((s, k) => {
-      const showA = d <= actEnd && d >= s.j.start;
-      cds[k].setAttribute('visibility', showA ? 'visible' : 'hidden');
-      cds[k].setAttribute('cx', X(i)); cds[k].setAttribute('cy', Y(s.act[i]));
-      if (d < s.j.start) { rows += tr(s.c, esc(s.j.grant), 'not started'); return; }
-      const t = s.tgt[i] || 0;
-      rows += tr(s.c, esc(s.j.grant) + (showA ? ' entered' : ' target'), showA ? `${fmtH(s.act[i])} h` : `${fmtH(t)} h`);
-      if (showA) { const gp = t - s.act[i]; rows += `<div class="tr"><span style="padding-left:15px">target ${fmtH(t)} h</span><b style="color:${gp > 0.01 ? 'var(--accent-2)' : 'var(--good)'}">${gp > 0.01 ? '−' + fmtH(gp) + ' h' : 'on track'}</b></div>`; }
-    });
-    showTip(`<h5>${fmtDay(d)}${HOL[d] ? ' · ' + esc(HOL[d]) : isWeekend(d) ? ' · weekend' : ''}</h5>${rows}`, e.clientX, e.clientY);
+    const r = svg.getBoundingClientRect(), i = clamp(Math.round((e.clientX - r.left - m.l) / step), 0, n - 1), d = dates[i];
+    const past = i <= aEnd, v = past ? act[i] : plan[i] ?? act[i], t = tgt[i], gp = t - v;
+    cg.setAttribute('visibility', 'visible'); cl.setAttribute('x1', X(i)); cl.setAttribute('x2', X(i)); cd.setAttribute('cx', X(i)); cd.setAttribute('cy', Y(v));
+    const rows = tr(c, past ? 'Entered' : 'Plan', `${past ? '' : '~'}${fmtH(v)} h`) + tr('transparent', 'Target', `${fmtH(t)} h`) +
+      (past && gp > 0.01 ? tr('transparent', 'Not logged', `<span style="color:var(--accent-2)">${fmtH(gp)} h · ${money(gp * j.rate)}</span>`) : past ? tr('transparent', 'Gap', 'on track') : '') +
+      tr('transparent', 'Earned', money((past ? act[i] : v) * j.rate));
+    showTip(`<h5>${esc(j.grant)} · ${fmtDay(d)}${HOL[d] ? ' · ' + esc(HOL[d]) : isWeekend(d) ? ' · weekend' : ''}</h5>${rows}`, e.clientX, e.clientY);
   };
   svg.addEventListener('pointermove', move);
   svg.addEventListener('pointerdown', e => { tipTouch = e.pointerType === 'touch'; move(e); });
@@ -1352,8 +1181,10 @@ function renderSettings() {
           <div class="gitem"><label for="j-${j.id}-start">Start date</label><input id="j-${j.id}-start" type="date" data-j="${j.id}:start" value="${j.start}"></div>
           <div class="gitem"><label for="j-${j.id}-end">End date</label><input id="j-${j.id}-end" type="date" data-j="${j.id}:end" value="${j.end}"></div>
           <div class="gitem"><label for="j-${j.id}-rate">Hourly rate (CAD)</label><input id="j-${j.id}-rate" type="number" step="0.01" min="0" data-j="${j.id}:rate" value="${j.rate}"></div>
-          <div class="gitem"><div class="gl">Contract hours<small>${money(j.hours * j.rate)} total</small></div><input type="number" step="0.25" min="0" data-j="${j.id}:hours" value="${j.hours}" aria-label="Contract hours"></div>`}
+          <div class="gitem"><div class="gl">Contract hours<small>${money(j.hours * j.rate)} total</small></div><input type="number" step="0.25" min="0" data-j="${j.id}:hours" value="${j.hours}" aria-label="Contract hours"></div>
+          ${S.entries.some(e => e.job === j.id) ? '' : `<div class="gitem"><div class="gl">Delete this position<small>Only possible while it has no hours logged</small></div><button class="btn sm danger" data-act="deljob" data-id="${j.id}">Delete</button></div>`}`}
         </div>`).join('')}
+      <div class="glist" style="margin-top:12px"><div class="gitem"><div class="gl">New RA position<small>Adds it everywhere: Overview, Log, Calendar, the agent and Supabase</small></div><button class="btn sm primary" data-act="addjob">${IC.plus}Add position</button></div></div>
       <p class="gnote">Hidden positions disappear from Overview, Log and Calendar. Their entries stay in Supabase and still count toward the ${cap()} h weekly limit.</p>
       <p class="group-title">Work rules</p>
       <div class="glist">
@@ -1448,6 +1279,23 @@ document.addEventListener('click', e => {
   else if (a === 'copy-token') copyText(storedToken(), 'Token copied');
   else if (a === 'new-token') createToken();
   else if (a === 'revoke') revokeToken(t.dataset.id, t.dataset.hint);
+  else if (a === 'addjob') {
+    const id = 'p' + uid();
+    S.jobs.push({ id, grant: 'New grant', prof: 'Prof. ', start: D.T, end: addDays(D.T, 91), rate: 25, hours: 100 });
+    save(); renderAll(); renderSettings();
+    const el = $(`#j-${id}-grant`); el?.scrollIntoView({ block: 'center' }); el?.select();
+    toast('Position added — fill in its details below');
+  }
+  else if (a === 'deljob') {
+    const j = jobById(t.dataset.id);
+    if (!j || S.entries.some(e => e.job === j.id)) return;
+    if (S.jobs.length === 1) return toast('Keep at least one position');
+    if (!confirm(`Delete the ${j.grant} position?`)) return;
+    S.jobs = S.jobs.filter(x => x !== j);
+    if (S.lastJob === j.id) S.lastJob = VJ()[0].id;
+    if (S.timer?.job === j.id) S.timer = null;
+    save(); renderAll(); renderSettings(); toast(`${j.grant} deleted`);
+  }
   else if (a === 'skip-auth') { cloudSkipped = true; $('#auth').hidden = true; setStatus('local'); }
   else if (a === 'quick') openQuick();
   else if (a === 'catchup') { show('log'); }
@@ -1836,7 +1684,6 @@ function unlock() {
   touch();
   APP.hidden = false;
   LOCK.classList.add('out'); setTimeout(() => { LOCK.hidden = true; }, 350);
-  firstRings = true;
   renderAll();
   let v = 'overview'; try { v = sessionStorage.getItem('ra.view') || 'overview'; } catch (e) {}
   show(TABS.some(t => t[0] === v) ? v : 'overview');
