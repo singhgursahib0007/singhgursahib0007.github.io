@@ -3,75 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickQR - Real-time QR Generator</title>
+    <title>QuickQR - Real-time Custom QR Generator</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- QRCode.js Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #ffffff;
+            background-color: #f8fafc;
         }
         .teal-gradient {
             background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
         }
-        #qrcode img {
+        #qrcode img, #qrcode canvas {
             margin: 0 auto;
-            padding: 10px;
+            padding: 12px;
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.08);
+            max-width: 100%;
         }
         .custom-shadow {
-            box-shadow: 0 10px 25px -5px rgba(13, 148, 136, 0.1), 0 8px 10px -6px rgba(13, 148, 136, 0.1);
+            box-shadow: 0 20px 30px -10px rgba(13, 148, 136, 0.08), 0 8px 15px -6px rgba(13, 148, 136, 0.05);
+        }
+        /* Custom color picker styling */
+        input[type="color"] {
+            -webkit-appearance: none;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+        input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 8px;
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-4">
+<body class="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 text-slate-800">
 
     <!-- Header -->
-    <header class="text-center mb-10">
+    <header class="text-center mb-8">
         <div class="flex items-center justify-center mb-3">
-            <div class="teal-gradient p-3 rounded-2xl shadow-lg">
+            <div class="teal-gradient p-3.5 rounded-2xl shadow-md">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
                 </svg>
             </div>
         </div>
-        <h1 class="text-4xl font-bold text-teal-900 tracking-tight">QuickQR</h1>
-        <p class="text-teal-600 mt-2 font-medium">Instant QR generation for any content.</p>
+        <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight">QuickQR</h1>
+        <p class="text-teal-700 mt-1.5 font-medium text-sm">Instant custom QR code generator</p>
     </header>
 
     <!-- Main Container -->
-    <main class="w-full max-w-md bg-white border border-teal-50 rounded-3xl p-8 custom-shadow">
+    <main class="w-full max-w-lg bg-white border border-slate-100 rounded-3xl p-6 sm:p-8 custom-shadow">
         
         <!-- Input Section -->
-        <div class="mb-8">
-            <label for="qr-input" class="block text-sm font-semibold text-teal-700 mb-2 px-1">Content (URL or Text)</label>
+        <div class="mb-6">
+            <label for="qr-input" class="block text-xs uppercase tracking-wider font-bold text-slate-500 mb-2 px-1">1. Content (URL or Text)</label>
             <textarea 
                 id="qr-input" 
                 rows="3" 
-                class="w-full px-4 py-3 rounded-xl border border-teal-100 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all resize-none text-teal-900 placeholder-teal-300"
+                class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all resize-none text-slate-800 placeholder-slate-400 text-sm"
                 placeholder="Paste link or type text here..."
             ></textarea>
         </div>
 
+        <!-- Color Options Section -->
+        <div class="mb-8 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+            <label class="block text-xs uppercase tracking-wider font-bold text-slate-500 mb-3 px-1">2. Customize Colors</label>
+            
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <!-- Dark / Foreground Color Picker -->
+                <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200 shadow-sm">
+                    <span class="text-xs font-semibold text-slate-700 ml-1">Pattern</span>
+                    <div class="flex items-center gap-2">
+                        <span id="fg-code" class="text-xs font-mono text-slate-400">#0f766e</span>
+                        <input type="color" id="qr-color-dark" value="#0f766e" class="w-8 h-8 rounded-lg cursor-pointer">
+                    </div>
+                </div>
+
+                <!-- Light / Background Color Picker -->
+                <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200 shadow-sm">
+                    <span class="text-xs font-semibold text-slate-700 ml-1">Background</span>
+                    <div class="flex items-center gap-2">
+                        <span id="bg-code" class="text-xs font-mono text-slate-400">#ffffff</span>
+                        <input type="color" id="qr-color-light" value="#ffffff" class="w-8 h-8 rounded-lg cursor-pointer">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Preset Palette Swatches -->
+            <div>
+                <span class="block text-[11px] font-medium text-slate-400 mb-2 px-1">Presets</span>
+                <div class="flex items-center gap-2 flex-wrap" id="preset-swatches">
+                    <!-- Preset 1: Teal Classic -->
+                    <button type="button" data-fg="#0f766e" data-bg="#ffffff" class="preset-btn w-7 h-7 rounded-full border-2 border-slate-200 overflow-hidden relative transition-transform hover:scale-110 focus:outline-none" title="Teal & White">
+                        <span class="absolute inset-0 bg-[#0f766e]"></span>
+                    </button>
+                    <!-- Preset 2: Dark Charcoal -->
+                    <button type="button" data-fg="#1e293b" data-bg="#ffffff" class="preset-btn w-7 h-7 rounded-full border-2 border-slate-200 overflow-hidden relative transition-transform hover:scale-110 focus:outline-none" title="Dark Slate & White">
+                        <span class="absolute inset-0 bg-[#1e293b]"></span>
+                    </button>
+                    <!-- Preset 3: Electric Blue -->
+                    <button type="button" data-fg="#2563eb" data-bg="#eff6ff" class="preset-btn w-7 h-7 rounded-full border-2 border-slate-200 overflow-hidden relative transition-transform hover:scale-110 focus:outline-none" title="Royal Blue & Light Blue">
+                        <span class="absolute inset-0 bg-[#2563eb]"></span>
+                    </button>
+                    <!-- Preset 4: Emerald Green -->
+                    <button type="button" data-fg="#059669" data-bg="#ecfdf5" class="preset-btn w-7 h-7 rounded-full border-2 border-slate-200 overflow-hidden relative transition-transform hover:scale-110 focus:outline-none" title="Emerald & Mint">
+                        <span class="absolute inset-0 bg-[#059669]"></span>
+                    </button>
+                    <!-- Preset 5: Violet Purple -->
+                    <button type="button" data-fg="#7c3aed" data-bg="#f5f3ff" class="preset-btn w-7 h-7 rounded-full border-2 border-slate-200 overflow-hidden relative transition-transform hover:scale-110 focus:outline-none" title="Purple & Soft Lavender">
+                        <span class="absolute inset-0 bg-[#7c3aed]"></span>
+                    </button>
+                    <!-- Preset 6: Crimson Red -->
+                    <button type="button" data-fg="#dc2626" data-bg="#fef2f2" class="preset-btn w-7 h-7 rounded-full border-2 border-slate-200 overflow-hidden relative transition-transform hover:scale-110 focus:outline-none" title="Crimson & Soft Pink">
+                        <span class="absolute inset-0 bg-[#dc2626]"></span>
+                    </button>
+                    <!-- Preset 7: Inverted Dark Mode -->
+                    <button type="button" data-fg="#ffffff" data-bg="#0f172a" class="preset-btn w-7 h-7 rounded-full border-2 border-slate-200 overflow-hidden relative transition-transform hover:scale-110 focus:outline-none" title="Dark Mode (Inverted)">
+                        <span class="absolute inset-0 bg-[#0f172a]"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- Result Section -->
-        <div id="qr-container" class="flex flex-col items-center justify-center min-h-[250px] border-2 border-dashed border-teal-50 rounded-2xl bg-teal-50/30 p-6 transition-all">
+        <div id="qr-container" class="flex flex-col items-center justify-center min-h-[260px] border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50 p-6 transition-all">
             <div id="qrcode"></div>
             
             <!-- Placeholder -->
-            <div id="placeholder-msg" class="text-center text-teal-400">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-2 opacity-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            <div id="placeholder-msg" class="text-center text-slate-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-2 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
                 </svg>
-                <p class="text-sm font-medium">QR code will appear here</p>
+                <p class="text-sm font-medium text-slate-500">QR code will appear here</p>
+                <p class="text-xs text-slate-400 mt-1">Start typing text or paste a link above</p>
             </div>
 
             <button 
                 id="download-btn" 
-                class="hidden mt-6 flex items-center gap-2 px-6 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-full font-semibold transition-colors shadow-md"
+                class="hidden mt-6 flex items-center gap-2 px-6 py-2.5 bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white rounded-full font-semibold text-sm transition-all shadow-md hover:shadow-lg"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -82,22 +159,35 @@
     </main>
 
     <!-- Footer -->
-    <footer class="mt-12 text-teal-400 text-sm font-medium">
-        &copy; 2024 QuickQR Tool • Free & Privacy-focused
+    <footer class="mt-8 text-slate-400 text-xs font-medium">
+        &copy; QuickQR Tool • Free, Instant & Customizable
     </footer>
 
     <script>
+        // DOM Elements
         const input = document.getElementById('qr-input');
         const qrcodeDiv = document.getElementById('qrcode');
         const placeholder = document.getElementById('placeholder-msg');
         const downloadBtn = document.getElementById('download-btn');
-        
+        const colorDarkInput = document.getElementById('qr-color-dark');
+        const colorLightInput = document.getElementById('qr-color-light');
+        const fgCode = document.getElementById('fg-code');
+        const bgCode = document.getElementById('bg-code');
+        const presetBtns = document.querySelectorAll('.preset-btn');
+
         let qrcode = null;
 
+        // Generate QR code based on text input and current color choices
         function generateQR() {
             const value = input.value.trim();
-            
-            // Clear existing QR
+            const colorDark = colorDarkInput.value;
+            const colorLight = colorLightInput.value;
+
+            // Update hex label indicators
+            fgCode.textContent = colorDark;
+            bgCode.textContent = colorLight;
+
+            // Clear existing QR content
             qrcodeDiv.innerHTML = "";
             
             if (value === "") {
@@ -106,46 +196,67 @@
                 return;
             }
 
-            // Hide placeholder
+            // Hide placeholder and show download button
             placeholder.classList.add('hidden');
             downloadBtn.classList.remove('hidden');
 
-            // Generate new QR
-            qrcode = new QRCode(qrcodeDiv, {
-                text: value,
-                width: 200,
-                height: 200,
-                colorDark: "#0f766e",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
-            });
+            // Generate new customized QR code
+            try {
+                qrcode = new QRCode(qrcodeDiv, {
+                    text: value,
+                    width: 200,
+                    height: 200,
+                    colorDark: colorDark,
+                    colorLight: colorLight,
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            } catch (err) {
+                console.error("QR Code Generation Error:", err);
+            }
         }
 
-        // Event listener for real-time generation
+        // Event listeners for input changes & dynamic color adjustments
         input.addEventListener('input', generateQR);
+        colorDarkInput.addEventListener('input', generateQR);
+        colorLightInput.addEventListener('input', generateQR);
 
-        // Download functionality
+        // Preset palette swatch click handler
+        presetBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const fg = btn.getAttribute('data-fg');
+                const bg = btn.getAttribute('data-bg');
+                colorDarkInput.value = fg;
+                colorLightInput.value = bg;
+                generateQR();
+            });
+        });
+
+        // Download PNG handler (supports canvas & img outputs)
         downloadBtn.addEventListener('click', () => {
             const img = qrcodeDiv.querySelector('img');
-            if (img) {
+            const canvas = qrcodeDiv.querySelector('canvas');
+            
+            let dataUrl = "";
+            if (img && img.src && img.src.startsWith('data:image')) {
+                dataUrl = img.src;
+            } else if (canvas) {
+                dataUrl = canvas.toDataURL("image/png");
+            }
+
+            if (dataUrl) {
                 const link = document.createElement('a');
-                link.download = 'qrcode-quickqr.png';
-                link.href = img.src;
+                link.download = `qrcode-${Date.now()}.png`;
+                link.href = dataUrl;
+                document.body.appendChild(link);
                 link.click();
-            } else {
-                // Handle canvas fallback if img is not ready
-                const canvas = qrcodeDiv.querySelector('canvas');
-                if (canvas) {
-                    const link = document.createElement('a');
-                    link.download = 'qrcode-quickqr.png';
-                    link.href = canvas.toDataURL("image/png");
-                    link.click();
-                }
+                document.body.removeChild(link);
             }
         });
 
-        // Focus input on load
-        window.onload = () => input.focus();
+        // Focus text area automatically on load
+        window.addEventListener('DOMContentLoaded', () => {
+            input.focus();
+        });
     </script>
 </body>
 </html>
