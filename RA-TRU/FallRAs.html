@@ -337,25 +337,6 @@ details.range summary::-webkit-details-marker{display:none}
 .wsum .r small{display:block;font-weight:400;color:var(--ink2);font-size:12px}
 @media (max-width:560px){.wsum{grid-template-columns:96px 1fr 84px;gap:10px;font-size:13px}}
 
-/* ---------- Pay ---------- */
-.period{display:grid;grid-template-columns:1.2fr 1.3fr 1fr;gap:14px;align-items:center;padding:16px 4px;border-bottom:.5px solid var(--line)}
-.period:last-child{border-bottom:0}
-.period.cur{background:linear-gradient(90deg,var(--accent-tint),transparent);border-radius:14px;padding-left:12px;padding-right:12px}
-.period b.t{font-size:15.5px;font-weight:650;display:block}
-.period small{color:var(--ink2);font-size:12.5px}
-.period .hrs{display:flex;flex-direction:column;gap:4px;font-size:13px}
-.period .hrs span{display:flex;align-items:center;gap:7px}
-.period .amt{text-align:right}
-.period .amt b{font-size:20px;font-weight:700;letter-spacing:-.02em;display:block}
-.p-actions{grid-column:1/-1;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.p-actions label.tg2{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:500;background:var(--fill2);border-radius:12px;padding:6px 10px 6px 12px}
-.p-actions .switch{transform:scale(.82);transform-origin:right center;margin-right:-6px}
-.p-actions input.net{width:120px;height:36px;font-size:15px}
-@media (max-width:760px){.period{grid-template-columns:1fr auto}.period .hrs{grid-column:1/-1;flex-direction:row;gap:14px;order:3}.p-actions{order:4}}
-.sched{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}
-.sched .field{margin:0}
-@media (max-width:620px){.sched{grid-template-columns:1fr 1fr}.sched .btn{grid-column:1/-1}}
-
 /* ---------- Settings ---------- */
 .group-title{font-size:13px;font-weight:600;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em;margin:24px 6px 8px}
 .group-title:first-child{margin-top:0}
@@ -467,7 +448,6 @@ details.range summary::-webkit-details-marker{display:none}
     <section id="v-overview" class="view"></section>
     <section id="v-log" class="view" hidden></section>
     <section id="v-calendar" class="view" hidden></section>
-    <section id="v-pay" class="view" hidden></section>
     <section id="v-settings" class="view" hidden></section>
   </main>
   <button class="fab" data-act="quick" aria-label="Log hours"><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
@@ -531,7 +511,6 @@ const IC = {
   overview: '<svg class="i" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="9" rx="2"/><rect x="13.5" y="3.5" width="7" height="5" rx="2"/><rect x="13.5" y="11.5" width="7" height="9" rx="2"/><rect x="3.5" y="15.5" width="7" height="5" rx="2"/></svg>',
   log: '<svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>',
   calendar: '<svg class="i" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',
-  pay: '<svg class="i" viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9.5v5M18 9.5v5"/></svg>',
   settings: '<svg class="i" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>',
   check: '<svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
   warn: '<svg class="i" viewBox="0 0 24 24"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.2v.1"/></svg>',
@@ -560,7 +539,7 @@ const DEFAULT = () => ({
   v: 1,
   jobs: [
     { id: 'irf',  grant: 'IRF',  prof: 'Prof. Mridula Sharma', start: '2026-09-21', end: '2026-11-30', rate: 20, hours: 125 },
-    { id: 'uraf', grant: 'URAF', prof: 'Prof. Manu Sharma',    start: '2026-11-02', end: '2026-12-23', rate: 25, hours: 125 },
+    { id: 'uraf', grant: 'URAF', prof: 'Prof. Manu Sharma',    start: '2026-11-02', end: '2026-12-23', rate: 25, hours: 105 },
     { id: 'plar', grant: 'PLAR', prof: 'Prof. Latif',          start: '2026-11-09', end: '2027-01-28', rate: 25, hours: 420 },
   ],
   entries: [],
@@ -749,26 +728,6 @@ function jobStats(j) {
     pct: j.hours ? Math.min(1, logged / j.hours) : 0, tpct: j.hours ? Math.min(1, target / j.hours) : 0,
     earned: logged * j.rate, budget: j.hours * j.rate, miss: Math.max(0, -diff) };
 }
-function periods() {
-  const off = +S.settings.paydayOffset || 0;
-  let p = S.settings.payAnchor || D.span.start;
-  while (p > D.span.start) p = addDays(p, -14);
-  while (addDays(p, 13) < D.span.start) p = addDays(p, 14);
-  const out = [];
-  for (let i = 1; p <= D.span.end; p = addDays(p, 14), i++) {
-    const e = addDays(p, 13), r = { i, start: p, end: e, payday: addDays(e, off), h: {}, ph: {}, th: {}, gross: 0, pgross: 0, tgross: 0 };
-    VJ().forEach(j => { r.h[j.id] = 0; r.ph[j.id] = 0; r.th[j.id] = 0; });
-    for (let d = p; d <= e; d = addDays(d, 1)) {
-      const b = D.byDate[d], pl = D.plan.days[d], bs = D.base.days[d];
-      VJ().forEach(j => { r.h[j.id] += b?.[j.id] || 0; r.ph[j.id] += pl?.[j.id] || 0; r.th[j.id] += bs?.[j.id] || 0; });
-    }
-    VJ().forEach(j => { r.gross += r.h[j.id] * j.rate; r.pgross += r.ph[j.id] * j.rate; r.tgross += r.th[j.id] * j.rate; });
-    r.status = D.T < r.start ? 'upcoming' : D.T <= r.end ? 'current' : D.T < r.payday ? 'processing' : D.T === r.payday ? 'today' : 'paid';
-    r.rec = S.pay[r.start] || {};
-    out.push(r);
-  }
-  return out;
-}
 
 /* Validation for one entry (hard university rules) */
 function validate(v) {
@@ -794,7 +753,7 @@ function validate(v) {
    UI plumbing
    ===================================================================== */
 let view = 'overview', calMonth = null, logFilter = 'all', formMem = {}, firstRings = true, missOpen = false;
-const TABS = [['overview', 'Overview'], ['log', 'Log'], ['calendar', 'Calendar'], ['pay', 'Pay'], ['settings', 'Settings']];
+const TABS = [['overview', 'Overview'], ['log', 'Log'], ['calendar', 'Calendar'], ['settings', 'Settings']];
 $('#topnav').innerHTML = TABS.map(([k, l]) => `<button data-tab="${k}">${l}</button>`).join('');
 $('#tabbar').innerHTML = TABS.map(([k, l]) => `<button data-tab="${k}">${IC[k]}<span>${l}</span></button>`).join('');
 
@@ -809,13 +768,12 @@ function show(v) {
 }
 function renderAll() {
   derive();
-  renderOverview(); renderLog(); renderCalendar(); renderPay();
+  renderOverview(); renderLog(); renderCalendar();
   requestAnimationFrame(renderCharts);
 }
 function renderCharts() {
   hideTip();
   if (view === 'overview') { lineChart($('#c-cum')); weekChart($('#c-week')); }
-  if (view === 'pay') payChart($('#c-pay'));
 }
 let toastT;
 function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); }
@@ -837,16 +795,11 @@ function ringsSVG(stats) {
     <text x="${c}" y="${c + 20}" text-anchor="middle" font-size="11" fill="#6E6E73" font-family="-apple-system,BlinkMacSystemFont,sans-serif">of ${fmtH(all)} h</text>
   </svg>`;
 }
-function nextPay() {
-  const P = periods();
-  return P.find(p => p.payday >= D.T && (p.gross + p.pgross) > 0) || P.find(p => p.payday >= D.T) || null;
-}
 function renderOverview() {
   const stats = VJ().map(jobStats);
   const G = gap(), miss = unloggedDays();
   const earned = stats.reduce((s, x) => s + x.earned, 0), budget = stats.reduce((s, x) => s + x.budget, 0);
   const wk = weekKey(D.T), wUsed = D.byWeek[wk]?.total || 0, wPlan = plannedWeek(wk);
-  const np = nextPay();
   const workLeft = D.T > D.span.end ? 0 : countWork(maxD(D.T, D.span.start), D.span.end);
   const shortAll = Object.values(D.plan.short).reduce((a, b) => a + b, 0);
   const remAll = stats.reduce((s, x) => s + x.left, 0);
@@ -899,7 +852,7 @@ function renderOverview() {
   $('#v-overview').innerHTML = `
     <div class="head"><div><p class="eyebrow">${fmtLong(D.T)}</p><h1>Overview</h1></div></div>
     <div class="stack">
-      ${S.entries.length === 0 ? `<div class="hint">${IC.info}<span>Start by back-filling the hours you’ve already worked since ${fmtShort(D.span.start)} — or use <b>Pay → Enter period hours</b> to type one total per pay period. Everything below updates instantly.</span></div>` : ''}
+      ${S.entries.length === 0 ? `<div class="hint">${IC.info}<span>Start by back-filling the hours you’ve already worked since ${fmtShort(D.span.start)}. Everything below updates instantly.</span></div>` : ''}
       ${nudge}
       <div class="card hero">
         <div class="ring-wrap">${ringsSVG(stats)}</div>
@@ -915,8 +868,8 @@ function renderOverview() {
         <div class="card kpi"><p class="lbl">${IC.week}This week</p><p class="val">${fmtH(wUsed)}<small> / ${cap()} h</small></p>
           <div class="meter">${VJ().map(j => { const h = D.byWeek[wk]?.[j.id] || 0; return h ? `<i style="--c:${colorOf(j)};width:${h / cap() * 100}%"></i>` : ''; }).join('')}${wPlan ? `<i class="ghost" style="--c:var(--accent);width:${Math.min(wPlan, cap()) / cap() * 100}%"></i>` : ''}</div>
           <p class="foot">${fmtH(Math.max(0, cap() - wUsed))} h left under the cap</p></div>
-        <div class="card kpi"><p class="lbl">${IC.cash}Next payday</p>
-          ${np ? `<p class="val">${money(np.gross + (np.status === 'current' || np.status === 'upcoming' ? np.pgross : 0))}</p><p class="foot">${fmtDay(np.payday)} · for ${fmtRange(np.start, np.end)}${np.pgross && (np.status === 'current' || np.status === 'upcoming') ? ' · incl. planned' : ''}</p>` : `<p class="val">—</p><p class="foot">No more paydays</p>`}</div>
+        <div class="card kpi"><p class="lbl">${IC.cash}Still to earn</p><p class="val">${money(Math.max(0, budget - earned))}</p>
+          <p class="foot">${fmtH(stats.reduce((a, x) => a + x.left, 0))} h left to log · gross</p></div>
         <div class="card kpi"><p class="lbl">${IC.flag}Empty work days</p><p class="val">${miss.length}<small> day${miss.length === 1 ? '' : 's'}</small></p>
           <p class="foot">${miss.length ? `Past work days with nothing entered` : 'Every past work day has hours'}</p></div>
         <div class="card kpi"><p class="lbl">${IC[stTile.k === 'bad' ? 'warn' : 'check']}Plan to ${fmt(D.span.end, { month: 'short', day: 'numeric' })}</p><p class="val" style="color:${stTile.k === 'bad' ? 'var(--bad)' : 'inherit'}">${stTile.v}</p><p class="foot">${stTile.f}</p></div>
@@ -1119,19 +1072,6 @@ function weekChart(host) {
     cats.push({ label: fmtShort(w), segs, tip, now: w === weekKey(D.T) });
   }
   barChart(host, { cats, cap: cap(), label: 'Weekly hours by position against the weekly limit' });
-}
-function payChart(host) {
-  const cats = periods().map(p => {
-    const segs = [];
-    VJ().forEach(j => segs.push({ v: p.h[j.id] * j.rate, color: colorOf(j), job: j.id }));
-    VJ().forEach(j => segs.push({ v: p.ph[j.id] * j.rate, color: colorOf(j), job: j.id, ghost: true }));
-    const tip = `<h5>Pay period ${p.i} · ${fmtRange(p.start, p.end)}</h5>` +
-      VJ().map(j => tr(colorOf(j), `${esc(j.grant)} · ${fmtH(p.h[j.id])} h`, money(p.h[j.id] * j.rate))).join('') +
-      (p.pgross ? `${tr('transparent', 'Planned (not worked yet)', '~' + money(p.pgross))}` : '') +
-      `<hr>${tr('transparent', 'Gross entered', money(p.gross))}${tr('transparent', 'Target', money(p.tgross))}${tr('transparent', 'Payday', fmtDay(p.payday))}`;
-    return { label: 'P' + p.i, segs, tip, now: p.status === 'current' };
-  });
-  barChart(host, { cats, money: true, label: 'Gross pay per pay period' });
 }
 
 /* =====================================================================
@@ -1375,7 +1315,7 @@ function openDay(d) {
 }
 function openEdit(id) {
   const e = S.entries.find(x => x.id === id); if (!e) return;
-  openSheet(`<p class="eyebrow">Edit entry</p><h2>${fmtDay(e.date)}</h2>${e.bulk ? `<p class="sub" style="margin-bottom:10px">Created from a pay-period total.</p>` : ''}${formHTML(e)}`,
+  openSheet(`<p class="eyebrow">Edit entry</p><h2>${fmtDay(e.date)}</h2>${e.bulk ? `<p class="sub" style="margin-bottom:10px">Created from a period total.</p>` : ''}${formHTML(e)}`,
     body => bindForm(body.querySelector('form'), () => closeSheet()));
 }
 function openQuick() {
@@ -1384,122 +1324,6 @@ function openQuick() {
     body => bindForm(body.querySelector('form'), () => closeSheet()));
 }
 
-/* =====================================================================
-   Pay view
-   ===================================================================== */
-const PSTAT = { upcoming: ['neutral', 'Upcoming'], current: ['accent', 'In progress'], processing: ['warn', 'Processing'], today: ['good', 'Payday today'], paid: ['neutral', 'Payday passed'] };
-function renderPay() {
-  const P = periods();
-  const earned = VJ().reduce((s, j) => s + (D.byJob[j.id] || 0) * j.rate, 0);
-  const planned = P.reduce((s, p) => s + p.pgross, 0);
-  const received = Object.values(S.pay).reduce((s, r) => s + (r.got && +r.net ? +r.net : 0), 0);
-  const gotN = P.filter(p => p.rec.got).length;
-  const budget = VJ().reduce((s, j) => s + j.hours * j.rate, 0);
-  const G = gap();
-  $('#v-pay').innerHTML = `
-    <div class="head"><div><p class="eyebrow">Bi-weekly · gross before deductions</p><h1>Pay</h1></div></div>
-    <div class="stack">
-      <div class="g4">
-        <div class="card kpi"><p class="lbl">${IC.cash}Entered so far</p><p class="val">${money(earned)}</p><p class="foot">${fmtH(VJ().reduce((a, j) => a + (D.byJob[j.id] || 0), 0))} h × ${rateTxt()}</p></div>
-        <div class="card kpi"><p class="lbl">${IC.warn}Not logged yet</p><p class="val" style="color:${G.usd > 0.01 ? 'var(--accent-2)' : 'inherit'}">${money(G.usd)}</p><p class="foot">${fmtH(G.miss)} h behind your target</p></div>
-        <div class="card kpi"><p class="lbl">${IC.check}Received</p><p class="val">${money(received)}</p><p class="foot">${gotN} deposit${gotN === 1 ? '' : 's'} marked · net</p></div>
-        <div class="card kpi"><p class="lbl">${IC.flag}Contract total</p><p class="val">${money(budget)}</p><p class="foot">${money(Math.max(0, budget - earned))} left · ~${money(planned)} planned</p></div>
-      </div>
-      <div class="card">
-        <div class="card-head" style="margin-bottom:12px"><div><h3>Pay schedule</h3><p class="sub">Enter the start date of any bi-weekly pay period — the rest line up automatically.</p></div></div>
-        <div class="sched">
-          <label class="field"><span>A pay period starts on</span><input type="date" data-s="payAnchor" value="${esc(S.settings.payAnchor)}"></label>
-          <label class="field"><span>Payday · days after period ends</span><input type="number" min="0" max="30" data-s="paydayOffset" value="${esc(S.settings.paydayOffset)}"></label>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-head"><div><h3>Gross pay per period</h3><p class="sub">Hatched = suggested hours you haven’t worked yet</p></div>
-          <div class="legend">${VJ().map(j => `<span><i class="sw" style="--c:${colorOf(j)}"></i>${esc(j.grant)}</span>`).join('')}<span><i class="sw ghost" style="--c:var(--ink2)"></i>Planned</span></div></div>
-        <div id="c-pay" class="chart"></div>
-      </div>
-      <div class="card">
-        <div class="card-head" style="margin-bottom:0"><div><h3>Pay periods</h3><p class="sub">Lazy mode: tap <b>Enter period hours</b> and type one total per position — it’s spread over the work days for you.</p></div></div>
-        ${P.map(p => {
-          const [k, l] = p.status === 'paid' && p.rec.got ? ['good', 'Received'] : PSTAT[p.status];
-          const hrs = VJ().reduce((s, j) => s + p.h[j.id], 0), th = VJ().reduce((s, j) => s + p.th[j.id], 0);
-          const pmiss = p.end < D.T || p.status === 'current' ? Math.max(0, VJ().reduce((s, j) => s + (Math.min(expBy(minD(p.end, D.Y), j.id) - expBy(addDays(p.start, -1), j.id), p.th[j.id]) - p.h[j.id]) * j.rate, 0)) : 0;
-          return `<div class="period ${p.status === 'current' ? 'cur' : ''}">
-            <div><b class="t">Period ${p.i}</b><small>${fmtRange(p.start, p.end)} · payday ${fmtDay(p.payday)}</small><div style="margin-top:6px"><span class="pill ${k}">${esc(l)}</span>${p.rec.sub ? ' <span class="pill good">' + IC.check + 'Timesheet in</span>' : ''}</div></div>
-            <div class="hrs">${VJ().map(j => `<span><i class="dot" style="--c:${colorOf(j)}"></i>${esc(j.grant)} <b>${fmtH(p.h[j.id])} h</b>${p.ph[j.id] ? `<small>+~${fmtH(p.ph[j.id])} planned</small>` : ''}</span>`).join('')}<small>Target ${fmtH(th)} h${pmiss > 0.01 ? ` · <b style="color:var(--accent-2)">${money(pmiss)} not logged</b>` : ''}</small></div>
-            <div class="amt"><b>${money(p.gross)}</b><small>${hrs ? fmtH(hrs) + ' h entered' : 'nothing entered'}${p.pgross ? ` · ~${money(p.gross + p.pgross)} projected` : ''}</small></div>
-            <div class="p-actions">
-              <button class="btn sm tint" data-period="${p.start}">${IC.plus}Enter period hours</button>
-              <label class="tg2">Timesheet submitted <span class="switch"><input type="checkbox" data-sub="${p.start}" ${p.rec.sub ? 'checked' : ''}><i></i></span></label>
-              ${p.payday <= D.T ? `<label class="tg2">Received <span class="switch"><input type="checkbox" data-got="${p.start}" ${p.rec.got ? 'checked' : ''}><i></i></span></label>
-              <input class="net" type="number" inputmode="decimal" placeholder="Net $" data-net="${p.start}" value="${p.rec.net ?? ''}" aria-label="Net amount received">` : ''}
-            </div>
-          </div>`;
-        }).join('')}
-      </div>
-    </div>`;
-}
-function openPeriod(start) {
-  const p = periods().find(x => x.start === start); if (!p) return;
-  const html = `<p class="eyebrow">Period ${p.i} · payday ${fmtDay(p.payday)}</p><h2>${fmtRange(p.start, p.end)}</h2>
-    <p class="sub" style="margin-bottom:14px">Type the total hours you worked (or submitted on your timesheet) in this period. They’re spread evenly across the allowed work days — skipping weekends &amp; stat holidays and staying under ${cap()} h/week. Any existing entries for that position in this period are replaced.</p>
-    <form id="pform" novalidate>
-      ${VJ().map(j => {
-        const days = []; for (let d = p.start; d <= p.end; d = addDays(d, 1)) if (isWorkday(d) && inJob(j, d)) days.push(d);
-        return `<label class="field"><span><i class="dot" style="--c:${colorOf(j)};display:inline-block;margin-right:6px"></i>${esc(j.grant)} · ${days.length} work day${days.length === 1 ? '' : 's'} · target ${fmtH(p.th[j.id])} h</span>
-          <input type="number" inputmode="decimal" step="0.25" min="0" name="${j.id}" value="${p.h[j.id] ? r2(p.h[j.id]) : ''}" placeholder="${days.length ? 'Total hours' : 'Not active this period'}" ${days.length ? '' : 'disabled'}></label>`;
-      }).join('')}
-      <p class="hint" id="phint">${IC.info}<span>Leave a box empty to keep that position unchanged.</span></p>
-      <div class="form-actions"><button type="submit" class="btn primary">Save period hours</button></div>
-    </form>`;
-  openSheet(html, body => {
-    const f = body.querySelector('#pform'), hint = body.querySelector('#phint');
-    const calc = () => {
-      let usd = 0; VJ().forEach(j => { const v = parseFloat(f.elements[j.id].value); if (v > 0) usd += v * j.rate; });
-      if (usd) { hint.className = 'hint ok'; hint.innerHTML = IC.check + `<span>${money(usd)} gross for this period</span>`; }
-    };
-    f.addEventListener('input', calc);
-    f.addEventListener('submit', e => {
-      e.preventDefault();
-      let entries = S.entries.slice(), changed = 0;
-      for (const j of VJ()) {
-        const raw = f.elements[j.id].value; if (raw === '' || f.elements[j.id].disabled) continue;
-        const total = roundQ(parseFloat(raw)); if (!(total >= 0)) continue;
-        const res = spread(entries, p, j, total);
-        if (res.err) { hint.className = 'hint err'; hint.innerHTML = IC.warn + `<span>${esc(res.err)}</span>`; return; }
-        entries = res.entries; changed++;
-      }
-      if (!changed) { closeSheet(); return; }
-      S.entries = entries; save(); renderAll(); closeSheet(); toast('Period hours saved');
-    });
-  });
-}
-function spread(entries, p, j, total) {
-  const others = entries.filter(e => !(e.job === j.id && e.date >= p.start && e.date <= p.end));
-  const used = others.filter(e => e.job === j.id).reduce((s, e) => s + e.hours, 0);
-  if (used + total > j.hours + 1e-9) return { err: `${j.grant}: only ${fmtH(Math.max(0, j.hours - used))} h left on the contract outside this period.` };
-  if (total === 0) return { entries: others };
-  const days = []; for (let d = p.start; d <= p.end; d = addDays(d, 1)) if (isWorkday(d) && inJob(j, d)) days.push(d);
-  const fill = pool => {
-    const wu = {}, du = {}; others.forEach(e => { const w = weekKey(e.date); wu[w] = (wu[w] || 0) + e.hours; du[e.date] = (du[e.date] || 0) + e.hours; });
-    const alloc = {}; let left = total, moved = true;
-    while (left > 1e-9 && moved) {
-      moved = false;
-      for (const d of pool) {
-        if (left <= 1e-9) break;
-        const w = weekKey(d), st = Math.min(0.25, left);
-        if ((wu[w] || 0) + st <= cap() + 1e-9 && (du[d] || 0) + (alloc[d] || 0) + st <= 24) { alloc[d] = (alloc[d] || 0) + st; wu[w] = (wu[w] || 0) + st; left -= st; moved = true; }
-      }
-    }
-    return { alloc, left };
-  };
-  const past = days.filter(d => d <= D.T);
-  let res = past.length ? fill(past) : { left: total };
-  if (res.left > 1e-9) res = fill(days);
-  if (res.left > 1e-9) return { err: `${j.grant}: ${fmtH(total)} h doesn’t fit in this period under the ${cap()} h/week limit (max about ${fmtH(total - res.left)} h).` };
-  const now = Date.now();
-  const add = Object.entries(res.alloc).map(([d, h]) => ({ id: uid(), job: j.id, date: d, hours: r2(h), note: '', bulk: true, created: now }));
-  return { entries: others.concat(add) };
-}
 
 /* =====================================================================
    Settings
@@ -1530,7 +1354,7 @@ function renderSettings() {
           <div class="gitem"><label for="j-${j.id}-rate">Hourly rate (CAD)</label><input id="j-${j.id}-rate" type="number" step="0.01" min="0" data-j="${j.id}:rate" value="${j.rate}"></div>
           <div class="gitem"><div class="gl">Contract hours<small>${money(j.hours * j.rate)} total</small></div><input type="number" step="0.25" min="0" data-j="${j.id}:hours" value="${j.hours}" aria-label="Contract hours"></div>`}
         </div>`).join('')}
-      <p class="gnote">Hidden positions disappear from Overview, Log, Calendar and Pay. Their entries stay in Supabase and still count toward the ${cap()} h weekly limit.</p>
+      <p class="gnote">Hidden positions disappear from Overview, Log and Calendar. Their entries stay in Supabase and still count toward the ${cap()} h weekly limit.</p>
       <p class="group-title">Work rules</p>
       <div class="glist">
         <div class="gitem"><div class="gl">Weekly limit (all positions)<small>University rule — entries above this are blocked</small></div><input type="number" min="1" max="80" step="0.5" data-s="weeklyCap" value="${s.weeklyCap}" aria-label="Weekly limit"></div>
@@ -1546,11 +1370,6 @@ function renderSettings() {
         <div class="add-hol"><input type="date" id="hol-date" aria-label="Holiday date"><input type="text" id="hol-name" placeholder="Holiday name" aria-label="Holiday name"><button class="btn sm tint" data-act="addhol">${IC.plus}Add</button></div>
       </div>
       <p class="gnote">Stat holidays differ by province — Truth &amp; Reconciliation Day and Remembrance Day aren’t stats everywhere (e.g. Ontario). Turn off any your university doesn’t observe.</p>
-      <p class="group-title">Pay schedule</p>
-      <div class="glist">
-        <div class="gitem"><div class="gl">A pay period starts on<small>Any period’s first day · they repeat every 14 days</small></div><input type="date" data-s="payAnchor" value="${s.payAnchor}" aria-label="Pay period start"></div>
-        <div class="gitem"><div class="gl">Payday<small>Days after the period ends (5 = the Friday after)</small></div><input type="number" min="0" max="30" data-s="paydayOffset" value="${s.paydayOffset}" aria-label="Payday offset"></div>
-      </div>
       <p class="group-title">Passcode &amp; lock</p>
       <div class="glist">
         <div class="gitem"><label for="pin1">New 4-digit passcode</label><input id="pin1" type="password" inputmode="numeric" maxlength="4" pattern="[0-9]*" autocomplete="new-password"></div>
@@ -1593,12 +1412,6 @@ function onSettingChange(t) {
     j.archived = !t.checked; save(); renderAll(); renderSettings(); toast(j.archived ? `${j.grant} hidden — its hours are kept` : `${j.grant} is back`); return true;
   }
   if (t.dataset.hol) { const h = S.settings.holidays.find(x => x.id === t.dataset.hol); h.on = t.checked; save(); renderAll(); return true; }
-  if (t.dataset.sub || t.dataset.got) {
-    const k = t.dataset.sub || t.dataset.got, r = S.pay[k] || (S.pay[k] = {});
-    if (t.dataset.sub) r.sub = t.checked; else r.got = t.checked;
-    save(); renderAll(); return true;
-  }
-  if (t.dataset.net) { const r = S.pay[t.dataset.net] || (S.pay[t.dataset.net] = {}); r.net = t.value === '' ? null : parseFloat(t.value); if (r.net) r.got = true; save(); renderAll(); return true; }
 }
 
 /* =====================================================================
@@ -1617,13 +1430,12 @@ function closeSheet() { sheet.classList.remove('open'); sheet.setAttribute('aria
    Events
    ===================================================================== */
 document.addEventListener('click', e => {
-  const t = e.target.closest('[data-tab],[data-act],[data-day],[data-edit],[data-close],[data-filter],[data-cal],[data-period],[data-delhol]');
+  const t = e.target.closest('[data-tab],[data-act],[data-day],[data-edit],[data-close],[data-filter],[data-cal],[data-delhol]');
   if (!t) return;
   if (t.dataset.tab) return show(t.dataset.tab);
   if (t.hasAttribute('data-close')) return closeSheet();
   if (t.dataset.day) return openDay(t.dataset.day);
   if (t.dataset.edit) return openEdit(t.dataset.edit);
-  if (t.dataset.period) return openPeriod(t.dataset.period);
   if (t.dataset.filter) { logFilter = t.dataset.filter; renderLog(); return; }
   if (t.dataset.cal) { const m = calMonth.split('-').map(Number); let mo = m[1] + +t.dataset.cal, y = m[0]; if (mo < 1) { mo = 12; y--; } if (mo > 12) { mo = 1; y++; } calMonth = `${y}-${pad2(mo)}`; renderCalendar(); return; }
   if (t.dataset.delhol) { S.settings.holidays = S.settings.holidays.filter(h => h.id !== t.dataset.delhol); save(); renderAll(); renderSettings(); return; }
@@ -1675,7 +1487,7 @@ document.addEventListener('click', e => {
     }
   }
 });
-document.addEventListener('change', e => { if (e.target.closest('#v-settings,#v-pay')) onSettingChange(e.target); });
+document.addEventListener('change', e => { if (e.target.closest('#v-settings')) onSettingChange(e.target); });
 $('#importFile').addEventListener('change', e => {
   const f = e.target.files[0]; if (!f) return;
   const rd = new FileReader();
