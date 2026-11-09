@@ -608,8 +608,12 @@ function cacheLocal() {
 function save() { cacheLocal(); scheduleSync(); }
 const colorOf = j => JOB_COLORS[S.jobs.indexOf(j)] || '#888';
 // "$25" when every position pays the same, "$20–$25" when they differ.
-const rateTxt = () => { const r = S.jobs.map(j => j.rate), lo = Math.min(...r), hi = Math.max(...r); return lo === hi ? money(lo) : `${money(lo)}–${money(hi)}`; };
+const rateTxt = () => { const r = VJ().map(j => j.rate), lo = Math.min(...r), hi = Math.max(...r); return lo === hi ? money(lo) : `${money(lo)}–${money(hi)}`; };
 const jobById = id => S.jobs.find(j => j.id === id);
+// Visible positions: archived ones disappear from every screen except Settings.
+// Their entries stay (and still count toward the weekly limit).
+const VJ = () => { const v = S.jobs.filter(j => !j.archived); return v.length ? v : S.jobs; };
+const isVis = id => VJ().some(j => j.id === id);
 
 /* =====================================================================
    Rules & derived data
@@ -629,12 +633,12 @@ const dcap = () => +S.settings.dailyCap || 8;
 function schedule(from, remIn, useLogs) {
   const rem = { ...remIn }, days = {}, wkPlan = {};
   const end = D.span.end, list = [];
-  for (let d = from; d <= end; d = addDays(d, 1)) if (isWorkday(d) && S.jobs.some(j => inJob(j, d))) list.push(d);
+  for (let d = from; d <= end; d = addDays(d, 1)) if (isWorkday(d) && VJ().some(j => inJob(j, d))) list.push(d);
   for (let i = 0; i < list.length; i++) {
     const d = list[i];
-    const A = S.jobs.filter(j => inJob(j, d) && rem[j.id] > 0.01);
+    const A = VJ().filter(j => inJob(j, d) && rem[j.id] > 0.01);
     if (!A.length) continue;
-    const live = S.jobs.filter(j => j.end >= d && rem[j.id] > 0.01);
+    const live = VJ().filter(j => j.end >= d && rem[j.id] > 0.01);
     const R = live.reduce((s, j) => s + rem[j.id], 0);
     let N = 0; for (let x = i; x < list.length; x++) if (live.some(j => inJob(j, list[x]))) N++;
     const w = weekKey(d);
@@ -676,7 +680,7 @@ function schedule(from, remIn, useLogs) {
     A.forEach(j => { if (out[j.id] > 0) { days[d][j.id] = out[j.id]; rem[j.id] -= out[j.id]; } });
     wkPlan[w] = (wkPlan[w] || 0) + tot;
   }
-  const short = {}; S.jobs.forEach(j => short[j.id] = Math.max(0, r2(rem[j.id])));
+  const short = {}; VJ().forEach(j => short[j.id] = Math.max(0, r2(rem[j.id])));
   return { days, short };
 }
 
@@ -684,7 +688,7 @@ function derive() {
   HOL = {};
   (S.settings.holidays || []).forEach(h => { if (h.on && h.date) HOL[h.date] = h.name || 'Stat holiday'; });
   const T = todayStr();
-  const span = { start: S.jobs.reduce((a, j) => minD(a, j.start), S.jobs[0].start), end: S.jobs.reduce((a, j) => maxD(a, j.end), S.jobs[0].end) };
+  const span = { start: VJ().reduce((a, j) => minD(a, j.start), VJ()[0].start), end: VJ().reduce((a, j) => maxD(a, j.end), VJ()[0].end) };
   const byDate = {}, byWeek = {}, byJob = {};
   S.jobs.forEach(j => byJob[j.id] = 0);
   for (const e of S.entries) {
@@ -697,21 +701,21 @@ function derive() {
   }
   D = { T, Y: addDays(T, -1), span, byDate, byWeek, byJob };
   // Baseline target: how a perfect schedule would look from contract day one.
-  const base = schedule(span.start, Object.fromEntries(S.jobs.map(j => [j.id, +j.hours || 0])), false);
-  const cum = {}, run = {}; S.jobs.forEach(j => run[j.id] = 0);
-  for (let d = span.start; d <= span.end; d = addDays(d, 1)) { const b = base.days[d]; if (b) S.jobs.forEach(j => run[j.id] += b[j.id] || 0); cum[d] = { ...run }; }
+  const base = schedule(span.start, Object.fromEntries(VJ().map(j => [j.id, +j.hours || 0])), false);
+  const cum = {}, run = {}; VJ().forEach(j => run[j.id] = 0);
+  for (let d = span.start; d <= span.end; d = addDays(d, 1)) { const b = base.days[d]; if (b) VJ().forEach(j => run[j.id] += b[j.id] || 0); cum[d] = { ...run }; }
   D.base = { days: base.days, cum };
   // Forward plan from today with what's actually logged.
-  const rem = Object.fromEntries(S.jobs.map(j => [j.id, Math.max(0, (+j.hours || 0) - byJob[j.id])]));
+  const rem = Object.fromEntries(VJ().map(j => [j.id, Math.max(0, (+j.hours || 0) - byJob[j.id])]));
   D.plan = schedule(maxD(T, span.start), rem, true);
   return D;
 }
-const expBy = (d, jid) => { if (d < D.span.start) return 0; d = minD(d, D.span.end); const c = D.base.cum[d]; return c ? (jid ? c[jid] || 0 : S.jobs.reduce((s, j) => s + (c[j.id] || 0), 0)) : 0; };
-const logBy = (d, jid) => S.entries.reduce((s, e) => s + (e.date <= d && (!jid || e.job === jid) && jobById(e.job) ? e.hours : 0), 0);
+const expBy = (d, jid) => { if (d < D.span.start) return 0; d = minD(d, D.span.end); const c = D.base.cum[d]; return c ? (jid ? c[jid] || 0 : VJ().reduce((s, j) => s + (c[j.id] || 0), 0)) : 0; };
+const logBy = (d, jid) => S.entries.reduce((s, e) => s + (e.date <= d && (!jid || e.job === jid) && isVis(e.job) ? e.hours : 0), 0);
 const plannedWeek = (w, jid) => { let s = 0; for (let i = 0; i < 7; i++) { const p = D.plan.days[addDays(w, i)]; if (p) s += jid ? (p[jid] || 0) : p.total; } return s; };
 
 function gap() {
-  const per = S.jobs.map(j => {
+  const per = VJ().map(j => {
     const target = expBy(D.Y, j.id), logged = logBy(D.T, j.id);
     const miss = Math.max(0, target - logged);
     return { j, target, logged, miss, usd: miss * j.rate, ahead: Math.max(0, logged - target) };
@@ -722,7 +726,7 @@ function gap() {
 function unloggedDays() {
   const out = [];
   for (let d = D.span.start; d <= minD(D.Y, D.span.end); d = addDays(d, 1)) {
-    if (!isWorkday(d) || !S.jobs.some(j => inJob(j, d))) continue;
+    if (!isWorkday(d) || !VJ().some(j => inJob(j, d))) continue;
     if (!D.byDate[d]) out.push(d);
   }
   return out.reverse();
@@ -753,12 +757,12 @@ function periods() {
   const out = [];
   for (let i = 1; p <= D.span.end; p = addDays(p, 14), i++) {
     const e = addDays(p, 13), r = { i, start: p, end: e, payday: addDays(e, off), h: {}, ph: {}, th: {}, gross: 0, pgross: 0, tgross: 0 };
-    S.jobs.forEach(j => { r.h[j.id] = 0; r.ph[j.id] = 0; r.th[j.id] = 0; });
+    VJ().forEach(j => { r.h[j.id] = 0; r.ph[j.id] = 0; r.th[j.id] = 0; });
     for (let d = p; d <= e; d = addDays(d, 1)) {
       const b = D.byDate[d], pl = D.plan.days[d], bs = D.base.days[d];
-      S.jobs.forEach(j => { r.h[j.id] += b?.[j.id] || 0; r.ph[j.id] += pl?.[j.id] || 0; r.th[j.id] += bs?.[j.id] || 0; });
+      VJ().forEach(j => { r.h[j.id] += b?.[j.id] || 0; r.ph[j.id] += pl?.[j.id] || 0; r.th[j.id] += bs?.[j.id] || 0; });
     }
-    S.jobs.forEach(j => { r.gross += r.h[j.id] * j.rate; r.pgross += r.ph[j.id] * j.rate; r.tgross += r.th[j.id] * j.rate; });
+    VJ().forEach(j => { r.gross += r.h[j.id] * j.rate; r.pgross += r.ph[j.id] * j.rate; r.tgross += r.th[j.id] * j.rate; });
     r.status = D.T < r.start ? 'upcoming' : D.T <= r.end ? 'current' : D.T < r.payday ? 'processing' : D.T === r.payday ? 'today' : 'paid';
     r.rec = S.pay[r.start] || {};
     out.push(r);
@@ -838,7 +842,7 @@ function nextPay() {
   return P.find(p => p.payday >= D.T && (p.gross + p.pgross) > 0) || P.find(p => p.payday >= D.T) || null;
 }
 function renderOverview() {
-  const stats = S.jobs.map(jobStats);
+  const stats = VJ().map(jobStats);
   const G = gap(), miss = unloggedDays();
   const earned = stats.reduce((s, x) => s + x.earned, 0), budget = stats.reduce((s, x) => s + x.budget, 0);
   const wk = weekKey(D.T), wUsed = D.byWeek[wk]?.total || 0, wPlan = plannedWeek(wk);
@@ -875,9 +879,9 @@ function renderOverview() {
   let pw = wk; if (isWeekend(D.T)) pw = addDays(wk, 7);
   const weekRows = [0, 1, 2, 3, 4].map(i => {
     const d = addDays(pw, i), b = D.byDate[d], p = D.plan.days[d];
-    const off = !isWorkday(d) || !S.jobs.some(j => inJob(j, d));
-    const why = HOL[d] ? HOL[d] : !S.jobs.some(j => inJob(j, d)) ? 'Outside contracts' : '';
-    const segs = S.jobs.map(j => {
+    const off = !isWorkday(d) || !VJ().some(j => inJob(j, d));
+    const why = HOL[d] ? HOL[d] : !VJ().some(j => inJob(j, d)) ? 'Outside contracts' : '';
+    const segs = VJ().map(j => {
       const h = b?.[j.id] || 0, ph = d >= D.T ? (p?.[j.id] || 0) : 0, c = colorOf(j);
       return (h ? `<i style="--c:${c};flex:${h}" title="${esc(j.grant)} logged">${fmtH(h)}</i>` : '') +
              (ph ? `<i class="ghost" style="--c:${c};flex:${ph}" title="${esc(j.grant)} planned">${fmtH(ph)}</i>` : '');
@@ -909,7 +913,7 @@ function renderOverview() {
       </div>
       <div class="g4">
         <div class="card kpi"><p class="lbl">${IC.week}This week</p><p class="val">${fmtH(wUsed)}<small> / ${cap()} h</small></p>
-          <div class="meter">${S.jobs.map(j => { const h = D.byWeek[wk]?.[j.id] || 0; return h ? `<i style="--c:${colorOf(j)};width:${h / cap() * 100}%"></i>` : ''; }).join('')}${wPlan ? `<i class="ghost" style="--c:var(--accent);width:${Math.min(wPlan, cap()) / cap() * 100}%"></i>` : ''}</div>
+          <div class="meter">${VJ().map(j => { const h = D.byWeek[wk]?.[j.id] || 0; return h ? `<i style="--c:${colorOf(j)};width:${h / cap() * 100}%"></i>` : ''; }).join('')}${wPlan ? `<i class="ghost" style="--c:var(--accent);width:${Math.min(wPlan, cap()) / cap() * 100}%"></i>` : ''}</div>
           <p class="foot">${fmtH(Math.max(0, cap() - wUsed))} h left under the cap</p></div>
         <div class="card kpi"><p class="lbl">${IC.cash}Next payday</p>
           ${np ? `<p class="val">${money(np.gross + (np.status === 'current' || np.status === 'upcoming' ? np.pgross : 0))}</p><p class="foot">${fmtDay(np.payday)} · for ${fmtRange(np.start, np.end)}${np.pgross && (np.status === 'current' || np.status === 'upcoming') ? ' · incl. planned' : ''}</p>` : `<p class="val">—</p><p class="foot">No more paydays</p>`}</div>
@@ -921,18 +925,18 @@ function renderOverview() {
       <div class="card">
         <div class="card-head">
           <div><h3>${pw === wk ? 'This week' : 'Next week'} · ${fmtRange(pw, addDays(pw, 4))}</h3><p class="sub">${fmtH(pwUsed)} h logged${pwPlan ? ` · ~${fmtH(pwPlan)} h suggested` : ''} · limit ${cap()} h · ${workLeft} work days left in total</p></div>
-          <div class="legend">${S.jobs.map(j => `<span><i class="sw" style="--c:${colorOf(j)}"></i>${esc(j.grant)}</span>`).join('')}<span><i class="sw ghost" style="--c:var(--ink2)"></i>Suggested</span></div>
+          <div class="legend">${VJ().map(j => `<span><i class="sw" style="--c:${colorOf(j)}"></i>${esc(j.grant)}</span>`).join('')}<span><i class="sw ghost" style="--c:var(--ink2)"></i>Suggested</span></div>
         </div>
         <div class="wk-list">${weekRows}</div>
       </div>
       <div class="card">
         <div class="card-head"><div><h3>Hours vs. target</h3><p class="sub">Solid = entered · dashed = where you should be (fits the ${cap()} h/week limit)</p></div>
-          <div class="legend">${S.jobs.map(j => `<span><i class="ln" style="--c:${colorOf(j)}"></i>${esc(j.grant)}</span>`).join('')}<span><i class="ln dash" style="--c:var(--ink2)"></i>Target</span></div></div>
+          <div class="legend">${VJ().map(j => `<span><i class="ln" style="--c:${colorOf(j)}"></i>${esc(j.grant)}</span>`).join('')}<span><i class="ln dash" style="--c:var(--ink2)"></i>Target</span></div></div>
         <div id="c-cum" class="chart"></div>
       </div>
       <div class="card">
         <div class="card-head"><div><h3>Weekly hours</h3><p class="sub">All positions combined against the ${cap()} h weekly limit</p></div>
-          <div class="legend">${S.jobs.map(j => `<span><i class="sw" style="--c:${colorOf(j)}"></i>${esc(j.grant)}</span>`).join('')}<span><i class="sw ghost" style="--c:var(--ink2)"></i>Planned</span><span><i class="ln cap"></i>${cap()} h limit</span></div></div>
+          <div class="legend">${VJ().map(j => `<span><i class="sw" style="--c:${colorOf(j)}"></i>${esc(j.grant)}</span>`).join('')}<span><i class="sw ghost" style="--c:var(--ink2)"></i>Planned</span><span><i class="ln cap"></i>${cap()} h limit</span></div></div>
         <div id="c-week" class="chart"></div>
       </div>
     </div>`;
@@ -990,13 +994,13 @@ function lineChart(host) {
   const X = i => m.l + i * step;
   const lastEntry = S.entries.reduce((a, e) => maxD(a, e.date), '0');
   const actEnd = minD(D.span.end, maxD(D.T, lastEntry));
-  const ser = S.jobs.map(j => {
+  const ser = VJ().map(j => {
     let cum = 0;
     const act = dates.map(d => { cum += D.byDate[d]?.[j.id] || 0; return cum; });
     const tgt = dates.map(d => d < j.start ? null : (D.base.cum[d]?.[j.id] || 0));
     return { j, c: colorOf(j), act, tgt };
   });
-  const top = Math.max(...S.jobs.map(j => +j.hours || 0), ...ser.map(s => s.act[n - 1]));
+  const top = Math.max(...VJ().map(j => +j.hours || 0), ...ser.map(s => s.act[n - 1]));
   const { max: ymax, step: ys } = niceMax(top);
   const Y = v => H - m.b - (v / ymax) * (H - m.t - m.b);
   let g = '';
@@ -1064,7 +1068,7 @@ function barChart(host, cfg) {
   const Y = v => H - m.b - (v / ymax) * (H - m.t - m.b);
   const fv = cfg.money ? money : v => fmtH(v);
   const id = 'b' + (++chartSeq);
-  let defs = '<defs>' + S.jobs.map((j, k) => `<pattern id="${id}h${k}" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="${colorOf(j)}" fill-opacity=".14"/><rect width="2" height="5" fill="${colorOf(j)}" fill-opacity=".5"/></pattern>`).join('') + '</defs>';
+  let defs = '<defs>' + VJ().map((j, k) => `<pattern id="${id}h${k}" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="${colorOf(j)}" fill-opacity=".14"/><rect width="2" height="5" fill="${colorOf(j)}" fill-opacity=".5"/></pattern>`).join('') + '</defs>';
   let g = '';
   for (let v = 0; v <= ymax + 1e-9; v += ys) g += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="#EEEEF1"/><text x="${m.l - 8}" y="${Y(v) + 4}" text-anchor="end">${cfg.money ? '$' + (v >= 1000 ? (v / 1000) + 'k' : v) : fmtH(v)}</text>`;
   let cols = '';
@@ -1076,7 +1080,7 @@ function barChart(host, cfg) {
     segs.forEach((s, k) => {
       const h = Y(0) - Y(s.v), top = k === segs.length - 1;
       const gapPx = k > 0 ? 2 : 0, hh = Math.max(0, h - gapPx), yy = y - gapPx - hh;
-      const fill = s.ghost ? `url(#${id}h${S.jobs.findIndex(j => j.id === s.job)})` : s.color;
+      const fill = s.ghost ? `url(#${id}h${VJ().findIndex(j => j.id === s.job)})` : s.color;
       parts += top ? `<path d="${roundTop(x, yy, bw, hh, 4)}" fill="${fill}"/>` : `<rect x="${x}" y="${yy}" width="${bw}" height="${hh}" fill="${fill}"/>`;
       y = yy;
     });
@@ -1104,14 +1108,14 @@ function weekChart(host) {
   const cats = [];
   for (let w = weekKey(D.span.start); w <= D.span.end; w = addDays(w, 7)) {
     const segs = [];
-    S.jobs.forEach(j => segs.push({ v: D.byWeek[w]?.[j.id] || 0, color: colorOf(j), job: j.id }));
-    S.jobs.forEach(j => segs.push({ v: plannedWeek(w, j.id), color: colorOf(j), job: j.id, ghost: true }));
+    VJ().forEach(j => segs.push({ v: D.byWeek[w]?.[j.id] || 0, color: colorOf(j), job: j.id }));
+    VJ().forEach(j => segs.push({ v: plannedWeek(w, j.id), color: colorOf(j), job: j.id, ghost: true }));
     const used = D.byWeek[w]?.total || 0, pl = plannedWeek(w);
     let tgt = 0; for (let i = 0; i < 7; i++) tgt += D.base.days[addDays(w, i)]?.total || 0;
     const tip = `<h5>Week of ${fmtRange(w, addDays(w, 6))}</h5>` +
-      S.jobs.map(j => tr(colorOf(j), esc(j.grant) + ' entered', fmtH(D.byWeek[w]?.[j.id] || 0) + ' h')).join('') +
-      (pl ? S.jobs.map(j => { const p = plannedWeek(w, j.id); return p ? tr(colorOf(j), esc(j.grant) + ' planned', '~' + fmtH(p) + ' h') : ''; }).join('') : '') +
-      `<hr>${tr('transparent', 'Total', fmtH(used + pl) + ' / ' + cap() + ' h')}${tr('transparent', 'Target', fmtH(tgt) + ' h')}${tr('transparent', 'Earned', money(S.jobs.reduce((s, j) => s + (D.byWeek[w]?.[j.id] || 0) * j.rate, 0)))}`;
+      VJ().map(j => tr(colorOf(j), esc(j.grant) + ' entered', fmtH(D.byWeek[w]?.[j.id] || 0) + ' h')).join('') +
+      (pl ? VJ().map(j => { const p = plannedWeek(w, j.id); return p ? tr(colorOf(j), esc(j.grant) + ' planned', '~' + fmtH(p) + ' h') : ''; }).join('') : '') +
+      `<hr>${tr('transparent', 'Total', fmtH(used + pl) + ' / ' + cap() + ' h')}${tr('transparent', 'Target', fmtH(tgt) + ' h')}${tr('transparent', 'Earned', money(VJ().reduce((s, j) => s + (D.byWeek[w]?.[j.id] || 0) * j.rate, 0)))}`;
     cats.push({ label: fmtShort(w), segs, tip, now: w === weekKey(D.T) });
   }
   barChart(host, { cats, cap: cap(), label: 'Weekly hours by position against the weekly limit' });
@@ -1119,10 +1123,10 @@ function weekChart(host) {
 function payChart(host) {
   const cats = periods().map(p => {
     const segs = [];
-    S.jobs.forEach(j => segs.push({ v: p.h[j.id] * j.rate, color: colorOf(j), job: j.id }));
-    S.jobs.forEach(j => segs.push({ v: p.ph[j.id] * j.rate, color: colorOf(j), job: j.id, ghost: true }));
+    VJ().forEach(j => segs.push({ v: p.h[j.id] * j.rate, color: colorOf(j), job: j.id }));
+    VJ().forEach(j => segs.push({ v: p.ph[j.id] * j.rate, color: colorOf(j), job: j.id, ghost: true }));
     const tip = `<h5>Pay period ${p.i} · ${fmtRange(p.start, p.end)}</h5>` +
-      S.jobs.map(j => tr(colorOf(j), `${esc(j.grant)} · ${fmtH(p.h[j.id])} h`, money(p.h[j.id] * j.rate))).join('') +
+      VJ().map(j => tr(colorOf(j), `${esc(j.grant)} · ${fmtH(p.h[j.id])} h`, money(p.h[j.id] * j.rate))).join('') +
       (p.pgross ? `${tr('transparent', 'Planned (not worked yet)', '~' + money(p.pgross))}` : '') +
       `<hr>${tr('transparent', 'Gross entered', money(p.gross))}${tr('transparent', 'Target', money(p.tgross))}${tr('transparent', 'Payday', fmtDay(p.payday))}`;
     return { label: 'P' + p.i, segs, tip, now: p.status === 'current' };
@@ -1134,15 +1138,15 @@ function payChart(host) {
    Entry form (shared by Log tab and sheets)
    ===================================================================== */
 function defaultDate(jid) {
-  const j = jobById(jid) || S.jobs[0];
+  const j = jobById(jid) || VJ()[0];
   let d = minD(D.T, j.end);
   for (let i = 0; i < 14 && d >= j.start; i++, d = addDays(d, -1)) if (isWorkday(d)) return d;
   return j.start > D.T ? j.start : minD(D.T, j.end);
 }
 function formHTML(v) {
-  const j = jobById(v.job) || S.jobs[0];
+  const j = jobById(v.job) || VJ()[0];
   return `<form class="entry-form" data-id="${v.id || ''}" novalidate>
-    <div class="seg" role="radiogroup" aria-label="Position">${S.jobs.map(x => `<button type="button" role="radio" data-job="${x.id}" aria-checked="${x.id === j.id}" class="${x.id === j.id ? 'on' : ''}"><span class="dot" style="--c:${colorOf(x)}"></span>${esc(x.grant)}</button>`).join('')}</div>
+    <div class="seg" role="radiogroup" aria-label="Position">${VJ().map(x => `<button type="button" role="radio" data-job="${x.id}" aria-checked="${x.id === j.id}" class="${x.id === j.id ? 'on' : ''}"><span class="dot" style="--c:${colorOf(x)}"></span>${esc(x.grant)}</button>`).join('')}</div>
     <label class="field"><span>Date</span><input type="date" name="date" value="${v.date || ''}" min="${j.start}" max="${j.end}"></label>
     <div class="field"><span>Hours</span>
       <div class="stepper"><button type="button" data-step="-0.25" aria-label="Decrease">−</button><input name="hours" type="number" inputmode="decimal" step="0.25" min="0.25" max="24" value="${v.hours || ''}" placeholder="0"><button type="button" data-step="0.25" aria-label="Increase">+</button></div>
@@ -1216,7 +1220,7 @@ function bindForm(form, after) {
    Log view
    ===================================================================== */
 function renderLog() {
-  const job = formMem.job && jobById(formMem.job) ? formMem.job : (jobById(S.lastJob) ? S.lastJob : S.jobs[0].id);
+  const job = formMem.job && isVis(formMem.job) ? formMem.job : (isVis(S.lastJob) ? S.lastJob : VJ()[0].id);
   const date = formMem.date || defaultDate(job);
   const t = S.timer;
   const timerCard = t ? `
@@ -1228,7 +1232,7 @@ function renderLog() {
     </div>` : `
     <div class="card">
       <div class="card-head" style="margin-bottom:10px"><div><h3>Timer</h3><p class="sub">Start it when you sit down to work</p></div></div>
-      <div class="timer-run">${S.jobs.map(j => `<button class="btn tint" data-act="timer-start" data-job="${j.id}"><span class="dot" style="--c:${colorOf(j)}"></span>Start ${esc(j.grant)}</button>`).join('')}</div>
+      <div class="timer-run">${VJ().map(j => `<button class="btn tint" data-act="timer-start" data-job="${j.id}"><span class="dot" style="--c:${colorOf(j)}"></span>Start ${esc(j.grant)}</button>`).join('')}</div>
     </div>`;
 
   const miss = unloggedDays();
@@ -1238,23 +1242,24 @@ function renderLog() {
       <div class="card-head" style="margin-bottom:8px"><div><h3>Catch up</h3><p class="sub">${miss.length} past work day${miss.length > 1 ? 's have' : ' has'} no hours. Tap one to fill it in.</p></div><span class="pill accent">${money(gap().usd)} unlogged</span></div>
       <div class="elist">${shown.map(d => {
         const tg = D.base.days[d] || {};
-        return `<div class="miss-row"><div><b>${fmtDay(d)}</b><small>Target ${S.jobs.filter(j => tg[j.id]).map(j => `${esc(j.grant)} ${fmtH(tg[j.id])} h`).join(' · ') || '—'}</small></div><span class="usd">${money(S.jobs.reduce((s, j) => s + (tg[j.id] || 0) * j.rate, 0))}</span><button class="btn sm tint" data-day="${d}">${IC.plus}Add</button></div>`;
+        return `<div class="miss-row"><div><b>${fmtDay(d)}</b><small>Target ${VJ().filter(j => tg[j.id]).map(j => `${esc(j.grant)} ${fmtH(tg[j.id])} h`).join(' · ') || '—'}</small></div><span class="usd">${money(VJ().reduce((s, j) => s + (tg[j.id] || 0) * j.rate, 0))}</span><button class="btn sm tint" data-day="${d}">${IC.plus}Add</button></div>`;
       }).join('')}</div>
       ${miss.length > 5 ? `<button class="more" data-act="miss-more">${missOpen ? 'Show fewer' : `Show all ${miss.length}`}</button>` : ''}
     </div>` : '';
 
-  const list = S.entries.filter(e => jobById(e.job) && (logFilter === 'all' || e.job === logFilter))
+  if (logFilter !== 'all' && !isVis(logFilter)) logFilter = 'all';
+  const list = S.entries.filter(e => isVis(e.job) && (logFilter === 'all' || e.job === logFilter))
     .sort((a, b) => b.date.localeCompare(a.date) || (b.created || 0) - (a.created || 0));
   const groups = {};
   list.forEach(e => (groups[weekKey(e.date)] ||= []).push(e));
   const listHTML = list.length ? Object.keys(groups).sort().reverse().map(w => {
     const used = D.byWeek[w]?.total || 0;
-    return `<div class="wgroup"><div class="wgroup-h"><span>${fmtRange(w, addDays(w, 6))}</span><span style="display:flex;gap:10px;align-items:center">${fmtH(used)} / ${cap()} h<span class="meter">${S.jobs.map(j => { const h = D.byWeek[w]?.[j.id] || 0; return h ? `<i style="--c:${colorOf(j)};width:${h / cap() * 100}%"></i>` : ''; }).join('')}</span></span></div>
+    return `<div class="wgroup"><div class="wgroup-h"><span>${fmtRange(w, addDays(w, 6))}</span><span style="display:flex;gap:10px;align-items:center">${fmtH(used)} / ${cap()} h<span class="meter">${VJ().map(j => { const h = D.byWeek[w]?.[j.id] || 0; return h ? `<i style="--c:${colorOf(j)};width:${h / cap() * 100}%"></i>` : ''; }).join('')}</span></span></div>
       <div class="elist">${groups[w].map(entryRow).join('')}</div></div>`;
   }).join('') : `<div class="empty">${IC.log}<p>No entries yet.<br>Log your first hours on the left.</p></div>`;
 
   $('#v-log').innerHTML = `
-    <div class="head"><div><p class="eyebrow">${fmtH(Object.values(D.byJob).reduce((a, b) => a + b, 0))} h · ${money(S.jobs.reduce((s, j) => s + (D.byJob[j.id] || 0) * j.rate, 0))} entered</p><h1>Log hours</h1></div></div>
+    <div class="head"><div><p class="eyebrow">${fmtH(VJ().reduce((a, j) => a + (D.byJob[j.id] || 0), 0))} h · ${money(VJ().reduce((s, j) => s + (D.byJob[j.id] || 0) * j.rate, 0))} entered</p><h1>Log hours</h1></div></div>
     <div class="log-grid">
       <div class="stack">
         ${timerCard}
@@ -1264,7 +1269,7 @@ function renderLog() {
         ${missCard}
         <div class="card">
           <div class="card-head" style="margin-bottom:4px"><h3>Entries</h3>
-            <div class="seg" style="margin:0;min-width:210px">${[['all', 'All'], ...S.jobs.map(j => [j.id, j.grant])].map(([k, l]) => `<button data-filter="${k}" class="${logFilter === k ? 'on' : ''}">${esc(l)}</button>`).join('')}</div>
+            <div class="seg" style="margin:0;min-width:210px">${[['all', 'All'], ...VJ().map(j => [j.id, j.grant])].map(([k, l]) => `<button data-filter="${k}" class="${logFilter === k ? 'on' : ''}">${esc(l)}</button>`).join('')}</div>
           </div>
           ${listHTML}
         </div>
@@ -1290,7 +1295,7 @@ setInterval(tickTimer, 1000);
 function dayInfo(d) {
   if (isWeekend(d)) return { k: 'neutral', t: 'Weekend — no RA work allowed', i: 'info' };
   if (HOL[d]) return { k: 'bad', t: `${HOL[d]} — stat holiday, no work`, i: 'warn' };
-  const js = S.jobs.filter(j => inJob(j, d));
+  const js = VJ().filter(j => inJob(j, d));
   if (!js.length) return { k: 'neutral', t: 'Outside every contract period', i: 'info' };
   return { k: 'good', t: 'Work day · ' + js.map(j => j.grant).join(' & '), i: 'check', jobs: js };
 }
@@ -1305,14 +1310,14 @@ function renderCalendar() {
   let mH = 0, mUSD = 0, mWork = 0, mMissing = 0;
   for (let k = 1; k <= dim; k++) {
     const d = `${calMonth}-${pad2(k)}`, b = D.byDate[d], p = d >= D.T ? D.plan.days[d] : null;
-    const wk = isWeekend(d), hol = HOL[d], out = !S.jobs.some(j => inJob(j, d));
+    const wk = isWeekend(d), hol = HOL[d], out = !VJ().some(j => inJob(j, d));
     const work = !wk && !hol && !out;
     if (work) mWork++;
     const missing = work && d < D.T && !b;
     if (missing) mMissing++;
-    if (b) { mH += b.total; mUSD += S.jobs.reduce((s, j) => s + (b[j.id] || 0) * j.rate, 0); }
+    if (b) { mH += b.total; mUSD += VJ().reduce((s, j) => s + (b[j.id] || 0) * j.rate, 0); }
     const lt = b?.total || 0, pt = p?.total || 0, tt = lt + pt;
-    const bars = tt ? `<span class="cb" style="width:${Math.min(100, tt / dcap() * 100)}%">${S.jobs.map(j => (b?.[j.id] ? `<i style="--c:${colorOf(j)};flex:${b[j.id]}"></i>` : '') + (p?.[j.id] ? `<i class="ghost" style="--c:${colorOf(j)};flex:${p[j.id]}"></i>` : '')).join('')}</span>` : '';
+    const bars = tt ? `<span class="cb" style="width:${Math.min(100, tt / dcap() * 100)}%">${VJ().map(j => (b?.[j.id] ? `<i style="--c:${colorOf(j)};flex:${b[j.id]}"></i>` : '') + (p?.[j.id] ? `<i class="ghost" style="--c:${colorOf(j)};flex:${p[j.id]}"></i>` : '')).join('')}</span>` : '';
     const cls = ['cell', wk && 'wkend', hol && 'hol', out && !wk && 'out', d === D.T && 'today', missing && 'miss'].filter(Boolean).join(' ');
     const label = `${fmtLong(d)}${hol ? ', ' + hol : ''}${lt ? `, ${fmtH(lt)} hours logged` : ''}${pt ? `, ${fmtH(pt)} planned` : ''}${missing ? ', nothing logged' : ''}`;
     cells += `<button class="${cls}" data-day="${d}" aria-label="${esc(label)}"><span class="n">${k}</span>${hol ? `<span class="tg">${innerWidth < 760 ? 'Stat' : esc(hol)}</span>` : ''}${bars}${lt ? `<span class="hv">${fmtH(lt)}h</span>` : pt ? `<span class="hv plan">~${fmtH(pt)}h</span>` : ''}</button>`;
@@ -1325,7 +1330,7 @@ function renderCalendar() {
       <div class="card">
         <div class="card-head">
           <div class="cal-nav"><button class="icon-btn" data-cal="-1" ${mi <= 0 ? 'disabled style="opacity:.3"' : ''} aria-label="Previous month">${IC.left}</button><h3>${pd(first).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</h3><button class="icon-btn" data-cal="1" ${mi >= months.length - 1 ? 'disabled style="opacity:.3"' : ''} aria-label="Next month">${IC.right}</button></div>
-          <div class="legend">${S.jobs.map(j => `<span><i class="sw" style="--c:${colorOf(j)}"></i>${esc(j.grant)}</span>`).join('')}<span><i class="sw ghost" style="--c:var(--ink2)"></i>Suggested</span><span><i class="dot" style="--c:var(--accent)"></i>Nothing logged</span></div>
+          <div class="legend">${VJ().map(j => `<span><i class="sw" style="--c:${colorOf(j)}"></i>${esc(j.grant)}</span>`).join('')}<span><i class="sw ghost" style="--c:var(--ink2)"></i>Suggested</span><span><i class="dot" style="--c:var(--accent)"></i>Nothing logged</span></div>
         </div>
         <div class="cal-dow">${['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(x => `<span>${innerWidth < 760 ? x[0] : x}</span>`).join('')}</div>
         <div class="cal">${cells}</div>
@@ -1336,16 +1341,16 @@ function renderCalendar() {
         ${weeks.map(w => {
           const used = D.byWeek[w]?.total || 0, pl = plannedWeek(w);
           let tg = 0; for (let i = 0; i < 7; i++) tg += D.base.days[addDays(w, i)]?.total || 0;
-          return `<div class="wsum"><span>${fmtRange(w, addDays(w, 6))}</span><span class="meter">${S.jobs.map(j => { const h = D.byWeek[w]?.[j.id] || 0; return h ? `<i style="--c:${colorOf(j)};width:${h / cap() * 100}%"></i>` : ''; }).join('')}${S.jobs.map(j => { const h = plannedWeek(w, j.id); return h ? `<i class="ghost" style="--c:${colorOf(j)};width:${h / cap() * 100}%"></i>` : ''; }).join('')}</span><span class="r">${fmtH(used)}${pl ? ` +${fmtH(pl)}` : ''} / ${cap()} h<small>target ${fmtH(tg)} h</small></span></div>`;
+          return `<div class="wsum"><span>${fmtRange(w, addDays(w, 6))}</span><span class="meter">${VJ().map(j => { const h = D.byWeek[w]?.[j.id] || 0; return h ? `<i style="--c:${colorOf(j)};width:${h / cap() * 100}%"></i>` : ''; }).join('')}${VJ().map(j => { const h = plannedWeek(w, j.id); return h ? `<i class="ghost" style="--c:${colorOf(j)};width:${h / cap() * 100}%"></i>` : ''; }).join('')}</span><span class="r">${fmtH(used)}${pl ? ` +${fmtH(pl)}` : ''} / ${cap()} h<small>target ${fmtH(tg)} h</small></span></div>`;
         }).join('')}
       </div>
     </div>`;
 }
 function openDay(d) {
-  const info = dayInfo(d), es = S.entries.filter(e => e.date === d && jobById(e.job));
+  const info = dayInfo(d), es = S.entries.filter(e => e.date === d && isVis(e.job));
   const p = D.plan.days[d], wk = weekKey(d), used = D.byWeek[wk]?.total || 0;
   const tgtBy = expBy(d), logBy_ = logBy(d), g = tgtBy - logBy_;
-  const usdGap = S.jobs.reduce((s, j) => s + Math.max(0, expBy(d, j.id) - logBy(d, j.id)) * j.rate, 0);
+  const usdGap = VJ().reduce((s, j) => s + Math.max(0, expBy(d, j.id) - logBy(d, j.id)) * j.rate, 0);
   const dayT = D.base.days[d];
   let job = info.jobs ? (info.jobs.find(j => j.id === S.lastJob) || info.jobs[0]).id : null;
   // if this day's target is for one job only, prefill with it
@@ -1363,7 +1368,7 @@ function openDay(d) {
       <div><small>Entered by then</small><b>${fmtH(logBy_)} h</b></div>
       <div class="${g > 0.01 ? 'hl' : ''}"><small>${g > 0.01 ? (d >= D.T ? 'Still to log' : 'Missing') : 'Ahead'}</small><b>${g > 0.01 ? fmtH(g) + ' h · ' + money(usdGap) : fmtH(-g) + ' h'}</b></div>
     </div>` : ''}
-    <p class="sub" style="margin:8px 0 2px">Week of ${fmtShort(wk)}: ${fmtH(used)} / ${cap()} h used${dayT ? ` · target this day: ${S.jobs.filter(j => dayT[j.id]).map(j => `${esc(j.grant)} ${fmtH(dayT[j.id])} h`).join(', ')}` : ''}${p && d >= D.T ? ` · suggested: ${S.jobs.filter(j => p[j.id]).map(j => `${esc(j.grant)} ${fmtH(p[j.id])} h`).join(', ')}` : ''}</p>
+    <p class="sub" style="margin:8px 0 2px">Week of ${fmtShort(wk)}: ${fmtH(used)} / ${cap()} h used${dayT ? ` · target this day: ${VJ().filter(j => dayT[j.id]).map(j => `${esc(j.grant)} ${fmtH(dayT[j.id])} h`).join(', ')}` : ''}${p && d >= D.T ? ` · suggested: ${VJ().filter(j => p[j.id]).map(j => `${esc(j.grant)} ${fmtH(p[j.id])} h`).join(', ')}` : ''}</p>
     ${es.length ? `<h4>Entries</h4><div class="elist">${es.map(entryRow).join('')}</div>` : ''}
     ${info.jobs ? `<h4>${es.length ? 'Add more' : 'Add hours'}</h4>${formHTML({ job, date: d, hours })}` : ''}`;
   openSheet(html, body => { const f = body.querySelector('form'); if (f) bindForm(f, () => closeSheet()); });
@@ -1374,7 +1379,7 @@ function openEdit(id) {
     body => bindForm(body.querySelector('form'), () => closeSheet()));
 }
 function openQuick() {
-  const job = jobById(S.lastJob) ? S.lastJob : S.jobs[0].id;
+  const job = isVis(S.lastJob) ? S.lastJob : VJ()[0].id;
   openSheet(`<p class="eyebrow">Quick log</p><h2>Log hours</h2>${formHTML({ job, date: defaultDate(job) })}`,
     body => bindForm(body.querySelector('form'), () => closeSheet()));
 }
@@ -1385,17 +1390,17 @@ function openQuick() {
 const PSTAT = { upcoming: ['neutral', 'Upcoming'], current: ['accent', 'In progress'], processing: ['warn', 'Processing'], today: ['good', 'Payday today'], paid: ['neutral', 'Payday passed'] };
 function renderPay() {
   const P = periods();
-  const earned = S.jobs.reduce((s, j) => s + (D.byJob[j.id] || 0) * j.rate, 0);
+  const earned = VJ().reduce((s, j) => s + (D.byJob[j.id] || 0) * j.rate, 0);
   const planned = P.reduce((s, p) => s + p.pgross, 0);
   const received = Object.values(S.pay).reduce((s, r) => s + (r.got && +r.net ? +r.net : 0), 0);
   const gotN = P.filter(p => p.rec.got).length;
-  const budget = S.jobs.reduce((s, j) => s + j.hours * j.rate, 0);
+  const budget = VJ().reduce((s, j) => s + j.hours * j.rate, 0);
   const G = gap();
   $('#v-pay').innerHTML = `
     <div class="head"><div><p class="eyebrow">Bi-weekly · gross before deductions</p><h1>Pay</h1></div></div>
     <div class="stack">
       <div class="g4">
-        <div class="card kpi"><p class="lbl">${IC.cash}Entered so far</p><p class="val">${money(earned)}</p><p class="foot">${fmtH(Object.values(D.byJob).reduce((a, b) => a + b, 0))} h × ${rateTxt()}</p></div>
+        <div class="card kpi"><p class="lbl">${IC.cash}Entered so far</p><p class="val">${money(earned)}</p><p class="foot">${fmtH(VJ().reduce((a, j) => a + (D.byJob[j.id] || 0), 0))} h × ${rateTxt()}</p></div>
         <div class="card kpi"><p class="lbl">${IC.warn}Not logged yet</p><p class="val" style="color:${G.usd > 0.01 ? 'var(--accent-2)' : 'inherit'}">${money(G.usd)}</p><p class="foot">${fmtH(G.miss)} h behind your target</p></div>
         <div class="card kpi"><p class="lbl">${IC.check}Received</p><p class="val">${money(received)}</p><p class="foot">${gotN} deposit${gotN === 1 ? '' : 's'} marked · net</p></div>
         <div class="card kpi"><p class="lbl">${IC.flag}Contract total</p><p class="val">${money(budget)}</p><p class="foot">${money(Math.max(0, budget - earned))} left · ~${money(planned)} planned</p></div>
@@ -1409,18 +1414,18 @@ function renderPay() {
       </div>
       <div class="card">
         <div class="card-head"><div><h3>Gross pay per period</h3><p class="sub">Hatched = suggested hours you haven’t worked yet</p></div>
-          <div class="legend">${S.jobs.map(j => `<span><i class="sw" style="--c:${colorOf(j)}"></i>${esc(j.grant)}</span>`).join('')}<span><i class="sw ghost" style="--c:var(--ink2)"></i>Planned</span></div></div>
+          <div class="legend">${VJ().map(j => `<span><i class="sw" style="--c:${colorOf(j)}"></i>${esc(j.grant)}</span>`).join('')}<span><i class="sw ghost" style="--c:var(--ink2)"></i>Planned</span></div></div>
         <div id="c-pay" class="chart"></div>
       </div>
       <div class="card">
         <div class="card-head" style="margin-bottom:0"><div><h3>Pay periods</h3><p class="sub">Lazy mode: tap <b>Enter period hours</b> and type one total per position — it’s spread over the work days for you.</p></div></div>
         ${P.map(p => {
           const [k, l] = p.status === 'paid' && p.rec.got ? ['good', 'Received'] : PSTAT[p.status];
-          const hrs = S.jobs.reduce((s, j) => s + p.h[j.id], 0), th = S.jobs.reduce((s, j) => s + p.th[j.id], 0);
-          const pmiss = p.end < D.T || p.status === 'current' ? Math.max(0, S.jobs.reduce((s, j) => s + (Math.min(expBy(minD(p.end, D.Y), j.id) - expBy(addDays(p.start, -1), j.id), p.th[j.id]) - p.h[j.id]) * j.rate, 0)) : 0;
+          const hrs = VJ().reduce((s, j) => s + p.h[j.id], 0), th = VJ().reduce((s, j) => s + p.th[j.id], 0);
+          const pmiss = p.end < D.T || p.status === 'current' ? Math.max(0, VJ().reduce((s, j) => s + (Math.min(expBy(minD(p.end, D.Y), j.id) - expBy(addDays(p.start, -1), j.id), p.th[j.id]) - p.h[j.id]) * j.rate, 0)) : 0;
           return `<div class="period ${p.status === 'current' ? 'cur' : ''}">
             <div><b class="t">Period ${p.i}</b><small>${fmtRange(p.start, p.end)} · payday ${fmtDay(p.payday)}</small><div style="margin-top:6px"><span class="pill ${k}">${esc(l)}</span>${p.rec.sub ? ' <span class="pill good">' + IC.check + 'Timesheet in</span>' : ''}</div></div>
-            <div class="hrs">${S.jobs.map(j => `<span><i class="dot" style="--c:${colorOf(j)}"></i>${esc(j.grant)} <b>${fmtH(p.h[j.id])} h</b>${p.ph[j.id] ? `<small>+~${fmtH(p.ph[j.id])} planned</small>` : ''}</span>`).join('')}<small>Target ${fmtH(th)} h${pmiss > 0.01 ? ` · <b style="color:var(--accent-2)">${money(pmiss)} not logged</b>` : ''}</small></div>
+            <div class="hrs">${VJ().map(j => `<span><i class="dot" style="--c:${colorOf(j)}"></i>${esc(j.grant)} <b>${fmtH(p.h[j.id])} h</b>${p.ph[j.id] ? `<small>+~${fmtH(p.ph[j.id])} planned</small>` : ''}</span>`).join('')}<small>Target ${fmtH(th)} h${pmiss > 0.01 ? ` · <b style="color:var(--accent-2)">${money(pmiss)} not logged</b>` : ''}</small></div>
             <div class="amt"><b>${money(p.gross)}</b><small>${hrs ? fmtH(hrs) + ' h entered' : 'nothing entered'}${p.pgross ? ` · ~${money(p.gross + p.pgross)} projected` : ''}</small></div>
             <div class="p-actions">
               <button class="btn sm tint" data-period="${p.start}">${IC.plus}Enter period hours</button>
@@ -1438,7 +1443,7 @@ function openPeriod(start) {
   const html = `<p class="eyebrow">Period ${p.i} · payday ${fmtDay(p.payday)}</p><h2>${fmtRange(p.start, p.end)}</h2>
     <p class="sub" style="margin-bottom:14px">Type the total hours you worked (or submitted on your timesheet) in this period. They’re spread evenly across the allowed work days — skipping weekends &amp; stat holidays and staying under ${cap()} h/week. Any existing entries for that position in this period are replaced.</p>
     <form id="pform" novalidate>
-      ${S.jobs.map(j => {
+      ${VJ().map(j => {
         const days = []; for (let d = p.start; d <= p.end; d = addDays(d, 1)) if (isWorkday(d) && inJob(j, d)) days.push(d);
         return `<label class="field"><span><i class="dot" style="--c:${colorOf(j)};display:inline-block;margin-right:6px"></i>${esc(j.grant)} · ${days.length} work day${days.length === 1 ? '' : 's'} · target ${fmtH(p.th[j.id])} h</span>
           <input type="number" inputmode="decimal" step="0.25" min="0" name="${j.id}" value="${p.h[j.id] ? r2(p.h[j.id]) : ''}" placeholder="${days.length ? 'Total hours' : 'Not active this period'}" ${days.length ? '' : 'disabled'}></label>`;
@@ -1449,14 +1454,14 @@ function openPeriod(start) {
   openSheet(html, body => {
     const f = body.querySelector('#pform'), hint = body.querySelector('#phint');
     const calc = () => {
-      let usd = 0; S.jobs.forEach(j => { const v = parseFloat(f.elements[j.id].value); if (v > 0) usd += v * j.rate; });
+      let usd = 0; VJ().forEach(j => { const v = parseFloat(f.elements[j.id].value); if (v > 0) usd += v * j.rate; });
       if (usd) { hint.className = 'hint ok'; hint.innerHTML = IC.check + `<span>${money(usd)} gross for this period</span>`; }
     };
     f.addEventListener('input', calc);
     f.addEventListener('submit', e => {
       e.preventDefault();
       let entries = S.entries.slice(), changed = 0;
-      for (const j of S.jobs) {
+      for (const j of VJ()) {
         const raw = f.elements[j.id].value; if (raw === '' || f.elements[j.id].disabled) continue;
         const total = roundQ(parseFloat(raw)); if (!(total >= 0)) continue;
         const res = spread(entries, p, j, total);
@@ -1515,15 +1520,17 @@ function renderSettings() {
       <p class="gnote">Your entries live in the <b>ra_tracker</b> schema of your Supabase project. Only your login can read them; a copy stays on this device for speed and offline use.</p>
       ${agentHTML()}
       ${S.jobs.map(j => `
-        <p class="group-title" style="display:flex;align-items:center;gap:8px"><i class="dot" style="--c:${colorOf(j)}"></i>${esc(j.grant)} position</p>
+        <p class="group-title" style="display:flex;align-items:center;gap:8px"><i class="dot" style="--c:${colorOf(j)}"></i>${esc(j.grant)} position${j.archived ? ' · hidden' : ''}</p>
         <div class="glist">
-          <div class="gitem"><label for="j-${j.id}-prof">Professor</label><input id="j-${j.id}-prof" type="text" data-j="${j.id}:prof" value="${esc(j.prof)}"></div>
+          <div class="gitem"><div class="gl">Show in the app<small>${j.archived ? `Hidden · ${fmtH(D.byJob[j.id] || 0)} h · ${money((D.byJob[j.id] || 0) * j.rate)} logged, kept in Supabase` : `${esc(j.prof)} · turn off when this position is finished`}</small></div><span class="switch"><input type="checkbox" data-arch="${j.id}" ${j.archived ? '' : 'checked'} aria-label="Show ${esc(j.grant)} in the app"><i></i></span></div>
+          ${j.archived ? '' : `<div class="gitem"><label for="j-${j.id}-prof">Professor</label><input id="j-${j.id}-prof" type="text" data-j="${j.id}:prof" value="${esc(j.prof)}"></div>
           <div class="gitem"><label for="j-${j.id}-grant">Grant name</label><input id="j-${j.id}-grant" type="text" data-j="${j.id}:grant" value="${esc(j.grant)}"></div>
           <div class="gitem"><label for="j-${j.id}-start">Start date</label><input id="j-${j.id}-start" type="date" data-j="${j.id}:start" value="${j.start}"></div>
           <div class="gitem"><label for="j-${j.id}-end">End date</label><input id="j-${j.id}-end" type="date" data-j="${j.id}:end" value="${j.end}"></div>
           <div class="gitem"><label for="j-${j.id}-rate">Hourly rate (CAD)</label><input id="j-${j.id}-rate" type="number" step="0.01" min="0" data-j="${j.id}:rate" value="${j.rate}"></div>
-          <div class="gitem"><div class="gl">Contract hours<small>${money(j.hours * j.rate)} total</small></div><input type="number" step="0.25" min="0" data-j="${j.id}:hours" value="${j.hours}" aria-label="Contract hours"></div>
+          <div class="gitem"><div class="gl">Contract hours<small>${money(j.hours * j.rate)} total</small></div><input type="number" step="0.25" min="0" data-j="${j.id}:hours" value="${j.hours}" aria-label="Contract hours"></div>`}
         </div>`).join('')}
+      <p class="gnote">Hidden positions disappear from Overview, Log, Calendar and Pay. Their entries stay in Supabase and still count toward the ${cap()} h weekly limit.</p>
       <p class="group-title">Work rules</p>
       <div class="glist">
         <div class="gitem"><div class="gl">Weekly limit (all positions)<small>University rule — entries above this are blocked</small></div><input type="number" min="1" max="80" step="0.5" data-s="weeklyCap" value="${s.weeklyCap}" aria-label="Weekly limit"></div>
@@ -1579,6 +1586,11 @@ function onSettingChange(t) {
       j[f] = nv;
     } else j[f] = t.value.trim() || j[f];
     save(); renderAll(); toast('Saved'); return true;
+  }
+  if (t.dataset.arch) {
+    const j = jobById(t.dataset.arch);
+    if (t.checked === false && VJ().length === 1 && !j.archived) { toast('Keep at least one position visible'); t.checked = true; return; }
+    j.archived = !t.checked; save(); renderAll(); renderSettings(); toast(j.archived ? `${j.grant} hidden — its hours are kept` : `${j.grant} is back`); return true;
   }
   if (t.dataset.hol) { const h = S.settings.holidays.find(x => x.id === t.dataset.hol); h.on = t.checked; save(); renderAll(); return true; }
   if (t.dataset.sub || t.dataset.got) {
@@ -1714,6 +1726,7 @@ function cleanErr(e) {
   const c = e?.code, m = e?.message || String(e);
   if (c === 'PGRST106') return 'the ra_tracker schema isn’t exposed (Project Settings → Data API).';
   if (c === '42P01' || c === 'PGRST205') return 'tables missing — run supabase-setup.sql first.';
+  if (c === 'PGRST204' && /archived/.test(m)) return 'hiding positions needs hide-positions.sql — run it in Supabase first.';
   return m.replace(/^RA rule:\s*/, '');
 }
 function setStatus(s) {
@@ -1731,7 +1744,7 @@ function toRows(st, uid) {
     pay_anchor: s.payAnchor, payday_offset: Math.round(+s.paydayOffset || 0), auto_lock_min: Math.round(+s.autoLock || 0),
     pin_hash: s.pinHash || null, last_job: st.lastJob || null, timer: st.timer ? { job: st.timer.job, start: st.timer.start } : null,
   };
-  st.jobs.forEach((j, i) => o.jobs[j.id] = { user_id: uid, id: j.id, grant_name: j.grant, professor: j.prof, start_date: j.start, end_date: j.end, hourly_rate: r2(j.rate), contract_hours: r2(j.hours), sort_order: i });
+  st.jobs.forEach((j, i) => o.jobs[j.id] = { user_id: uid, id: j.id, grant_name: j.grant, professor: j.prof, start_date: j.start, end_date: j.end, hourly_rate: r2(j.rate), contract_hours: r2(j.hours), sort_order: i, ...(j.archived !== undefined && { archived: !!j.archived }) });
   (s.holidays || []).forEach(h => o.holidays[h.id] = { user_id: uid, id: h.id, holiday_date: h.date, name: h.name, enabled: !!h.on });
   Object.entries(st.pay || {}).forEach(([k, r]) => o.pay_periods[k] = { user_id: uid, period_start: k, timesheet_submitted: !!r.sub, received: !!r.got, net_amount: r.net == null || isNaN(r.net) ? null : r2(r.net) });
   st.entries.forEach(e => o.entries[e.id] = { user_id: uid, id: e.id, job_id: e.job, work_date: e.date, hours: r2(e.hours), note: e.note || null, from_period_total: !!e.bulk, created_at: new Date(e.created || 0).toISOString() });
@@ -1740,7 +1753,7 @@ function toRows(st, uid) {
 function fromServer(R) {
   const set = R.settings[0] || {}, d = DEFAULT();
   const jobs = R.jobs.slice().sort((a, b) => a.sort_order - b.sort_order)
-    .map(j => ({ id: j.id, grant: j.grant_name, prof: j.professor, start: j.start_date, end: j.end_date, rate: +j.hourly_rate, hours: +j.contract_hours }));
+    .map(j => ({ id: j.id, grant: j.grant_name, prof: j.professor, start: j.start_date, end: j.end_date, rate: +j.hourly_rate, hours: +j.contract_hours, archived: j.archived }));
   return {
     v: 1,
     jobs: jobs.length ? jobs : d.jobs,
@@ -1874,7 +1887,7 @@ let tokens = null;
 const storedToken = () => { try { return localStorage.getItem(TOKEN_KEY) || ''; } catch (e) { return ''; } };
 function buildPrompt(tok) {
   const t = tok || '<PASTE_AGENT_TOKEN>', cap = S.settings.weeklyCap;
-  const jobs = S.jobs.map(j => `- ${j.grant} (job "${j.id}"): ${j.prof}, ${j.start} to ${j.end}, $${j.rate}/h CAD, ${j.hours} h contract`).join('\n');
+  const jobs = VJ().map(j => `- ${j.grant} (job "${j.id}"): ${j.prof}, ${j.start} to ${j.end}, $${j.rate}/h CAD, ${j.hours} h contract`).join('\n');
   return `You log my university RA work hours into my "RA Hours" tracker. It is a Supabase database you reach over HTTPS from your terminal (curl). When I describe work I did, turn it into entries and log them with the functions below. You need no other credentials; never ask for my password or a secret key.
 
 ## Connection
@@ -1893,7 +1906,7 @@ ${jobs}
 1. agent_status {p_token} → {today, weekly_cap, this_week_start, this_week_hours, positions: [{job, grant, professor, start, end, rate, contract_hours, logged_hours, remaining_hours, earned_cad}], holidays: [date]}
    Call this first, every session.
 2. agent_list {p_token, p_from?, p_to?} → [{id, job, date, hours, note}]. No dates = the current Mon–Sun week.
-3. agent_log {p_token, p_job: ${S.jobs.map(j => '"' + j.grant + '"').join(' | ')}, p_date: "YYYY-MM-DD", p_hours, p_note?} → the new entry. Hours round to 0.25.
+3. agent_log {p_token, p_job: ${VJ().map(j => '"' + j.grant + '"').join(' | ')}, p_date: "YYYY-MM-DD", p_hours, p_note?} → the new entry. Hours round to 0.25.
 4. agent_update {p_token, p_id, p_changes: {job?, date?, hours?, note?}} → the updated entry.
 5. agent_delete {p_token, p_id} → {"deleted": id}.
 
@@ -1901,6 +1914,7 @@ ${jobs}
 - Weekdays only, never an enabled stat holiday, only inside that position's dates.
 - At most ${cap} h per Mon–Sun week across all positions, and never past a position's contract hours.
 - Dates are America/Toronto. Work out "yesterday", "Monday" etc. from "today" in agent_status.
+- Positions with "archived": true in agent_status are finished: don't log to them unless I ask.
 - If I don't say which position or which day, ask. If I give one total for several days ("10 h on IRF this week"), propose a split over the weekdays (≤ 8 h a day) and confirm before logging.
 - Call agent_list for those dates before logging, so you don't log the same work twice. Ask before deleting anything.
 - p_note: a short description of the work in my words (≤ 140 characters).
