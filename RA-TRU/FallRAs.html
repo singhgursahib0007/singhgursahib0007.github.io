@@ -489,7 +489,7 @@ const DEFAULT = () => ({
   ],
   entries: [],
   settings: {
-    weeklyCap: 35, payAnchor: '2026-09-21', paydayOffset: 5, autoLock: 5, pinHash: DEFAULT_PIN_HASH,
+    weeklyCap: 35, dailyCap: 7, catchupUntil: '2026-11-04', payAnchor: '2026-09-21', paydayOffset: 5, autoLock: 5, pinHash: DEFAULT_PIN_HASH,
     holidays: [
       { id: 'h1', date: '2026-09-30', name: 'Truth & Reconciliation Day', on: true },
       { id: 'h2', date: '2026-10-12', name: 'Thanksgiving', on: true },
@@ -549,6 +549,13 @@ const isWorkday = d => !isWeekend(d) && !HOL[d];
 const inJob = (j, d) => d >= j.start && d <= j.end;
 const countWork = (a, b, j) => { let n = 0; for (let d = a; d <= b; d = addDays(d, 1)) if (isWorkday(d) && (!j || inJob(j, d))) n++; return n; };
 const cap = () => +S.settings.weeklyCap || 35;
+// Catch-up (back-filled hours up to this date): limits apply per position, dcap() a day and
+// cap() a week. After it: cap() a week across all positions, no daily limit.
+const dcap = () => +S.settings.dailyCap || 7;
+const isCatchup = d => !!S.settings.catchupUntil && d <= S.settings.catchupUntil;
+// Week total that counts toward the regular (all positions) limit.
+const regWeek = (w, skipId) => S.entries.reduce((s, e) => s + (e.id !== skipId && weekKey(e.date) === w && !isCatchup(e.date) ? e.hours : 0), 0);
+const wkLabel = w => isCatchup(w) ? `${fmtH(D.byWeek[w]?.total || 0)} h · catch-up` : `${fmtH(D.byWeek[w]?.total || 0)} / ${cap()} h`;
 
 /* Spread hours across work days: level daily load, never over the weekly cap or
    the daily cap, each position only inside its own date window. Used for the
@@ -566,7 +573,7 @@ function schedule(from, remIn, useLogs) {
     let N = 0; for (let x = i; x < list.length; x++) if (live.some(j => inJob(j, list[x]))) N++;
     const w = weekKey(d);
     let k = 0; for (let x = i; x < list.length && weekKey(list[x]) === w; x++) k++;
-    const used = (useLogs ? (D.byWeek[w]?.total || 0) : 0) + (wkPlan[w] || 0);
+    const used = (useLogs ? regWeek(w) : 0) + (wkPlan[w] || 0);
     const dayCap = Math.max(0, (cap() - used) / k);
     const r = {}; let sumR = 0;
     A.forEach(j => { let n = 0; for (let x = i; x < list.length && list[x] <= j.end; x++) if (inJob(j, list[x])) n++; r[j.id] = rem[j.id] / n; sumR += r[j.id]; });
@@ -686,8 +693,16 @@ function validate(v) {
   const day = others.reduce((s, e) => s + (e.date === v.date ? e.hours : 0), 0);
   if (day + v.hours > 24) return 'That’s more than 24 hours in one day.';
   const wk = weekKey(v.date);
-  const wkUsed = others.reduce((s, e) => s + (weekKey(e.date) === wk ? e.hours : 0), 0);
-  if (wkUsed + v.hours > cap() + 1e-9) return `Week of ${fmtShort(wk)} would hit ${fmtH(wkUsed + v.hours)} h — the limit is ${cap()} h. ${fmtH(Math.max(0, cap() - wkUsed))} h left that week.`;
+  if (isCatchup(v.date)) {
+    const mine = others.filter(e => e.job === j.id && isCatchup(e.date));
+    const jd = mine.reduce((s, e) => s + (e.date === v.date ? e.hours : 0), 0);
+    if (jd + v.hours > dcap() + 1e-9) return `Catch-up limit: ${dcap()} h a day per position. ${fmtH(Math.max(0, dcap() - jd))} h left for ${j.grant} on ${fmtShort(v.date)}.`;
+    const jw = mine.reduce((s, e) => s + (weekKey(e.date) === wk ? e.hours : 0), 0);
+    if (jw + v.hours > cap() + 1e-9) return `Catch-up limit: ${cap()} h a week per position. ${fmtH(Math.max(0, cap() - jw))} h left for ${j.grant} that week.`;
+  } else {
+    const wkUsed = regWeek(wk, v.id);
+    if (wkUsed + v.hours > cap() + 1e-9) return `Week of ${fmtShort(wk)} would hit ${fmtH(wkUsed + v.hours)} h — the limit is ${cap()} h. ${fmtH(Math.max(0, cap() - wkUsed))} h left that week.`;
+  }
   const jobUsed = others.reduce((s, e) => s + (e.job === j.id ? e.hours : 0), 0);
   if (jobUsed + v.hours > j.hours + 1e-9) return `Only ${fmtH(Math.max(0, j.hours - jobUsed))} h left on the ${j.grant} contract.`;
   return null;
@@ -896,7 +911,7 @@ function weekChart(host) {
     const tip = `<h5>Week of ${fmtRange(w, addDays(w, 6))}</h5>` +
       VJ().map(j => tr(colorOf(j), esc(j.grant) + ' entered', fmtH(D.byWeek[w]?.[j.id] || 0) + ' h')).join('') +
       (pl ? VJ().map(j => { const p = plannedWeek(w, j.id); return p ? tr(colorOf(j), esc(j.grant) + ' planned', '~' + fmtH(p) + ' h') : ''; }).join('') : '') +
-      `<hr>${tr('transparent', 'Total', fmtH(used + pl) + ' / ' + cap() + ' h')}${tr('transparent', 'Target', fmtH(tgt) + ' h')}${tr('transparent', 'Earned', money(VJ().reduce((s, j) => s + (D.byWeek[w]?.[j.id] || 0) * j.rate, 0)))}`;
+      `<hr>${tr('transparent', 'Total', isCatchup(w) ? fmtH(used) + ' h · catch-up' : fmtH(used + pl) + ' / ' + cap() + ' h')}${tr('transparent', 'Target', fmtH(tgt) + ' h')}${tr('transparent', 'Earned', money(VJ().reduce((s, j) => s + (D.byWeek[w]?.[j.id] || 0) * j.rate, 0)))}`;
     cats.push({ label: fmtShort(w), segs, tip, now: w === weekKey(D.T) });
   }
   barChart(host, { cats, cap: cap(), label: 'Weekly hours by position against the weekly limit' });
@@ -938,12 +953,14 @@ function bindForm(form, after) {
     const j = jobById(job);
     if (err) { hint.className = 'hint err'; hint.innerHTML = IC.warn + `<span>${esc(err)}</span>`; }
     else if (v.date && v.hours > 0) {
-      const wk = weekKey(v.date), used = S.entries.filter(e => e.id !== v.id && weekKey(e.date) === wk).reduce((s, e) => s + e.hours, 0);
-      hint.className = 'hint ok'; hint.innerHTML = IC.check + `<span>+${money(v.hours * j.rate)} · week of ${fmtShort(wk)} → ${fmtH(used + v.hours)} / ${cap()} h</span>`;
+      const wk = weekKey(v.date), cu = isCatchup(v.date);
+      const used = cu ? S.entries.filter(e => e.id !== v.id && e.job === job && e.date === v.date).reduce((s, e) => s + e.hours, 0) : regWeek(wk, v.id);
+      hint.className = 'hint ok'; hint.innerHTML = IC.check + `<span>+${money(v.hours * j.rate)} · ${cu ? `catch-up: ${esc(j.grant)} on ${fmtShort(v.date)} → ${fmtH(used + v.hours)} / ${dcap()} h` : `week of ${fmtShort(wk)} → ${fmtH(used + v.hours)} / ${cap()} h`}</span>`;
     } else if (v.date) {
-      const wk = weekKey(v.date), used = S.entries.filter(e => e.id !== v.id && weekKey(e.date) === wk).reduce((s, e) => s + e.hours, 0);
+      const wk = weekKey(v.date), cu = isCatchup(v.date);
+      const used = cu ? S.entries.filter(e => e.id !== v.id && e.job === job && e.date === v.date).reduce((s, e) => s + e.hours, 0) : regWeek(wk, v.id);
       const tg = D.base.days[v.date]?.[job];
-      hint.className = 'hint'; hint.innerHTML = IC.info + `<span>${fmtH(Math.max(0, cap() - used))} h left that week${tg ? ` · target for this day ${fmtH(tg)} h` : ''} · ${fmtH(Math.max(0, j.hours - (D.byJob[job] || 0)))} h left on ${esc(j.grant)}</span>`;
+      hint.className = 'hint'; hint.innerHTML = IC.info + `<span>${cu ? `Catch-up day: ${fmtH(Math.max(0, dcap() - used))} h left for ${esc(j.grant)}` : `${fmtH(Math.max(0, cap() - used))} h left that week`}${tg ? ` · target for this day ${fmtH(tg)} h` : ''} · ${fmtH(Math.max(0, j.hours - (D.byJob[job] || 0)))} h left on ${esc(j.grant)}</span>`;
     } else { hint.className = 'hint'; hint.innerHTML = IC.info + '<span>Pick a weekday inside the contract dates.</span>'; }
     if (!form.dataset.id) formMem = { job, date: v.date };
   };
@@ -1022,7 +1039,7 @@ function renderLog() {
   list.forEach(e => (groups[weekKey(e.date)] ||= []).push(e));
   const listHTML = list.length ? Object.keys(groups).sort().reverse().map(w => {
     const used = D.byWeek[w]?.total || 0;
-    return `<div class="wgroup"><div class="wgroup-h"><span>${fmtRange(w, addDays(w, 6))}</span><span style="display:flex;gap:10px;align-items:center">${fmtH(used)} / ${cap()} h<span class="meter">${VJ().map(j => { const h = D.byWeek[w]?.[j.id] || 0; return h ? `<i style="--c:${colorOf(j)};width:${h / cap() * 100}%"></i>` : ''; }).join('')}</span></span></div>
+    return `<div class="wgroup"><div class="wgroup-h"><span>${fmtRange(w, addDays(w, 6))}</span><span style="display:flex;gap:10px;align-items:center">${wkLabel(w)}<span class="meter">${VJ().map(j => { const h = D.byWeek[w]?.[j.id] || 0; return h ? `<i style="--c:${colorOf(j)};width:${h / cap() * 100}%"></i>` : ''; }).join('')}</span></span></div>
       <div class="elist">${groups[w].map(entryRow).join('')}</div></div>`;
   }).join('') : `<div class="empty">${IC.log}<p>No entries yet.<br>Log your first hours on the left.</p></div>`;
 
@@ -1109,7 +1126,7 @@ function renderCalendar() {
         ${weeks.map(w => {
           const used = D.byWeek[w]?.total || 0, pl = plannedWeek(w);
           let tg = 0; for (let i = 0; i < 7; i++) tg += D.base.days[addDays(w, i)]?.total || 0;
-          return `<div class="wsum"><span>${fmtRange(w, addDays(w, 6))}</span><span class="meter">${VJ().map(j => { const h = D.byWeek[w]?.[j.id] || 0; return h ? `<i style="--c:${colorOf(j)};width:${h / cap() * 100}%"></i>` : ''; }).join('')}${VJ().map(j => { const h = plannedWeek(w, j.id); return h ? `<i class="ghost" style="--c:${colorOf(j)};width:${h / cap() * 100}%"></i>` : ''; }).join('')}</span><span class="r">${fmtH(used)}${pl ? ` +${fmtH(pl)}` : ''} / ${cap()} h<small>target ${fmtH(tg)} h</small></span></div>`;
+          return `<div class="wsum"><span>${fmtRange(w, addDays(w, 6))}</span><span class="meter">${VJ().map(j => { const h = D.byWeek[w]?.[j.id] || 0; return h ? `<i style="--c:${colorOf(j)};width:${h / cap() * 100}%"></i>` : ''; }).join('')}${VJ().map(j => { const h = plannedWeek(w, j.id); return h ? `<i class="ghost" style="--c:${colorOf(j)};width:${h / cap() * 100}%"></i>` : ''; }).join('')}</span><span class="r">${isCatchup(w) ? wkLabel(w) : `${fmtH(used)}${pl ? ` +${fmtH(pl)}` : ''} / ${cap()} h`}<small>target ${fmtH(tg)} h</small></span></div>`;
         }).join('')}
       </div>
     </div>`;
@@ -1136,7 +1153,7 @@ function openDay(d) {
       <div><small>Entered by then</small><b>${fmtH(logBy_)} h</b></div>
       <div class="${g > 0.01 ? 'hl' : ''}"><small>${g > 0.01 ? (d >= D.T ? 'Still to log' : 'Missing') : 'Ahead'}</small><b>${g > 0.01 ? fmtH(g) + ' h · ' + money(usdGap) : fmtH(-g) + ' h'}</b></div>
     </div>` : ''}
-    <p class="sub" style="margin:8px 0 2px">Week of ${fmtShort(wk)}: ${fmtH(used)} / ${cap()} h used${dayT ? ` · target this day: ${VJ().filter(j => dayT[j.id]).map(j => `${esc(j.grant)} ${fmtH(dayT[j.id])} h`).join(', ')}` : ''}${p && d >= D.T ? ` · suggested: ${VJ().filter(j => p[j.id]).map(j => `${esc(j.grant)} ${fmtH(p[j.id])} h`).join(', ')}` : ''}</p>
+    <p class="sub" style="margin:8px 0 2px">${isCatchup(d) ? `Catch-up day: up to ${dcap()} h per position` : `Week of ${fmtShort(wk)}: ${fmtH(regWeek(wk))} / ${cap()} h used`}${dayT ? ` · target this day: ${VJ().filter(j => dayT[j.id]).map(j => `${esc(j.grant)} ${fmtH(dayT[j.id])} h`).join(', ')}` : ''}${p && d >= D.T ? ` · suggested: ${VJ().filter(j => p[j.id]).map(j => `${esc(j.grant)} ${fmtH(p[j.id])} h`).join(', ')}` : ''}</p>
     ${es.length ? `<h4>Entries</h4><div class="elist">${es.map(entryRow).join('')}</div>` : ''}
     ${info.jobs ? `<h4>${es.length ? 'Add more' : 'Add hours'}</h4>${formHTML({ job, date: d, hours })}` : ''}`;
   openSheet(html, body => { const f = body.querySelector('form'); if (f) bindForm(f, () => closeSheet()); });
@@ -1187,6 +1204,8 @@ function renderSettings() {
       <p class="gnote">Hidden positions disappear from Overview, Log and Calendar. Their entries stay in Supabase and still count toward the ${cap()} h weekly limit.</p>
       <p class="group-title">Work rules</p>
       <div class="glist">
+        <div class="gitem"><div class="gl">Catch-up ends<small>Back-filled hours up to this day: limits apply per position</small></div><input type="date" data-s="catchupUntil" value="${s.catchupUntil || ''}" aria-label="Catch-up ends"></div>
+        <div class="gitem"><div class="gl">Catch-up daily limit<small>Per position, per day, until the catch-up date</small></div><input type="number" min="1" max="24" step="0.5" data-s="dailyCap" value="${dcap()}" aria-label="Catch-up daily limit"></div>
         <div class="gitem"><div class="gl">Weekly limit (all positions)<small>University rule — entries above this are blocked</small></div><input type="number" min="1" max="80" step="0.5" data-s="weeklyCap" value="${s.weeklyCap}" aria-label="Weekly limit"></div>
         <div class="gitem"><div class="gl">Weekends<small>Always blocked</small></div><span class="pill neutral">Blocked</span></div>
       </div>
@@ -1220,6 +1239,7 @@ function onSettingChange(t) {
   if (t.dataset.s) {
     const k = t.dataset.s;
     if (k === 'payAnchor') { if (!t.value) return; S.settings[k] = t.value; }
+    else if (k === 'catchupUntil') S.settings[k] = t.value || null;
     else { const v = parseFloat(t.value); if (!(v >= 0)) return; S.settings[k] = v; }
     save(); renderAll();
     if (view === 'settings') $$('[data-s="' + k + '"]').forEach(x => { if (x !== t) x.value = t.value; });
@@ -1360,6 +1380,7 @@ const SB_URL = 'https://zklnldjjjmzgsymgkuvo.supabase.co';
 const SB_KEY = 'sb_publishable_TuLwPC9PQSDe9rBdlFzz-w_SVaMYMRk';   // publishable: safe in the page, RLS protects the rows
 const SB_LIB = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
 const BASE_KEY = 'raTracker.base';
+const dcapOf = s => +s.dailyCap || 7;
 const TBL = { settings: 'user_id', jobs: 'user_id,id', holidays: 'user_id,id', pay_periods: 'user_id,period_start', entries: 'user_id,id' };
 const STATUS_TXT = { local: 'Not syncing — this device only', syncing: 'Syncing…', pending: 'Saving…', synced: 'Saved to Supabase', offline: 'Offline — changes sync when you’re back online', error: 'Sync problem — tap to retry' };
 let sb = null, base = null, syncing = false, dirty = false, syncT, lastPull = 0, cloudSkipped = false, cloudStarted = false, status = 'local';
@@ -1384,6 +1405,7 @@ function cleanErr(e) {
   const c = e?.code, m = e?.message || String(e);
   if (c === 'PGRST106') return 'the ra_tracker schema isn’t exposed (Project Settings → Data API).';
   if (c === '42P01' || c === 'PGRST205') return 'tables missing — run supabase-setup.sql first.';
+  if (c === 'PGRST204' && /catchup_until/.test(m)) return 'catch-up rules need catchup-rules.sql — run it in Supabase first.';
   if (c === 'PGRST204' && /archived/.test(m)) return 'hiding positions needs hide-positions.sql — run it in Supabase first.';
   return m.replace(/^RA rule:\s*/, '');
 }
@@ -1398,7 +1420,8 @@ const loadBase = () => { try { return JSON.parse(localStorage.getItem(BASE_KEY))
 function toRows(st, uid) {
   const s = st.settings, o = { settings: {}, jobs: {}, holidays: {}, pay_periods: {}, entries: {} };
   o.settings[uid] = {
-    user_id: uid, weekly_cap: Math.round((+s.weeklyCap || 35) * 10) / 10,
+    user_id: uid, weekly_cap: Math.round((+s.weeklyCap || 35) * 10) / 10, daily_cap: Math.round(dcapOf(s) * 10) / 10,
+    ...(s.catchupUntil !== undefined && { catchup_until: s.catchupUntil || null }),
     pay_anchor: s.payAnchor, payday_offset: Math.round(+s.paydayOffset || 0), auto_lock_min: Math.round(+s.autoLock || 0),
     pin_hash: s.pinHash || null, last_job: st.lastJob || null, timer: st.timer ? { job: st.timer.job, start: st.timer.start } : null,
   };
@@ -1417,7 +1440,7 @@ function fromServer(R) {
     jobs: jobs.length ? jobs : d.jobs,
     entries: R.entries.map(e => ({ id: e.id, job: e.job_id, date: e.work_date, hours: +e.hours, note: e.note || '', bulk: !!e.from_period_total, created: Date.parse(e.created_at) || 0 })),
     settings: {
-      weeklyCap: +(set.weekly_cap ?? 35), payAnchor: set.pay_anchor || d.settings.payAnchor,
+      weeklyCap: +(set.weekly_cap ?? 35), dailyCap: +(set.daily_cap ?? 7), catchupUntil: set.catchup_until, payAnchor: set.pay_anchor || d.settings.payAnchor,
       paydayOffset: +(set.payday_offset ?? 5), autoLock: +(set.auto_lock_min ?? 5), pinHash: set.pin_hash || DEFAULT_PIN_HASH,
       holidays: R.holidays.map(h => ({ id: h.id, date: h.holiday_date, name: h.name, on: !!h.enabled })),
     },
@@ -1570,7 +1593,7 @@ ${jobs}
 
 ## Rules (the database enforces them; a break comes back as "RA rule: …")
 - Weekdays only, never an enabled stat holiday, only inside that position's dates.
-- At most ${cap} h per Mon–Sun week across all positions, and never past a position's contract hours.
+- From ${S.settings.catchupUntil ? addDays(S.settings.catchupUntil, 1) : 'now'} on: at most ${cap} h per Mon–Sun week across all positions, no daily limit.${S.settings.catchupUntil ? `\n- Catch-up (back-filled days up to ${S.settings.catchupUntil}): each position on its own, at most ${dcap()} h a day and ${cap} h a week.` : ''}\n- Never past a position's contract hours.
 - Dates are America/Toronto. Work out "yesterday", "Monday" etc. from "today" in agent_status.
 - Positions with "archived": true in agent_status are finished: don't log to them unless I ask.
 - If I don't say which position or which day, ask. If I give one total for several days ("10 h on IRF this week"), propose an even split over the weekdays and confirm before logging.
