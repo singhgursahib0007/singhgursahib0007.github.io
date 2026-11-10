@@ -489,7 +489,7 @@ const DEFAULT = () => ({
   ],
   entries: [],
   settings: {
-    weeklyCap: 35, dailyCap: 7, payAnchor: '2026-09-21', paydayOffset: 5, autoLock: 5, pinHash: DEFAULT_PIN_HASH,
+    weeklyCap: 35, payAnchor: '2026-09-21', paydayOffset: 5, autoLock: 5, pinHash: DEFAULT_PIN_HASH,
     holidays: [
       { id: 'h1', date: '2026-09-30', name: 'Truth & Reconciliation Day', on: true },
       { id: 'h2', date: '2026-10-12', name: 'Thanksgiving', on: true },
@@ -549,7 +549,6 @@ const isWorkday = d => !isWeekend(d) && !HOL[d];
 const inJob = (j, d) => d >= j.start && d <= j.end;
 const countWork = (a, b, j) => { let n = 0; for (let d = a; d <= b; d = addDays(d, 1)) if (isWorkday(d) && (!j || inJob(j, d))) n++; return n; };
 const cap = () => +S.settings.weeklyCap || 35;
-const dcap = () => +S.settings.dailyCap || 8;
 
 /* Spread hours across work days: level daily load, never over the weekly cap or
    the daily cap, each position only inside its own date window. Used for the
@@ -568,7 +567,7 @@ function schedule(from, remIn, useLogs) {
     const w = weekKey(d);
     let k = 0; for (let x = i; x < list.length && weekKey(list[x]) === w; x++) k++;
     const used = (useLogs ? (D.byWeek[w]?.total || 0) : 0) + (wkPlan[w] || 0);
-    const dayCap = Math.max(0, Math.min(dcap() - (useLogs ? (D.byDate[d]?.total || 0) : 0), (cap() - used) / k));
+    const dayCap = Math.max(0, (cap() - used) / k);
     const r = {}; let sumR = 0;
     A.forEach(j => { let n = 0; for (let x = i; x < list.length && list[x] <= j.end; x++) if (inJob(j, list[x])) n++; r[j.id] = rem[j.id] / n; sumR += r[j.id]; });
     const target = Math.min(dayCap, Math.max(R / N, sumR));
@@ -1086,7 +1085,7 @@ function renderCalendar() {
     if (missing) mMissing++;
     if (b) { mH += b.total; mUSD += VJ().reduce((s, j) => s + (b[j.id] || 0) * j.rate, 0); }
     const lt = b?.total || 0, pt = p?.total || 0, tt = lt + pt;
-    const bars = tt ? `<span class="cb" style="width:${Math.min(100, tt / dcap() * 100)}%">${VJ().map(j => (b?.[j.id] ? `<i style="--c:${colorOf(j)};flex:${b[j.id]}"></i>` : '') + (p?.[j.id] ? `<i class="ghost" style="--c:${colorOf(j)};flex:${p[j.id]}"></i>` : '')).join('')}</span>` : '';
+    const bars = tt ? `<span class="cb" style="width:${Math.min(100, tt / (cap() / 5) * 100)}%">${VJ().map(j => (b?.[j.id] ? `<i style="--c:${colorOf(j)};flex:${b[j.id]}"></i>` : '') + (p?.[j.id] ? `<i class="ghost" style="--c:${colorOf(j)};flex:${p[j.id]}"></i>` : '')).join('')}</span>` : '';
     const cls = ['cell', wk && 'wkend', hol && 'hol', out && !wk && 'out', d === D.T && 'today', missing && 'miss'].filter(Boolean).join(' ');
     const label = `${fmtLong(d)}${hol ? ', ' + hol : ''}${lt ? `, ${fmtH(lt)} hours logged` : ''}${pt ? `, ${fmtH(pt)} planned` : ''}${missing ? ', nothing logged' : ''}`;
     cells += `<button class="${cls}" data-day="${d}" aria-label="${esc(label)}"><span class="n">${k}</span>${hol ? `<span class="tg">${innerWidth < 760 ? 'Stat' : esc(hol)}</span>` : ''}${bars}${lt ? `<span class="hv">${fmtH(lt)}h</span>` : pt ? `<span class="hv plan">~${fmtH(pt)}h</span>` : ''}</button>`;
@@ -1189,7 +1188,6 @@ function renderSettings() {
       <p class="group-title">Work rules</p>
       <div class="glist">
         <div class="gitem"><div class="gl">Weekly limit (all positions)<small>University rule — entries above this are blocked</small></div><input type="number" min="1" max="80" step="0.5" data-s="weeklyCap" value="${s.weeklyCap}" aria-label="Weekly limit"></div>
-        <div class="gitem"><div class="gl">Max hours per day in plans<small>Only used for targets &amp; suggestions</small></div><input type="number" min="1" max="16" step="0.5" data-s="dailyCap" value="${s.dailyCap}" aria-label="Daily max"></div>
         <div class="gitem"><div class="gl">Weekends<small>Always blocked</small></div><span class="pill neutral">Blocked</span></div>
       </div>
       <p class="group-title">Stat holidays (blocked)</p>
@@ -1400,7 +1398,7 @@ const loadBase = () => { try { return JSON.parse(localStorage.getItem(BASE_KEY))
 function toRows(st, uid) {
   const s = st.settings, o = { settings: {}, jobs: {}, holidays: {}, pay_periods: {}, entries: {} };
   o.settings[uid] = {
-    user_id: uid, weekly_cap: Math.round((+s.weeklyCap || 35) * 10) / 10, daily_cap: Math.round((+s.dailyCap || 8) * 10) / 10,
+    user_id: uid, weekly_cap: Math.round((+s.weeklyCap || 35) * 10) / 10,
     pay_anchor: s.payAnchor, payday_offset: Math.round(+s.paydayOffset || 0), auto_lock_min: Math.round(+s.autoLock || 0),
     pin_hash: s.pinHash || null, last_job: st.lastJob || null, timer: st.timer ? { job: st.timer.job, start: st.timer.start } : null,
   };
@@ -1419,7 +1417,7 @@ function fromServer(R) {
     jobs: jobs.length ? jobs : d.jobs,
     entries: R.entries.map(e => ({ id: e.id, job: e.job_id, date: e.work_date, hours: +e.hours, note: e.note || '', bulk: !!e.from_period_total, created: Date.parse(e.created_at) || 0 })),
     settings: {
-      weeklyCap: +(set.weekly_cap ?? 35), dailyCap: +(set.daily_cap ?? 8), payAnchor: set.pay_anchor || d.settings.payAnchor,
+      weeklyCap: +(set.weekly_cap ?? 35), payAnchor: set.pay_anchor || d.settings.payAnchor,
       paydayOffset: +(set.payday_offset ?? 5), autoLock: +(set.auto_lock_min ?? 5), pinHash: set.pin_hash || DEFAULT_PIN_HASH,
       holidays: R.holidays.map(h => ({ id: h.id, date: h.holiday_date, name: h.name, on: !!h.enabled })),
     },
@@ -1575,7 +1573,7 @@ ${jobs}
 - At most ${cap} h per Mon–Sun week across all positions, and never past a position's contract hours.
 - Dates are America/Toronto. Work out "yesterday", "Monday" etc. from "today" in agent_status.
 - Positions with "archived": true in agent_status are finished: don't log to them unless I ask.
-- If I don't say which position or which day, ask. If I give one total for several days ("10 h on IRF this week"), propose a split over the weekdays (≤ 8 h a day) and confirm before logging.
+- If I don't say which position or which day, ask. If I give one total for several days ("10 h on IRF this week"), propose an even split over the weekdays and confirm before logging.
 - Call agent_list for those dates before logging, so you don't log the same work twice. Ask before deleting anything.
 - p_note: a short description of the work in my words (≤ 140 characters).
 - After acting, reply with a short table (date, position, hours, $ = hours × rate) and the new totals from agent_status.
